@@ -14,6 +14,7 @@ import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather.*
 import com.zj.weather.utils.getDateWeekName
+import com.zj.weather.utils.getTimeName
 import com.zj.weather.utils.showToast
 
 
@@ -103,6 +104,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(weatherBean))
                     //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                     if (Code.OK === weatherBean?.code) {
+                        weatherBean.hourly.forEach { hourlyBean ->
+                            hourlyBean.fxTime = getTimeName(hourlyBean.fxTime)
+                        }
                         onWeather24HourChanged(weatherBean.hourly)
                     } else {
                         //在此查看返回数据失败的原因

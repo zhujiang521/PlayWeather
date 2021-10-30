@@ -1,6 +1,5 @@
 package com.zj.weather.ui.view.weather
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,7 +50,7 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = hourlyBean.temp,
+            text = hourlyBean.fxTime,
             fontSize = 15.sp,
             color = MaterialTheme.colors.primary
         )

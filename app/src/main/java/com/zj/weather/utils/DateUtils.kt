@@ -2,6 +2,7 @@ package com.zj.weather.utils
 
 import android.text.format.DateUtils
 import android.util.Log
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "DateUtils"
@@ -28,5 +29,26 @@ fun getDateWeekName(date: String): String {
         DateUtils.getDayOfWeekString(week, DateUtils.LENGTH_SHORT).toUpperCase(
             Locale.ROOT
         )
+    }
+}
+
+/**
+ * 获取指定时间为绩点
+ *
+ * @param time 年月日 2013-12-30T13:00+08:00
+ * @return 13时
+ */
+fun getTimeName(time: String): String {
+    Log.e(TAG, "getTimeName: $time")
+    val calendar = Calendar.getInstance()
+    val todayHour = calendar.get(Calendar.HOUR_OF_DAY)
+    // HH为24小时 hh为12小时
+    calendar.time =
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00", Locale.getDefault()).parse(time) ?: Date()
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+    return if (todayHour + 1 == hour) {
+        "现在"
+    } else {
+        "${hour}时"
     }
 }
