@@ -3,6 +3,7 @@ package com.zj.weather.ui.view.list
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,6 +40,7 @@ fun WeatherListPage(
                 items(locationBeanList) { locationBean ->
                     Text(text = locationBean.name, modifier = Modifier
                         .padding(10.dp)
+                        .fillMaxWidth()
                         .clickable {
                             mainViewModel.onSearchCityInfoChanged(
                                 0

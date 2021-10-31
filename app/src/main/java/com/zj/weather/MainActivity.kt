@@ -150,7 +150,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             location = "${location.longitude},${
                 location.latitude
             }", name = result[0].adminArea ?: "",
-            isLocation = true
+            isLocation = 1
         )
         if (isLocationList.isNotEmpty()) {
             Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
