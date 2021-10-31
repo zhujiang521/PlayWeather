@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
+import com.qweather.sdk.bean.air.AirNowBean
 import com.qweather.sdk.bean.base.Code
 import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.base.Range
@@ -12,6 +13,7 @@ import com.qweather.sdk.bean.geo.GeoBean
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
+import com.qweather.sdk.view.QWeather
 import com.qweather.sdk.view.QWeather.*
 import com.zj.weather.utils.getDateWeekName
 import com.zj.weather.utils.getTimeName
@@ -53,11 +55,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _dayBeanList.value = hourlyBean
     }
 
+    private val _airNowBean = MutableLiveData(listOf<AirNowBean.AirNowStationBean>())
+    val airNowBean: LiveData<List<AirNowBean.AirNowStationBean>> = _airNowBean
+
+    fun onAirNowChanged(hourlyBean: List<AirNowBean.AirNowStationBean>) {
+        _airNowBean.value = hourlyBean
+    }
+
 
     fun getWeather(location: String = "CN101010100") {
         getWeatherNow(location)
         getWeather24Hour(location)
         getWeather7Day(location)
+        getAirNow(location)
     }
 
     /**
@@ -87,6 +97,34 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         val code: Code = weatherBean.code
                         Log.i(TAG, "failed code: $code")
                         showToast(getApplication(), code.txt)
+                    }
+                }
+            })
+    }
+
+    private fun getAirNow(location: String = "CN101010100") {
+        getAirNow(getApplication(), location, Lang.ZH_HANS,
+            object : OnResultAirNowListener {
+                override fun onError(e: Throwable) {
+                    showToast(getApplication(), e.message)
+                    Log.e(TAG, "getWeather24Hour onError: $e")
+                }
+
+                override fun onSuccess(airNowBean: AirNowBean?) {
+                    Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(airNowBean))
+                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                    if (Code.OK === airNowBean?.code) {
+                        airNowBean.airNowStationBean.forEach { airNowStationBean ->
+                            airNowStationBean.primary =
+                                if (airNowStationBean.primary == "NA") "" else {
+                                    "，主要污染物为:${airNowStationBean.primary}"
+                                }
+                        }
+                        onAirNowChanged(airNowBean.airNowStationBean)
+                    } else {
+                        //在此查看返回数据失败的原因
+                        val code: Code? = airNowBean?.code
+                        Log.i(TAG, "failed code: $code")
                     }
                 }
             })

@@ -18,8 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
+import com.qweather.sdk.bean.air.AirNowBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
+import com.zj.weather.ui.view.weather.AirQuality
 import com.zj.weather.ui.view.weather.DayWeather
 import com.zj.weather.ui.view.weather.DayWeatherContent
 import com.zj.weather.ui.view.weather.HourWeather
@@ -30,6 +32,7 @@ import com.zj.weather.utils.ImageLoader
 fun WeatherPage(mainViewModel: MainViewModel) {
     val context = LocalContext.current
     val weatherNow by mainViewModel.weatherNow.observeAsState()
+    val airNowBean by mainViewModel.airNowBean.observeAsState(listOf())
     val hourlyBeanList by mainViewModel.hourlyBeanList.observeAsState(listOf())
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
@@ -47,7 +50,7 @@ fun WeatherPage(mainViewModel: MainViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         ImageLoader(
             modifier = Modifier.fillMaxSize(),
-            data = IconUtils.getWeatherBack(context,weatherNow?.icon)
+            data = IconUtils.getWeatherBack(context, weatherNow?.icon)
         )
         Column(
             modifier = Modifier
@@ -96,6 +99,11 @@ fun WeatherPage(mainViewModel: MainViewModel) {
                 modifier = Modifier.size(130.dp),
                 progress = progress
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // 当前空气质量
+            AirQuality(airNowBean)
 
             Spacer(modifier = Modifier.height(10.dp))
 
