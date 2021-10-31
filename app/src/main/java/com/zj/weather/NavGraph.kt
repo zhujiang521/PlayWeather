@@ -57,6 +57,7 @@ object PlayDestinations {
 @Composable
 fun NavGraph(
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
+    cityList: List<CityInfo>,
     mainViewModel: MainViewModel
 ) {
     val navController = rememberAnimatedNavController()
@@ -72,22 +73,9 @@ fun NavGraph(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
             val pagerState = rememberPagerState(initialPage = 0)
-            var cityList = runBlocking { cityInfoDao.getCityInfoList() }
-            if (cityList.isNullOrEmpty()) {
-                cityList = listOf(
-                    CityInfo(
-                        location = "CN101010100",
-                        name = "北京"
-                    )
-                )
-            }
-            cityList.sortedBy {
-                it.uid
-            }
+            mainViewModel.getWeather(cityList[pagerState.currentPage].location)
             Box(modifier = Modifier.fillMaxSize()) {
                 HorizontalPager(count = cityList.size, state = pagerState) { page ->
-                    Log.e(TAG, "NavGraph: cityList:$cityList   ${cityList[page].location}")
-                    mainViewModel.getWeather(cityList[page].location)
                     WeatherPage(mainViewModel, cityList[page]) {
                         actions.toWeatherList()
                     }

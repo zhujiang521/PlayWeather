@@ -7,9 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import com.zj.weather.room.PlayWeatherDatabase
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.utils.setAndroidNativeLightStatusBar
 import com.zj.weather.utils.transparentStatusBar
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
 
@@ -23,10 +26,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         transparentStatusBar()
         setAndroidNativeLightStatusBar()
+        val cityInfoDao = PlayWeatherDatabase.getDatabase(this).cityInfoDao()
 //        mainViewModel.searchCityInfo.observe(this) { cityInfo ->
 //            Log.e(TAG, "onCreate: $cityInfo")
 //            mainViewModel.getWeather(cityInfo)
 //        }
+        var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
+        if (cityInfoList.isNullOrEmpty()) {
+            cityInfoList = listOf(
+                CityInfo(
+                    location = "CN101010100",
+                    name = "北京"
+                )
+            )
+        }
+        mainViewModel.getWeather(cityInfoList[0].location)
         mainViewModel.getGeoTopCity()
         setContent {
             PlayWeatherTheme {
@@ -35,7 +49,7 @@ class MainActivity : ComponentActivity() {
 //            FeatureThatRequiresCameraPermissions {
 //                startSettingAppPermission(context)
 //            }
-                    NavGraph(mainViewModel = mainViewModel)
+                    NavGraph(cityList = cityInfoList, mainViewModel = mainViewModel)
                 }
             }
         }
