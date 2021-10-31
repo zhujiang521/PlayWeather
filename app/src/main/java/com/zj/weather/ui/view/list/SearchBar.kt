@@ -11,19 +11,19 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SearchBar(back: () -> Unit, searchArticle: (String) -> Unit) {
+fun SearchBar(searchCity: (String) -> Unit) {
     var value by remember { mutableStateOf("") }
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(Modifier.height(30.dp))
@@ -35,15 +35,6 @@ fun SearchBar(back: () -> Unit, searchArticle: (String) -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            IconButton(
-                modifier = Modifier
-                    .wrapContentWidth(Alignment.Start), onClick = back
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.ArrowBack,
-                    contentDescription = "返回"
-                )
-            }
             Box(
                 modifier = Modifier
                     .weight(5f)
@@ -84,7 +75,8 @@ fun SearchBar(back: () -> Unit, searchArticle: (String) -> Unit) {
                     value = value,
                     onValueChange = { value = it },
                     maxLines = 1,
-                    textStyle = MaterialTheme.typography.subtitle1,
+                    singleLine = true,
+                    textStyle = TextStyle(color = MaterialTheme.colors.primary),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 5.dp, end = 45.dp)
@@ -93,7 +85,7 @@ fun SearchBar(back: () -> Unit, searchArticle: (String) -> Unit) {
             IconButton(
                 modifier = Modifier.wrapContentWidth(Alignment.End),
                 onClick = {
-                    searchArticle(value)
+                    searchCity(value)
                 }
             ) {
                 Icon(
@@ -109,5 +101,5 @@ fun SearchBar(back: () -> Unit, searchArticle: (String) -> Unit) {
 @Preview(name = "搜索头", widthDp = 360, heightDp = 70, showBackground = true)
 @Composable
 fun SearchBarPreview() {
-    SearchBar({}, {})
+    SearchBar {}
 }

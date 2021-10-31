@@ -19,13 +19,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.weather.MainViewModel
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.*
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
-import com.zj.weather.utils.showToast
 
 @Composable
-fun WeatherPage(mainViewModel: MainViewModel, cityListClick: () -> Unit) {
+fun WeatherPage(
+    mainViewModel: MainViewModel,
+    cityInfo: CityInfo, cityListClick: () -> Unit
+) {
     val context = LocalContext.current
     val weatherNow by mainViewModel.weatherNow.observeAsState()
     val airNowBean by mainViewModel.airNowBean.observeAsState(listOf())
@@ -65,7 +68,7 @@ fun WeatherPage(mainViewModel: MainViewModel, cityListClick: () -> Unit) {
             }
 
             Text(
-                text = "北京市",
+                text = cityInfo.name,
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 30.sp,
                 color = MaterialTheme.colors.primary

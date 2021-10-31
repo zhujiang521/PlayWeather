@@ -16,6 +16,7 @@
 
 package com.zj.weather
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -25,7 +26,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -33,10 +36,17 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.qweather.sdk.c.c
+import com.zj.weather.room.PlayWeatherDatabase
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.WeatherPage
 import com.zj.weather.ui.view.list.DrawIndicator
 import com.zj.weather.ui.view.list.WeatherListPage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
+private const val TAG = "NavGraph"
 
 object PlayDestinations {
     const val HOME_PAGE_ROUTE = "home_page_route"
@@ -51,6 +61,9 @@ fun NavGraph(
 ) {
     val navController = rememberAnimatedNavController()
     val actions = remember(navController) { PlayActions(navController) }
+    val context = LocalContext.current
+    val cityInfoDao = PlayWeatherDatabase.getDatabase(context).cityInfoDao()
+    val coroutineScope = rememberCoroutineScope()
     AnimatedNavHost(
         navController = navController,
         startDestination = startDestination
@@ -59,9 +72,23 @@ fun NavGraph(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
             val pagerState = rememberPagerState(initialPage = 0)
+            var cityList = runBlocking { cityInfoDao.getCityInfoList() }
+            if (cityList.isNullOrEmpty()) {
+                cityList = listOf(
+                    CityInfo(
+                        location = "CN101010100",
+                        name = "北京"
+                    )
+                )
+            }
+            cityList.sortedBy {
+                it.uid
+            }
             Box(modifier = Modifier.fillMaxSize()) {
-                HorizontalPager(count = 2, state = pagerState) { page ->
-                    WeatherPage(mainViewModel) {
+                HorizontalPager(count = cityList.size, state = pagerState) { page ->
+                    Log.e(TAG, "NavGraph: cityList:$cityList   ${cityList[page].location}")
+                    mainViewModel.getWeather(cityList[page].location)
+                    WeatherPage(mainViewModel, cityList[page]) {
                         actions.toWeatherList()
                     }
                 }
@@ -71,9 +98,19 @@ fun NavGraph(
         setComposable(
             PlayDestinations.WEATHER_LIST_ROUTE,
         ) {
-            WeatherListPage {
-
-            }
+            WeatherListPage(mainViewModel = mainViewModel, toWeatherDetails = { locationBean ->
+                actions.upPress()
+                coroutineScope.launch(Dispatchers.IO) {
+                    cityInfoDao.insert(
+                        CityInfo(
+                            location = "${locationBean.lon},${
+                                locationBean.lat
+                            }",
+                            name = locationBean.name
+                        )
+                    )
+                }
+            })
         }
     }
 }

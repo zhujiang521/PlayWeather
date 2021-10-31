@@ -61,6 +61,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _airNowBean.value = hourlyBean
     }
 
+    private val _locationBeanList = MutableLiveData(listOf<GeoBean.LocationBean>())
+    val locationBeanList: LiveData<List<GeoBean.LocationBean>> = _locationBeanList
+
+    fun onLocationBeanListChanged(hourlyBean: List<GeoBean.LocationBean>) {
+        _locationBeanList.value = hourlyBean
+    }
+
+    private val _searchCityInfo = MutableLiveData("CN101010100")
+    val searchCityInfo: LiveData<String> = _searchCityInfo
+
+    fun onSearchCityInfoChanged(weatherNowBean: String) {
+        _searchCityInfo.value = weatherNowBean
+    }
 
     fun getWeather(location: String = "CN101010100") {
         getWeatherNow(location)
@@ -78,6 +91,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * @param listener 网络访问结果回调
      */
     private fun getWeatherNow(location: String = "CN101010100") {
+        Log.e(TAG, "getWeatherNow: 查询的城市:$location")
         getWeatherNow(getApplication(), location, Lang.ZH_HANS,
             Unit.METRIC, object : OnResultWeatherNowListener {
                 override fun onError(e: Throwable) {
@@ -102,31 +116,30 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun getAirNow(location: String = "CN101010100") {
-        getAirNow(getApplication(), location, Lang.ZH_HANS,
-            object : OnResultAirNowListener {
-                override fun onError(e: Throwable) {
-                    showToast(getApplication(), e.message)
-                    Log.e(TAG, "getWeather24Hour onError: $e")
-                }
+        getAirNow(getApplication(), location, Lang.ZH_HANS, object : OnResultAirNowListener {
+            override fun onError(e: Throwable) {
+                showToast(getApplication(), e.message)
+                Log.e(TAG, "getWeather24Hour onError: $e")
+            }
 
-                override fun onSuccess(airNowBean: AirNowBean?) {
-                    Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(airNowBean))
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === airNowBean?.code) {
-                        airNowBean.airNowStationBean.forEach { airNowStationBean ->
-                            airNowStationBean.primary =
-                                if (airNowStationBean.primary == "NA") "" else {
-                                    "，主要污染物为:${airNowStationBean.primary}"
-                                }
-                        }
-                        onAirNowChanged(airNowBean.airNowStationBean)
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code? = airNowBean?.code
-                        Log.i(TAG, "failed code: $code")
+            override fun onSuccess(airNowBean: AirNowBean?) {
+                Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(airNowBean))
+                //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                if (Code.OK === airNowBean?.code) {
+                    airNowBean.airNowStationBean.forEach { airNowStationBean ->
+                        airNowStationBean.primary =
+                            if (airNowStationBean.primary == "NA") "" else {
+                                "，主要污染物为:${airNowStationBean.primary}"
+                            }
                     }
+                    onAirNowChanged(airNowBean.airNowStationBean)
+                } else {
+                    //在此查看返回数据失败的原因
+                    val code: Code? = airNowBean?.code
+                    Log.i(TAG, "failed code: $code")
                 }
-            })
+            }
+        })
     }
 
     private fun getWeather24Hour(location: String = "CN101010100") {
@@ -181,6 +194,39 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * 根据城市名称进行模糊查询
+     *
+     * @param cityName 城市名称
+     */
+    fun getGeoCityLookup(cityName: String = "北京") {
+        getGeoCityLookup(getApplication(), cityName, object : OnResultGeoListener {
+            override fun onError(e: Throwable?) {
+                onLocationBeanListChanged(listOf())
+                Log.e(TAG, "getGeoCityLookup onError: ${e?.message}")
+                showToast(getApplication(), "查询的数据或地区不存在。")
+            }
+
+            override fun onSuccess(geoBean: GeoBean?) {
+                if (geoBean == null) {
+                    Log.e(TAG, "getGeoCityLookup onError: 返回值为空")
+                    return
+                }
+                val json = Gson().toJson(geoBean)
+                Log.i(TAG, "getGeoCityLookup onSuccess: $json")
+                // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                if (Code.OK === geoBean.code) {
+                    onLocationBeanListChanged(geoBean.locationBean)
+                } else {
+                    //在此查看返回数据失败的原因
+                    val code: Code = geoBean.code
+                    Log.i(TAG, "getGeoCityLookup failed code: $code")
+                    showToast(getApplication(), code.txt)
+                }
+            }
+        })
+    }
+
+    /**
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
@@ -199,47 +245,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     Log.i(TAG, "getGeoTopCity onSuccess: $json")
                     // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                     if (Code.OK === geoBean.code) {
-                        val locationBean = geoBean.locationBean
-                        Log.e(TAG, "getGeoTopCity onSuccess: $locationBean")
+                        onLocationBeanListChanged(geoBean.locationBean)
                     } else {
                         //在此查看返回数据失败的原因
                         val code: Code = geoBean.code
                         Log.i(TAG, "getGeoTopCity failed code: $code")
-                        showToast(getApplication(), code.txt)
-                    }
-                }
-            })
-    }
-
-    /**
-     * 根据城市名称进行模糊查询
-     *
-     * @param cityName 城市名称
-     */
-    fun getGeoCityLookup(cityName: String = "北京") {
-        getGeoCityLookup(
-            getApplication(),
-            cityName,
-            object : OnResultGeoListener {
-                override fun onError(e: Throwable?) {
-                    Log.e(TAG, "getGeoCityLookup onError: $e")
-                }
-
-                override fun onSuccess(geoBean: GeoBean?) {
-                    if (geoBean == null) {
-                        Log.e(TAG, "getGeoCityLookup onError: 返回值为空")
-                        return
-                    }
-                    val json = Gson().toJson(geoBean)
-                    Log.i(TAG, "getGeoCityLookup onSuccess: $json")
-                    // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === geoBean.code) {
-                        val locationBean = geoBean.locationBean
-                        Log.e(TAG, "getGeoCityLookup onSuccess: $locationBean")
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code = geoBean.code
-                        Log.i(TAG, "getGeoCityLookup failed code: $code")
                         showToast(getApplication(), code.txt)
                     }
                 }

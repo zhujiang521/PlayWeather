@@ -32,7 +32,9 @@ import com.zj.weather.ui.view.list.BannerGravity.BottomRight
 @ExperimentalPagerApi
 @Composable
 fun DrawIndicator(
-    pagerState: PagerState, gravity: Int = BottomCenter,
+    pagerState: PagerState,
+    gravity: Int = BottomCenter,
+    hasCurrentPosition: Boolean = false,
     indicatorColor: Color = MaterialTheme.colors.primaryVariant,
     selectIndicatorColor: Color = MaterialTheme.colors.primary,
     indicatorDistance: Int = 55,
@@ -66,15 +68,23 @@ fun DrawIndicator(
                 }
                 else -> 100f
             }
-            if (pageIndex == 0) {
-                drawImage(
-                    image = image,
-                    colorFilter = ColorFilter.tint(color),
-                    topLeft = Offset(
-                        start + pageIndex * indicatorDistance,
-                        canvasHeight - 50f - image.height / 2
-                    ),
-                )
+            if (hasCurrentPosition) {
+                if (pageIndex == 0) {
+                    drawImage(
+                        image = image,
+                        colorFilter = ColorFilter.tint(color),
+                        topLeft = Offset(
+                            start + pageIndex * indicatorDistance,
+                            canvasHeight - 50f - image.height / 2
+                        ),
+                    )
+                } else {
+                    drawCircle(
+                        color,
+                        inSize,
+                        center = Offset(start + pageIndex * indicatorDistance, canvasHeight - 50f)
+                    )
+                }
             } else {
                 drawCircle(
                     color,

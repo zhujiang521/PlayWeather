@@ -1,31 +1,55 @@
 package com.zj.weather.ui.view.list
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.qweather.sdk.bean.geo.GeoBean
+import com.zj.weather.MainViewModel
+import com.zj.weather.room.PlayWeatherDatabase
 
 
 @Composable
-fun WeatherListPage(back: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun WeatherListPage(
+    mainViewModel: MainViewModel,
+    toWeatherDetails: (GeoBean.LocationBean) -> Unit,
+) {
+    val locationBeanList by mainViewModel.locationBeanList.observeAsState(listOf())
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 10.dp)
+    ) {
         val listState = rememberLazyListState()
-        SearchBar(back, { })
-
+        SearchBar { city ->
+            mainViewModel.getGeoCityLookup(city)
+        }
+        if (locationBeanList.isNotEmpty()) {
+            LazyColumn(state = listState) {
+                items(locationBeanList) { locationBean ->
+                    Text(text = locationBean.name, modifier = Modifier
+                        .padding(10.dp)
+                        .clickable {
+                            mainViewModel.onSearchCityInfoChanged(
+                                "${locationBean.lon},${
+                                    locationBean.lat
+                                }"
+                            )
+                            toWeatherDetails(locationBean)
+                        })
+                }
+            }
+        } else {
+            NoContent(tip = "查询的数据或地区不存在。")
+        }
     }
 }
