@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
 //            FeatureThatRequiresCameraPermissions {
 //                startSettingAppPermission(context)
 //            }
-                    WeatherPage(mainViewModel)
+                    NavGraph(mainViewModel = mainViewModel)
                 }
             }
         }

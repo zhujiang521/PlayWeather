@@ -14,25 +14,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.airbnb.lottie.compose.*
 import com.zj.weather.MainViewModel
-import com.zj.weather.R
 import com.zj.weather.ui.view.weather.*
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
+import com.zj.weather.utils.showToast
 
 @Composable
-fun WeatherPage(mainViewModel: MainViewModel) {
+fun WeatherPage(mainViewModel: MainViewModel, cityListClick: () -> Unit) {
     val context = LocalContext.current
     val weatherNow by mainViewModel.weatherNow.observeAsState()
     val airNowBean by mainViewModel.airNowBean.observeAsState(listOf())
     val hourlyBeanList by mainViewModel.hourlyBeanList.observeAsState(listOf())
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
-
+    val fontSize = (100f / (scrollState.value / 2) * 70).coerceAtLeast(25f).coerceAtMost(45f).sp
+    scrollState.interactionSource
     Box(modifier = Modifier.fillMaxSize()) {
         ImageLoader(
             modifier = Modifier.fillMaxSize(),
@@ -47,12 +48,14 @@ fun WeatherPage(mainViewModel: MainViewModel) {
             Spacer(modifier = Modifier.height(30.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .graphicsLayer { translationY = (scrollState.value / 2).toFloat() },
                 horizontalArrangement = Arrangement.End
             ) {
                 IconButton(
                     modifier = Modifier
-                        .wrapContentWidth(Alignment.Start), onClick = { }
+                        .wrapContentWidth(Alignment.Start), onClick = cityListClick
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Add,
@@ -71,7 +74,7 @@ fun WeatherPage(mainViewModel: MainViewModel) {
             Text(
                 text = "${weatherNow?.text}  ${weatherNow?.temp}℃",
                 modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
-                fontSize = 40.sp,
+                fontSize = fontSize,
                 color = MaterialTheme.colors.primary
             )
 

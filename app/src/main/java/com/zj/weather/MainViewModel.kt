@@ -13,7 +13,6 @@ import com.qweather.sdk.bean.geo.GeoBean
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
-import com.qweather.sdk.view.QWeather
 import com.qweather.sdk.view.QWeather.*
 import com.zj.weather.utils.getDateWeekName
 import com.zj.weather.utils.getTimeName
