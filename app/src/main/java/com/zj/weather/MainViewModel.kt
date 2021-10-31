@@ -68,11 +68,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _locationBeanList.value = hourlyBean
     }
 
-    private val _searchCityInfo = MutableLiveData("CN101010100")
-    val searchCityInfo: LiveData<String> = _searchCityInfo
+    private val _searchCityInfo = MutableLiveData(0)
+    val searchCityInfo: LiveData<Int> = _searchCityInfo
 
-    fun onSearchCityInfoChanged(weatherNowBean: String) {
-        _searchCityInfo.value = weatherNowBean
+    fun onSearchCityInfoChanged(page: Int) {
+        _searchCityInfo.value = page
     }
 
     fun getWeather(location: String = "CN101010100") {

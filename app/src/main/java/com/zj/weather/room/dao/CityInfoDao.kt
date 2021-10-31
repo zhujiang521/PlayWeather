@@ -15,8 +15,14 @@ import com.zj.weather.room.entity.CityInfo
 @Dao
 interface CityInfoDao {
 
-    @Query("SELECT * FROM city_info order by uid desc")
+    @Query("SELECT * FROM city_info order by uid asc")
     suspend fun getCityInfoList(): List<CityInfo>
+
+    @Query("SELECT * FROM city_info where isLocation = :isLocation")
+    suspend fun getIsLocationList(isLocation: Boolean = true): List<CityInfo>
+
+    @Query("SELECT * FROM city_info where name = :name")
+    suspend fun getHasLocation(name: String): List<CityInfo>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertList(cityInfoList: List<CityInfo>)

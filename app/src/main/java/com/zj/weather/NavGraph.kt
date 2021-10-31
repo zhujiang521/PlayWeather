@@ -36,12 +36,12 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.qweather.sdk.c.c
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.WeatherPage
 import com.zj.weather.ui.view.list.DrawIndicator
 import com.zj.weather.ui.view.list.WeatherListPage
+import com.zj.weather.utils.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -57,7 +57,6 @@ object PlayDestinations {
 @Composable
 fun NavGraph(
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
-    cityList: List<CityInfo>,
     mainViewModel: MainViewModel
 ) {
     val navController = rememberAnimatedNavController()
@@ -72,15 +71,27 @@ fun NavGraph(
         setComposable(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
+            var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
+            if (cityInfoList.isNullOrEmpty()) {
+                cityInfoList = listOf(
+                    CityInfo(
+                        location = "CN101010100",
+                        name = "北京"
+                    )
+                )
+            } else {
+                Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
+            }
+            val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
             val pagerState = rememberPagerState(initialPage = 0)
-            mainViewModel.getWeather(cityList[pagerState.currentPage].location)
+            mainViewModel.getWeather(cityInfoList[pagerState.currentPage].location)
             Box(modifier = Modifier.fillMaxSize()) {
-                HorizontalPager(count = cityList.size, state = pagerState) { page ->
-                    WeatherPage(mainViewModel, cityList[page]) {
+                HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->
+                    WeatherPage(mainViewModel, cityInfoList[page]) {
                         actions.toWeatherList()
                     }
                 }
-                DrawIndicator(pagerState = pagerState)
+                DrawIndicator(pagerState = pagerState, hasCurrentPosition = isLocation.isNotEmpty())
             }
         }
         setComposable(
@@ -89,14 +100,18 @@ fun NavGraph(
             WeatherListPage(mainViewModel = mainViewModel, toWeatherDetails = { locationBean ->
                 actions.upPress()
                 coroutineScope.launch(Dispatchers.IO) {
-                    cityInfoDao.insert(
-                        CityInfo(
-                            location = "${locationBean.lon},${
-                                locationBean.lat
-                            }",
-                            name = locationBean.name
-                        )
+                    val hasLocation = cityInfoDao.getHasLocation(locationBean.name)
+                    val cityInfo = CityInfo(
+                        location = "${locationBean.lon},${
+                            locationBean.lat
+                        }",
+                        name = locationBean.name
                     )
+                    if (hasLocation.isNullOrEmpty()) {
+                        cityInfoDao.insert(cityInfo)
+                    } else {
+                        showToast(context, "已经存在该城市，请勿重复添加")
+                    }
                 }
             })
         }

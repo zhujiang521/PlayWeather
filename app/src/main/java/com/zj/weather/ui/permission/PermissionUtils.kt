@@ -3,6 +3,7 @@ package com.zj.weather.ui.permission
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.zj.weather.R
@@ -99,4 +101,21 @@ fun startSettingAppDetails(context: Context) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
     intent.data = Uri.parse("package:" + context.packageName)
     context.startActivity(intent)
+}
+
+fun isPermissionsGranted(context: Context?, permissions: Array<String?>): Boolean {
+    for (permission in permissions) {
+        if (!isPermissionGranted(context, permission)) {
+            return false
+        }
+    }
+    return true
+}
+
+fun isPermissionGranted(context: Context?, permission: String?): Boolean {
+    if (context == null || permission == null) return false
+    return ActivityCompat.checkSelfPermission(
+        context,
+        permission
+    ) == PackageManager.PERMISSION_GRANTED
 }

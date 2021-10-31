@@ -15,6 +15,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.R
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.list.BannerGravity.BottomCenter
 import com.zj.weather.ui.view.list.BannerGravity.BottomLeft
 import com.zj.weather.ui.view.list.BannerGravity.BottomRight
@@ -74,7 +75,7 @@ fun DrawIndicator(
                         image = image,
                         colorFilter = ColorFilter.tint(color),
                         topLeft = Offset(
-                            start + pageIndex * indicatorDistance,
+                            start + pageIndex * indicatorDistance - 20f,
                             canvasHeight - 50f - image.height / 2
                         ),
                     )

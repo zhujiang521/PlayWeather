@@ -17,4 +17,5 @@ data class CityInfo(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "location") val location: String = "",
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "isLocation") val isLocation: Boolean = false,
 )
