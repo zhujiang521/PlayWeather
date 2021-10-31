@@ -21,13 +21,20 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkOut
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.ui.view.WeatherPage
+import com.zj.weather.ui.view.list.DrawIndicator
 import com.zj.weather.ui.view.list.WeatherListPage
 
 
@@ -36,7 +43,7 @@ object PlayDestinations {
     const val WEATHER_LIST_ROUTE = "weather_list_route"
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun NavGraph(
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
@@ -51,8 +58,14 @@ fun NavGraph(
         setComposable(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
-            WeatherPage(mainViewModel) {
-                actions.toWeatherList()
+            val pagerState = rememberPagerState(initialPage = 0)
+            Box(modifier = Modifier.fillMaxSize()) {
+                HorizontalPager(count = 2, state = pagerState) { page ->
+                    WeatherPage(mainViewModel) {
+                        actions.toWeatherList()
+                    }
+                }
+                DrawIndicator(pagerState = pagerState)
             }
         }
         setComposable(

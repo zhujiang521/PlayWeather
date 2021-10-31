@@ -61,15 +61,20 @@ dependencies {
     implementation "com.google.accompanist:accompanist-permissions:0.20.0"
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'com.google.code.gson:gson:2.8.8'
+
+    def accompanist_version = "0.20.0"
+
     // lottie动画
     def lottieVersion = '4.2.0'
     implementation "com.airbnb.android:lottie-compose:$lottieVersion"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     // navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
-    implementation 'com.google.accompanist:accompanist-navigation-animation:0.20.0'
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     // DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+    // Compose ViewPage
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
