@@ -18,13 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
-import com.qweather.sdk.bean.air.AirNowBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
-import com.zj.weather.ui.view.weather.AirQuality
-import com.zj.weather.ui.view.weather.DayWeather
-import com.zj.weather.ui.view.weather.DayWeatherContent
-import com.zj.weather.ui.view.weather.HourWeather
+import com.zj.weather.ui.view.weather.*
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
 
@@ -36,17 +32,7 @@ fun WeatherPage(mainViewModel: MainViewModel) {
     val hourlyBeanList by mainViewModel.hourlyBeanList.observeAsState(listOf())
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(
-            R.raw.weather_foggy
-        )
-    )
 
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        speed = 2f,
-        iterations = LottieConstants.IterateForever
-    )
     Box(modifier = Modifier.fillMaxSize()) {
         ImageLoader(
             modifier = Modifier.fillMaxSize(),
@@ -58,11 +44,6 @@ fun WeatherPage(mainViewModel: MainViewModel) {
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // 权限申请
-//            FeatureThatRequiresCameraPermissions {
-//                startSettingAppPermission(context)
-//            }
-
             Spacer(modifier = Modifier.height(30.dp))
 
             Row(
@@ -94,11 +75,8 @@ fun WeatherPage(mainViewModel: MainViewModel) {
                 color = MaterialTheme.colors.primary
             )
 
-            LottieAnimation(
-                composition = composition,
-                modifier = Modifier.size(130.dp),
-                progress = progress
-            )
+            // 天气动画
+            WeatherAnimation(weatherNow?.icon)
 
             Spacer(modifier = Modifier.height(10.dp))
 

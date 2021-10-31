@@ -7,6 +7,65 @@ import com.zj.weather.R
 object IconUtils {
 
     /**
+     * 获取天气动画
+     *
+     * @param weather 天气状况代码
+     * @return 天气icon
+     */
+    fun getWeatherAnimationIcon(context: Context?, weather: String?): Int {
+        if (context == null || weather == null) return R.raw.weather_sun
+        return if (context.isDarkMode()) {
+            getNightAnimationIcon(weather)
+        } else {
+            getDayAnimationIcon(weather)
+        }
+    }
+
+    /**
+     * 晚上动画
+     *
+     * @param weather 天气状况代码
+     * @return 天气icon
+     */
+    private fun getNightAnimationIcon(weather: String): Int {
+        val imageId: Int = when (weather) {
+            "100", "900", "901", "999" -> R.raw.weather_moon
+            "101", "103" -> R.raw.weather_moon_cloudy
+            "102", "104" -> R.raw.weather_cloudy
+            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213",
+            "500", "501", "502", "503", "504", "505", "506", "507", "508", "509", "510", "511", "512", "513", "514", "515" -> R.raw.weather_foggy
+            "300", "301", "302", "303", "399" -> R.raw.weather_moon_rain
+            "304" -> R.raw.weather_thunder
+            "305", "306", "307", "308", "309", "310", "311", "312", "313", "314", "315", "316", "317", "318" -> R.raw.weather_thunder_rain
+            "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "499" -> R.raw.weather_moon_snows
+            else -> R.raw.weather_moon
+        }
+        return imageId
+    }
+
+    /**
+     * 白天动画
+     *
+     * @param weather 天气状况代码
+     * @return 天气icon
+     */
+    private fun getDayAnimationIcon(weather: String): Int {
+        val imageId: Int = when (weather) {
+            "100", "900", "901", "999" -> R.raw.weather_sun
+            "101", "103" -> R.raw.weather_sun_cloudy
+            "102", "104" -> R.raw.weather_cloudy
+            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213",
+            "500", "501", "502", "503", "504", "505", "506", "507", "508", "509", "510", "511", "512", "513", "514", "515" -> R.raw.weather_foggy
+            "300", "301", "302", "303", "399" -> R.raw.weather_rain
+            "304" -> R.raw.weather_thunder
+            "305", "306", "307", "308", "309", "310", "311", "312", "313", "314", "315", "316", "317", "318" -> R.raw.weather_thunder_rain
+            "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "499" -> R.raw.weather_sun_snows
+            else -> R.raw.weather_sun
+        }
+        return imageId
+    }
+
+    /**
      * 获取天气图标
      *
      * @param weather 天气状况代码

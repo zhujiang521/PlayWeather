@@ -47,6 +47,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
+                    // 权限申请
+//            FeatureThatRequiresCameraPermissions {
+//                startSettingAppPermission(context)
+//            }
                     WeatherPage(mainViewModel)
                 }
             }
