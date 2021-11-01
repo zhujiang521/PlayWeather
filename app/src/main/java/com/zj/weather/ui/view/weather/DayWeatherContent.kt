@@ -32,7 +32,7 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
         WeatherContentItem(modifier, "体感温度", "${weatherNow?.feelsLike ?: "0"}℃", "与实际气温相似")
         WeatherContentItem(
             modifier, "降雨", "${weatherNow?.precip ?: "0"}毫米",
-            if (weatherNow?.precip?.toInt() ?: 0 > 0) {
+            if (weatherNow?.precip?.toFloat() ?: 0f > 0f) {
                 "今日有雨，记得带伞哦！"
             } else "预计今日没雨"
         )
