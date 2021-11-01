@@ -1,6 +1,7 @@
 package com.zj.weather.ui.view.weather
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -28,8 +29,8 @@ fun HeaderWeather(
 ) {
     AnimatedVisibility(
         visible = fontSize.value > 40f || isLand,
-        enter = fadeIn() + expandVertically(),
-        exit = shrinkVertically() + fadeOut()
+        enter = fadeIn() + expandVertically(animationSpec = tween(500)),
+        exit = shrinkVertically(animationSpec = tween(500)) + fadeOut()
     ) {
         Column(
             modifier = Modifier

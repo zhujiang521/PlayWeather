@@ -1,6 +1,7 @@
 package com.zj.weather.ui.view.weather
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -33,9 +34,9 @@ fun ShrinkHeaderHeather(
     ) {
         Spacer(modifier = Modifier.height(30.dp))
         AnimatedVisibility(
-            visible = fontSize.value < 25f,
-            enter = fadeIn() + expandVertically(),
-            exit = shrinkVertically() + fadeOut()
+            visible = fontSize.value < 40f,
+            enter = fadeIn() + expandVertically(animationSpec = tween(500)),
+            exit = shrinkVertically(animationSpec = tween(500)) + fadeOut()
         ) {
             Column(
                 modifier = Modifier
