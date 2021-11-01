@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             )
         }
         mainViewModel.getWeather(cityInfoList[0].location)
-        mainViewModel.getGeoTopCity()
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {

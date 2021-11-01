@@ -27,7 +27,7 @@ fun SearchBar(searchCity: (String) -> Unit) {
     var value by remember { mutableStateOf("") }
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(Modifier.height(30.dp))
-        Text(text = "天气", fontSize = 30.sp, modifier = Modifier.padding(10.dp))
+        Text(text = "城市天气", fontSize = 30.sp, modifier = Modifier.padding(10.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,7 +49,7 @@ fun SearchBar(searchCity: (String) -> Unit) {
             ) {
                 if (value.isEmpty()) {
                     Text(
-                        text = "请输入搜索内容",
+                        text = "请输入城市名称",
                         fontSize = 16.sp,
                         color = Color.Gray,
                         modifier = Modifier.padding(5.dp)

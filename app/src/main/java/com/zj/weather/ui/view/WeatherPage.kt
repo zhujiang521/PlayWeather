@@ -1,5 +1,7 @@
 package com.zj.weather.ui.view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,6 +26,7 @@ import com.zj.weather.ui.view.weather.*
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun WeatherPage(
     mainViewModel: MainViewModel,
@@ -36,7 +39,6 @@ fun WeatherPage(
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
     val fontSize = (100f / (scrollState.value / 2) * 70).coerceAtLeast(25f).coerceAtMost(45f).sp
-    scrollState.interactionSource
     Box(modifier = Modifier.fillMaxSize()) {
         ImageLoader(
             modifier = Modifier.fillMaxSize(),
@@ -82,7 +84,9 @@ fun WeatherPage(
             )
 
             // 天气动画
-            WeatherAnimation(weatherNow?.icon)
+            AnimatedVisibility(visible = fontSize.value >= 45f) {
+                WeatherAnimation(weatherNow?.icon)
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
 

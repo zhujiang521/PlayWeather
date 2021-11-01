@@ -113,6 +113,7 @@ fun NavGraph(
         setComposable(
             PlayDestinations.WEATHER_LIST_ROUTE,
         ) {
+            mainViewModel.getGeoTopCity()
             WeatherListPage(mainViewModel = mainViewModel, toWeatherDetails = { locationBean ->
                 coroutineScope.launch(Dispatchers.IO) {
                     val hasLocation = cityInfoDao.getHasLocation(locationBean.name)
