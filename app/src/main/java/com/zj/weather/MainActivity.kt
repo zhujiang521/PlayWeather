@@ -1,6 +1,7 @@
 package com.zj.weather
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.*
@@ -17,12 +18,12 @@ import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.dao.CityInfoDao
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.permission.isPermissionsGranted
+import com.zj.weather.ui.permission.onAlertDialog
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.utils.setAndroidNativeLightStatusBar
 import com.zj.weather.utils.transparentStatusBar
 import kotlinx.coroutines.*
 import java.util.*
-
 
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
@@ -33,12 +34,16 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var cityInfoDao: CityInfoDao
+    private var locationManager: LocationManager? = null
+    private var locationProvider: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         transparentStatusBar()
         setAndroidNativeLightStatusBar()
         cityInfoDao = PlayWeatherDatabase.getDatabase(this).cityInfoDao()
+        getLocation()
+        checkLocationPermission()
         var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
         if (cityInfoList.isNullOrEmpty()) {
             cityInfoList = listOf(
@@ -57,15 +62,9 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                 }
             }
         }
-        getLocation()
     }
 
-
-    private var locationManager: LocationManager? = null
-    private var locationProvider: String? = null
-
-    private fun getLocation() {
-
+    private fun checkLocationPermission() {
         //获取权限（如果没有开启权限，会弹出对话框，询问是否开启权限）
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED ||
@@ -80,37 +79,42 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                 ), LOCATION_CODE
             )
         } else {
-            //1.获取位置管理器
-            locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-            //2.获取位置提供器，GPS或是NetWork
-            val providers: List<String> = locationManager!!.getProviders(true)
-            Log.e(TAG, "getLocation: providers:$providers")
-            when {
-                providers.contains(LocationManager.GPS_PROVIDER) -> {
-                    //如果是GPS
-                    locationProvider = LocationManager.GPS_PROVIDER
-                    Log.v(TAG, "定位方式GPS")
-                }
-                providers.contains(LocationManager.NETWORK_PROVIDER) -> {
-                    //如果是Network
-                    locationProvider = LocationManager.NETWORK_PROVIDER
-                    Log.v(TAG, "定位方式Network")
-                }
-                else -> {
-                    Log.e(TAG, "getLocation: 没有可用的位置提供器")
-                    return
-                }
-            }
-            //3.获取上次的位置，一般第一次运行，此值为null
-            val location: Location? = locationManager!!.getLastKnownLocation(locationProvider!!)
-            Log.v(
-                TAG,
-                "获取上次的位置-经纬度：" + location?.longitude
-                    .toString() + "   " + location?.latitude
-            )
-            getAddress(location)
+            getLocation()
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        //1.获取位置管理器
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        //2.获取位置提供器，GPS或是NetWork
+        val providers: List<String> = locationManager?.getProviders(true) ?: arrayListOf()
+        Log.e(TAG, "getLocation: providers:$providers")
+        when {
+            providers.contains(LocationManager.GPS_PROVIDER) -> {
+                //如果是GPS
+                locationProvider = LocationManager.GPS_PROVIDER
+                Log.v(TAG, "定位方式GPS")
+            }
+            providers.contains(LocationManager.NETWORK_PROVIDER) -> {
+                //如果是Network
+                locationProvider = LocationManager.NETWORK_PROVIDER
+                Log.v(TAG, "定位方式Network")
+            }
+            else -> {
+                Log.e(TAG, "getLocation: 没有可用的位置提供器")
+                return
+            }
+        }
+        //3.获取上次的位置，一般第一次运行，此值为null
+        val location: Location? = locationManager?.getLastKnownLocation(locationProvider!!)
+        Log.v(
+            TAG,
+            "获取上次的位置-经纬度：" + location?.longitude
+                .toString() + "   " + location?.latitude
+        )
+        getAddress(location)
     }
 
     private var locationListener: LocationListener = LocationListener { location ->
@@ -159,6 +163,9 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             cityInfoDao.insert(cityInfo)
             Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
         }
+        withContext(Dispatchers.Main) {
+            mainViewModel.onSearchCityInfoChanged(1)
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -168,36 +175,12 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode != LOCATION_CODE || grantResults.isEmpty()
-            || !isPermissionsGranted(this, permissions) || locationProvider == null
-        ) return
-        try {
-            val providers = locationManager?.getProviders(true)
-            if (providers?.contains(LocationManager.NETWORK_PROVIDER) == true) {
-                //如果是Network
-                locationProvider = LocationManager.NETWORK_PROVIDER
-            } else if (providers?.contains(LocationManager.GPS_PROVIDER) == true) {
-                //如果是GPS
-                locationProvider = LocationManager.GPS_PROVIDER
-            }
-            val location = locationManager?.getLastKnownLocation(locationProvider!!)
-            if (location != null) {
-                getAddress(location)
-                Log.v(
-                    TAG,
-                    "获取上次的位置-经纬度：" + location.longitude.toString() + "   " + location.latitude
-                )
-            } else {
-                // 监视地理位置变化，第二个和第三个参数分别为更新的最短时间minTime和最短距离minDistace
-                locationManager?.requestLocationUpdates(
-                    locationProvider!!,
-                    0,
-                    0f,
-                    locationListener
-                )
-            }
-        } catch (e: SecurityException) {
-            e.printStackTrace()
+            || !isPermissionsGranted(this, permissions)
+        ) {
+            onAlertDialog(this)
+            return
         }
+        getLocation()
     }
 
     override fun onDestroy() {

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -118,4 +119,35 @@ fun isPermissionGranted(context: Context?, permission: String?): Boolean {
         context,
         permission
     ) == PackageManager.PERMISSION_GRANTED
+}
+
+/**
+ * 权限已经拒绝的情况下弹出对话框让用户跳转到设置进行权限设置
+ */
+fun onAlertDialog(context: Context?) {
+    if (context == null) return
+    //Instantiate builder variable
+    val builder = AlertDialog.Builder(context)
+    // set title
+    builder.setTitle("权限设置")
+    //set content area
+    builder.setMessage("天气需要获取当前位置以展示当前的天气")
+    //set negative button
+    builder.setPositiveButton(
+        "打开设置"
+    ) { dialog, _ ->
+        dialog.dismiss()
+        startSettingAppPermission(context = context)
+    }
+
+
+    //set positive button
+    builder.setNegativeButton(
+        "取消"
+    ) { dialog, _ ->
+        dialog.dismiss()
+    }
+
+
+    builder.show()
 }

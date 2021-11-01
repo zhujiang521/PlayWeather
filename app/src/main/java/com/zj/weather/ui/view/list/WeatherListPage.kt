@@ -16,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
-import com.zj.weather.room.PlayWeatherDatabase
-import com.zj.weather.room.entity.CityInfo
 
 
 @Composable
@@ -42,9 +40,6 @@ fun WeatherListPage(
                         .padding(10.dp)
                         .fillMaxWidth()
                         .clickable {
-                            mainViewModel.onSearchCityInfoChanged(
-                                0
-                            )
                             toWeatherDetails(locationBean)
                         })
                 }

@@ -25,6 +25,8 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -45,6 +47,7 @@ import com.zj.weather.utils.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 private const val TAG = "NavGraph"
 
@@ -71,6 +74,7 @@ fun NavGraph(
         setComposable(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
+            val searchCityInfo by mainViewModel.searchCityInfo.observeAsState()
             var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
             if (cityInfoList.isNullOrEmpty()) {
                 cityInfoList = listOf(
@@ -82,10 +86,22 @@ fun NavGraph(
             } else {
                 Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
             }
+            val initialPage = if (searchCityInfo == 2) {
+                cityInfoList.size - 1
+            } else {
+                0
+            }
+            Log.e(TAG, "NavGraph: cityInfoList initialPage:$initialPage")
             val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
-            val pagerState = rememberPagerState(initialPage = 0)
+            val pagerState = rememberPagerState(initialPage = initialPage)
             mainViewModel.getWeather(cityInfoList[pagerState.currentPage].location)
             Box(modifier = Modifier.fillMaxSize()) {
+                if (initialPage == cityInfoList.size - 1) {
+                    coroutineScope.launch {
+                        pagerState.scrollToPage(initialPage)
+                        mainViewModel.onSearchCityInfoChanged(0)
+                    }
+                }
                 HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->
                     WeatherPage(mainViewModel, cityInfoList[page]) {
                         actions.toWeatherList()
@@ -98,7 +114,6 @@ fun NavGraph(
             PlayDestinations.WEATHER_LIST_ROUTE,
         ) {
             WeatherListPage(mainViewModel = mainViewModel, toWeatherDetails = { locationBean ->
-                actions.upPress()
                 coroutineScope.launch(Dispatchers.IO) {
                     val hasLocation = cityInfoDao.getHasLocation(locationBean.name)
                     val cityInfo = CityInfo(
@@ -109,6 +124,10 @@ fun NavGraph(
                     )
                     if (hasLocation.isNullOrEmpty()) {
                         cityInfoDao.insert(cityInfo)
+                        withContext(Dispatchers.Main) {
+                            mainViewModel.onSearchCityInfoChanged(2)
+                            actions.upPress()
+                        }
                     } else {
                         showToast(context, "已经存在该城市，请勿重复添加")
                     }
