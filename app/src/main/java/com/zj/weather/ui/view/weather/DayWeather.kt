@@ -59,7 +59,7 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "${dailyBean.tempMin}℃",
+            text = "${dailyBean.tempMin ?: "0"}℃",
             modifier = Modifier
                 .padding(start = 7.dp)
                 .weight(1.4f),
@@ -68,7 +68,7 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
             color = MaterialTheme.colors.primary
         )
         Text(
-            text = "${dailyBean.tempMax}℃",
+            text = "${dailyBean.tempMax ?: "0"}℃",
             modifier = Modifier
                 .padding(start = 7.dp)
                 .weight(1.4f),

@@ -23,6 +23,7 @@ import com.zj.weather.utils.ImageLoader
 
 @Composable
 fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>) {
+    if (hourlyBeanList.isNullOrEmpty()) return
     Card(
         modifier = Modifier
             .fillMaxWidth()

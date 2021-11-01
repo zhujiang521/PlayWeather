@@ -29,8 +29,13 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
             .weight(1f)
             .padding(5.dp)
             .alpha(0.9f)
-        WeatherContentItem(modifier, "体感温度", "${weatherNow?.feelsLike}℃", "与实际气温相似")
-        WeatherContentItem(modifier, "降雨", "${weatherNow?.precip}毫米", "预计啥时候会有雨")
+        WeatherContentItem(modifier, "体感温度", "${weatherNow?.feelsLike ?: "0"}℃", "与实际气温相似")
+        WeatherContentItem(
+            modifier, "降雨", "${weatherNow?.precip ?: "0"}毫米",
+            if (weatherNow?.precip?.toInt() ?: 0 > 0) {
+                "今日有雨，记得带伞哦！"
+            } else "预计今日没雨"
+        )
     }
 
     Row(
@@ -42,9 +47,9 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
             .weight(1f)
             .padding(5.dp)
             .alpha(0.9f)
-        WeatherContentItem(modifier, "湿度", "${weatherNow?.humidity}%", "湿度非常好")
+        WeatherContentItem(modifier, "湿度", "${weatherNow?.humidity ?: "0"}%", "湿度正常，")
         WeatherContentItem(
-            modifier, "风", "${weatherNow?.windDir}${weatherNow?.windScale}级",
+            modifier, "风", "${weatherNow?.windDir ?: "0"}${weatherNow?.windScale}级",
             "当前风速为${weatherNow?.windSpeed}公里/小时"
         )
     }
@@ -58,8 +63,8 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
             .weight(1f)
             .padding(5.dp)
             .alpha(0.9f)
-        WeatherContentItem(modifier, "气压", "${weatherNow?.pressure}百帕", "当前的大气压")
-        WeatherContentItem(modifier, "能见度", "${weatherNow?.vis}公里", "当前的能见度")
+        WeatherContentItem(modifier, "气压", "${weatherNow?.pressure ?: "0"}百帕", "当前的大气压")
+        WeatherContentItem(modifier, "能见度", "${weatherNow?.vis ?: "0"}公里", "当前的能见度")
     }
 
 }

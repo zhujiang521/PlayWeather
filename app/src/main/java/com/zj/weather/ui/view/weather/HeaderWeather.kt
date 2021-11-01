@@ -1,7 +1,6 @@
 package com.zj.weather.ui.view.weather
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -27,7 +26,11 @@ fun HeaderWeather(
     weatherNow: WeatherNowBean.NowBaseBean?,
     isLand: Boolean = false
 ) {
-    AnimatedVisibility(visible = fontSize.value > 40f || isLand) {
+    AnimatedVisibility(
+        visible = fontSize.value > 40f || isLand,
+        enter = fadeIn() + expandVertically(),
+        exit = shrinkOut() + fadeOut()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -57,7 +60,7 @@ fun HeaderWeather(
             )
 
             Text(
-                text = "${weatherNow?.text}  ${weatherNow?.temp}℃",
+                text = "${weatherNow?.text ?: "晴"}  ${weatherNow?.temp ?: "0"}℃",
                 modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
                 fontSize = if (isLand) 45.sp else fontSize,
                 color = MaterialTheme.colors.primary
