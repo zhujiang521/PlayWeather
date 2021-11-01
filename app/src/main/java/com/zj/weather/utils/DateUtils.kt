@@ -39,7 +39,6 @@ fun getDateWeekName(date: String): String {
  * @return 13时
  */
 fun getTimeName(time: String): String {
-    Log.e(TAG, "getTimeName: $time")
     val calendar = Calendar.getInstance()
     val todayHour = calendar.get(Calendar.HOUR_OF_DAY)
     // HH为24小时 hh为12小时

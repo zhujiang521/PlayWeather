@@ -1,6 +1,5 @@
 package com.zj.weather.ui.view
 
-import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -36,7 +35,6 @@ fun WeatherPage(
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
     val fontSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
-    Log.e("WeatherPage", "WeatherPage: ${scrollState.value}   $scrollState")
     Box(modifier = Modifier.fillMaxSize()) {
         ImageLoader(
             modifier = Modifier.fillMaxSize(),

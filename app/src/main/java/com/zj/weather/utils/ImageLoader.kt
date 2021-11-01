@@ -27,7 +27,6 @@ fun ImageLoader(
 ) {
     when (data) {
         is String -> {
-            Log.d(TAG, "PostCardPopular: 加载本地图片:$data")
             val bitmap = BitmapFactory.decodeFile(data)
             Image(
                 modifier = modifier,
@@ -37,7 +36,6 @@ fun ImageLoader(
             )
         }
         is Int -> {
-            Log.d(TAG, "PostCardPopular: 加载本地资源图片:$data")
             Image(
                 modifier = modifier,
                 painter = painterResource(data),
