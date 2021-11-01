@@ -1,5 +1,6 @@
 package com.zj.weather.ui.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -35,37 +37,58 @@ fun WeatherPage(
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
     val fontSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
+    val config = LocalConfiguration.current
     Box(modifier = Modifier.fillMaxSize()) {
         ImageLoader(
             modifier = Modifier.fillMaxSize(),
             data = IconUtils.getWeatherBack(context, weatherNow?.icon)
         )
+        val isLand = config.orientation == Configuration.ORIENTATION_LANDSCAPE
+        if (isLand) {
+            // 横屏适配
+            Row(modifier = Modifier.fillMaxSize()) {
+                val landModifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                Column(
+                    modifier = landModifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    // 天气头部，向上滑动时会进行隐藏
+                    HeaderWeather(fontSize, cityListClick, cityInfo, weatherNow, true)
 
-        // 正常状态下是收缩状态，向上滑动时展示
-        ShrinkHeaderHeather(fontSize, cityInfo, cityListClick, weatherNow)
+                    // 天气动画
+                    WeatherAnimation(weatherNow?.icon)
+                }
+                WeatherContent(
+                    landModifier, scrollState, fontSize,
+                    cityListClick, cityInfo, weatherNow,
+                    airNowBean, hourlyBeanList, dayBeanList, true
+                )
+            }
+        } else {
+            // 竖屏适配
+            // 正常状态下是隐藏状态，向上滑动时展示
+            ShrinkHeaderHeather(fontSize, cityInfo, cityListClick, weatherNow)
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
-            WeatherContent(
-                scrollState,
-                fontSize,
-                cityListClick,
-                cityInfo,
-                weatherNow,
-                airNowBean,
-                hourlyBeanList,
-                dayBeanList
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
+                WeatherContent(
+                    Modifier, scrollState, fontSize, cityListClick,
+                    cityInfo, weatherNow, airNowBean,
+                    hourlyBeanList, dayBeanList
+                )
+            }
         }
-
     }
 }
 
 @Composable
 private fun WeatherContent(
+    modifier: Modifier = Modifier,
     scrollState: ScrollState,
     fontSize: TextUnit,
     cityListClick: () -> Unit,
@@ -73,23 +96,26 @@ private fun WeatherContent(
     weatherNow: WeatherNowBean.NowBaseBean?,
     airNowBean: List<AirNowBean.AirNowStationBean>,
     hourlyBeanList: List<WeatherHourlyBean.HourlyBean>,
-    dayBeanList: List<WeatherDailyBean.DailyBean>
+    dayBeanList: List<WeatherDailyBean.DailyBean>,
+    isLand: Boolean = false
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(30.dp))
 
-        // 天气头部，向上滑动时会进行隐藏
-        HeaderWeather(fontSize, cityListClick, cityInfo, weatherNow)
+        if (!isLand) {
+            // 天气头部，向上滑动时会进行隐藏
+            HeaderWeather(fontSize, cityListClick, cityInfo, weatherNow)
 
-        // 天气动画
-        WeatherAnimation(weatherNow?.icon)
+            // 天气动画
+            WeatherAnimation(weatherNow?.icon)
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+        }
 
         // 当前空气质量
         AirQuality(airNowBean)

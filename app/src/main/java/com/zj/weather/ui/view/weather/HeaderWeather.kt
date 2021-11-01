@@ -24,9 +24,10 @@ fun ColumnScope.HeaderWeather(
     fontSize: TextUnit,
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
-    weatherNow: WeatherNowBean.NowBaseBean?
+    weatherNow: WeatherNowBean.NowBaseBean?,
+    isLand: Boolean = false
 ) {
-    AnimatedVisibility(visible = fontSize.value > 40f) {
+    AnimatedVisibility(visible = fontSize.value > 40f || isLand) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -58,7 +59,7 @@ fun ColumnScope.HeaderWeather(
             Text(
                 text = "${weatherNow?.text}  ${weatherNow?.temp}℃",
                 modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
-                fontSize = fontSize,
+                fontSize = if (isLand) 45.sp else fontSize,
                 color = MaterialTheme.colors.primary
             )
 
