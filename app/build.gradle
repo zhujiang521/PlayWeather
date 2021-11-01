@@ -24,11 +24,16 @@ android {
                                       "$projectDir/schemas".toString()]
             }
         }
+        // 去除多语言
+        resConfigs "zh", "zh-rCN"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            // 开启混淆
+            minifyEnabled true
+            // 去除无用资源 与lint不同
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
