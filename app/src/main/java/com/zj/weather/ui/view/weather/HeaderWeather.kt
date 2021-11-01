@@ -29,7 +29,7 @@ fun HeaderWeather(
     AnimatedVisibility(
         visible = fontSize.value > 40f || isLand,
         enter = fadeIn() + expandVertically(),
-        exit = shrinkOut() + fadeOut()
+        exit = shrinkVertically() + fadeOut()
     ) {
         Column(
             modifier = Modifier
