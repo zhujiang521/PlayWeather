@@ -35,8 +35,8 @@ fun ShrinkHeaderHeather(
         Spacer(modifier = Modifier.height(30.dp))
         AnimatedVisibility(
             visible = fontSize.value < 40f,
-            enter = fadeIn() + expandVertically(animationSpec = tween(500)),
-            exit = shrinkVertically(animationSpec = tween(500)) + fadeOut()
+            enter = fadeIn() + expandVertically(animationSpec = tween(300)),
+            exit = shrinkVertically(animationSpec = tween(300)) + fadeOut()
         ) {
             Column(
                 modifier = Modifier

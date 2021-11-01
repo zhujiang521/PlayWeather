@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">玩天气</string>
+
+    <string name="default_location">北京</string>
+
+    <string name="default_weather">晴</string>
+
+    <string name="air_quality_title">空气质量</string>
+    <string name="air_quality_Current_aqi">当前AQI（CN）为：</string>
+    <string name="air_quality_warn">，主要污染物为:</string>
+
+    <string name="add_location_warn">已经存在该城市，请勿重复添加</string>
+    <string name="add_location_warn2">查询的数据或地区不存在。</string>
+
+    <string name="body_temperature_title">体感温度</string>
+    <string name="body_temperature_tip">与实际气温相似</string>
+
+    <string name="rainfall_title">降雨</string>
+    <string name="rainfall_unit">毫米</string>
+    <string name="rainfall_tip1">今日有雨，记得带伞哦！</string>
+    <string name="rainfall_tip2">预计今日没雨</string>
+
+    <string name="humidity_title">湿度</string>
+    <string name="humidity_tip">目前湿度正常</string>
+
+    <string name="wind_title">风</string>
+    <string name="wind_unit">级</string>
+    <string name="wind_tip">当前风速为</string>
+
+    <string name="air_pressure_title">气压</string>
+    <string name="air_pressure_unit">百帕</string>
+    <string name="air_pressure_tip">当前的大气压</string>
+
+    <string name="visibility_title">能见度</string>
+    <string name="visibility_unit">公里</string>
+    <string name="visibility_tip">当前的能见度</string>
+
+    <string name="time_today">今天</string>
+    <string name="time_now">现在</string>
+    <string name="time_hour">时</string>
+
+</resources>

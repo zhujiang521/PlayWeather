@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             cityInfoList = listOf(
                 CityInfo(
                     location = "CN101010100",
-                    name = "北京"
+                    name = getString(R.string.default_location)
                 )
             )
         }

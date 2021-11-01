@@ -12,10 +12,12 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.weather.WeatherNowBean
+import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -29,8 +31,8 @@ fun HeaderWeather(
 ) {
     AnimatedVisibility(
         visible = fontSize.value > 40f || isLand,
-        enter = fadeIn() + expandVertically(animationSpec = tween(500)),
-        exit = shrinkVertically(animationSpec = tween(500)) + fadeOut()
+        enter = fadeIn() + expandVertically(animationSpec = tween(300)),
+        exit = shrinkVertically(animationSpec = tween(300)) + fadeOut()
     ) {
         Column(
             modifier = Modifier
@@ -61,7 +63,7 @@ fun HeaderWeather(
             )
 
             Text(
-                text = "${weatherNow?.text ?: "晴"}  ${weatherNow?.temp ?: "0"}℃",
+                text = "${weatherNow?.text ?: stringResource(id = R.string.default_weather)}  ${weatherNow?.temp ?: "0"}℃",
                 modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
                 fontSize = if (isLand) 45.sp else fontSize,
                 color = MaterialTheme.colors.primary

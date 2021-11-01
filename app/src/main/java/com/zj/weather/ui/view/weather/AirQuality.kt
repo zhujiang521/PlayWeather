@@ -14,10 +14,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.air.AirNowBean
+import com.zj.weather.R
 
 
 @Composable
@@ -35,7 +37,7 @@ fun AirQuality(airNowBean: List<AirNowBean.AirNowStationBean>) {
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Text(text = "空气质量", fontSize = 14.sp)
+            Text(text = stringResource(id = R.string.air_quality_title), fontSize = 14.sp)
             Text(
                 text = "${airNowBean[0].aqi} - ${airNowBean[0].category}",
                 modifier = Modifier.padding(top = 5.dp),
@@ -43,7 +45,7 @@ fun AirQuality(airNowBean: List<AirNowBean.AirNowStationBean>) {
                 color = MaterialTheme.colors.primary
             )
             Text(
-                text = "当前AQI（CN）为${airNowBean[0].aqi}${airNowBean[0].primary}",
+                text = "${stringResource(id = R.string.air_quality_Current_aqi)}${airNowBean[0].aqi}${airNowBean[0].primary}",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp
             )

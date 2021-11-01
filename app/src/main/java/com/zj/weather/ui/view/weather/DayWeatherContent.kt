@@ -12,10 +12,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.weather.WeatherNowBean
+import com.zj.weather.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,12 +31,19 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
             .weight(1f)
             .padding(5.dp)
             .alpha(0.9f)
-        WeatherContentItem(modifier, "体感温度", "${weatherNow?.feelsLike ?: "0"}℃", "与实际气温相似")
         WeatherContentItem(
-            modifier, "降雨", "${weatherNow?.precip ?: "0"}毫米",
-            if (weatherNow?.precip?.toFloat() ?: 0f > 0f) {
-                "今日有雨，记得带伞哦！"
-            } else "预计今日没雨"
+            modifier,
+            stringResource(id = R.string.body_temperature_title),
+            "${weatherNow?.feelsLike ?: "0"}℃",
+            stringResource(id = R.string.body_temperature_tip)
+        )
+        WeatherContentItem(
+            modifier,
+            stringResource(id = R.string.rainfall_title),
+            "${weatherNow?.precip ?: "0"}${stringResource(id = R.string.rainfall_unit)}",
+            if (weatherNow?.precip?.toFloat() ?: 0f > 0f)
+                stringResource(id = R.string.rainfall_tip1)
+            else stringResource(id = R.string.rainfall_tip2)
         )
     }
 
@@ -47,10 +56,17 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
             .weight(1f)
             .padding(5.dp)
             .alpha(0.9f)
-        WeatherContentItem(modifier, "湿度", "${weatherNow?.humidity ?: "0"}%", "湿度正常，")
         WeatherContentItem(
-            modifier, "风", "${weatherNow?.windDir ?: "0"}${weatherNow?.windScale}级",
-            "当前风速为${weatherNow?.windSpeed}公里/小时"
+            modifier,
+            stringResource(id = R.string.humidity_title),
+            "${weatherNow?.humidity ?: "0"}%",
+            stringResource(id = R.string.humidity_tip)
+        )
+        WeatherContentItem(
+            modifier,
+            stringResource(id = R.string.wind_title),
+            "${weatherNow?.windDir ?: "0"}${weatherNow?.windScale}${stringResource(id = R.string.wind_unit)}",
+            "${stringResource(id = R.string.wind_tip)}${weatherNow?.windSpeed}Km/H"
         )
     }
 
@@ -63,8 +79,18 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
             .weight(1f)
             .padding(5.dp)
             .alpha(0.9f)
-        WeatherContentItem(modifier, "气压", "${weatherNow?.pressure ?: "0"}百帕", "当前的大气压")
-        WeatherContentItem(modifier, "能见度", "${weatherNow?.vis ?: "0"}公里", "当前的能见度")
+        WeatherContentItem(
+            modifier,
+            stringResource(id = R.string.air_pressure_title),
+            "${weatherNow?.pressure ?: "0"}${stringResource(id = R.string.air_pressure_unit)}",
+            stringResource(id = R.string.air_pressure_tip)
+        )
+        WeatherContentItem(
+            modifier,
+            stringResource(id = R.string.visibility_title),
+            "${weatherNow?.vis ?: "0"}${stringResource(id = R.string.visibility_unit)}",
+            stringResource(id = R.string.visibility_tip)
+        )
     }
 
 }

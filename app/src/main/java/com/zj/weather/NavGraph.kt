@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -80,7 +81,7 @@ fun NavGraph(
                 cityInfoList = listOf(
                     CityInfo(
                         location = "CN101010100",
-                        name = "北京"
+                        name = stringResource(id = R.string.default_location)
                     )
                 )
             } else {
@@ -130,7 +131,7 @@ fun NavGraph(
                             actions.upPress()
                         }
                     } else {
-                        showToast(context, "已经存在该城市，请勿重复添加")
+                        showToast(context, R.string.add_location_warn)
                     }
                 }
             })

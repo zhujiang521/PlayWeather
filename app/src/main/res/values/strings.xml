@@ -1,3 +1,42 @@
 <resources>
-    <string name="app_name">玩天气</string>
+    <string name="app_name">Play Weather</string>
+
+    <string name="default_location">Beijing</string>
+
+    <string name="default_weather">Sunny</string>
+
+    <string name="air_quality_title">Air quality</string>
+    <string name="air_quality_Current_aqi">The current AQI (CN) is:</string>
+    <string name="air_quality_warn">, The main pollutants are:</string>
+
+    <string name="add_location_warn">The city already exists, please do not add it again</string>
+    <string name="add_location_warn2">The queried data or region does not exist.</string>
+
+    <string name="body_temperature_title">Body temperature</string>
+    <string name="body_temperature_tip">Similar to actual temperature</string>
+
+    <string name="rainfall_title">Rainfall</string>
+    <string name="rainfall_unit">MM</string>
+    <string name="rainfall_tip1">It\'s raining today, remember to bring an umbrella!</string>
+    <string name="rainfall_tip2">No rain is expected today</string>
+
+    <string name="humidity_title">Humidity</string>
+    <string name="humidity_tip">The current humidity is normal</string>
+
+    <string name="wind_title">Wind</string>
+    <string name="wind_unit">Level</string>
+    <string name="wind_tip">The current wind speed is</string>
+
+    <string name="air_pressure_title">Air pressure</string>
+    <string name="air_pressure_unit">HPa</string>
+    <string name="air_pressure_tip">Current atmospheric pressure</string>
+
+    <string name="visibility_title">Visibility</string>
+    <string name="visibility_unit">Km</string>
+    <string name="visibility_tip">Current visibility</string>
+
+    <string name="time_today">Today</string>
+    <string name="time_now">Now</string>
+    <string name="time_hour">Hour</string>
+
 </resources>
