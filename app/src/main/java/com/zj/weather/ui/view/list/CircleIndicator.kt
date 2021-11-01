@@ -15,7 +15,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.R
-import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.list.BannerGravity.BottomCenter
 import com.zj.weather.ui.view.list.BannerGravity.BottomLeft
 import com.zj.weather.ui.view.list.BannerGravity.BottomRight

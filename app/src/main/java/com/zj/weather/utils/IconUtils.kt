@@ -1,7 +1,6 @@
 package com.zj.weather.utils
 
 import android.content.Context
-import android.util.Log
 import com.zj.weather.R
 
 object IconUtils {
@@ -89,13 +88,9 @@ object IconUtils {
     fun getWeatherBack(context: Context?, weather: String?): Int {
         if (context == null || weather == null) return R.mipmap.back_100d
         return if (context.isDarkMode()) {
-            val nightBack = getNightBack(weather)
-            Log.e("ImageLoader", "getWeatherBack:$weather nightBack:$nightBack")
-            nightBack
+            getNightBack(weather)
         } else {
-            val dayBack = getDayBack(weather)
-            Log.e("ImageLoader", "getWeatherBack: dayBack:$dayBack")
-            dayBack
+            getDayBack(weather)
         }
     }
 

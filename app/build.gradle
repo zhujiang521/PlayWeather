@@ -78,8 +78,6 @@ dependencies {
     // navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
-    // DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
     // Compose ViewPage
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     def room_version = "2.3.0"

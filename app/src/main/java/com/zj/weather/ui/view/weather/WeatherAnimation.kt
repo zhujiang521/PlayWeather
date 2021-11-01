@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
 import com.zj.weather.utils.IconUtils
@@ -28,4 +29,10 @@ fun WeatherAnimation(weather: String?) {
         modifier = Modifier.size(130.dp),
         progress = progress
     )
+}
+
+@Preview(showBackground = false, name = "天气动画")
+@Composable
+fun WeatherAnimationPreview() {
+    WeatherAnimation("100")
 }

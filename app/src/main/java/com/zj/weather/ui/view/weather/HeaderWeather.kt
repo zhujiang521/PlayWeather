@@ -20,7 +20,7 @@ import com.zj.weather.room.entity.CityInfo
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun ColumnScope.HeaderWeather(
+fun HeaderWeather(
     fontSize: TextUnit,
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
