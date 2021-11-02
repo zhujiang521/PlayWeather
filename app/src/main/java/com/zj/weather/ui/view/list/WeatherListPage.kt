@@ -47,11 +47,12 @@ fun WeatherListPage(
             LazyColumn(state = listState) {
                 items(locationBeanList) { locationBean ->
                     Text(text = locationBean.name, modifier = Modifier
-                        .padding(10.dp)
                         .fillMaxWidth()
                         .clickable {
                             toWeatherDetails(locationBean)
-                        })
+                        }
+                        .padding(10.dp))
+
                 }
             }
         } else {
