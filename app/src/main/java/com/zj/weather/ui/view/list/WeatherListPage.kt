@@ -13,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
+import com.zj.weather.R
 
 
 @Composable
@@ -45,7 +47,7 @@ fun WeatherListPage(
                 }
             }
         } else {
-            NoContent(tip = "查询的数据或地区不存在。")
+            NoContent(tip = stringResource(id = R.string.add_location_warn2))
         }
     }
 }

@@ -39,4 +39,6 @@
     <string name="time_now">现在</string>
     <string name="time_hour">时</string>
 
+    <string name="city_list_title">城市天气</string>
+
 </resources>

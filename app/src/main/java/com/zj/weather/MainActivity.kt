@@ -63,6 +63,11 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.resetLanguage()
+    }
+
     private fun checkLocationPermission() {
         //获取权限（如果没有开启权限，会弹出对话框，询问是否开启权限）
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

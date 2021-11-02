@@ -78,6 +78,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _searchCityInfo.value = page
     }
 
+    fun resetLanguage() {
+        language = getDefaultLocale(getApplication())
+    }
+
     fun getWeather(location: String = "CN101010100") {
         getWeatherNow(location)
         getWeather24Hour(location)

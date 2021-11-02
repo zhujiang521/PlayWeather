@@ -65,8 +65,8 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.wind_title),
-            "${weatherNow?.windDir ?: "0"}${weatherNow?.windScale}${stringResource(id = R.string.wind_unit)}",
-            "${stringResource(id = R.string.wind_tip)}${weatherNow?.windSpeed}Km/H"
+            "${weatherNow?.windDir ?: "0"}${weatherNow?.windScale ?: ""}${stringResource(id = R.string.wind_unit)}",
+            "${stringResource(id = R.string.wind_tip)}${weatherNow?.windSpeed ?: "0"}Km/H"
         )
     }
 
