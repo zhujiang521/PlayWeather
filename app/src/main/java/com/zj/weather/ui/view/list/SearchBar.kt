@@ -60,7 +60,7 @@ fun SearchBar(searchCity: (String) -> Unit) {
             ) {
                 if (value.isEmpty()) {
                     Text(
-                        text = "请输入城市名称",
+                        text = stringResource(id = R.string.city_list_search_hint),
                         fontSize = 16.sp,
                         color = Color.Gray,
                         modifier = Modifier.padding(5.dp)

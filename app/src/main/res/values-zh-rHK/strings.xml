@@ -40,5 +40,6 @@
     <string name="time_hour">時</string>
 
     <string name="city_list_title">城市天氣</string>
+    <string name="city_list_search_hint">請輸入城市名稱</string>
 
 </resources>

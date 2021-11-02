@@ -24,7 +24,7 @@ import com.zj.weather.utils.showToast
  * 版权：Zhujiang 个人版权
  * @author zhujiang
  * 版本：1.5
- * 创建日期：2021/5/17
+ * 创建日期：2021/11/02
  * 描述：PlayAndroid
  *
  */
@@ -122,6 +122,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             })
     }
 
+    /**
+     * 当前的空气质量
+     */
     private fun getAirNow(location: String = "CN101010100") {
         getAirNow(getApplication(), location, language, object : OnResultAirNowListener {
             override fun onError(e: Throwable) {
@@ -149,6 +152,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         })
     }
 
+    /**
+     * 未来24小时每小时的天气预报
+     */
     private fun getWeather24Hour(location: String = "CN101010100") {
         getWeather24Hourly(getApplication(), location, language,
             Unit.METRIC, object : OnResultWeatherHourlyListener {
@@ -174,6 +180,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             })
     }
 
+    /**
+     * 未来7天天气预报
+     */
     private fun getWeather7Day(location: String = "CN101010100") {
         getWeather7D(getApplication(), location, language,
             Unit.METRIC, object : OnResultWeatherDailyListener {

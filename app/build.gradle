@@ -25,7 +25,7 @@ android {
             }
         }
         // 去除多语言
-        resConfigs "zh", "zh-rCN"
+        resConfigs "zh", "zh-rCN", "zh-rHK", "zh-rTW"
     }
 
     buildTypes {

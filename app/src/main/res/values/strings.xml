@@ -40,5 +40,6 @@
     <string name="time_hour">:00</string>
 
     <string name="city_list_title">City weather</string>
+    <string name="city_list_search_hint">Please enter the city name</string>
 
 </resources>
