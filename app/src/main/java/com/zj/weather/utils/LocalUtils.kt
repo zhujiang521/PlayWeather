@@ -11,7 +11,7 @@ fun getDefaultLocale(context: Context?): Lang {
     if (context == null) return Lang.ZH_HANS
     return when (context.resources.configuration.locale.language) {
         "zh" -> Lang.ZH_HANS
-        "zh_HK", "zh_TW" -> Lang.ZH_HANT
+        "zh_rHK", "zh_rTW" -> Lang.ZH_HANT
         "es", "en" -> Lang.EN
         else -> Lang.EN
     }
