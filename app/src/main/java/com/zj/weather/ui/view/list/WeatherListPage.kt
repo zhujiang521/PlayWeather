@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
+import com.zj.weather.utils.showToast
 
 
 @Composable
@@ -26,6 +28,7 @@ fun WeatherListPage(
     toWeatherDetails: (GeoBean.LocationBean) -> Unit,
 ) {
     val locationBeanList by mainViewModel.locationBeanList.observeAsState(listOf())
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,7 +36,12 @@ fun WeatherListPage(
     ) {
         val listState = rememberLazyListState()
         SearchBar { city ->
-            mainViewModel.getGeoCityLookup(city)
+            if (city.isNotEmpty()) {
+                mainViewModel.getGeoCityLookup(city)
+            } else {
+                // 搜索城市为空，提醒用户输入城市名称
+                showToast(context = context, R.string.city_list_search_hint)
+            }
         }
         if (locationBeanList.isNotEmpty()) {
             LazyColumn(state = listState) {
