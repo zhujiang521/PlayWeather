@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import com.zj.weather.room.entity.CityInfo
 @Composable
 fun HeaderWeather(
     fontSize: TextUnit,
+    cityList: () -> Unit,
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
     weatherNow: WeatherNowBean.NowBaseBean?,
@@ -51,6 +53,15 @@ fun HeaderWeather(
                     Icon(
                         imageVector = Icons.Rounded.Add,
                         contentDescription = "add"
+                    )
+                }
+                IconButton(
+                    modifier = Modifier
+                        .wrapContentWidth(Alignment.Start), onClick = cityList
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.List,
+                        contentDescription = "list"
                     )
                 }
             }

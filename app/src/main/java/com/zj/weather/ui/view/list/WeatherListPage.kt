@@ -1,6 +1,5 @@
 package com.zj.weather.ui.view.list
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,23 +13,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
 import com.zj.weather.utils.showToast
-import com.zj.weather.utils.swipe.SwipeDeleteLayout
 
 
 @Composable
 fun WeatherListPage(
     mainViewModel: MainViewModel,
+    onBack: () -> Unit,
     toWeatherDetails: (GeoBean.LocationBean) -> Unit,
 ) {
     val locationBeanList by mainViewModel.locationBeanList.observeAsState(listOf())
@@ -41,7 +37,7 @@ fun WeatherListPage(
             .padding(horizontal = 10.dp)
     ) {
         val listState = rememberLazyListState()
-        SearchBar { city ->
+        SearchBar(onBack) { city ->
             if (city.isNotEmpty()) {
                 mainViewModel.getGeoCityLookup(city)
             } else {
@@ -49,10 +45,14 @@ fun WeatherListPage(
                 showToast(context = context, R.string.city_list_search_hint)
             }
         }
+        Spacer(Modifier.height(10.dp))
         if (locationBeanList.isNotEmpty()) {
-            LazyColumn(state = listState) {
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 5.dp),
+                state = listState
+            ) {
                 items(locationBeanList) { locationBean ->
-                    CityItem(context, locationBean, toWeatherDetails)
+                    CityItem(locationBean, toWeatherDetails)
                 }
             }
         } else {
@@ -63,43 +63,19 @@ fun WeatherListPage(
 
 @Composable
 private fun CityItem(
-    context: Context,
     locationBean: GeoBean.LocationBean,
     toWeatherDetails: (GeoBean.LocationBean) -> Unit,
 ) {
-    SwipeDeleteLayout(childContent = {
-        Column(modifier = Modifier.fillMaxHeight()) {
-            Card(
-                modifier = Modifier
-                    .weight(1f), shape = RoundedCornerShape(0.dp, 5.dp, 5.dp, 0.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .background(color = Color.Red)
-                        .clickable {
-                            showToast(context, "Collection")
-                        }
-                        .padding(5.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Collection", fontSize = 14.sp)
+    Column {
+        Card(shape = RoundedCornerShape(5.dp)) {
+            Text(text = locationBean.name, modifier = Modifier
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colors.primaryVariant)
+                .clickable {
+                    toWeatherDetails(locationBean)
                 }
-            }
-            Spacer(modifier = Modifier.height(10.dp))
+                .padding(10.dp))
         }
-    }) {
-        Column {
-            Card(shape = RoundedCornerShape(5.dp)) {
-                Text(text = locationBean.name, modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colors.background)
-                    .clickable {
-                        toWeatherDetails(locationBean)
-                    }
-                    .padding(10.dp))
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-        }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }

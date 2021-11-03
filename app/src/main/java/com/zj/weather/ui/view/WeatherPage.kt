@@ -28,7 +28,9 @@ import com.zj.weather.utils.ImageLoader
 @Composable
 fun WeatherPage(
     mainViewModel: MainViewModel,
-    cityInfo: CityInfo, cityListClick: () -> Unit
+    cityInfo: CityInfo,
+    cityList: () -> Unit,
+    cityListClick: () -> Unit
 ) {
     val context = LocalContext.current
     val weatherNow by mainViewModel.weatherNow.observeAsState()
@@ -55,13 +57,13 @@ fun WeatherPage(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     // 天气头部，向上滑动时会进行隐藏
-                    HeaderWeather(fontSize, cityListClick, cityInfo, weatherNow, true)
+                    HeaderWeather(fontSize, cityList, cityListClick, cityInfo, weatherNow, true)
 
                     // 天气动画
                     WeatherAnimation(weatherNow?.icon)
                 }
                 WeatherContent(
-                    landModifier, scrollState, fontSize,
+                    landModifier, scrollState, fontSize, cityList,
                     cityListClick, cityInfo, weatherNow,
                     airNowBean, hourlyBeanList, dayBeanList, true
                 )
@@ -69,7 +71,7 @@ fun WeatherPage(
         } else {
             // 竖屏适配
             // 正常状态下是隐藏状态，向上滑动时展示
-            ShrinkHeaderHeather(fontSize, cityInfo, cityListClick, weatherNow)
+            ShrinkHeaderHeather(fontSize, cityInfo, cityList, cityListClick, weatherNow)
 
             Column(
                 modifier = Modifier
@@ -77,7 +79,7 @@ fun WeatherPage(
             ) {
                 Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
                 WeatherContent(
-                    Modifier, scrollState, fontSize, cityListClick,
+                    Modifier, scrollState, fontSize, cityList, cityListClick,
                     cityInfo, weatherNow, airNowBean,
                     hourlyBeanList, dayBeanList
                 )
@@ -91,6 +93,7 @@ private fun WeatherContent(
     modifier: Modifier = Modifier,
     scrollState: ScrollState,
     fontSize: TextUnit,
+    cityList: () -> Unit,
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
     weatherNow: WeatherNowBean.NowBaseBean?,
@@ -109,7 +112,7 @@ private fun WeatherContent(
 
         if (!isLand) {
             // 天气头部，向上滑动时会进行隐藏
-            HeaderWeather(fontSize, cityListClick, cityInfo, weatherNow)
+            HeaderWeather(fontSize, cityList, cityListClick, cityInfo, weatherNow)
 
             // 天气动画
             WeatherAnimation(weatherNow?.icon)

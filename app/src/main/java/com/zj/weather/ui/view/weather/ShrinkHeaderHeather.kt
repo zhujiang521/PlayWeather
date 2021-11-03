@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import com.zj.weather.room.entity.CityInfo
 fun ShrinkHeaderHeather(
     fontSize: TextUnit,
     cityInfo: CityInfo,
+    cityList: () -> Unit,
     cityListClick: () -> Unit,
     weatherNow: WeatherNowBean.NowBaseBean?
 ) {
@@ -49,10 +51,16 @@ fun ShrinkHeaderHeather(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    IconButton(
-                        modifier = Modifier
-                            .wrapContentWidth(Alignment.Start), onClick = {}
-                    ) {}
+                    Row(modifier = Modifier.wrapContentWidth(Alignment.Start)) {
+                        IconButton(
+                            modifier = Modifier
+                                .wrapContentWidth(Alignment.Start), onClick = {}
+                        ) {}
+                        IconButton(
+                            modifier = Modifier
+                                .wrapContentWidth(Alignment.Start), onClick = {}
+                        ) {}
+                    }
                     Text(
                         modifier = Modifier
                             .weight(1f)
@@ -63,15 +71,27 @@ fun ShrinkHeaderHeather(
                         color = MaterialTheme.colors.primary,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    IconButton(
-                        modifier = Modifier.wrapContentWidth(Alignment.End),
-                        onClick = cityListClick
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Add,
-                            contentDescription = "add"
-                        )
+                    Row(modifier = Modifier.wrapContentWidth(Alignment.End)) {
+                        IconButton(
+                            modifier = Modifier.wrapContentWidth(Alignment.End),
+                            onClick = cityListClick
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Add,
+                                contentDescription = "add"
+                            )
+                        }
+                        IconButton(
+                            modifier = Modifier
+                                .wrapContentWidth(Alignment.Start), onClick = cityList
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.List,
+                                contentDescription = "list"
+                            )
+                        }
                     }
+
                 }
 
                 Text(

@@ -13,6 +13,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
@@ -30,15 +31,29 @@ import androidx.compose.ui.unit.sp
 import com.zj.weather.R
 
 @Composable
-fun SearchBar(searchCity: (String) -> Unit) {
+fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
     var value by remember { mutableStateOf("") }
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(Modifier.height(30.dp))
-        Text(
-            text = stringResource(id = R.string.city_list_title),
-            fontSize = 30.sp,
-            modifier = Modifier.padding(10.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconButton(
+                modifier = Modifier.wrapContentWidth(Alignment.End),
+                onClick = onBack
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.ArrowBack,
+                    contentDescription = "back"
+                )
+            }
+            Text(
+                text = stringResource(id = R.string.city_list_title),
+                fontSize = 25.sp,
+                modifier = Modifier.padding(10.dp)
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -121,5 +136,5 @@ fun SearchBar(searchCity: (String) -> Unit) {
 @Preview(name = "搜索头", widthDp = 360, heightDp = 70, showBackground = true)
 @Composable
 fun SearchBarPreview() {
-    SearchBar {}
+    SearchBar({}) {}
 }

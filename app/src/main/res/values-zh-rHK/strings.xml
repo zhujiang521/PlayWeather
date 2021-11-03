@@ -42,4 +42,7 @@
     <string name="city_list_title">城市天氣</string>
     <string name="city_list_search_hint">請輸入城市名稱</string>
 
+    <string name="city_title">城市天气列表</string>
+    <string name="city_delete">刪除</string>
+
 </resources>

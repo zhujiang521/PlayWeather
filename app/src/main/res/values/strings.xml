@@ -42,4 +42,7 @@
     <string name="city_list_title">City weather</string>
     <string name="city_list_search_hint">Please enter the city name</string>
 
+    <string name="city_title">City weather list</string>
+    <string name="city_delete">Delete</string>
+
 </resources>
