@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.list
+package com.zj.weather.utils.swipe
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
