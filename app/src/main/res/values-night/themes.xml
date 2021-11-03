@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.PlayWeather" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowActionBar">false</item>
@@ -6,8 +6,26 @@
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/home_back</item>
         <item name="colorAccent">@color/white</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/home_back</item>
     </style>
+
+    <style name="MySplashTheme" parent="Theme.SplashScreen">
+        <!-- values-v31/themes.xml -->
+        <!--单一颜色填充「启动画面」窗口背景-->
+        <item name="windowSplashScreenBackground">@color/home_back</item>
+
+        <!--「启动画面」中心的图标，
+             可以配置AnimationDrawable 和 AnimatedVectorDrawable类型的drawable-->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <!--「启动画面」中心图标动画的持续时间，这个属性不会对屏幕显示的实际时间产生任何影响-->
+        <item name="windowSplashScreenAnimationDuration">3000</item>
+
+        <!--「启动画面」中心图标后面设置背景-->
+        <item name="windowSplashScreenIconBackgroundColor">@color/home_back</item>
+
+        <!--「启动画面」底部显示的品牌图标-->
+<!--        <item name="android:windowSplashScreenBrandingImage">@mipmap/ic_launcher_foreground</item>-->
+        <item name="postSplashScreenTheme">@style/Theme.PlayWeather</item>
+    </style>
+
 </resources>
