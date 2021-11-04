@@ -45,4 +45,9 @@
     <string name="city_title">City weather list</string>
     <string name="city_delete">Delete</string>
 
+    <string name="city_dialog_title">Add city</string>
+    <string name="city_dialog_content">Do you want to add the city "%s" to the weather list?</string>
+    <string name="city_dialog_confirm">Confirm add</string>
+    <string name="city_dialog_cancel">Need\'t</string>
+
 </resources>

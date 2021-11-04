@@ -86,15 +86,15 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
         val providers: List<String> = locationManager?.getProviders(true) ?: arrayListOf()
         Log.e(TAG, "getLocation: providers:$providers")
         when {
-            providers.contains(LocationManager.GPS_PROVIDER) -> {
-                //如果是GPS
-                locationProvider = LocationManager.GPS_PROVIDER
-                Log.v(TAG, "定位方式GPS")
-            }
             providers.contains(LocationManager.NETWORK_PROVIDER) -> {
                 //如果是Network
                 locationProvider = LocationManager.NETWORK_PROVIDER
-                Log.v(TAG, "定位方式Network")
+                Log.d(TAG, "定位方式Network")
+            }
+            providers.contains(LocationManager.GPS_PROVIDER) -> {
+                //如果是GPS
+                locationProvider = LocationManager.GPS_PROVIDER
+                Log.d(TAG, "定位方式GPS")
             }
             else -> {
                 Log.e(TAG, "getLocation: 没有可用的位置提供器")

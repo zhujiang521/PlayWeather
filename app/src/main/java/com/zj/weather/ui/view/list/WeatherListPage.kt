@@ -13,6 +13,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -67,6 +69,8 @@ private fun CityItem(
     locationBean: GeoBean.LocationBean,
     toWeatherDetails: (CityInfo) -> Unit,
 ) {
+    val alertDialog = remember { mutableStateOf(false) }
+
     Column {
         Card(shape = RoundedCornerShape(5.dp)) {
             Text(
@@ -75,19 +79,22 @@ private fun CityItem(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colors.primaryVariant)
                     .clickable {
-                        toWeatherDetails(
-                            CityInfo(
-                                location = "${locationBean.lon},${
-                                    locationBean.lat
-                                }",
-                                name = locationBean.name,
-                                province = locationBean.adm2,
-                                city = locationBean.adm1
-                            )
-                        )
+                        alertDialog.value = true
                     }
                     .padding(horizontal = 10.dp, vertical = 15.dp))
         }
         Spacer(modifier = Modifier.height(10.dp))
+        ShowDialog(alertDialog = alertDialog, "${locationBean.adm1} ${locationBean.name}") {
+            toWeatherDetails(
+                CityInfo(
+                    location = "${locationBean.lon},${
+                        locationBean.lat
+                    }",
+                    name = locationBean.name,
+                    province = locationBean.adm2,
+                    city = locationBean.adm1
+                )
+            )
+        }
     }
 }

@@ -45,4 +45,9 @@
     <string name="city_title">城市天气列表</string>
     <string name="city_delete">刪除</string>
 
+    <string name="city_dialog_title">添加城市</string>
+    <string name="city_dialog_content">是否要將城市「%s」添加到天氣列表？</string>
+    <string name="city_dialog_confirm">確認添加</string>
+    <string name="city_dialog_cancel">大可不必</string>
+
 </resources>

@@ -380,16 +380,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         result: MutableList<Address>
     ) {
         viewModelScope.launch(Dispatchers.IO) {
+            if (result.isNullOrEmpty()) return@launch
+            val address = result[0]
             val isLocationList = cityInfoDao.getIsLocationList()
             val cityInfo = CityInfo(
                 location = "${location.longitude},${
                     location.latitude
                 }",
-                name = result[0].featureName ?: "",
+                name = address.subLocality ?: "",
                 isLocation = 1,
-                province = result[0].adminArea,
-                city = result[0].locality
+                province = address.adminArea,
+                city = address.locality
             )
+            Log.d(TAG, "updateCityInfo: featureName:${address.featureName}")
+            Log.d(TAG, "updateCityInfo: locality:${address.locality}")
+            Log.d(TAG, "updateCityInfo: adminArea:${address.adminArea}")
+            Log.d(TAG, "updateCityInfo: subAdminArea:${address.subAdminArea}")
+            Log.d(TAG, "updateCityInfo: subLocality:${address.subLocality}")
+            Log.d(TAG, "updateCityInfo: subThoroughfare:${address.subThoroughfare}")
+            Log.d(TAG, "updateCityInfo: thoroughfare:${address.thoroughfare}")
+
             if (isLocationList.isNotEmpty()) {
                 Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
                 cityInfoDao.update(cityInfo)

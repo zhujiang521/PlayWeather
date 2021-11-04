@@ -1,6 +1,7 @@
 package com.zj.weather.ui.permission
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -124,10 +125,11 @@ fun isPermissionGranted(context: Context?, permission: String?): Boolean {
 /**
  * 权限已经拒绝的情况下弹出对话框让用户跳转到设置进行权限设置
  */
+@SuppressLint("ResourceType")
 fun onAlertDialog(context: Context?) {
     if (context == null) return
     //Instantiate builder variable
-    val builder = AlertDialog.Builder(context)
+    val builder = AlertDialog.Builder(context, R.style.ThemeOverlay_AppCompat)
     // set title
     builder.setTitle("权限设置")
     //set content area
@@ -147,7 +149,6 @@ fun onAlertDialog(context: Context?) {
     ) { dialog, _ ->
         dialog.dismiss()
     }
-
 
     builder.show()
 }
