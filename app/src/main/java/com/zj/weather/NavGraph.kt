@@ -24,11 +24,12 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -36,18 +37,11 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.zj.weather.room.PlayWeatherDatabase
-import com.zj.weather.room.dao.CityInfoDao
-import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.WeatherPage
 import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.list.DrawIndicator
 import com.zj.weather.ui.view.list.WeatherListPage
-import com.zj.weather.utils.showToast
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 private const val TAG = "NavGraph"
 
@@ -65,8 +59,6 @@ fun NavGraph(
 ) {
     val navController = rememberAnimatedNavController()
     val actions = remember(navController) { PlayActions(navController) }
-    val context = LocalContext.current
-    val cityInfoDao = PlayWeatherDatabase.getDatabase(context).cityInfoDao()
     val coroutineScope = rememberCoroutineScope()
     AnimatedNavHost(
         navController = navController,
@@ -75,19 +67,19 @@ fun NavGraph(
         setComposable(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
-            val cityInfoList = getCityList(cityInfoDao)
-            val searchCityInfo by mainViewModel.searchCityInfo.observeAsState()
-            val initialPage = if (searchCityInfo == 2) {
-                cityInfoList.size - 1
-            } else {
-                0
-            }
+            mainViewModel.getCityList()
+            val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
+            val initialPage by mainViewModel.searchCityInfo.observeAsState(0)
             Log.e(TAG, "NavGraph: cityInfoList initialPage:$initialPage")
-            val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
             val pagerState = rememberPagerState(initialPage = initialPage)
-            mainViewModel.getWeather(cityInfoList[pagerState.currentPage].location)
+            if (cityInfoList.isNotEmpty()) {
+                val index = if (pagerState.currentPage > cityInfoList.size - 1) {
+                    0
+                } else pagerState.currentPage
+                mainViewModel.getWeather(cityInfoList[index].location)
+            }
             Box(modifier = Modifier.fillMaxSize()) {
-                if (initialPage == cityInfoList.size - 1) {
+                if (initialPage > 0) {
                     coroutineScope.launch {
                         pagerState.scrollToPage(initialPage)
                         mainViewModel.onSearchCityInfoChanged(0)
@@ -100,73 +92,44 @@ fun NavGraph(
                         actions.toWeatherList()
                     }
                 }
-                DrawIndicator(pagerState = pagerState, hasCurrentPosition = isLocation.isNotEmpty())
+                DrawIndicator(
+                    pagerState = pagerState,
+                    hasCurrentPosition = mainViewModel.hasLocation()
+                )
             }
         }
         setComposable(
             PlayDestinations.WEATHER_LIST_ROUTE,
         ) {
             mainViewModel.getGeoTopCity()
-            WeatherListPage(mainViewModel = mainViewModel,
+            WeatherListPage(
+                mainViewModel = mainViewModel,
                 onBack = actions.upPress,
-                toWeatherDetails = { locationBean ->
-                coroutineScope.launch(Dispatchers.IO) {
-                    val hasLocation = cityInfoDao.getHasLocation(locationBean.name)
-                    val cityInfo = CityInfo(
-                        location = "${locationBean.lon},${
-                            locationBean.lat
-                        }",
-                        name = locationBean.name
-                    )
-                    if (hasLocation.isNullOrEmpty()) {
-                        cityInfoDao.insert(cityInfo)
-                        withContext(Dispatchers.Main) {
-                            mainViewModel.onSearchCityInfoChanged(2)
-                            actions.upPress()
-                        }
-                    } else {
-                        showToast(context, R.string.add_location_warn)
+                toWeatherDetails = { cityInfo ->
+                    mainViewModel.insertCityInfo(cityInfo) {
+                        val count = mainViewModel.getCount()
+                        mainViewModel.onSearchCityInfoChanged(count - 1)
+                        actions.upPress()
                     }
-                }
-            })
+                })
         }
         setComposable(
             PlayDestinations.CITY_LIST_ROUTE,
         ) {
-            var refresh by remember { mutableStateOf(false) }
-            var cityInfoList = getCityList(cityInfoDao)
-            if (refresh) {
-                cityInfoList = getCityList(cityInfoDao)
-            }
-            CityListPage(cityInfoList = cityInfoList,
+            mainViewModel.getCityList()
+            val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
+            CityListPage(
+                cityInfoList = cityInfoList,
                 onBack = actions.upPress,
                 toWeatherDetails = {
-                    mainViewModel.onSearchCityInfoChanged(2)
+                    mainViewModel.onSearchCityInfoChanged(cityInfoList.indexOf(it))
                     actions.upPress()
-                }) { cityInfo ->
-                coroutineScope.launch(Dispatchers.IO) {
-                    cityInfoDao.delete(cityInfo)
-                    refresh = true
-                }
-            }
+                },
+                onDeleteListener = {
+                    mainViewModel.deleteCityInfo(it)
+                })
         }
     }
-}
-
-@Composable
-private fun getCityList(cityInfoDao: CityInfoDao): List<CityInfo> {
-    var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
-    if (cityInfoList.isNullOrEmpty()) {
-        cityInfoList = listOf(
-            CityInfo(
-                location = "CN101010100",
-                name = stringResource(id = R.string.default_location)
-            )
-        )
-    } else {
-        Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
-    }
-    return cityInfoList
 }
 
 @ExperimentalAnimationApi

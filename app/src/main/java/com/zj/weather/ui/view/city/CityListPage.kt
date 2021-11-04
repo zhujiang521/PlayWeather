@@ -28,7 +28,7 @@ import com.zj.weather.utils.swipe.SwipeDeleteLayout
 fun CityListPage(
     cityInfoList: List<CityInfo>,
     onBack: () -> Unit,
-    toWeatherDetails: (GeoBean.LocationBean) -> Unit,
+    toWeatherDetails: (CityInfo) -> Unit,
     onDeleteListener: (CityInfo) -> Unit
 ) {
     Column(
@@ -83,7 +83,7 @@ fun CityListPage(
 private fun CityItem(
     cityInfo: CityInfo,
     isShowDelete: Boolean = true,
-    toWeatherDetails: (GeoBean.LocationBean) -> Unit,
+    toWeatherDetails: (CityInfo) -> Unit,
     onDeleteListener: (CityInfo) -> Unit
 ) {
     SwipeDeleteLayout(isShowChild = isShowDelete, childContent = {
@@ -119,8 +119,7 @@ private fun CityItem(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colors.primaryVariant)
                     .clickable {
-                        val locationBean = GeoBean.LocationBean()
-                        toWeatherDetails(locationBean)
+                        toWeatherDetails(cityInfo)
                     }
                     .padding(10.dp))
             }

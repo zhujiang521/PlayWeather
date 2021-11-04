@@ -24,6 +24,9 @@ interface CityInfoDao {
     @Query("SELECT * FROM city_info where name = :name")
     suspend fun getHasLocation(name: String): List<CityInfo>
 
+    @Query("SELECT COUNT(*) FROM city_info")
+    suspend fun getCount(): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertList(cityInfoList: List<CityInfo>)
 

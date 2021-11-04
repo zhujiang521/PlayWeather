@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.showToast
 
 
@@ -27,7 +28,7 @@ import com.zj.weather.utils.showToast
 fun WeatherListPage(
     mainViewModel: MainViewModel,
     onBack: () -> Unit,
-    toWeatherDetails: (GeoBean.LocationBean) -> Unit,
+    toWeatherDetails: (CityInfo) -> Unit,
 ) {
     val locationBeanList by mainViewModel.locationBeanList.observeAsState(listOf())
     val context = LocalContext.current
@@ -64,7 +65,7 @@ fun WeatherListPage(
 @Composable
 private fun CityItem(
     locationBean: GeoBean.LocationBean,
-    toWeatherDetails: (GeoBean.LocationBean) -> Unit,
+    toWeatherDetails: (CityInfo) -> Unit,
 ) {
     Column {
         Card(shape = RoundedCornerShape(5.dp)) {
@@ -72,7 +73,14 @@ private fun CityItem(
                 .fillMaxWidth()
                 .background(color = MaterialTheme.colors.primaryVariant)
                 .clickable {
-                    toWeatherDetails(locationBean)
+                    toWeatherDetails(
+                        CityInfo(
+                            location = "${locationBean.lon},${
+                                locationBean.lat
+                            }",
+                            name = locationBean.name
+                        )
+                    )
                 }
                 .padding(10.dp))
         }

@@ -14,15 +14,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.zj.weather.room.PlayWeatherDatabase
-import com.zj.weather.room.dao.CityInfoDao
-import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.permission.isPermissionsGranted
 import com.zj.weather.ui.permission.onAlertDialog
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.utils.setAndroidNativeLightStatusBar
 import com.zj.weather.utils.transparentStatusBar
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     }
 
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var cityInfoDao: CityInfoDao
     private var locationManager: LocationManager? = null
     private var locationProvider: String? = null
 
@@ -41,18 +40,9 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
         super.onCreate(savedInstanceState)
         transparentStatusBar()
         setAndroidNativeLightStatusBar()
-        cityInfoDao = PlayWeatherDatabase.getDatabase(this).cityInfoDao()
         getLocation()
         checkLocationPermission()
-        var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
-        if (cityInfoList.isNullOrEmpty()) {
-            cityInfoList = listOf(
-                CityInfo(
-                    location = "CN101010100",
-                    name = getString(R.string.default_location)
-                )
-            )
-        }
+        val cityInfoList = mainViewModel.getSyncCityList()
         mainViewModel.getWeather(cityInfoList[0].location)
         setContent {
             PlayWeatherTheme {
@@ -142,34 +132,11 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             location.longitude, 1
         )
         launch(Dispatchers.IO) {
-            updateCityInfo(location, result)
+            mainViewModel.updateCityInfo(location, result)
         }
         Log.v(TAG, "获取地址信息：${result[0]?.adminArea}")
 
         return result
-    }
-
-    private suspend fun updateCityInfo(
-        location: Location,
-        result: MutableList<Address>
-    ) {
-        val isLocationList = cityInfoDao.getIsLocationList()
-        val cityInfo = CityInfo(
-            location = "${location.longitude},${
-                location.latitude
-            }", name = result[0].adminArea ?: "",
-            isLocation = 1
-        )
-        if (isLocationList.isNotEmpty()) {
-            Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
-            cityInfoDao.update(cityInfo)
-        } else {
-            cityInfoDao.insert(cityInfo)
-            Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
-        }
-        withContext(Dispatchers.Main) {
-            mainViewModel.onSearchCityInfoChanged(1)
-        }
     }
 
     override fun onRequestPermissionsResult(

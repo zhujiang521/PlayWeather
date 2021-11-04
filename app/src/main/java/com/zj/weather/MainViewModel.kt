@@ -1,6 +1,8 @@
 package com.zj.weather
 
 import android.app.Application
+import android.location.Address
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
@@ -14,10 +16,16 @@ import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather.*
+import com.zj.weather.room.PlayWeatherDatabase
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.getDateWeekName
 import com.zj.weather.utils.getDefaultLocale
 import com.zj.weather.utils.getTimeName
 import com.zj.weather.utils.showToast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -35,11 +43,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private var language: Lang = getDefaultLocale(getApplication())
+    private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
 
     private val _weatherNow = MutableLiveData(WeatherNowBean.NowBaseBean())
     val weatherNow: LiveData<WeatherNowBean.NowBaseBean> = _weatherNow
 
     fun onWeatherNowChanged(weatherNowBean: WeatherNowBean.NowBaseBean) {
+        if (_weatherNow.value == weatherNowBean) {
+            return
+        }
         _weatherNow.value = weatherNowBean
     }
 
@@ -47,27 +59,39 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val hourlyBeanList: LiveData<List<WeatherHourlyBean.HourlyBean>> = _hourlyBeanList
 
     fun onWeather24HourChanged(hourlyBean: List<WeatherHourlyBean.HourlyBean>) {
+        if (_hourlyBeanList.value == hourlyBean) {
+            return
+        }
         _hourlyBeanList.value = hourlyBean
     }
 
     private val _dayBeanList = MutableLiveData(listOf<WeatherDailyBean.DailyBean>())
     val dayBeanList: LiveData<List<WeatherDailyBean.DailyBean>> = _dayBeanList
 
-    fun onWeather7DayChanged(hourlyBean: List<WeatherDailyBean.DailyBean>) {
-        _dayBeanList.value = hourlyBean
+    fun onWeather7DayChanged(dailyBeanList: List<WeatherDailyBean.DailyBean>) {
+        if (_dayBeanList.value == dailyBeanList) {
+            return
+        }
+        _dayBeanList.value = dailyBeanList
     }
 
     private val _airNowBean = MutableLiveData(listOf<AirNowBean.AirNowStationBean>())
     val airNowBean: LiveData<List<AirNowBean.AirNowStationBean>> = _airNowBean
 
-    fun onAirNowChanged(hourlyBean: List<AirNowBean.AirNowStationBean>) {
-        _airNowBean.value = hourlyBean
+    fun onAirNowChanged(airNowList: List<AirNowBean.AirNowStationBean>) {
+        if (_airNowBean.value == airNowList) {
+            return
+        }
+        _airNowBean.value = airNowList
     }
 
     private val _locationBeanList = MutableLiveData(listOf<GeoBean.LocationBean>())
     val locationBeanList: LiveData<List<GeoBean.LocationBean>> = _locationBeanList
 
     fun onLocationBeanListChanged(hourlyBean: List<GeoBean.LocationBean>) {
+        if (_locationBeanList.value == hourlyBean) {
+            return
+        }
         _locationBeanList.value = hourlyBean
     }
 
@@ -75,7 +99,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val searchCityInfo: LiveData<Int> = _searchCityInfo
 
     fun onSearchCityInfoChanged(page: Int) {
+        if (_searchCityInfo.value == page) {
+            return
+        }
         _searchCityInfo.value = page
+    }
+
+    private val _cityInfoList = MutableLiveData(listOf<CityInfo>())
+    val cityInfoList: LiveData<List<CityInfo>> = _cityInfoList
+
+    private fun onCityInfoListChanged(list: List<CityInfo>) {
+        if (_cityInfoList.value == list) {
+            return
+        }
+        _cityInfoList.value = list
     }
 
     fun resetLanguage() {
@@ -269,6 +306,99 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         })
+    }
+
+    fun getCityList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            var cityInfoList = cityInfoDao.getCityInfoList()
+            if (cityInfoList.isNullOrEmpty()) {
+                cityInfoList = listOf(
+                    CityInfo(
+                        location = "CN101010100",
+                        name = getApplication<Application>().getString(R.string.default_location)
+                    )
+                )
+            } else {
+                Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
+            }
+            withContext(Dispatchers.Main) {
+                onCityInfoListChanged(cityInfoList)
+            }
+        }
+    }
+
+    fun getSyncCityList(): List<CityInfo> {
+        var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
+        if (cityInfoList.isNullOrEmpty()) {
+            cityInfoList = listOf(
+                CityInfo(
+                    location = "CN101010100",
+                    name = getApplication<Application>().getString(R.string.default_location)
+                )
+            )
+        } else {
+            Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
+        }
+        return cityInfoList
+    }
+
+    fun deleteCityInfo(cityInfo: CityInfo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            cityInfoDao.delete(cityInfo)
+            getCityList()
+        }
+    }
+
+    fun hasLocation(): Boolean {
+        val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
+        return isLocation.isNotEmpty()
+    }
+
+    fun getCount(): Int {
+        return runBlocking { cityInfoDao.getCount() }
+    }
+
+    fun insertCityInfo(cityInfo: CityInfo, onSuccessListener: () -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val hasLocation = cityInfoDao.getHasLocation(cityInfo.name)
+            if (hasLocation.isNullOrEmpty()) {
+                cityInfoDao.insert(cityInfo)
+                withContext(Dispatchers.Main) {
+                    onSuccessListener()
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    showToast(getApplication(), R.string.add_location_warn)
+                }
+            }
+            getCityList()
+        }
+    }
+
+    fun updateCityInfo(
+        location: Location,
+        result: MutableList<Address>
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isLocationList = cityInfoDao.getIsLocationList()
+            val cityInfo = CityInfo(
+                location = "${location.longitude},${
+                    location.latitude
+                }", name = result[0].adminArea ?: "",
+                isLocation = 1
+            )
+            if (isLocationList.isNotEmpty()) {
+                Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
+                cityInfoDao.update(cityInfo)
+            } else {
+                cityInfoDao.insert(cityInfo)
+                Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
+            }
+            getCityList()
+            withContext(Dispatchers.Main) {
+                onSearchCityInfoChanged(0)
+            }
+        }
     }
 
 }
