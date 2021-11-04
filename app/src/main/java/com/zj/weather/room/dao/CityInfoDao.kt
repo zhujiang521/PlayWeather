@@ -15,10 +15,10 @@ import com.zj.weather.room.entity.CityInfo
 @Dao
 interface CityInfoDao {
 
-    @Query("SELECT * FROM city_info order by isLocation desc,uid")
+    @Query("SELECT * FROM city_info order by is_location desc,uid")
     suspend fun getCityInfoList(): List<CityInfo>
 
-    @Query("SELECT * FROM city_info where isLocation = :isLocation")
+    @Query("SELECT * FROM city_info where is_location = :isLocation")
     suspend fun getIsLocationList(isLocation: Int = 1): List<CityInfo>
 
     @Query("SELECT * FROM city_info where name = :name")

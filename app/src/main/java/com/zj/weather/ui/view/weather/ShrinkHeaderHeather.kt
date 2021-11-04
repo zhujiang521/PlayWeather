@@ -65,7 +65,7 @@ fun ShrinkHeaderHeather(
                         modifier = Modifier
                             .weight(1f)
                             .wrapContentWidth(Alignment.CenterHorizontally),
-                        text = cityInfo.name,
+                        text = "${cityInfo.city} ${cityInfo.name}",
                         maxLines = 1,
                         fontSize = 30.sp,
                         color = MaterialTheme.colors.primary,

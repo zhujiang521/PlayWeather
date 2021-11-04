@@ -69,20 +69,24 @@ private fun CityItem(
 ) {
     Column {
         Card(shape = RoundedCornerShape(5.dp)) {
-            Text(text = locationBean.name, modifier = Modifier
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colors.primaryVariant)
-                .clickable {
-                    toWeatherDetails(
-                        CityInfo(
-                            location = "${locationBean.lon},${
-                                locationBean.lat
-                            }",
-                            name = locationBean.name
+            Text(
+                text = "${locationBean.adm2} ${locationBean.adm1} ${locationBean.name}",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colors.primaryVariant)
+                    .clickable {
+                        toWeatherDetails(
+                            CityInfo(
+                                location = "${locationBean.lon},${
+                                    locationBean.lat
+                                }",
+                                name = locationBean.name,
+                                province = locationBean.adm2,
+                                city = locationBean.adm1
+                            )
                         )
-                    )
-                }
-                .padding(10.dp))
+                    }
+                    .padding(horizontal = 10.dp, vertical = 15.dp))
         }
         Spacer(modifier = Modifier.height(10.dp))
     }

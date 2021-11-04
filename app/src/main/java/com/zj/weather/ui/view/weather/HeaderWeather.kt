@@ -67,7 +67,7 @@ fun HeaderWeather(
             }
 
             Text(
-                text = cityInfo.name,
+                text = "${cityInfo.city} ${cityInfo.name}",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 30.sp,
                 color = MaterialTheme.colors.primary

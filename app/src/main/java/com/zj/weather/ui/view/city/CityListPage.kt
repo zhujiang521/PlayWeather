@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.list.NoContent
@@ -100,7 +98,7 @@ private fun CityItem(
                         .clickable {
                             onDeleteListener(cityInfo)
                         }
-                        .padding(5.dp),
+                        .padding(10.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -115,13 +113,14 @@ private fun CityItem(
     }) {
         Column {
             Card(shape = RoundedCornerShape(5.dp)) {
-                Text(text = cityInfo.name, modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colors.primaryVariant)
-                    .clickable {
-                        toWeatherDetails(cityInfo)
-                    }
-                    .padding(10.dp))
+                Text(text = "${cityInfo.province} ${cityInfo.city} ${cityInfo.name}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colors.primaryVariant)
+                        .clickable {
+                            toWeatherDetails(cityInfo)
+                        }
+                        .padding(horizontal = 10.dp, vertical = 15.dp))
             }
             Spacer(modifier = Modifier.height(10.dp))
         }

@@ -315,7 +315,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 cityInfoList = listOf(
                     CityInfo(
                         location = "CN101010100",
-                        name = getApplication<Application>().getString(R.string.default_location)
+                        name = getApplication<Application>().getString(R.string.default_location),
                     )
                 )
             } else {
@@ -384,8 +384,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val cityInfo = CityInfo(
                 location = "${location.longitude},${
                     location.latitude
-                }", name = result[0].adminArea ?: "",
-                isLocation = 1
+                }",
+                name = result[0].featureName ?: "",
+                isLocation = 1,
+                province = result[0].adminArea,
+                city = result[0].locality
             )
             if (isLocationList.isNotEmpty()) {
                 Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
