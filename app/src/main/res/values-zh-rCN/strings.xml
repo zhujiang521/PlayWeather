@@ -40,6 +40,9 @@
     <string name="time_now">现在</string>
     <string name="time_hour">时</string>
 
+    <string name="twenty_four_hour_title">24小时天气预报</string>
+    <string name="seven_day_title">7日天气预报</string>
+
     <string name="city_list_title">城市天气</string>
     <string name="city_list_search_hint">请输入城市名称</string>
 

@@ -3,17 +3,21 @@ package com.zj.weather.ui.view.weather
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.weather.WeatherDailyBean
+import com.zj.weather.R
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
 
@@ -30,7 +34,14 @@ fun DayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
+            Text(
+                text = stringResource(id = R.string.seven_day_title),
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
+            )
             dayBeanList?.forEach { dailyBean ->
+                Divider(modifier = Modifier.padding(horizontal = 10.dp))
                 DayWeatherItem(dailyBean)
             }
         }
@@ -47,9 +58,12 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
     ) {
         Text(
             text = dailyBean.fxDate,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 3.dp),
             fontSize = 15.sp,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.primary,
+            fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.weight(1f))
         ImageLoader(
@@ -57,12 +71,12 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
             modifier = Modifier
                 .padding(start = 7.dp)
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1.2f))
         Text(
             text = "${dailyBean.tempMin ?: "0"}℃",
             modifier = Modifier
                 .padding(start = 7.dp)
-                .weight(1.4f),
+                .weight(2f),
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary
@@ -70,8 +84,8 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Text(
             text = "${dailyBean.tempMax ?: "0"}℃",
             modifier = Modifier
-                .padding(start = 7.dp)
-                .weight(1.4f),
+                .padding(start = 7.dp, end = 3.dp)
+                .weight(2f),
             fontSize = 15.sp,
             textAlign = TextAlign.End,
             color = MaterialTheme.colors.primary

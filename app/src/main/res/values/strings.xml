@@ -40,6 +40,9 @@
     <string name="time_now">Now</string>
     <string name="time_hour">:00</string>
 
+    <string name="twenty_four_hour_title">24-hour weather forecast</string>
+    <string name="seven_day_title">7-day weather forecast</string>
+
     <string name="city_list_title">City weather</string>
     <string name="city_list_search_hint">Please enter the city name</string>
 
