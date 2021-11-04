@@ -17,9 +17,12 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -32,7 +35,7 @@ import com.zj.weather.R
 
 @Composable
 fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
-    var value by remember { mutableStateOf("") }
+    var value by rememberSaveable { mutableStateOf("") }
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(Modifier.height(30.dp))
         Row(
@@ -93,7 +96,8 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                                     value = ""
                                 }
                                 .fillMaxHeight()
-                                .padding(end = 5.dp)
+                                .padding(end = 5.dp),
+                            colorFilter = ColorFilter.tint(color = MaterialTheme.colors.primary)
                         )
                     }
                 }
@@ -111,6 +115,7 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                         searchCity(value)
                     }),
                     singleLine = true,
+                    cursorBrush = SolidColor(MaterialTheme.colors.primary),
                     textStyle = TextStyle(color = MaterialTheme.colors.primary),
                     modifier = Modifier
                         .fillMaxWidth()

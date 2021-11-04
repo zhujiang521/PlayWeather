@@ -74,7 +74,7 @@ private fun CityItem(
     Column {
         Card(shape = RoundedCornerShape(5.dp)) {
             Text(
-                text = "${locationBean.adm2} ${locationBean.adm1} ${locationBean.name}",
+                text = "${locationBean.adm1} ${locationBean.adm2} ${locationBean.name}",
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colors.primaryVariant)
@@ -84,15 +84,15 @@ private fun CityItem(
                     .padding(horizontal = 10.dp, vertical = 15.dp))
         }
         Spacer(modifier = Modifier.height(10.dp))
-        ShowDialog(alertDialog = alertDialog, "${locationBean.adm1} ${locationBean.name}") {
+        ShowDialog(alertDialog = alertDialog, "${locationBean.adm2} ${locationBean.name}") {
             toWeatherDetails(
                 CityInfo(
                     location = "${locationBean.lon},${
                         locationBean.lat
                     }",
                     name = locationBean.name,
-                    province = locationBean.adm2,
-                    city = locationBean.adm1
+                    province = locationBean.adm1,
+                    city = locationBean.adm2
                 )
             )
         }
