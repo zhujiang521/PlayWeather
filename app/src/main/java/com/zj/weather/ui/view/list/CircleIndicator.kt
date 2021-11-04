@@ -35,7 +35,7 @@ fun DrawIndicator(
     pagerState: PagerState,
     gravity: Int = BottomCenter,
     hasCurrentPosition: Boolean = false,
-    indicatorColor: Color = MaterialTheme.colors.primaryVariant,
+    indicatorColor: Color = MaterialTheme.colors.onPrimary,
     selectIndicatorColor: Color = MaterialTheme.colors.primary,
     indicatorDistance: Int = 55,
     indicatorSize: Float = 12f,
