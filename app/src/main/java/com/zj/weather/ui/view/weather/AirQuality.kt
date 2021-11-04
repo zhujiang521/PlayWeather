@@ -39,7 +39,9 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
         ) {
             Text(text = stringResource(id = R.string.air_quality_title), fontSize = 14.sp)
             Text(
-                text = "${airNowBean.aqi ?: "10"} - ${airNowBean.category ?: ""}",
+                text = "${airNowBean.aqi ?: "10"} - ${
+                    airNowBean.category ?: stringResource(id = R.string.air_quality_level)
+                }",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 24.sp,
                 color = MaterialTheme.colors.primary
