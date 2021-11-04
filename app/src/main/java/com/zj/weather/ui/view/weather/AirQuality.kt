@@ -23,8 +23,8 @@ import com.zj.weather.R
 
 
 @Composable
-fun AirQuality(airNowBean: List<AirNowBean.AirNowStationBean>) {
-    if (airNowBean.isNullOrEmpty()) return
+fun AirQuality(airNowBean: AirNowBean.NowBean?) {
+    if (airNowBean == null) return
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,18 +39,20 @@ fun AirQuality(airNowBean: List<AirNowBean.AirNowStationBean>) {
         ) {
             Text(text = stringResource(id = R.string.air_quality_title), fontSize = 14.sp)
             Text(
-                text = "${airNowBean[0].aqi} - ${airNowBean[0].category}",
+                text = "${airNowBean.aqi ?: "10"} - ${airNowBean.category ?: ""}",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 24.sp,
                 color = MaterialTheme.colors.primary
             )
             Text(
-                text = "${stringResource(id = R.string.air_quality_Current_aqi)}${airNowBean[0].aqi}${airNowBean[0].primary}",
+                text = "${
+                    stringResource(id = R.string.air_quality_Current_aqi)
+                }${airNowBean.aqi ?: "10"}${airNowBean.primary ?: ""}",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(10.dp))
-            AirQualityProgress(airNowBean[0].aqi.toInt())
+            AirQualityProgress((airNowBean.aqi ?: "10").toInt())
         }
     }
 }

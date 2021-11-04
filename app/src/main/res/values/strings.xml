@@ -8,6 +8,7 @@
     <string name="air_quality_title">Air quality</string>
     <string name="air_quality_Current_aqi">The current AQI (CN) is:</string>
     <string name="air_quality_warn">, The main pollutants are:</string>
+    <string name="air_quality_level">Excellent</string>
 
     <string name="add_location_warn">The city already exists, please do not add it again</string>
     <string name="add_location_warn2">The queried data or region does not exist.</string>

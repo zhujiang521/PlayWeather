@@ -92,7 +92,8 @@ private fun CityItem(
                     }",
                     name = locationBean.name,
                     province = locationBean.adm1,
-                    city = locationBean.adm2
+                    city = locationBean.adm2,
+                    locationId = "CN${locationBean.id}"
                 )
             )
         }

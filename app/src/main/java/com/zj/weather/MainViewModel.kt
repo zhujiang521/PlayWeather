@@ -75,10 +75,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _dayBeanList.value = dailyBeanList
     }
 
-    private val _airNowBean = MutableLiveData(listOf<AirNowBean.AirNowStationBean>())
-    val airNowBean: LiveData<List<AirNowBean.AirNowStationBean>> = _airNowBean
+    private val _airNowBean = MutableLiveData(AirNowBean.NowBean())
+    val airNowBean: LiveData<AirNowBean.NowBean> = _airNowBean
 
-    fun onAirNowChanged(airNowList: List<AirNowBean.AirNowStationBean>) {
+    fun onAirNowChanged(airNowList: AirNowBean.NowBean) {
         if (_airNowBean.value == airNowList) {
             return
         }
@@ -120,6 +120,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getWeather(location: String = "CN101010100") {
+        Log.e(TAG, "getWeather: location:$location")
         getWeatherNow(location)
         getWeather24Hour(location)
         getWeather7Day(location)
@@ -166,24 +167,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         getAirNow(getApplication(), location, language, object : OnResultAirNowListener {
             override fun onError(e: Throwable) {
                 showToast(getApplication(), e.message)
-                Log.e(TAG, "getWeather24Hour onError: $e")
+                Log.e(TAG, "getAirNow onError: $e")
             }
 
             override fun onSuccess(airNowBean: AirNowBean?) {
-                Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(airNowBean))
+                Log.i(TAG, "getAirNow onSuccess: " + Gson().toJson(airNowBean))
                 //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                 if (Code.OK === airNowBean?.code) {
-                    airNowBean.airNowStationBean.forEach { airNowStationBean ->
-                        airNowStationBean.primary =
-                            if (airNowStationBean.primary == "NA") "" else {
-                                "${getApplication<Application>().getString(R.string.air_quality_warn)}${airNowStationBean.primary}"
-                            }
+                    airNowBean.now.primary = if (airNowBean.now.primary == "NA") "" else {
+                        "${getApplication<Application>().getString(R.string.air_quality_warn)}${airNowBean.now.primary}"
                     }
-                    onAirNowChanged(airNowBean.airNowStationBean)
+                    onAirNowChanged(airNowBean.now)
                 } else {
                     //在此查看返回数据失败的原因
                     val code: Code? = airNowBean?.code
-                    Log.i(TAG, "failed code: $code")
+                    Log.i(TAG, "getAirNow failed code: $code")
                 }
             }
         })

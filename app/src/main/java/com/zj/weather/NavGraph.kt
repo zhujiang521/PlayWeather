@@ -76,7 +76,13 @@ fun NavGraph(
                 val index = if (pagerState.currentPage > cityInfoList.size - 1) {
                     0
                 } else pagerState.currentPage
-                mainViewModel.getWeather(cityInfoList[index].location)
+                val cityInfo = cityInfoList[index]
+                val location = if (cityInfo.locationId.isNotEmpty()) {
+                    cityInfo.locationId
+                } else {
+                    cityInfo.location
+                }
+                mainViewModel.getWeather(location)
             }
             Box(modifier = Modifier.fillMaxSize()) {
                 if (initialPage > 0) {

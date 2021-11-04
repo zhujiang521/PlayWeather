@@ -8,6 +8,7 @@
     <string name="air_quality_title">空氣質量</string>
     <string name="air_quality_Current_aqi">當前AQI（CN）為：</string>
     <string name="air_quality_warn">，主要汙染物為:</string>
+    <string name="air_quality_level">優</string>
 
     <string name="add_location_warn">已經存在該城市，請勿重復添加</string>
     <string name="add_location_warn2">查詢的數據或地區不存在。</string>

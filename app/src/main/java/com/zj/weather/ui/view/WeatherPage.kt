@@ -34,7 +34,7 @@ fun WeatherPage(
 ) {
     val context = LocalContext.current
     val weatherNow by mainViewModel.weatherNow.observeAsState()
-    val airNowBean by mainViewModel.airNowBean.observeAsState(listOf())
+    val airNowBean by mainViewModel.airNowBean.observeAsState()
     val hourlyBeanList by mainViewModel.hourlyBeanList.observeAsState(listOf())
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
@@ -97,7 +97,7 @@ private fun WeatherContent(
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
     weatherNow: WeatherNowBean.NowBaseBean?,
-    airNowBean: List<AirNowBean.AirNowStationBean>,
+    airNowBean: AirNowBean.NowBean?,
     hourlyBeanList: List<WeatherHourlyBean.HourlyBean>,
     dayBeanList: List<WeatherDailyBean.DailyBean>,
     isLand: Boolean = false

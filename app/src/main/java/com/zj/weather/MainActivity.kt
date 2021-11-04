@@ -14,6 +14,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.zj.weather.ui.permission.isPermissionsGranted
 import com.zj.weather.ui.permission.onAlertDialog
 import com.zj.weather.ui.theme.PlayWeatherTheme
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         transparentStatusBar()
         setAndroidNativeLightStatusBar()
         getLocation()

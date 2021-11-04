@@ -15,7 +15,7 @@
 
         <!--「启动画面」中心的图标，
              可以配置AnimationDrawable 和 AnimatedVectorDrawable类型的drawable-->
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
 
         <!--「启动画面」中心图标动画的持续时间，这个属性不会对屏幕显示的实际时间产生任何影响-->
         <item name="windowSplashScreenAnimationDuration">1000</item>
