@@ -54,4 +54,15 @@
     <string name="city_dialog_confirm">Confirm add</string>
     <string name="city_dialog_cancel">Need\'t</string>
 
+    <string name="uv_index_title">UV index</string>
+    <string name="uv_index1">UV intensity is the weakest, just wear a sun hat when going out.</string>
+    <string name="uv_index2">The UV intensity is weak, so you need to put sunscreen on your body when you go out.</string>
+    <string name="uv_index3">Strong UV intensity, you must walk in the shade when going out.</string>
+    <string name="uv_index4">The UV intensity is very strong, so it’s best not to go to the beach to bask in the sun.</string>
+    <string name="uv_index5">Ultraviolet intensity is particularly strong, try to avoid going out.</string>
+
+    <string name="sun_title">Sunrise sunset</string>
+    <string name="sun_sunrise">Sunrise:</string>
+    <string name="sun_sunset">Sunset:</string>
+
 </resources>

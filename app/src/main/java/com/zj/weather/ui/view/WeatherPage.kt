@@ -34,6 +34,7 @@ fun WeatherPage(
 ) {
     val context = LocalContext.current
     val weatherNow by mainViewModel.weatherNow.observeAsState()
+    val todayBean by mainViewModel.todayBean.observeAsState()
     val airNowBean by mainViewModel.airNowBean.observeAsState()
     val hourlyBeanList by mainViewModel.hourlyBeanList.observeAsState(listOf())
     val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
@@ -64,7 +65,7 @@ fun WeatherPage(
                 }
                 WeatherContent(
                     landModifier, scrollState, fontSize, cityList,
-                    cityListClick, cityInfo, weatherNow,
+                    cityListClick, cityInfo, weatherNow, todayBean,
                     airNowBean, hourlyBeanList, dayBeanList, true
                 )
             }
@@ -80,7 +81,7 @@ fun WeatherPage(
                 Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
                 WeatherContent(
                     Modifier, scrollState, fontSize, cityList, cityListClick,
-                    cityInfo, weatherNow, airNowBean,
+                    cityInfo, weatherNow, todayBean, airNowBean,
                     hourlyBeanList, dayBeanList
                 )
             }
@@ -97,6 +98,7 @@ private fun WeatherContent(
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
     weatherNow: WeatherNowBean.NowBaseBean?,
+    dailyBean: WeatherDailyBean.DailyBean?,
     airNowBean: AirNowBean.NowBean?,
     hourlyBeanList: List<WeatherHourlyBean.HourlyBean>,
     dayBeanList: List<WeatherDailyBean.DailyBean>,
@@ -134,6 +136,6 @@ private fun WeatherContent(
         DayWeather(dayBeanList)
 
         // 当天具体天气数值
-        DayWeatherContent(weatherNow)
+        DayWeatherContent(weatherNow, dailyBean)
     }
 }

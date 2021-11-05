@@ -29,7 +29,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
-            .alpha(0.9f),
+            ,
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(

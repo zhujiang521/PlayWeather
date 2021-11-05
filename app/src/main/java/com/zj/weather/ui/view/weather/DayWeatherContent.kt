@@ -1,27 +1,31 @@
 package com.zj.weather.ui.view.weather
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.zj.weather.R
+import com.zj.weather.utils.getSunriseSunsetContent
+import com.zj.weather.utils.getUvIndexDesc
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
+fun DayWeatherContent(
+    weatherNow: WeatherNowBean.NowBaseBean?,
+    dailyBean: WeatherDailyBean.DailyBean?
+) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -30,7 +34,36 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
         val modifier = Modifier
             .weight(1f)
             .padding(5.dp)
-            .alpha(0.9f)
+        WeatherContentItem(
+            modifier,
+            stringResource(id = R.string.uv_index_title),
+            dailyBean?.uvIndex ?: "0",
+            getUvIndexDesc(context, dailyBean?.uvIndex)
+        )
+        WeatherContentItem(
+            modifier.fillMaxHeight(),
+            stringResource(id = R.string.sun_title),
+            getSunriseSunsetContent(
+                context,
+                dailyBean?.sunrise ?: "07:00",
+                dailyBean?.sunset ?: "19:00"
+            ),
+            "${stringResource(id = R.string.sun_sunrise)}${dailyBean?.sunrise ?: "07:00"}\n${
+                stringResource(
+                    id = R.string.sun_sunset
+                )
+            }${dailyBean?.sunset ?: "19:00"}"
+        )
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp, end = 5.dp)
+    ) {
+        val modifier = Modifier
+            .weight(1f)
+            .padding(5.dp)
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.body_temperature_title),
@@ -55,7 +88,6 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
         val modifier = Modifier
             .weight(1f)
             .padding(5.dp)
-            .alpha(0.9f)
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.humidity_title),
@@ -78,7 +110,6 @@ fun DayWeatherContent(weatherNow: WeatherNowBean.NowBaseBean?) {
         val modifier = Modifier
             .weight(1f)
             .padding(5.dp)
-            .alpha(0.9f)
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.air_pressure_title),
@@ -107,7 +138,7 @@ private fun WeatherContentItem(modifier: Modifier, title: String, value: String,
             Text(
                 text = value,
                 modifier = Modifier.padding(top = 10.dp),
-                fontSize = 34.sp,
+                fontSize = 30.sp,
                 color = MaterialTheme.colors.primary
             )
             Text(

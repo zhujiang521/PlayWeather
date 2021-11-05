@@ -54,4 +54,15 @@
     <string name="city_dialog_confirm">确认添加</string>
     <string name="city_dialog_cancel">大可不必</string>
 
+    <string name="uv_index_title">紫外线指数</string>
+    <string name="uv_index1">紫外线强度最弱，外出时戴上太阳帽即可</string>
+    <string name="uv_index2">紫外线强度较弱，外出时需要在身上涂上防晒霜</string>
+    <string name="uv_index3">紫外线强度较强，外出时必须在阴凉处行走</string>
+    <string name="uv_index4">紫外线强度很强，最好不要到沙滩场地上晒太阳</string>
+    <string name="uv_index5">紫外线强度特别强，尽量避免外出</string>
+
+    <string name="sun_title">日出日落</string>
+    <string name="sun_sunrise">日出：</string>
+    <string name="sun_sunset">日落：</string>
+
 </resources>

@@ -18,10 +18,7 @@ import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather.*
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.getDateWeekName
-import com.zj.weather.utils.getDefaultLocale
-import com.zj.weather.utils.getTimeName
-import com.zj.weather.utils.showToast
+import com.zj.weather.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -73,6 +70,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         _dayBeanList.value = dailyBeanList
+    }
+
+    private val _todayBean = MutableLiveData(WeatherDailyBean.DailyBean())
+    val todayBean: LiveData<WeatherDailyBean.DailyBean> = _todayBean
+
+    fun onTodayBeanChanged(dailyBeanList: WeatherDailyBean.DailyBean?) {
+        if (_todayBean.value == dailyBeanList) {
+            return
+        }
+        _todayBean.value = dailyBeanList
     }
 
     private val _airNowBean = MutableLiveData(AirNowBean.NowBean())
@@ -230,6 +237,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     Log.i(TAG, "getWeather7Day onSuccess: " + Gson().toJson(weatherDailyBean))
                     //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                     if (Code.OK === weatherDailyBean?.code) {
+                        onTodayBeanChanged(getTodayBean(weatherDailyBean.daily))
                         weatherDailyBean.daily.forEach { dailyBean ->
                             dailyBean.fxDate = getDateWeekName(getApplication(), dailyBean.fxDate)
                         }
@@ -399,11 +407,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             Log.d(TAG, "updateCityInfo: thoroughfare:${address.thoroughfare}")
 
             if (isLocationList.isNotEmpty()) {
-                Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
+                Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
                 cityInfoDao.update(cityInfo)
             } else {
                 cityInfoDao.insert(cityInfo)
-                Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
+                Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
             }
             getCityList()
             withContext(Dispatchers.Main) {
