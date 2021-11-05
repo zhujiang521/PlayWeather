@@ -74,13 +74,11 @@ fun getSunriseSunsetContent(context: Context, sunrise: String, sunset: String): 
     }
     val sunrises = sunrise.split(":")
     val sunsets = sunset.split(":")
-    Log.d(TAG, "getSunriseSunsetContent: sunrise:$sunrise")
-    Log.d(TAG, "getSunriseSunsetContent: sunset:$sunset")
     Log.d(TAG, "getSunriseSunsetContent: sunrises:$sunrises")
     Log.d(TAG, "getSunriseSunsetContent: sunsets:$sunsets")
     val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
-    return if (hour < sunrises[0].toInt() || hour > sunsets[0].toInt()) {
+    return if (hour < sunrises[0].toInt()) {
         "${context.getString(R.string.sun_sunrise)}${sunrise}"
     } else {
         "${context.getString(R.string.sun_sunset)}${sunset}"
