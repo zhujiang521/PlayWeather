@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.weather.R
+import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.list.NoContent
 import com.zj.weather.utils.swipe.SwipeDeleteLayout
 
 @Composable

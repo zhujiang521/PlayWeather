@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.list
+package com.zj.weather.common.lce
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

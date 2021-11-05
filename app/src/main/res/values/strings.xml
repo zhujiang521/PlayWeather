@@ -65,4 +65,6 @@
     <string name="sun_sunrise">Sunrise:</string>
     <string name="sun_sunset">Sunset:</string>
 
+    <string name="bad_network_view_tip">Your network is not working well, click on the screen to reload</string>
+
 </resources>

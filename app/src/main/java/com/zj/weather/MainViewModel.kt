@@ -16,6 +16,11 @@ import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather.*
+import com.zj.weather.common.PlayError
+import com.zj.weather.common.PlayLoading
+import com.zj.weather.common.PlayState
+import com.zj.weather.common.PlaySuccess
+import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.*
@@ -23,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.lang.IllegalStateException
 
 
 /**
@@ -126,12 +132,41 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         language = getDefaultLocale(getApplication())
     }
 
+    private val _weatherModel = MutableLiveData<PlayState>(PlayLoading)
+    val weatherModel: LiveData<PlayState> = _weatherModel
+
+    private fun onWeatherModelChanged(playState: PlayState) {
+        if (_weatherModel.value == playState) {
+            return
+        }
+        _weatherModel.value = playState
+    }
+
     fun getWeather(location: String = "CN101010100") {
         Log.e(TAG, "getWeather: location:$location")
-        getWeatherNow(location)
-        getWeather24Hour(location)
-        getWeather7Day(location)
-        getAirNow(location)
+        if (!NetCheckUtil.checkNet(getApplication())) {
+            showToast(getApplication(), R.string.bad_network_view_tip)
+            onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
+            return
+        }
+        onWeatherModelChanged(PlayLoading)
+        viewModelScope.launch(Dispatchers.IO) {
+            val mainRepository = MainRepository(getApplication())
+            val weatherNow = mainRepository.getWeatherNow(location, language)
+            val weather24Hour = mainRepository.getWeather24Hour(location, language)
+            val weather7Day = mainRepository.getWeather7Day(location, language)
+            val airNow = mainRepository.getAirNow(location, language)
+            val weatherModel = WeatherModel(
+                nowBaseBean = weatherNow,
+                hourlyBeanList = weather24Hour,
+                dailyBean = weather7Day.first,
+                dailyBeanList = weather7Day.second,
+                airNowBean = airNow
+            )
+            withContext(Dispatchers.Main) {
+                onWeatherModelChanged(PlaySuccess(weatherModel))
+            }
+        }
     }
 
     /**
@@ -142,114 +177,123 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * unit     (选填)单位选择，公制（m）或英制（i），默认为公制单位
      * listener 网络访问结果回调
      */
-    private fun getWeatherNow(location: String = "CN101010100") {
+    private suspend fun getWeatherNow(location: String = "CN101010100") {
         Log.e(TAG, "getWeatherNow: 查询的城市:$location")
-        getWeatherNow(getApplication(), location, language,
-            Unit.METRIC, object : OnResultWeatherNowListener {
-                override fun onError(e: Throwable) {
-                    showToast(getApplication(), e.message)
-                    Log.e(TAG, "getWeather onError: $e")
-                }
-
-                override fun onSuccess(weatherBean: WeatherNowBean) {
-                    Log.i(TAG, "getWeather onSuccess: " + Gson().toJson(weatherBean))
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === weatherBean.code) {
-                        val now = weatherBean.now
-                        onWeatherNowChanged(now)
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code = weatherBean.code
-                        Log.i(TAG, "failed code: $code")
-                        showToast(getApplication(), code.txt)
+        withContext(Dispatchers.IO) {
+            getWeatherNow(getApplication(), location, language,
+                Unit.METRIC, object : OnResultWeatherNowListener {
+                    override fun onError(e: Throwable) {
+                        showToast(getApplication(), e.message)
+                        Log.e(TAG, "getWeather onError: $e")
                     }
-                }
-            })
+
+                    override fun onSuccess(weatherBean: WeatherNowBean) {
+                        Log.i(TAG, "getWeather onSuccess: " + Gson().toJson(weatherBean))
+                        //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                        if (Code.OK === weatherBean.code) {
+                            val now = weatherBean.now
+                            onWeatherNowChanged(now)
+                        } else {
+                            //在此查看返回数据失败的原因
+                            val code: Code = weatherBean.code
+                            Log.i(TAG, "failed code: $code")
+                            showToast(getApplication(), code.txt)
+                        }
+                    }
+                })
+        }
     }
 
     /**
      * 当前的空气质量
      */
-    private fun getAirNow(location: String = "CN101010100") {
-        getAirNow(getApplication(), location, language, object : OnResultAirNowListener {
-            override fun onError(e: Throwable) {
-                showToast(getApplication(), e.message)
-                Log.e(TAG, "getAirNow onError: $e")
-            }
-
-            override fun onSuccess(airNowBean: AirNowBean?) {
-                Log.i(TAG, "getAirNow onSuccess: " + Gson().toJson(airNowBean))
-                //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                if (Code.OK === airNowBean?.code) {
-                    airNowBean.now.primary = if (airNowBean.now.primary == "NA") "" else {
-                        "${getApplication<Application>().getString(R.string.air_quality_warn)}${airNowBean.now.primary}"
-                    }
-                    onAirNowChanged(airNowBean.now)
-                } else {
-                    //在此查看返回数据失败的原因
-                    val code: Code? = airNowBean?.code
-                    Log.i(TAG, "getAirNow failed code: $code")
+    private suspend fun getAirNow(location: String = "CN101010100") {
+        withContext(Dispatchers.IO) {
+            getAirNow(getApplication(), location, language, object : OnResultAirNowListener {
+                override fun onError(e: Throwable) {
+                    showToast(getApplication(), e.message)
+                    Log.e(TAG, "getAirNow onError: $e")
                 }
-            }
-        })
+
+                override fun onSuccess(airNowBean: AirNowBean?) {
+                    Log.i(TAG, "getAirNow onSuccess: " + Gson().toJson(airNowBean))
+                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                    if (Code.OK === airNowBean?.code) {
+                        airNowBean.now.primary = if (airNowBean.now.primary == "NA") "" else {
+                            "${getApplication<Application>().getString(R.string.air_quality_warn)}${airNowBean.now.primary}"
+                        }
+                        onAirNowChanged(airNowBean.now)
+                    } else {
+                        //在此查看返回数据失败的原因
+                        val code: Code? = airNowBean?.code
+                        Log.i(TAG, "getAirNow failed code: $code")
+                    }
+                }
+            })
+        }
     }
 
     /**
      * 未来24小时每小时的天气预报
      */
-    private fun getWeather24Hour(location: String = "CN101010100") {
-        getWeather24Hourly(getApplication(), location, language,
-            Unit.METRIC, object : OnResultWeatherHourlyListener {
-                override fun onError(e: Throwable) {
-                    showToast(getApplication(), e.message)
-                    Log.e(TAG, "getWeather24Hour onError: $e")
-                }
-
-                override fun onSuccess(weatherBean: WeatherHourlyBean?) {
-                    Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(weatherBean))
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === weatherBean?.code) {
-                        weatherBean.hourly.forEach { hourlyBean ->
-                            hourlyBean.fxTime = getTimeName(getApplication(), hourlyBean.fxTime)
-                        }
-                        onWeather24HourChanged(weatherBean.hourly)
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code? = weatherBean?.code
-                        Log.i(TAG, "failed code: $code")
+    private suspend fun getWeather24Hour(location: String = "CN101010100") {
+        withContext(Dispatchers.IO) {
+            getWeather24Hourly(getApplication(), location, language,
+                Unit.METRIC, object : OnResultWeatherHourlyListener {
+                    override fun onError(e: Throwable) {
+                        showToast(getApplication(), e.message)
+                        Log.e(TAG, "getWeather24Hour onError: $e")
                     }
-                }
-            })
+
+                    override fun onSuccess(weatherBean: WeatherHourlyBean?) {
+                        Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(weatherBean))
+                        //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                        if (Code.OK === weatherBean?.code) {
+                            weatherBean.hourly.forEach { hourlyBean ->
+                                hourlyBean.fxTime = getTimeName(getApplication(), hourlyBean.fxTime)
+                            }
+                            onWeather24HourChanged(weatherBean.hourly)
+                        } else {
+                            //在此查看返回数据失败的原因
+                            val code: Code? = weatherBean?.code
+                            Log.i(TAG, "failed code: $code")
+                        }
+                    }
+                })
+        }
     }
 
     /**
      * 未来7天天气预报
      */
-    private fun getWeather7Day(location: String = "CN101010100") {
-        getWeather7D(getApplication(), location, language,
-            Unit.METRIC, object : OnResultWeatherDailyListener {
-                override fun onError(e: Throwable) {
-                    showToast(getApplication(), e.message)
-                    Log.e(TAG, "getWeather7Day onError: $e")
-                }
-
-                override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
-                    Log.i(TAG, "getWeather7Day onSuccess: " + Gson().toJson(weatherDailyBean))
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === weatherDailyBean?.code) {
-                        onTodayBeanChanged(getTodayBean(weatherDailyBean.daily))
-                        weatherDailyBean.daily.forEach { dailyBean ->
-                            dailyBean.fxDate = getDateWeekName(getApplication(), dailyBean.fxDate)
-                        }
-                        onWeather7DayChanged(weatherDailyBean.daily)
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code? = weatherDailyBean?.code
-                        Log.i(TAG, "getWeather7Day failed code: $code")
+    private suspend fun getWeather7Day(location: String = "CN101010100") {
+        withContext(Dispatchers.IO) {
+            getWeather7D(getApplication(), location, language,
+                Unit.METRIC, object : OnResultWeatherDailyListener {
+                    override fun onError(e: Throwable) {
+                        showToast(getApplication(), e.message)
+                        Log.e(TAG, "getWeather7Day onError: $e")
                     }
-                }
 
-            })
+                    override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
+                        Log.i(TAG, "getWeather7Day onSuccess: " + Gson().toJson(weatherDailyBean))
+                        //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
+                        if (Code.OK === weatherDailyBean?.code) {
+                            onTodayBeanChanged(getTodayBean(weatherDailyBean.daily))
+                            weatherDailyBean.daily.forEach { dailyBean ->
+                                dailyBean.fxDate =
+                                    getDateWeekName(getApplication(), dailyBean.fxDate)
+                            }
+                            onWeather7DayChanged(weatherDailyBean.daily)
+                        } else {
+                            //在此查看返回数据失败的原因
+                            val code: Code? = weatherDailyBean?.code
+                            Log.i(TAG, "getWeather7Day failed code: $code")
+                        }
+                    }
+
+                })
+        }
     }
 
     /**

@@ -65,4 +65,6 @@
     <string name="sun_sunrise">日出：</string>
     <string name="sun_sunset">日落：</string>
 
+    <string name="bad_network_view_tip">您的网络不给力，点击屏幕可重新加载</string>
+
 </resources>

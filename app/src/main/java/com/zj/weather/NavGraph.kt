@@ -37,6 +37,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.WeatherPage
 import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.list.DrawIndicator
@@ -92,9 +93,13 @@ fun NavGraph(
                     }
                 }
                 HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->
-                    WeatherPage(mainViewModel, cityInfoList[page], cityList = {
-                        actions.toCityList()
-                    }) {
+                    WeatherPage(mainViewModel, cityInfoList[page],
+                        onErrorClick = {
+                            mainViewModel.getWeather(getErrorClick(cityInfoList[page]))
+                        },
+                        cityList = {
+                            actions.toCityList()
+                        }) {
                         actions.toWeatherList()
                     }
                 }
@@ -136,6 +141,14 @@ fun NavGraph(
                 })
         }
     }
+}
+
+private fun getErrorClick(
+    cityInfo: CityInfo,
+) = if (cityInfo.locationId.isNotEmpty()) {
+    cityInfo.locationId
+} else {
+    cityInfo.location
 }
 
 @ExperimentalAnimationApi

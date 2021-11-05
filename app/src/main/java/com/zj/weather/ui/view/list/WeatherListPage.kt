@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
+import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.showToast
 
