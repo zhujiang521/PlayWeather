@@ -17,7 +17,6 @@ import com.zj.weather.utils.getTodayBean
 import com.zj.weather.utils.showToast
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 class MainRepository(private val context: Context) {
 
@@ -53,7 +52,6 @@ class MainRepository(private val context: Context) {
                             val code: Code = weatherNowBean.code
                             Log.i(TAG, "failed code: $code")
                             showToast(context, code.txt)
-                            continuation.resumeWithException(IllegalArgumentException(weatherNowBean.code?.txt))
                         }
                     }
                 })
@@ -89,11 +87,6 @@ class MainRepository(private val context: Context) {
                             //在此查看返回数据失败的原因
                             val code: Code? = weatherHourlyBean?.code
                             Log.i(TAG, "failed code: $code")
-                            continuation.resumeWithException(
-                                IllegalArgumentException(
-                                    weatherHourlyBean?.code?.txt
-                                )
-                            )
                         }
                     }
                 })
@@ -112,7 +105,7 @@ class MainRepository(private val context: Context) {
                     override fun onError(e: Throwable) {
                         Log.e(TAG, "getWeather24Hour onError: $e")
                         showToast(context, e.message)
-                        
+
                     }
 
                     override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
@@ -132,11 +125,6 @@ class MainRepository(private val context: Context) {
                             //在此查看返回数据失败的原因
                             val code: Code? = weatherDailyBean?.code
                             Log.i(TAG, "getWeather7Day failed code: $code")
-                            continuation.resumeWithException(
-                                IllegalArgumentException(
-                                    weatherDailyBean?.code?.txt
-                                )
-                            )
                         }
                     }
 
@@ -156,7 +144,7 @@ class MainRepository(private val context: Context) {
                     override fun onError(e: Throwable) {
                         Log.e(TAG, "getWeather24Hour onError: $e")
                         showToast(context, e.message)
-                        
+
                     }
 
                     override fun onSuccess(airNowBean: AirNowBean?) {
@@ -174,11 +162,6 @@ class MainRepository(private val context: Context) {
                             //在此查看返回数据失败的原因
                             val code: Code? = airNowBean?.code
                             Log.i(TAG, "getAirNow failed code: $code")
-                            continuation.resumeWithException(
-                                IllegalArgumentException(
-                                    airNowBean?.code?.txt
-                                )
-                            )
                         }
                     }
                 })

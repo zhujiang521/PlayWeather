@@ -6,15 +6,10 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
-import com.qweather.sdk.bean.air.AirNowBean
 import com.qweather.sdk.bean.base.Code
 import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.base.Range
-import com.qweather.sdk.bean.base.Unit
 import com.qweather.sdk.bean.geo.GeoBean
-import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.bean.weather.WeatherHourlyBean
-import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather.*
 import com.zj.weather.common.PlayError
 import com.zj.weather.common.PlayLoading
@@ -28,7 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.lang.IllegalStateException
 
 
 /**
@@ -47,56 +41,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var language: Lang = getDefaultLocale(getApplication())
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
-
-    private val _weatherNow = MutableLiveData(WeatherNowBean.NowBaseBean())
-    val weatherNow: LiveData<WeatherNowBean.NowBaseBean> = _weatherNow
-
-    fun onWeatherNowChanged(weatherNowBean: WeatherNowBean.NowBaseBean) {
-        if (_weatherNow.value == weatherNowBean) {
-            return
-        }
-        _weatherNow.value = weatherNowBean
-    }
-
-    private val _hourlyBeanList = MutableLiveData(listOf<WeatherHourlyBean.HourlyBean>())
-    val hourlyBeanList: LiveData<List<WeatherHourlyBean.HourlyBean>> = _hourlyBeanList
-
-    fun onWeather24HourChanged(hourlyBean: List<WeatherHourlyBean.HourlyBean>) {
-        if (_hourlyBeanList.value == hourlyBean) {
-            return
-        }
-        _hourlyBeanList.value = hourlyBean
-    }
-
-    private val _dayBeanList = MutableLiveData(listOf<WeatherDailyBean.DailyBean>())
-    val dayBeanList: LiveData<List<WeatherDailyBean.DailyBean>> = _dayBeanList
-
-    fun onWeather7DayChanged(dailyBeanList: List<WeatherDailyBean.DailyBean>) {
-        if (_dayBeanList.value == dailyBeanList) {
-            return
-        }
-        _dayBeanList.value = dailyBeanList
-    }
-
-    private val _todayBean = MutableLiveData(WeatherDailyBean.DailyBean())
-    val todayBean: LiveData<WeatherDailyBean.DailyBean> = _todayBean
-
-    fun onTodayBeanChanged(dailyBeanList: WeatherDailyBean.DailyBean?) {
-        if (_todayBean.value == dailyBeanList) {
-            return
-        }
-        _todayBean.value = dailyBeanList
-    }
-
-    private val _airNowBean = MutableLiveData(AirNowBean.NowBean())
-    val airNowBean: LiveData<AirNowBean.NowBean> = _airNowBean
-
-    fun onAirNowChanged(airNowList: AirNowBean.NowBean) {
-        if (_airNowBean.value == airNowList) {
-            return
-        }
-        _airNowBean.value = airNowList
-    }
 
     private val _locationBeanList = MutableLiveData(listOf<GeoBean.LocationBean>())
     val locationBeanList: LiveData<List<GeoBean.LocationBean>> = _locationBeanList
@@ -166,133 +110,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             withContext(Dispatchers.Main) {
                 onWeatherModelChanged(PlaySuccess(weatherModel))
             }
-        }
-    }
-
-    /**
-     * 实况天气数据
-     * @param location 所查询的地区，可通过该地区名称、ID、IP和经纬度进行查询经纬度格式：经度,纬度
-     *                 （英文,分隔，十进制格式，北纬东经为正，南纬西经为负)
-     * lang     (选填)多语言，可以不使用该参数，默认为简体中文
-     * unit     (选填)单位选择，公制（m）或英制（i），默认为公制单位
-     * listener 网络访问结果回调
-     */
-    private suspend fun getWeatherNow(location: String = "CN101010100") {
-        Log.e(TAG, "getWeatherNow: 查询的城市:$location")
-        withContext(Dispatchers.IO) {
-            getWeatherNow(getApplication(), location, language,
-                Unit.METRIC, object : OnResultWeatherNowListener {
-                    override fun onError(e: Throwable) {
-                        showToast(getApplication(), e.message)
-                        Log.e(TAG, "getWeather onError: $e")
-                    }
-
-                    override fun onSuccess(weatherBean: WeatherNowBean) {
-                        Log.i(TAG, "getWeather onSuccess: " + Gson().toJson(weatherBean))
-                        //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                        if (Code.OK === weatherBean.code) {
-                            val now = weatherBean.now
-                            onWeatherNowChanged(now)
-                        } else {
-                            //在此查看返回数据失败的原因
-                            val code: Code = weatherBean.code
-                            Log.i(TAG, "failed code: $code")
-                            showToast(getApplication(), code.txt)
-                        }
-                    }
-                })
-        }
-    }
-
-    /**
-     * 当前的空气质量
-     */
-    private suspend fun getAirNow(location: String = "CN101010100") {
-        withContext(Dispatchers.IO) {
-            getAirNow(getApplication(), location, language, object : OnResultAirNowListener {
-                override fun onError(e: Throwable) {
-                    showToast(getApplication(), e.message)
-                    Log.e(TAG, "getAirNow onError: $e")
-                }
-
-                override fun onSuccess(airNowBean: AirNowBean?) {
-                    Log.i(TAG, "getAirNow onSuccess: " + Gson().toJson(airNowBean))
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === airNowBean?.code) {
-                        airNowBean.now.primary = if (airNowBean.now.primary == "NA") "" else {
-                            "${getApplication<Application>().getString(R.string.air_quality_warn)}${airNowBean.now.primary}"
-                        }
-                        onAirNowChanged(airNowBean.now)
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code? = airNowBean?.code
-                        Log.i(TAG, "getAirNow failed code: $code")
-                    }
-                }
-            })
-        }
-    }
-
-    /**
-     * 未来24小时每小时的天气预报
-     */
-    private suspend fun getWeather24Hour(location: String = "CN101010100") {
-        withContext(Dispatchers.IO) {
-            getWeather24Hourly(getApplication(), location, language,
-                Unit.METRIC, object : OnResultWeatherHourlyListener {
-                    override fun onError(e: Throwable) {
-                        showToast(getApplication(), e.message)
-                        Log.e(TAG, "getWeather24Hour onError: $e")
-                    }
-
-                    override fun onSuccess(weatherBean: WeatherHourlyBean?) {
-                        Log.i(TAG, "getWeather24Hour onSuccess: " + Gson().toJson(weatherBean))
-                        //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                        if (Code.OK === weatherBean?.code) {
-                            weatherBean.hourly.forEach { hourlyBean ->
-                                hourlyBean.fxTime = getTimeName(getApplication(), hourlyBean.fxTime)
-                            }
-                            onWeather24HourChanged(weatherBean.hourly)
-                        } else {
-                            //在此查看返回数据失败的原因
-                            val code: Code? = weatherBean?.code
-                            Log.i(TAG, "failed code: $code")
-                        }
-                    }
-                })
-        }
-    }
-
-    /**
-     * 未来7天天气预报
-     */
-    private suspend fun getWeather7Day(location: String = "CN101010100") {
-        withContext(Dispatchers.IO) {
-            getWeather7D(getApplication(), location, language,
-                Unit.METRIC, object : OnResultWeatherDailyListener {
-                    override fun onError(e: Throwable) {
-                        showToast(getApplication(), e.message)
-                        Log.e(TAG, "getWeather7Day onError: $e")
-                    }
-
-                    override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
-                        Log.i(TAG, "getWeather7Day onSuccess: " + Gson().toJson(weatherDailyBean))
-                        //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                        if (Code.OK === weatherDailyBean?.code) {
-                            onTodayBeanChanged(getTodayBean(weatherDailyBean.daily))
-                            weatherDailyBean.daily.forEach { dailyBean ->
-                                dailyBean.fxDate =
-                                    getDateWeekName(getApplication(), dailyBean.fxDate)
-                            }
-                            onWeather7DayChanged(weatherDailyBean.daily)
-                        } else {
-                            //在此查看返回数据失败的原因
-                            val code: Code? = weatherDailyBean?.code
-                            Log.i(TAG, "getWeather7Day failed code: $code")
-                        }
-                    }
-
-                })
         }
     }
 
