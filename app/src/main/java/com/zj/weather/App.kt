@@ -2,6 +2,7 @@ package com.zj.weather
 
 import android.app.Application
 import com.qweather.sdk.view.HeConfig
+import dagger.hilt.android.HiltAndroidApp
 
 
 /**
@@ -9,6 +10,7 @@ import com.qweather.sdk.view.HeConfig
  *
  * @author jiang zhu on 2021/10/28
  */
+@HiltAndroidApp
 class App : Application() {
 
     companion object {

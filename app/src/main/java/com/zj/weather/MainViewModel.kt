@@ -4,13 +4,12 @@ import android.app.Application
 import android.location.Address
 import android.location.Location
 import android.util.Log
-import androidx.lifecycle.*
-import com.google.gson.Gson
-import com.qweather.sdk.bean.base.Code
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.qweather.sdk.bean.base.Lang
-import com.qweather.sdk.bean.base.Range
 import com.qweather.sdk.bean.geo.GeoBean
-import com.qweather.sdk.view.QWeather.*
 import com.zj.weather.common.PlayError
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
@@ -18,11 +17,15 @@ import com.zj.weather.common.PlaySuccess
 import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.*
+import com.zj.weather.utils.NetCheckUtil
+import com.zj.weather.utils.getDefaultLocale
+import com.zj.weather.utils.showToast
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 /**
@@ -33,7 +36,11 @@ import kotlinx.coroutines.withContext
  * 描述：PlayAndroid
  *
  */
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    application: Application,
+    private val mainRepository: MainRepository
+) : AndroidViewModel(application) {
 
     companion object {
         private const val TAG = "MainViewModel"
@@ -96,7 +103,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
         onWeatherModelChanged(PlayLoading)
         viewModelScope.launch(Dispatchers.IO) {
-            val mainRepository = MainRepository(getApplication())
             val weatherNow = mainRepository.getWeatherNow(location, language)
             val weather24Hour = mainRepository.getWeather24Hour(location, language)
             val weather7Day = mainRepository.getWeather7Day(location, language)
@@ -120,7 +126,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * @param cityName 城市名称
      */
     fun getGeoCityLookup(cityName: String = "北京") {
-        val mainRepository = MainRepository(getApplication())
         viewModelScope.launch {
             val cityLookup = mainRepository.getGeoCityLookup(cityName)
             onLocationBeanListChanged(cityLookup)
@@ -131,7 +136,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
-        val mainRepository = MainRepository(getApplication())
         viewModelScope.launch {
             val cityLookup = mainRepository.getGeoTopCity(language)
             onLocationBeanListChanged(cityLookup)
@@ -141,34 +145,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun refreshCityList() {
         viewModelScope.launch(Dispatchers.IO) {
             var cityInfoList = cityInfoDao.getCityInfoList()
-            if (cityInfoList.isNullOrEmpty()) {
-                cityInfoList = listOf(
-                    CityInfo(
-                        location = "CN101010100",
-                        name = getApplication<Application>().getString(R.string.default_location),
-                    )
-                )
-            } else {
-                Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
-            }
+            cityInfoList = makeDefault(cityInfoList)
             withContext(Dispatchers.Main) {
                 onCityInfoListChanged(cityInfoList)
             }
         }
     }
 
-    fun getSyncCityList(): List<CityInfo> {
-        var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
-        if (cityInfoList.isNullOrEmpty()) {
-            cityInfoList = listOf(
+    private fun makeDefault(cityInfoList: List<CityInfo>): List<CityInfo> {
+        return if (cityInfoList.isNullOrEmpty()) {
+            val cityInfo = listOf(
                 CityInfo(
                     location = "CN101010100",
-                    name = getApplication<Application>().getString(R.string.default_location)
+                    name = getApplication<Application>().getString(R.string.default_location),
                 )
             )
+            cityInfo
         } else {
             Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
+            cityInfoList
         }
+    }
+
+    fun getSyncCityList(): List<CityInfo> {
+        var cityInfoList = runBlocking { cityInfoDao.getCityInfoList() }
+        cityInfoList = makeDefault(cityInfoList)
         return cityInfoList
     }
 
@@ -188,7 +189,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return runBlocking { cityInfoDao.getCount() }
     }
 
-    fun insertCityInfo(cityInfo: CityInfo, onSuccessListener: () -> kotlin.Unit) {
+    fun insertCityInfo(cityInfo: CityInfo, onSuccessListener: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val hasLocation = cityInfoDao.getHasLocation(cityInfo.name)
             if (hasLocation.isNullOrEmpty()) {
@@ -212,7 +213,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * @param result Address
      */
     fun updateCityInfo(location: Location, result: MutableList<Address>) {
-        val mainRepository = MainRepository(getApplication())
         viewModelScope.launch(Dispatchers.IO) {
             mainRepository.updateCityInfo(location, result)
             refreshCityList()

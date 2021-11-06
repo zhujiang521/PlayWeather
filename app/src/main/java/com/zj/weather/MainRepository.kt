@@ -1,6 +1,6 @@
 package com.zj.weather
 
-import android.content.Context
+import android.app.Application
 import android.location.Address
 import android.location.Location
 import android.util.Log
@@ -25,10 +25,13 @@ import com.zj.weather.utils.getDateWeekName
 import com.zj.weather.utils.getTimeName
 import com.zj.weather.utils.getTodayBean
 import com.zj.weather.utils.showToast
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class MainRepository(private val context: Context) {
+@ActivityRetainedScoped
+class MainRepository @Inject constructor(private val context: Application) {
 
     companion object {
         private const val TAG = "MainRepository"

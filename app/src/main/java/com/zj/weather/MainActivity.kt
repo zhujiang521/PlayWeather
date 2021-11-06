@@ -20,12 +20,14 @@ import com.zj.weather.ui.permission.onAlertDialog
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.utils.setAndroidNativeLightStatusBar
 import com.zj.weather.utils.transparentStatusBar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
     companion object {
@@ -133,9 +135,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             location.latitude,
             location.longitude, 1
         )
-        launch(Dispatchers.IO) {
-            mainViewModel.updateCityInfo(location, result)
-        }
+        mainViewModel.updateCityInfo(location, result)
         Log.v(TAG, "获取地址信息：${result[0]?.adminArea}")
 
         return result
