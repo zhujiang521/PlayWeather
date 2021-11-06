@@ -42,10 +42,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var language: Lang = getDefaultLocale(getApplication())
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
 
-    private val _locationBeanList = MutableLiveData(listOf<GeoBean.LocationBean>())
-    val locationBeanList: LiveData<List<GeoBean.LocationBean>> = _locationBeanList
+    private val _locationBeanList =
+        MutableLiveData<PlayState<List<GeoBean.LocationBean>>>(PlayLoading)
+    val locationBeanList: LiveData<PlayState<List<GeoBean.LocationBean>>> = _locationBeanList
 
-    fun onLocationBeanListChanged(hourlyBean: List<GeoBean.LocationBean>) {
+    private fun onLocationBeanListChanged(hourlyBean: PlayState<List<GeoBean.LocationBean>>) {
         if (_locationBeanList.value == hourlyBean) {
             return
         }
@@ -76,10 +77,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         language = getDefaultLocale(getApplication())
     }
 
-    private val _weatherModel = MutableLiveData<PlayState>(PlayLoading)
-    val weatherModel: LiveData<PlayState> = _weatherModel
+    private val _weatherModel = MutableLiveData<PlayState<WeatherModel>>(PlayLoading)
+    val weatherModel: LiveData<PlayState<WeatherModel>> = _weatherModel
 
-    private fun onWeatherModelChanged(playState: PlayState) {
+    private fun onWeatherModelChanged(playState: PlayState<WeatherModel>) {
         if (_weatherModel.value == playState) {
             return
         }
@@ -119,63 +120,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * @param cityName 城市名称
      */
     fun getGeoCityLookup(cityName: String = "北京") {
-        getGeoCityLookup(getApplication(), cityName, object : OnResultGeoListener {
-            override fun onError(e: Throwable?) {
-                onLocationBeanListChanged(listOf())
-                Log.e(TAG, "getGeoCityLookup onError: ${e?.message}")
-                showToast(getApplication(), R.string.add_location_warn2)
-            }
-
-            override fun onSuccess(geoBean: GeoBean?) {
-                if (geoBean == null) {
-                    Log.e(TAG, "getGeoCityLookup onError: 返回值为空")
-                    return
-                }
-                val json = Gson().toJson(geoBean)
-                Log.i(TAG, "getGeoCityLookup onSuccess: $json")
-                // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                if (Code.OK === geoBean.code) {
-                    onLocationBeanListChanged(geoBean.locationBean)
-                } else {
-                    //在此查看返回数据失败的原因
-                    val code: Code = geoBean.code
-                    Log.i(TAG, "getGeoCityLookup failed code: $code")
-                    showToast(getApplication(), code.txt)
-                }
-            }
-        })
+        val mainRepository = MainRepository(getApplication())
+        viewModelScope.launch {
+            val cityLookup = mainRepository.getGeoCityLookup(cityName)
+            onLocationBeanListChanged(cityLookup)
+        }
     }
 
     /**
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
-        getGeoTopCity(getApplication(), 20, Range.CN, language, object : OnResultGeoListener {
-            override fun onError(e: Throwable?) {
-                Log.e(TAG, "getGeoTopCity onError: $e")
-            }
-
-            override fun onSuccess(geoBean: GeoBean?) {
-                if (geoBean == null) {
-                    Log.e(TAG, "getGeoTopCity onError: 返回值为空")
-                    return
-                }
-                val json = Gson().toJson(geoBean)
-                Log.i(TAG, "getGeoTopCity onSuccess: $json")
-                // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                if (Code.OK === geoBean.code) {
-                    onLocationBeanListChanged(geoBean.locationBean)
-                } else {
-                    //在此查看返回数据失败的原因
-                    val code: Code = geoBean.code
-                    Log.i(TAG, "getGeoTopCity failed code: $code")
-                    showToast(getApplication(), code.txt)
-                }
-            }
-        })
+        val mainRepository = MainRepository(getApplication())
+        viewModelScope.launch {
+            val cityLookup = mainRepository.getGeoTopCity(language)
+            onLocationBeanListChanged(cityLookup)
+        }
     }
 
-    fun getCityList() {
+    fun refreshCityList() {
         viewModelScope.launch(Dispatchers.IO) {
             var cityInfoList = cityInfoDao.getCityInfoList()
             if (cityInfoList.isNullOrEmpty()) {
@@ -212,7 +175,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteCityInfo(cityInfo: CityInfo) {
         viewModelScope.launch(Dispatchers.IO) {
             cityInfoDao.delete(cityInfo)
-            getCityList()
+            refreshCityList()
         }
     }
 
@@ -238,43 +201,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     showToast(getApplication(), R.string.add_location_warn)
                 }
             }
-            getCityList()
+            refreshCityList()
         }
     }
 
-    fun updateCityInfo(
-        location: Location,
-        result: MutableList<Address>
-    ) {
+    /**
+     * 修改当前的位置信息
+     *
+     * @param location 位置
+     * @param result Address
+     */
+    fun updateCityInfo(location: Location, result: MutableList<Address>) {
+        val mainRepository = MainRepository(getApplication())
         viewModelScope.launch(Dispatchers.IO) {
-            if (result.isNullOrEmpty()) return@launch
-            val address = result[0]
-            val isLocationList = cityInfoDao.getIsLocationList()
-            val cityInfo = CityInfo(
-                location = "${location.longitude},${
-                    location.latitude
-                }",
-                name = address.subLocality ?: "",
-                isLocation = 1,
-                province = address.adminArea,
-                city = address.locality
-            )
-            Log.d(TAG, "updateCityInfo: featureName:${address.featureName}")
-            Log.d(TAG, "updateCityInfo: locality:${address.locality}")
-            Log.d(TAG, "updateCityInfo: adminArea:${address.adminArea}")
-            Log.d(TAG, "updateCityInfo: subAdminArea:${address.subAdminArea}")
-            Log.d(TAG, "updateCityInfo: subLocality:${address.subLocality}")
-            Log.d(TAG, "updateCityInfo: subThoroughfare:${address.subThoroughfare}")
-            Log.d(TAG, "updateCityInfo: thoroughfare:${address.thoroughfare}")
-
-            if (isLocationList.isNotEmpty()) {
-                Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
-                cityInfoDao.update(cityInfo)
-            } else {
-                cityInfoDao.insert(cityInfo)
-                Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
-            }
-            getCityList()
+            mainRepository.updateCityInfo(location, result)
+            refreshCityList()
             withContext(Dispatchers.Main) {
                 onSearchCityInfoChanged(0)
             }

@@ -7,7 +7,11 @@ import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 
 @Composable
-fun LcePage(playState: PlayState, onErrorClick: () -> Unit, content: @Composable () -> Unit) {
+fun <T> LcePage(
+    playState: PlayState<T>,
+    onErrorClick: () -> Unit,
+    content: @Composable (T) -> Unit
+) {
 
     when (playState) {
         PlayLoading -> {
@@ -16,8 +20,8 @@ fun LcePage(playState: PlayState, onErrorClick: () -> Unit, content: @Composable
         is PlayError -> {
             ErrorContent(onErrorClick = onErrorClick)
         }
-        is PlaySuccess -> {
-            content()
+        is PlaySuccess<T> -> {
+            content(playState.data)
         }
     }
 

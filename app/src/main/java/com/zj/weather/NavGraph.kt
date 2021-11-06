@@ -68,7 +68,7 @@ fun NavGraph(
         setComposable(
             PlayDestinations.HOME_PAGE_ROUTE,
         ) {
-            mainViewModel.getCityList()
+            mainViewModel.refreshCityList()
             val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
             val initialPage by mainViewModel.searchCityInfo.observeAsState(0)
             Log.e(TAG, "NavGraph: cityInfoList initialPage:$initialPage")
@@ -116,6 +116,9 @@ fun NavGraph(
             WeatherListPage(
                 mainViewModel = mainViewModel,
                 onBack = actions.upPress,
+                onErrorClick = {
+                    mainViewModel.getGeoTopCity()
+                },
                 toWeatherDetails = { cityInfo ->
                     mainViewModel.insertCityInfo(cityInfo) {
                         val count = mainViewModel.getCount()
@@ -127,7 +130,7 @@ fun NavGraph(
         setComposable(
             PlayDestinations.CITY_LIST_ROUTE,
         ) {
-            mainViewModel.getCityList()
+            mainViewModel.refreshCityList()
             val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
             CityListPage(
                 cityInfoList = cityInfoList,

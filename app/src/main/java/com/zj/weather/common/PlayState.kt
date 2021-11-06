@@ -1,8 +1,18 @@
 package com.zj.weather.common
 
-import com.zj.weather.model.WeatherModel
+sealed class PlayState<out R> {
+    fun isLoading() = this is PlayLoading
+    fun isSuccessful() = this is PlaySuccess
 
-sealed class PlayState
-object PlayLoading : PlayState()
-data class PlaySuccess(val data: WeatherModel) : PlayState()
-data class PlayError(val e: Throwable) : PlayState()
+    override fun toString(): String {
+        return when (this) {
+            is PlaySuccess<*> -> "Success[data=$data]"
+            is PlayError -> "Error[exception=${error}]"
+            PlayLoading -> "Loading"
+        }
+    }
+}
+
+data class PlaySuccess<out T>(val data: T) : PlayState<T>()
+data class PlayError(val error: Throwable) : PlayState<Nothing>()
+object PlayLoading : PlayState<Nothing>()

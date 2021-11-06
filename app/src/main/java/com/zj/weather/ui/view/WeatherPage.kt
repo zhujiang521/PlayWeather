@@ -41,18 +41,11 @@ fun WeatherPage(
 ) {
     val context = LocalContext.current
     val weatherModel by mainViewModel.weatherModel.observeAsState(PlayError(NullPointerException()))
-//    val weatherNow by mainViewModel.weatherNow.observeAsState()
-//    val todayBean by mainViewModel.todayBean.observeAsState()
-//    val airNowBean by mainViewModel.airNowBean.observeAsState()
-//    val hourlyBeanList by mainViewModel.hourlyBeanList.observeAsState(listOf())
-//    val dayBeanList by mainViewModel.dayBeanList.observeAsState(listOf())
     val scrollState = rememberScrollState()
     val fontSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
     val config = LocalConfiguration.current
 
-
-    LcePage(playState = weatherModel, onErrorClick = onErrorClick) {
-        val weather = (weatherModel as PlaySuccess).data
+    LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->
         Box(modifier = Modifier.fillMaxSize()) {
             ImageLoader(
                 modifier = Modifier.fillMaxSize(),
