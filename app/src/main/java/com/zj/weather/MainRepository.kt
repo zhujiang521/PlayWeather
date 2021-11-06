@@ -16,15 +16,11 @@ import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather
 import com.zj.weather.common.PlayError
-import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.getDateWeekName
-import com.zj.weather.utils.getTimeName
-import com.zj.weather.utils.getTodayBean
-import com.zj.weather.utils.showToast
+import com.zj.weather.utils.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
@@ -189,7 +185,10 @@ class MainRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getGeoCityLookup(cityName: String = "北京") =
         suspendCancellableCoroutine<PlayState<List<GeoBean.LocationBean>>> { continuation ->
-            continuation.resume(PlayLoading)
+            if (!NetCheckUtil.checkNet(context)){
+                continuation.resume(PlayError(IllegalStateException("无网络链接")))
+                return@suspendCancellableCoroutine
+            }
             QWeather.getGeoCityLookup(context, cityName, object : QWeather.OnResultGeoListener {
                 override fun onError(e: Throwable) {
                     continuation.resume(PlayError(e))
@@ -199,6 +198,7 @@ class MainRepository @Inject constructor(private val context: Application) {
 
                 override fun onSuccess(geoBean: GeoBean?) {
                     if (geoBean == null) {
+                        continuation.resume(PlayError(NullPointerException("返回值为空")))
                         Log.e(TAG, "getGeoCityLookup onError: 返回值为空")
                         return
                     }
@@ -224,7 +224,10 @@ class MainRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getGeoTopCity(lang: Lang) =
         suspendCancellableCoroutine<PlayState<List<GeoBean.LocationBean>>> { continuation ->
-            continuation.resume(PlayLoading)
+            if (!NetCheckUtil.checkNet(context)){
+                continuation.resume(PlayError(IllegalStateException("无网络链接")))
+                return@suspendCancellableCoroutine
+            }
             QWeather.getGeoTopCity(context, 20, Range.CN, lang,
                 object : QWeather.OnResultGeoListener {
                     override fun onError(e: Throwable) {
@@ -234,6 +237,7 @@ class MainRepository @Inject constructor(private val context: Application) {
 
                     override fun onSuccess(geoBean: GeoBean?) {
                         if (geoBean == null) {
+                            continuation.resume(PlayError(NullPointerException("返回值为空")))
                             Log.e(TAG, "getGeoTopCity onError: 返回值为空")
                             return
                         }

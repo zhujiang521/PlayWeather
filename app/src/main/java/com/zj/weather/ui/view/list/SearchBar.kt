@@ -36,7 +36,11 @@ import com.zj.weather.R
 @Composable
 fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
     var value by rememberSaveable { mutableStateOf("") }
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+    ) {
         Spacer(Modifier.height(30.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),

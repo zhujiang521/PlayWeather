@@ -38,34 +38,30 @@ fun WeatherListPage(
 ) {
     val locationBeanState by mainViewModel.locationBeanList.observeAsState(PlayLoading)
     val context = LocalContext.current
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 10.dp)
-    ) {
-        val listState = rememberLazyListState()
-        SearchBar(onBack) { city ->
-            if (city.isNotEmpty()) {
-                mainViewModel.getGeoCityLookup(city)
-            } else {
-                // 搜索城市为空，提醒用户输入城市名称
-                showToast(context = context, R.string.city_list_search_hint)
-            }
-        }
-        Spacer(Modifier.height(10.dp))
-        LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
-            if (locationBeanList.isNotEmpty()) {
+    LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
+        if (locationBeanList.isNotEmpty()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                SearchBar(onBack) { city ->
+                    if (city.isNotEmpty()) {
+                        mainViewModel.getGeoCityLookup(city)
+                    } else {
+                        // 搜索城市为空，提醒用户输入城市名称
+                        showToast(context = context, R.string.city_list_search_hint)
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                val listState = rememberLazyListState()
                 LazyColumn(
-                    modifier = Modifier.padding(horizontal = 5.dp),
+                    modifier = Modifier.padding(horizontal = 15.dp),
                     state = listState
                 ) {
                     items(locationBeanList) { locationBean ->
                         CityItem(locationBean, toWeatherDetails)
                     }
                 }
-            } else {
-                NoContent(tip = stringResource(id = R.string.add_location_warn2))
             }
+        } else {
+            NoContent(tip = stringResource(id = R.string.add_location_warn2))
         }
     }
 }

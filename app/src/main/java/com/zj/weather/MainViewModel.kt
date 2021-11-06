@@ -126,6 +126,7 @@ class MainViewModel @Inject constructor(
      * @param cityName 城市名称
      */
     fun getGeoCityLookup(cityName: String = "北京") {
+        onLocationBeanListChanged(PlayLoading)
         viewModelScope.launch {
             val cityLookup = mainRepository.getGeoCityLookup(cityName)
             onLocationBeanListChanged(cityLookup)
@@ -136,6 +137,7 @@ class MainViewModel @Inject constructor(
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
+        onLocationBeanListChanged(PlayLoading)
         viewModelScope.launch {
             val cityLookup = mainRepository.getGeoTopCity(language)
             onLocationBeanListChanged(cityLookup)
