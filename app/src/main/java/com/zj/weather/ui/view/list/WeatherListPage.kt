@@ -17,12 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.lce.LcePage
+import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.showToast
 
@@ -52,13 +54,17 @@ fun WeatherListPage(
         }
         Spacer(Modifier.height(10.dp))
         LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = 5.dp),
-                state = listState
-            ) {
-                items(locationBeanList) { locationBean ->
-                    CityItem(locationBean, toWeatherDetails)
+            if (locationBeanList.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    state = listState
+                ) {
+                    items(locationBeanList) { locationBean ->
+                        CityItem(locationBean, toWeatherDetails)
+                    }
                 }
+            } else {
+                NoContent(tip = stringResource(id = R.string.add_location_warn2))
             }
         }
     }
