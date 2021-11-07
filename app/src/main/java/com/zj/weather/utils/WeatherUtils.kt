@@ -1,12 +1,9 @@
 package com.zj.weather.utils
 
 import android.content.Context
-import android.util.Log
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.zj.weather.R
 import java.util.*
-
-private const val TAG = "WeatherUtils"
 
 /**
  * 从7天中获取今天的天气，因为里面有紫外线和日出日落信息
@@ -43,7 +40,7 @@ fun getTodayBean(daily: MutableList<WeatherDailyBean.DailyBean>): WeatherDailyBe
  * @return 对应的描述
  */
 fun getUvIndexDesc(context: Context, uv: String?): String {
-    Log.d(TAG, "getUvIndexDesc: $uv")
+    Xlog.d("getUvIndexDesc: $uv")
     if (uv == null || uv.isNullOrEmpty()) {
         return context.getString(R.string.uv_index1)
     }
@@ -74,8 +71,7 @@ fun getSunriseSunsetContent(context: Context, sunrise: String, sunset: String): 
     }
     val sunrises = sunrise.split(":")
     val sunsets = sunset.split(":")
-    Log.d(TAG, "getSunriseSunsetContent: sunrises:$sunrises")
-    Log.d(TAG, "getSunriseSunsetContent: sunsets:$sunsets")
+    Xlog.d("getSunriseSunsetContent: sunrises:$sunrises  sunsets:$sunsets")
     val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
     return if (hour < sunrises[0].toInt()) {

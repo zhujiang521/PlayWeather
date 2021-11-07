@@ -16,7 +16,6 @@
 
 package com.zj.weather
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,8 +33,8 @@ import com.zj.weather.ui.view.WeatherViewPager
 import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.getLocation
 import com.zj.weather.ui.view.list.WeatherListPage
+import com.zj.weather.utils.Xlog
 
-private const val TAG = "NavGraph"
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
@@ -54,7 +53,7 @@ fun NavGraph(
             val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
             val initialPage by mainViewModel.searchCityInfo.observeAsState(0)
             val pagerState = rememberPagerState()
-            Log.e(TAG, "NavGraph: cityInfoList initialPage:$initialPage")
+            Xlog.e("NavGraph: cityInfoList initialPage:$initialPage")
             if (cityInfoList.isNotEmpty()) {
                 val index = if (pagerState.currentPage > cityInfoList.size - 1) {
                     0

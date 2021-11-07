@@ -3,7 +3,6 @@ package com.zj.weather
 import android.app.Application
 import android.location.Address
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,6 +17,7 @@ import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.NetCheckUtil
+import com.zj.weather.utils.Xlog
 import com.zj.weather.utils.getDefaultLocale
 import com.zj.weather.utils.showToast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,10 +42,6 @@ class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : AndroidViewModel(application) {
 
-    companion object {
-        private const val TAG = "MainViewModel"
-    }
-
     private var language: Lang = getDefaultLocale(getApplication())
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
 
@@ -55,7 +51,7 @@ class MainViewModel @Inject constructor(
 
     private fun onLocationBeanListChanged(hourlyBean: PlayState<List<GeoBean.LocationBean>>) {
         if (hourlyBean == _locationBeanList.value) {
-            Log.d(TAG, "onLocationBeanListChanged no change")
+            Xlog.d("onLocationBeanListChanged no change")
             return
         }
         _locationBeanList.postValue(hourlyBean)
@@ -66,7 +62,7 @@ class MainViewModel @Inject constructor(
 
     fun onSearchCityInfoChanged(page: Int) {
         if (page == _searchCityInfo.value) {
-            Log.d(TAG, "onSearchCityInfoChanged no change")
+            Xlog.d("onSearchCityInfoChanged no change")
             return
         }
         _searchCityInfo.postValue(page)
@@ -77,7 +73,7 @@ class MainViewModel @Inject constructor(
 
     private fun onCityInfoListChanged(list: List<CityInfo>) {
         if (list == _cityInfoList.value) {
-            Log.d(TAG, "onCityInfoListChanged no change")
+            Xlog.d("onCityInfoListChanged no change")
             return
         }
         _cityInfoList.postValue(list)
@@ -92,14 +88,14 @@ class MainViewModel @Inject constructor(
 
     private fun onWeatherModelChanged(playState: PlayState<WeatherModel>) {
         if (playState == _weatherModel.value) {
-            Log.d(TAG, "onWeatherModelChanged no change")
+            Xlog.d("onWeatherModelChanged no change")
             return
         }
         _weatherModel.postValue(playState)
     }
 
     fun getWeather(location: String = "CN101010100") {
-        Log.e(TAG, "getWeather: location:$location")
+        Xlog.e("getWeather: location:$location")
         if (!NetCheckUtil.checkNet(getApplication())) {
             showToast(getApplication(), R.string.bad_network_view_tip)
             onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
@@ -166,7 +162,7 @@ class MainViewModel @Inject constructor(
             )
             cityInfo
         } else {
-            Log.e(TAG, "cityInfoList:$cityInfoList")
+            Xlog.e("cityInfoList:$cityInfoList")
             cityInfoList
         }
     }

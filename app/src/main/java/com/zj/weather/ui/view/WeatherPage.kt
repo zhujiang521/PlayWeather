@@ -20,16 +20,12 @@ import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.zj.weather.MainViewModel
-import com.zj.weather.common.PlayError
 import com.zj.weather.common.PlayLoading
-import com.zj.weather.common.PlaySuccess
 import com.zj.weather.common.lce.LcePage
-import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.*
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
-import java.lang.NullPointerException
 
 @Composable
 fun WeatherPage(
@@ -40,7 +36,7 @@ fun WeatherPage(
     cityListClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val weatherModel by mainViewModel.weatherModel.observeAsState(PlayError(NullPointerException()))
+    val weatherModel by mainViewModel.weatherModel.observeAsState(PlayLoading)
     val scrollState = rememberScrollState()
     val fontSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
     val config = LocalConfiguration.current

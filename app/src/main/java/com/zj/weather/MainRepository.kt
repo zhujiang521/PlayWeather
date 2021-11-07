@@ -3,7 +3,6 @@ package com.zj.weather
 import android.app.Application
 import android.location.Address
 import android.location.Location
-import android.util.Log
 import com.google.gson.Gson
 import com.qweather.sdk.bean.air.AirNowBean
 import com.qweather.sdk.bean.base.Code
@@ -29,10 +28,6 @@ import kotlin.coroutines.resume
 @ActivityRetainedScoped
 class MainRepository @Inject constructor(private val context: Application) {
 
-    companion object {
-        private const val TAG = "MainRepository"
-    }
-
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
 
     /**
@@ -46,13 +41,12 @@ class MainRepository @Inject constructor(private val context: Application) {
             QWeather.getWeatherNow(context, location, lang,
                 Unit.METRIC, object : QWeather.OnResultWeatherNowListener {
                     override fun onError(e: Throwable) {
-                        Log.e(TAG, "getWeather24Hour onError: $e")
+                        Xlog.e("getWeather24Hour onError: $e")
                         showToast(context, e.message)
                     }
 
                     override fun onSuccess(weatherNowBean: WeatherNowBean) {
-                        Log.i(
-                            TAG,
+                        Xlog.d(
                             "getWeather onSuccess: " + Gson().toJson(weatherNowBean)
                         )
                         //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
@@ -61,7 +55,7 @@ class MainRepository @Inject constructor(private val context: Application) {
                         } else {
                             //在此查看返回数据失败的原因
                             val code: Code = weatherNowBean.code
-                            Log.i(TAG, "failed code: $code")
+                            Xlog.w("failed code: $code")
                             showToast(context, code.txt)
                         }
                     }
@@ -79,13 +73,12 @@ class MainRepository @Inject constructor(private val context: Application) {
             QWeather.getWeather24Hourly(context, location, lang,
                 Unit.METRIC, object : QWeather.OnResultWeatherHourlyListener {
                     override fun onError(e: Throwable) {
-                        Log.e(TAG, "getWeather24Hour onError: $e")
+                        Xlog.e("getWeather24Hour onError: $e")
                         showToast(context, e.message)
                     }
 
                     override fun onSuccess(weatherHourlyBean: WeatherHourlyBean?) {
-                        Log.i(
-                            TAG,
+                        Xlog.d(
                             "getWeather24Hour onSuccess: " + Gson().toJson(weatherHourlyBean)
                         )
                         //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
@@ -97,7 +90,7 @@ class MainRepository @Inject constructor(private val context: Application) {
                         } else {
                             //在此查看返回数据失败的原因
                             val code: Code? = weatherHourlyBean?.code
-                            Log.i(TAG, "failed code: $code")
+                            Xlog.w("failed code: $code")
                         }
                     }
                 })
@@ -114,14 +107,13 @@ class MainRepository @Inject constructor(private val context: Application) {
             QWeather.getWeather7D(context, location, lang,
                 Unit.METRIC, object : QWeather.OnResultWeatherDailyListener {
                     override fun onError(e: Throwable) {
-                        Log.e(TAG, "getWeather24Hour onError: $e")
+                        Xlog.e("getWeather24Hour onError: $e")
                         showToast(context, e.message)
 
                     }
 
                     override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
-                        Log.i(
-                            TAG,
+                        Xlog.d(
                             "getWeather7Day onSuccess: " + Gson().toJson(weatherDailyBean)
                         )
                         //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
@@ -135,7 +127,7 @@ class MainRepository @Inject constructor(private val context: Application) {
                         } else {
                             //在此查看返回数据失败的原因
                             val code: Code? = weatherDailyBean?.code
-                            Log.i(TAG, "getWeather7Day failed code: $code")
+                            Xlog.w("getWeather7Day failed code: $code")
                         }
                     }
 
@@ -153,14 +145,13 @@ class MainRepository @Inject constructor(private val context: Application) {
             QWeather.getAirNow(context, location, lang,
                 object : QWeather.OnResultAirNowListener {
                     override fun onError(e: Throwable) {
-                        Log.e(TAG, "getWeather24Hour onError: $e")
+                        Xlog.e("getWeather24Hour onError: $e")
                         showToast(context, e.message)
 
                     }
 
                     override fun onSuccess(airNowBean: AirNowBean?) {
-                        Log.i(
-                            TAG,
+                        Xlog.d(
                             "getAirNow onSuccess: " + Gson().toJson(airNowBean)
                         )
                         //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
@@ -172,7 +163,7 @@ class MainRepository @Inject constructor(private val context: Application) {
                         } else {
                             //在此查看返回数据失败的原因
                             val code: Code? = airNowBean?.code
-                            Log.i(TAG, "getAirNow failed code: $code")
+                            Xlog.w("getAirNow failed code: $code")
                         }
                     }
                 })
@@ -185,32 +176,32 @@ class MainRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getGeoCityLookup(cityName: String = "北京") =
         suspendCancellableCoroutine<PlayState<List<GeoBean.LocationBean>>> { continuation ->
-            if (!NetCheckUtil.checkNet(context)){
+            if (!NetCheckUtil.checkNet(context)) {
                 continuation.resume(PlayError(IllegalStateException("无网络链接")))
                 return@suspendCancellableCoroutine
             }
             QWeather.getGeoCityLookup(context, cityName, object : QWeather.OnResultGeoListener {
                 override fun onError(e: Throwable) {
                     continuation.resume(PlayError(e))
-                    Log.e(TAG, "getGeoCityLookup onError: ${e.message}")
+                    Xlog.e("getGeoCityLookup onError: ${e.message}")
                     showToast(context, R.string.add_location_warn2)
                 }
 
                 override fun onSuccess(geoBean: GeoBean?) {
                     if (geoBean == null) {
                         continuation.resume(PlayError(NullPointerException("返回值为空")))
-                        Log.e(TAG, "getGeoCityLookup onError: 返回值为空")
+                        Xlog.d("getGeoCityLookup onError: 返回值为空")
                         return
                     }
                     val json = Gson().toJson(geoBean)
-                    Log.i(TAG, "getGeoCityLookup onSuccess: $json")
+                    Xlog.d("getGeoCityLookup onSuccess: $json")
                     // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                     if (Code.OK === geoBean.code) {
                         continuation.resume(PlaySuccess(geoBean.locationBean))
                     } else {
                         //在此查看返回数据失败的原因
                         val code: Code = geoBean.code
-                        Log.i(TAG, "getGeoCityLookup failed code: $code")
+                        Xlog.w("getGeoCityLookup failed code: $code")
                         showToast(context = context, code.txt)
                     }
                 }
@@ -224,7 +215,7 @@ class MainRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getGeoTopCity(lang: Lang) =
         suspendCancellableCoroutine<PlayState<List<GeoBean.LocationBean>>> { continuation ->
-            if (!NetCheckUtil.checkNet(context)){
+            if (!NetCheckUtil.checkNet(context)) {
                 continuation.resume(PlayError(IllegalStateException("无网络链接")))
                 return@suspendCancellableCoroutine
             }
@@ -232,24 +223,24 @@ class MainRepository @Inject constructor(private val context: Application) {
                 object : QWeather.OnResultGeoListener {
                     override fun onError(e: Throwable) {
                         continuation.resume(PlayError(e))
-                        Log.e(TAG, "getGeoTopCity onError: $e")
+                        Xlog.e("getGeoTopCity onError: $e")
                     }
 
                     override fun onSuccess(geoBean: GeoBean?) {
                         if (geoBean == null) {
                             continuation.resume(PlayError(NullPointerException("返回值为空")))
-                            Log.e(TAG, "getGeoTopCity onError: 返回值为空")
+                            Xlog.e("getGeoTopCity onError: 返回值为空")
                             return
                         }
                         val json = Gson().toJson(geoBean)
-                        Log.i(TAG, "getGeoTopCity onSuccess: $json")
+                        Xlog.d("getGeoTopCity onSuccess: $json")
                         // 先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                         if (Code.OK === geoBean.code) {
                             continuation.resume(PlaySuccess(geoBean.locationBean))
                         } else {
                             //在此查看返回数据失败的原因
                             val code: Code = geoBean.code
-                            Log.i(TAG, "getGeoTopCity failed code: $code")
+                            Xlog.w("getGeoTopCity failed code: $code")
                             continuation.resume(PlayError(NullPointerException(code.txt)))
                             showToast(context, code.txt)
                         }
@@ -276,13 +267,13 @@ class MainRepository @Inject constructor(private val context: Application) {
             province = address.adminArea,
             city = address.locality
         )
-        Log.d(TAG, "updateCityInfo: address:${address}")
+        Xlog.d("updateCityInfo: address:${address}")
         if (isLocationList.isNotEmpty()) {
-            Log.d(TAG, "updateCityInfo: 数据库中已经存在当前的数据，需要修改")
+            Xlog.d("updateCityInfo: 数据库中已经存在当前的数据，需要修改")
             cityInfoDao.update(cityInfo)
         } else {
             cityInfoDao.insert(cityInfo)
-            Log.d(TAG, "updateCityInfo: 数据库中没有当前的数据，需要新增")
+            Xlog.d("updateCityInfo: 数据库中没有当前的数据，需要新增")
         }
     }
 
