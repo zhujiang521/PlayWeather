@@ -60,6 +60,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     override fun onResume() {
         super.onResume()
         mainViewModel.resetLanguage()
+        mainViewModel.refreshCityList()
     }
 
     private fun checkLocationPermission() {

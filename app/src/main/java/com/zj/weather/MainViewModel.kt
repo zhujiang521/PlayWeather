@@ -54,30 +54,33 @@ class MainViewModel @Inject constructor(
     val locationBeanList: LiveData<PlayState<List<GeoBean.LocationBean>>> = _locationBeanList
 
     private fun onLocationBeanListChanged(hourlyBean: PlayState<List<GeoBean.LocationBean>>) {
-        if (_locationBeanList.value == hourlyBean) {
+        if (hourlyBean == _locationBeanList.value) {
+            Log.d(TAG, "onLocationBeanListChanged no change")
             return
         }
-        _locationBeanList.value = hourlyBean
+        _locationBeanList.postValue(hourlyBean)
     }
 
     private val _searchCityInfo = MutableLiveData(0)
     val searchCityInfo: LiveData<Int> = _searchCityInfo
 
     fun onSearchCityInfoChanged(page: Int) {
-        if (_searchCityInfo.value == page) {
+        if (page == _searchCityInfo.value) {
+            Log.d(TAG, "onSearchCityInfoChanged no change")
             return
         }
-        _searchCityInfo.value = page
+        _searchCityInfo.postValue(page)
     }
 
     private val _cityInfoList = MutableLiveData(listOf<CityInfo>())
     val cityInfoList: LiveData<List<CityInfo>> = _cityInfoList
 
     private fun onCityInfoListChanged(list: List<CityInfo>) {
-        if (_cityInfoList.value == list) {
+        if (list == _cityInfoList.value) {
+            Log.d(TAG, "onCityInfoListChanged no change")
             return
         }
-        _cityInfoList.value = list
+        _cityInfoList.postValue(list)
     }
 
     fun resetLanguage() {
@@ -88,10 +91,11 @@ class MainViewModel @Inject constructor(
     val weatherModel: LiveData<PlayState<WeatherModel>> = _weatherModel
 
     private fun onWeatherModelChanged(playState: PlayState<WeatherModel>) {
-        if (_weatherModel.value == playState) {
+        if (playState == _weatherModel.value) {
+            Log.d(TAG, "onWeatherModelChanged no change")
             return
         }
-        _weatherModel.value = playState
+        _weatherModel.postValue(playState)
     }
 
     fun getWeather(location: String = "CN101010100") {
@@ -101,7 +105,6 @@ class MainViewModel @Inject constructor(
             onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
             return
         }
-        onWeatherModelChanged(PlayLoading)
         viewModelScope.launch(Dispatchers.IO) {
             val weatherNow = mainRepository.getWeatherNow(location, language)
             val weather24Hour = mainRepository.getWeather24Hour(location, language)
@@ -137,7 +140,6 @@ class MainViewModel @Inject constructor(
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
-        onLocationBeanListChanged(PlayLoading)
         viewModelScope.launch {
             val cityLookup = mainRepository.getGeoTopCity(language)
             onLocationBeanListChanged(cityLookup)
@@ -164,7 +166,7 @@ class MainViewModel @Inject constructor(
             )
             cityInfo
         } else {
-            Log.e(TAG, "NavGraph: cityInfoList:$cityInfoList")
+            Log.e(TAG, "cityInfoList:$cityInfoList")
             cityInfoList
         }
     }
