@@ -3,11 +3,11 @@ package com.zj.weather.utils
 import android.os.Build
 import android.util.Log
 
-object Xlog {
+object XLog {
 
     private const val APP_TAG = "PlayWeather"
 
-    private val packageName = Xlog::class.java.name
+    private val packageName = XLog::class.java.name
 
     private const val TYPE_V = 1
     private const val TYPE_D = 1 shl 1
@@ -31,6 +31,7 @@ object Xlog {
             VERSION_ENG, VERSION_USER_DEBUG -> type = TYPE_ALL
             else -> Log.e(APP_TAG, "unknown build type, type = " + Build.TYPE)
         }
+        Log.e(APP_TAG, "isUser: ${canLogUserVersion()}")
     }
 
     private val prefix: String

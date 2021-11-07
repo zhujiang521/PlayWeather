@@ -20,7 +20,7 @@ fun WeatherViewPager(
     mainViewModel: MainViewModel,
     coroutineScope: CoroutineScope,
     actions: PlayActions,
-    initialPage: Int,
+    initialPage: Int = 0,
     cityInfoList: List<CityInfo>,
     pagerState: PagerState,
 ) {
@@ -51,9 +51,12 @@ fun WeatherViewPager(
 }
 
 fun getLocation(
-    cityInfo: CityInfo,
-) = if (cityInfo.locationId.isNotEmpty()) {
-    cityInfo.locationId
-} else {
-    cityInfo.location
+    cityInfo: CityInfo?
+): String {
+    if (cityInfo == null) return "CN101010100"
+    return if (cityInfo.locationId.isNotEmpty()) {
+        cityInfo.locationId
+    } else {
+        cityInfo.location
+    }
 }

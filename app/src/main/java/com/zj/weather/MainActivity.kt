@@ -17,7 +17,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.zj.weather.ui.permission.isPermissionsGranted
 import com.zj.weather.ui.permission.onAlertDialog
 import com.zj.weather.ui.theme.PlayWeatherTheme
-import com.zj.weather.utils.Xlog
+import com.zj.weather.utils.XLog
 import com.zj.weather.utils.setAndroidNativeLightStatusBar
 import com.zj.weather.utils.transparentStatusBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,26 +86,26 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
         //2.获取位置提供器，GPS或是NetWork
         val providers: List<String> = locationManager?.getProviders(true) ?: arrayListOf()
-        Xlog.e("getLocation: providers:$providers")
+        XLog.e("getLocation: providers:$providers")
         when {
             providers.contains(LocationManager.NETWORK_PROVIDER) -> {
                 //如果是Network
                 locationProvider = LocationManager.NETWORK_PROVIDER
-                Xlog.d("定位方式Network")
+                XLog.d("定位方式Network")
             }
             providers.contains(LocationManager.GPS_PROVIDER) -> {
                 //如果是GPS
                 locationProvider = LocationManager.GPS_PROVIDER
-                Xlog.d("定位方式GPS")
+                XLog.d("定位方式GPS")
             }
             else -> {
-                Xlog.e("getLocation: 没有可用的位置提供器")
+                XLog.e("getLocation: 没有可用的位置提供器")
                 return
             }
         }
         //3.获取上次的位置，一般第一次运行，此值为null
         val location: Location? = locationManager?.getLastKnownLocation(locationProvider!!)
-        Xlog.v(
+        XLog.v(
             "获取上次的位置-经纬度：" + location?.longitude
                 .toString() + "   " + location?.latitude
         )
@@ -114,7 +114,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
     private var locationListener: LocationListener = LocationListener { location ->
         //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-        Xlog.v(
+        XLog.v(
             "监视地理位置变化-经纬度：" + location.longitude
                 .toString() + "   " + location.latitude
         )
@@ -132,7 +132,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             location.longitude, 1
         )
         mainViewModel.updateCityInfo(location, result)
-        Xlog.v("获取地址信息：${result[0]?.adminArea}")
+        XLog.v("获取地址信息：${result[0]?.adminArea}")
         return result
     }
 

@@ -40,7 +40,7 @@ fun getTodayBean(daily: MutableList<WeatherDailyBean.DailyBean>): WeatherDailyBe
  * @return 对应的描述
  */
 fun getUvIndexDesc(context: Context, uv: String?): String {
-    Xlog.d("getUvIndexDesc: $uv")
+    XLog.d("getUvIndexDesc: $uv")
     if (uv == null || uv.isNullOrEmpty()) {
         return context.getString(R.string.uv_index1)
     }
@@ -71,7 +71,7 @@ fun getSunriseSunsetContent(context: Context, sunrise: String, sunset: String): 
     }
     val sunrises = sunrise.split(":")
     val sunsets = sunset.split(":")
-    Xlog.d("getSunriseSunsetContent: sunrises:$sunrises  sunsets:$sunsets")
+    XLog.d("getSunriseSunsetContent: sunrises:$sunrises  sunsets:$sunsets")
     val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
     return if (hour < sunrises[0].toInt()) {

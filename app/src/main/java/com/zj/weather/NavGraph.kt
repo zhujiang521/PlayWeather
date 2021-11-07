@@ -33,7 +33,7 @@ import com.zj.weather.ui.view.WeatherViewPager
 import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.getLocation
 import com.zj.weather.ui.view.list.WeatherListPage
-import com.zj.weather.utils.Xlog
+import com.zj.weather.utils.XLog
 
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
@@ -50,21 +50,22 @@ fun NavGraph(
         startDestination = startDestination
     ) {
         setComposable(PlayDestinations.HOME_PAGE_ROUTE) {
-            val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
-            val initialPage by mainViewModel.searchCityInfo.observeAsState(0)
+            val cityInfoList by mainViewModel.cityInfoList.observeAsState()
+            val initialPage by mainViewModel.searchCityInfo.observeAsState()
             val pagerState = rememberPagerState()
-            Xlog.e("NavGraph: cityInfoList initialPage:$initialPage")
-            if (cityInfoList.isNotEmpty()) {
-                val index = if (pagerState.currentPage > cityInfoList.size - 1) {
+            cityInfoList?.apply {
+                if (isNullOrEmpty()) return@apply
+                val index = if (pagerState.currentPage > size - 1) {
                     0
                 } else pagerState.currentPage
-                val cityInfo = cityInfoList[index]
+                val cityInfo = get(index)
                 val location = getLocation(cityInfo = cityInfo)
                 mainViewModel.getWeather(location)
+                XLog.e("查询 initialPage:$initialPage")
             }
             WeatherViewPager(
-                mainViewModel, coroutineScope, actions,
-                initialPage, cityInfoList, pagerState
+                mainViewModel, coroutineScope, actions, initialPage ?: 0,
+                cityInfoList ?: mainViewModel.makeDefault(cityInfoList), pagerState
             )
         }
         setComposable(PlayDestinations.WEATHER_LIST_ROUTE) {

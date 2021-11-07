@@ -17,14 +17,11 @@ import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.NetCheckUtil
-import com.zj.weather.utils.Xlog
+import com.zj.weather.utils.XLog
 import com.zj.weather.utils.getDefaultLocale
 import com.zj.weather.utils.showToast
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
@@ -44,6 +41,13 @@ class MainViewModel @Inject constructor(
 
     private var language: Lang = getDefaultLocale(getApplication())
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
+    private var weatherJob: Job? = null
+    private var nameToCityJob: Job? = null
+    private var topCityJob: Job? = null
+    private var insertCityJob: Job? = null
+    private var updateCityJob: Job? = null
+    private var deleteCityJob: Job? = null
+    private var refreshCityJob: Job? = null
 
     private val _locationBeanList =
         MutableLiveData<PlayState<List<GeoBean.LocationBean>>>(PlayLoading)
@@ -51,7 +55,7 @@ class MainViewModel @Inject constructor(
 
     private fun onLocationBeanListChanged(hourlyBean: PlayState<List<GeoBean.LocationBean>>) {
         if (hourlyBean == _locationBeanList.value) {
-            Xlog.d("onLocationBeanListChanged no change")
+            XLog.d("onLocationBeanListChanged no change")
             return
         }
         _locationBeanList.postValue(hourlyBean)
@@ -62,7 +66,7 @@ class MainViewModel @Inject constructor(
 
     fun onSearchCityInfoChanged(page: Int) {
         if (page == _searchCityInfo.value) {
-            Xlog.d("onSearchCityInfoChanged no change")
+            XLog.d("onSearchCityInfoChanged no change")
             return
         }
         _searchCityInfo.postValue(page)
@@ -73,7 +77,7 @@ class MainViewModel @Inject constructor(
 
     private fun onCityInfoListChanged(list: List<CityInfo>) {
         if (list == _cityInfoList.value) {
-            Xlog.d("onCityInfoListChanged no change")
+            XLog.d("onCityInfoListChanged no change")
             return
         }
         _cityInfoList.postValue(list)
@@ -88,20 +92,20 @@ class MainViewModel @Inject constructor(
 
     private fun onWeatherModelChanged(playState: PlayState<WeatherModel>) {
         if (playState == _weatherModel.value) {
-            Xlog.d("onWeatherModelChanged no change")
+            XLog.d("onWeatherModelChanged no change")
             return
         }
         _weatherModel.postValue(playState)
     }
 
     fun getWeather(location: String = "CN101010100") {
-        Xlog.e("getWeather: location:$location")
         if (!NetCheckUtil.checkNet(getApplication())) {
             showToast(getApplication(), R.string.bad_network_view_tip)
             onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        checkCoroutines(weatherJob)
+        weatherJob = viewModelScope.launch(Dispatchers.IO) {
             val weatherNow = mainRepository.getWeatherNow(location, language)
             val weather24Hour = mainRepository.getWeather24Hour(location, language)
             val weather7Day = mainRepository.getWeather7Day(location, language)
@@ -116,6 +120,7 @@ class MainViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 onWeatherModelChanged(PlaySuccess(weatherModel))
             }
+            XLog.e("获取天气:$location")
         }
     }
 
@@ -125,8 +130,8 @@ class MainViewModel @Inject constructor(
      * @param cityName 城市名称
      */
     fun getGeoCityLookup(cityName: String = "北京") {
-        onLocationBeanListChanged(PlayLoading)
-        viewModelScope.launch {
+        checkCoroutines(nameToCityJob)
+        nameToCityJob = viewModelScope.launch {
             val cityLookup = mainRepository.getGeoCityLookup(cityName)
             onLocationBeanListChanged(cityLookup)
         }
@@ -136,14 +141,16 @@ class MainViewModel @Inject constructor(
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
-        viewModelScope.launch {
+        checkCoroutines(topCityJob)
+        topCityJob = viewModelScope.launch {
             val cityLookup = mainRepository.getGeoTopCity(language)
             onLocationBeanListChanged(cityLookup)
         }
     }
 
     fun refreshCityList() {
-        viewModelScope.launch(Dispatchers.IO) {
+        checkCoroutines(refreshCityJob)
+        refreshCityJob = viewModelScope.launch(Dispatchers.IO) {
             var cityInfoList = cityInfoDao.getCityInfoList()
             cityInfoList = makeDefault(cityInfoList)
             withContext(Dispatchers.Main) {
@@ -152,7 +159,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun makeDefault(cityInfoList: List<CityInfo>): List<CityInfo> {
+    fun makeDefault(cityInfoList: List<CityInfo>?): List<CityInfo> {
         return if (cityInfoList.isNullOrEmpty()) {
             val cityInfo = listOf(
                 CityInfo(
@@ -162,7 +169,7 @@ class MainViewModel @Inject constructor(
             )
             cityInfo
         } else {
-            Xlog.e("cityInfoList:$cityInfoList")
+            XLog.e("cityInfoList:$cityInfoList")
             cityInfoList
         }
     }
@@ -174,7 +181,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun deleteCityInfo(cityInfo: CityInfo) {
-        viewModelScope.launch(Dispatchers.IO) {
+        checkCoroutines(deleteCityJob)
+        deleteCityJob = viewModelScope.launch(Dispatchers.IO) {
             cityInfoDao.delete(cityInfo)
             refreshCityList()
         }
@@ -190,7 +198,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun insertCityInfo(cityInfo: CityInfo, onSuccessListener: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
+        checkCoroutines(insertCityJob)
+        insertCityJob = viewModelScope.launch(Dispatchers.IO) {
             val hasLocation = cityInfoDao.getHasLocation(cityInfo.name)
             if (hasLocation.isNullOrEmpty()) {
                 cityInfoDao.insert(cityInfo)
@@ -213,13 +222,23 @@ class MainViewModel @Inject constructor(
      * @param result Address
      */
     fun updateCityInfo(location: Location, result: MutableList<Address>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        checkCoroutines(updateCityJob)
+        updateCityJob = viewModelScope.launch(Dispatchers.IO) {
             mainRepository.updateCityInfo(location, result)
             refreshCityList()
             withContext(Dispatchers.Main) {
                 onSearchCityInfoChanged(0)
             }
         }
+    }
+
+    /**
+     * 检查协程是否属于
+     */
+    private fun checkCoroutines(job: Job?) {
+        if (job?.isActive != true) return
+        job.cancel()
+        XLog.d("已在查询，先取消之前的协程")
     }
 
 }
