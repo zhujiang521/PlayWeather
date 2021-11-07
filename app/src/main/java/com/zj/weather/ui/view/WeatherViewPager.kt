@@ -25,7 +25,7 @@ fun WeatherViewPager(
     pagerState: PagerState,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        if (initialPage > 0) {
+        if (initialPage > 0 && initialPage < pagerState.pageCount) {
             coroutineScope.launch {
                 pagerState.scrollToPage(initialPage)
                 mainViewModel.onSearchCityInfoChanged(0)
