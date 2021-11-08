@@ -19,13 +19,13 @@
 
 ## 项目截图
 
-| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/home.gif) | ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/delete.gif) |
+| ![请添加图片描述](https://img-blog.csdnimg.cn/e4415563f1044ae09092cf7f93f5101a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) | ![在这里插入图片描述](https://img-blog.csdnimg.cn/772c0625bd824ddabc242249beff2bf2.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot1.png) | ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot2.png) |
+| ![请添加图片描述](https://img-blog.csdnimg.cn/988c08ae24c8483ab606b374bfe2afa0.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) | ![在这里插入图片描述](https://img-blog.csdnimg.cn/199de0ecf1e34eb190a65e235db23d6a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot3.png) | ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot4.png) |
+| ![请添加图片描述](https://img-blog.csdnimg.cn/eba77b23969a4e6e87be1992925f9751.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) | ![请添加图片描述](https://img-blog.csdnimg.cn/31be9af66bf347cb80f5c76b65486df5.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot5.png) | ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot6.png) |
+| ![请添加图片描述](https://img-blog.csdnimg.cn/8afea40063504bbcb4014522dd998433.gif) | ![请添加图片描述](https://img-blog.csdnimg.cn/47d2f11b82f64ba3baf9537b239a8199.gif)
 
 ## 项目使用三方库
 
