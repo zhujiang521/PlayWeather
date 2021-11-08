@@ -19,17 +19,17 @@
 
 ## 项目截图
 
-| ![](ScreenCapture/home.gif)
-| ![](ScreenCapture/delete.gif) |
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/home.gif)
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/delete.gif) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](ScreenCapture/shot1.png)
-| ![](ScreenCapture/shot2.png) |
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot1.png)
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot2.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](ScreenCapture/shot3.png)
-| ![](ScreenCapture/shot4.png) |
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot3.png)
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot4.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](ScreenCapture/shot5.png)
-| ![](ScreenCapture/shot6.png) |
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot5.png)
+| ![](https://github.com/zhujiang521/PlayWeather/blob/master/ScreenCapture%20%20/shot6.png) |
 
 ## 项目使用三方库
 
