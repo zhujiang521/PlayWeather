@@ -17,11 +17,8 @@
 package com.zj.weather
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -60,8 +57,10 @@ fun NavGraph(
                 } else pagerState.currentPage
                 val cityInfo = get(index)
                 val location = getLocation(cityInfo = cityInfo)
-                mainViewModel.getWeather(location)
-                XLog.e("查询 initialPage:$initialPage")
+                LaunchedEffect(location) {
+                    mainViewModel.getWeather(location)
+                    XLog.e("查询 initialPage:$initialPage")
+                }
             }
             WeatherViewPager(
                 mainViewModel, coroutineScope, actions, initialPage ?: 0,

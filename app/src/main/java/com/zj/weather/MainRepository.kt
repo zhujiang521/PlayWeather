@@ -20,12 +20,12 @@ import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.*
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-@ActivityRetainedScoped
+@ViewModelScoped
 class MainRepository @Inject constructor(private val context: Application) {
 
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
