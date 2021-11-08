@@ -19,17 +19,17 @@
 
 ## 项目截图
 
-| ![image](ScreenCapture/home.gif)
-| ![image](ScreenCapture/delete.gif) |
+| ![](ScreenCapture/home.gif)
+| ![](ScreenCapture/delete.gif) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image](ScreenCapture/shot1.png)
-| ![image](ScreenCapture/shot2.png) |
+| ![](ScreenCapture/shot1.png)
+| ![](ScreenCapture/shot2.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image](ScreenCapture/shot3.png)
-| ![image](ScreenCapture/shot4.png) |
+| ![](ScreenCapture/shot3.png)
+| ![](ScreenCapture/shot4.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image](ScreenCapture/shot5.png)
-| ![image](ScreenCapture/shot6.png) |
+| ![](ScreenCapture/shot5.png)
+| ![](ScreenCapture/shot6.png) |
 
 ## 项目使用三方库
 
