@@ -67,4 +67,9 @@
 
     <string name="bad_network_view_tip">您的網絡不給力，點擊屏幕可重新加載</string>
 
+    <string name="permission_title">權限設置</string>
+    <string name="permission_content">天氣需要獲取當前位置以展示當前的天氣</string>
+    <string name="permission_sure">打開設置</string>
+    <string name="permission_cancel">取消</string>
+
 </resources>

@@ -31,6 +31,7 @@ import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.getLocation
 import com.zj.weather.ui.view.list.WeatherListPage
 import com.zj.weather.utils.XLog
+import com.zj.weather.utils.permission.FeatureThatRequiresLocationPermissions
 
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
@@ -39,6 +40,9 @@ fun NavGraph(
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
     mainViewModel: MainViewModel
 ) {
+    val city = mainViewModel.getSyncCityList()[0]
+    mainViewModel.getWeather(city.location)
+    FeatureThatRequiresLocationPermissions(mainViewModel)
     val navController = rememberAnimatedNavController()
     val actions = remember(navController) { PlayActions(navController) }
     val coroutineScope = rememberCoroutineScope()

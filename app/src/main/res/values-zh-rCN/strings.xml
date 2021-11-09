@@ -67,4 +67,9 @@
 
     <string name="bad_network_view_tip">网络错误，点击重新加载</string>
 
+    <string name="permission_title">权限设置</string>
+    <string name="permission_content">天气需要获取当前位置以展示当前的天气</string>
+    <string name="permission_sure">打开设置</string>
+    <string name="permission_cancel">取消</string>
+
 </resources>
