@@ -25,6 +25,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.common.PlayActions
 import com.zj.weather.common.PlayDestinations
+import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.setComposable
 import com.zj.weather.ui.view.WeatherViewPager
 import com.zj.weather.ui.view.city.CityListPage
@@ -73,9 +74,13 @@ fun NavGraph(
         }
         setComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
             mainViewModel.getGeoTopCity()
+            val locationBeanState by mainViewModel.locationBeanList.observeAsState(PlayLoading)
             WeatherListPage(
-                mainViewModel = mainViewModel,
+                locationBeanState = locationBeanState,
                 onBack = actions.upPress,
+                onSearchCity = { cityName ->
+                    mainViewModel.getGeoCityLookup(cityName)
+                },
                 onErrorClick = {
                     mainViewModel.getGeoTopCity()
                 },

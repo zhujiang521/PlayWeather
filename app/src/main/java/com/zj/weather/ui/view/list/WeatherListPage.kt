@@ -23,6 +23,7 @@ import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.MainViewModel
 import com.zj.weather.R
 import com.zj.weather.common.PlayLoading
+import com.zj.weather.common.PlayState
 import com.zj.weather.common.lce.LcePage
 import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
@@ -31,19 +32,19 @@ import com.zj.weather.utils.showToast
 
 @Composable
 fun WeatherListPage(
-    mainViewModel: MainViewModel,
+    locationBeanState: PlayState<List<GeoBean.LocationBean>>,
     onBack: () -> Unit,
+    onSearchCity: (String) -> Unit,
     onErrorClick: () -> Unit,
     toWeatherDetails: (CityInfo) -> Unit,
 ) {
-    val locationBeanState by mainViewModel.locationBeanList.observeAsState(PlayLoading)
     val context = LocalContext.current
     LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
         if (locationBeanList.isNotEmpty()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 SearchBar(onBack) { city ->
                     if (city.isNotEmpty()) {
-                        mainViewModel.getGeoCityLookup(city)
+                        onSearchCity(city)
                     } else {
                         // 搜索城市为空，提醒用户输入城市名称
                         showToast(context = context, R.string.city_list_search_hint)

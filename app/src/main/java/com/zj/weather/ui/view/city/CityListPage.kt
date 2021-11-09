@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.weather.R
@@ -125,4 +126,15 @@ private fun CityItem(
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
+}
+
+@Preview(showBackground = false, name = "城市item")
+@Composable
+fun CityItemPreview() {
+    val cityInfo = CityInfo(
+        name = "朱江",
+        province = "微子国",
+        city = "南街"
+    )
+    CityItem(cityInfo = cityInfo, true, {}, {})
 }
