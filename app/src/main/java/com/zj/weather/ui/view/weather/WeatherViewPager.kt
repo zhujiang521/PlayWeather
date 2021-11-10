@@ -60,7 +60,7 @@ fun WeatherViewPager(
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
 ) {
-    if (initialPage == 0) {
+    if (pagerState.currentPage == 0) {
         FeatureThatRequiresLocationPermissions(weatherViewModel)
     }
     val coroutineScope = rememberCoroutineScope()
