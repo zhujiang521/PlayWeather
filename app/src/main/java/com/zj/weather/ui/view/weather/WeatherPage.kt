@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -15,15 +14,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.qweather.sdk.bean.air.AirNowBean
-import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.bean.weather.WeatherHourlyBean
-import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.lce.LcePage
+import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
-import com.zj.weather.ui.view.weather.widget.*
+import com.zj.weather.ui.view.weather.widget.HeaderWeather
+import com.zj.weather.ui.view.weather.widget.ShrinkHeaderHeather
+import com.zj.weather.ui.view.weather.widget.WeatherAnimation
+import com.zj.weather.ui.view.weather.widget.WeatherContent
 import com.zj.weather.utils.IconUtils
 import com.zj.weather.utils.ImageLoader
 
@@ -50,103 +49,76 @@ fun WeatherPage(
             val isLand = config.orientation == Configuration.ORIENTATION_LANDSCAPE
             if (isLand) {
                 // 横屏适配
-                Row(modifier = Modifier.fillMaxSize()) {
-                    val landModifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                    Column(
-                        modifier = landModifier,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        // 天气头部，向上滑动时会进行隐藏
-                        HeaderWeather(
-                            fontSize,
-                            cityList,
-                            cityListClick,
-                            cityInfo,
-                            weather.nowBaseBean,
-                            true
-                        )
-
-                        // 天气动画
-                        WeatherAnimation(weather.nowBaseBean.icon)
-                    }
-                    WeatherContent(
-                        landModifier, scrollState, fontSize, cityList,
-                        cityListClick, cityInfo, weather.nowBaseBean, weather.dailyBean,
-                        weather.airNowBean, weather.hourlyBeanList, weather.dailyBeanList, true
-                    )
-                }
+                HorizontalWeather(fontSize, cityList, cityListClick, cityInfo, weather, scrollState)
             } else {
                 // 竖屏适配
-                // 正常状态下是隐藏状态，向上滑动时展示
-                ShrinkHeaderHeather(
-                    fontSize, cityInfo, cityList, cityListClick, weather.nowBaseBean
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
-                    WeatherContent(
-                        Modifier, scrollState, fontSize, cityList, cityListClick,
-                        cityInfo, weather.nowBaseBean, weather.dailyBean,
-                        weather.airNowBean, weather.hourlyBeanList, weather.dailyBeanList
-                    )
-                }
+                VerticalWeather(fontSize, cityInfo, cityList, cityListClick, weather, scrollState)
             }
         }
     }
 }
 
 @Composable
-private fun WeatherContent(
-    modifier: Modifier = Modifier,
-    scrollState: ScrollState,
+private fun VerticalWeather(
+    fontSize: TextUnit,
+    cityInfo: CityInfo,
+    cityList: () -> Unit,
+    cityListClick: () -> Unit,
+    weather: WeatherModel,
+    scrollState: ScrollState
+) {
+    // 正常状态下是隐藏状态，向上滑动时展示
+    ShrinkHeaderHeather(
+        fontSize, cityInfo, cityList, cityListClick, weather.nowBaseBean
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
+        WeatherContent(
+            Modifier, scrollState, fontSize, cityList, cityListClick,
+            cityInfo, weather.nowBaseBean, weather.dailyBean,
+            weather.airNowBean, weather.hourlyBeanList, weather.dailyBeanList
+        )
+    }
+}
+
+@Composable
+private fun HorizontalWeather(
     fontSize: TextUnit,
     cityList: () -> Unit,
     cityListClick: () -> Unit,
     cityInfo: CityInfo,
-    weatherNow: WeatherNowBean.NowBaseBean?,
-    dailyBean: WeatherDailyBean.DailyBean?,
-    airNowBean: AirNowBean.NowBean?,
-    hourlyBeanList: List<WeatherHourlyBean.HourlyBean>,
-    dayBeanList: List<WeatherDailyBean.DailyBean>,
-    isLand: Boolean = false
+    weather: WeatherModel,
+    scrollState: ScrollState
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(modifier = Modifier.height(30.dp))
-
-        if (!isLand) {
+    Row(modifier = Modifier.fillMaxSize()) {
+        val landModifier = Modifier
+            .weight(1f)
+            .fillMaxHeight()
+        Column(
+            modifier = landModifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             // 天气头部，向上滑动时会进行隐藏
-            HeaderWeather(fontSize, cityList, cityListClick, cityInfo, weatherNow)
+            HeaderWeather(
+                fontSize,
+                cityList,
+                cityListClick,
+                cityInfo,
+                weather.nowBaseBean,
+                true
+            )
 
             // 天气动画
-            WeatherAnimation(weatherNow?.icon)
-
-            Spacer(modifier = Modifier.height(10.dp))
+            WeatherAnimation(weather.nowBaseBean.icon)
         }
-
-        // 当前空气质量
-        AirQuality(airNowBean)
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // 未来24小时天气预报
-        HourWeather(hourlyBeanList)
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // 未来7天天气预报
-        DayWeather(dayBeanList)
-
-        // 当天具体天气数值
-        DayWeatherContent(weatherNow, dailyBean)
+        WeatherContent(
+            landModifier, scrollState, fontSize, cityList,
+            cityListClick, cityInfo, weather.nowBaseBean, weather.dailyBean,
+            weather.airNowBean, weather.hourlyBeanList, weather.dailyBeanList, true
+        )
     }
 }

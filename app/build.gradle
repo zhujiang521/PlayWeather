@@ -12,8 +12,8 @@ android {
         applicationId "com.zj.weather"
         minSdk 24
         targetSdk 31
-        versionCode 6
-        versionName "1.4.1"
+        versionCode 7
+        versionName "1.5.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -94,7 +94,7 @@ dependencies {
     // 启动动画
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
     // Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'com.google.dagger:hilt-android:2.38.1'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     testImplementation 'junit:junit:4.13.2'
