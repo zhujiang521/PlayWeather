@@ -21,8 +21,8 @@ interface CityInfoDao {
     @Query("SELECT * FROM city_info where is_location = :isLocation")
     suspend fun getIsLocationList(isLocation: Int = 1): List<CityInfo>
 
-    @Query("SELECT * FROM city_info where name = :name")
-    suspend fun getHasLocation(name: String): List<CityInfo>
+    @Query("SELECT COUNT(*) FROM city_info where name = :name")
+    suspend fun getHasLocation(name: String): Int
 
     @Query("SELECT COUNT(*) FROM city_info")
     suspend fun getCount(): Int

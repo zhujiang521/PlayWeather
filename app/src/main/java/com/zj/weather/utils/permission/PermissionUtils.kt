@@ -12,28 +12,28 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import com.zj.weather.MainViewModel
 import com.zj.weather.R
+import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun FeatureThatRequiresLocationPermissions(mainViewModel: MainViewModel) {
+fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
     val context = LocalContext.current
     val alertDialog = rememberSaveable { mutableStateOf(false) }
     // 权限状态
-    val cameraPermissionState = rememberPermissionState(
+    val locationPermissionState = rememberPermissionState(
         Manifest.permission.ACCESS_FINE_LOCATION,
     )
     when {
-        // 如果授予相机权限，则显示启用该功能的屏幕
-        cameraPermissionState.hasPermission -> {
-            getLocation(context, mainViewModel)
+        // 如果授予定位权限，则显示启用该功能的屏幕
+        locationPermissionState.hasPermission -> {
+            getLocation(context,weatherViewModel)
         }
         // 申请权限
-        cameraPermissionState.shouldShowRationale ||
-                !cameraPermissionState.permissionRequested -> {
+        locationPermissionState.shouldShowRationale ||
+                !locationPermissionState.permissionRequested -> {
             LaunchedEffect(Unit) {
-                cameraPermissionState.launchPermissionRequest()
+                locationPermissionState.launchPermissionRequest()
             }
         }
         // 如果未满足上述条件，则用户拒绝该权限。让我们向用户提供常见问题解答，

@@ -3,6 +3,7 @@ package com.zj.weather.utils
 import android.content.Context
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.zj.weather.R
+import com.zj.weather.room.entity.CityInfo
 import java.util.*
 
 /**
@@ -78,5 +79,23 @@ fun getSunriseSunsetContent(context: Context, sunrise: String, sunset: String): 
         "${context.getString(R.string.sun_sunrise)}${sunrise}"
     } else {
         "${context.getString(R.string.sun_sunset)}${sunset}"
+    }
+}
+
+/**
+ * 创建默认的CityInfo
+ */
+fun makeDefault(context: Context, cityInfoList: List<CityInfo>?): List<CityInfo> {
+    return if (cityInfoList.isNullOrEmpty()) {
+        val cityInfo = listOf(
+            CityInfo(
+                location = "CN101010100",
+                name = context.getString(R.string.default_location),
+            )
+        )
+        cityInfo
+    } else {
+        XLog.e("cityInfoList:$cityInfoList")
+        cityInfoList
     }
 }

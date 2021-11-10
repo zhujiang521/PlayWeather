@@ -3,7 +3,6 @@ package com.zj.weather
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -17,8 +16,6 @@ import kotlinx.coroutines.MainScope
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
-    private val mainViewModel: MainViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -27,15 +24,10 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    NavGraph(mainViewModel = mainViewModel)
+                    NavGraph()
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mainViewModel.resetLanguage()
     }
 
 }

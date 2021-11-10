@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.weather
+package com.zj.weather.ui.view.weather.widget
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween

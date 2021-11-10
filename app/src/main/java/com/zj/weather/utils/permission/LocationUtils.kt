@@ -6,13 +6,13 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import com.zj.weather.MainViewModel
+import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
 import java.util.*
 
 
 @SuppressLint("MissingPermission")
-fun getLocation(context: Context, mainViewModel: MainViewModel) {
+fun getLocation(context: Context, weatherViewModel: WeatherViewModel) {
     val locationManager: LocationManager?
     val locationProvider: String?
 
@@ -44,14 +44,14 @@ fun getLocation(context: Context, mainViewModel: MainViewModel) {
         "获取上次的位置-经纬度：" + location?.longitude
             .toString() + "   " + location?.latitude
     )
-    getAddress(context, location, mainViewModel)
+    getAddress(context, location,weatherViewModel)
 }
 
 //获取地址信息:城市、街道等信息
 private fun getAddress(
     context: Context,
     location: Location?,
-    mainViewModel: MainViewModel
+    weatherViewModel: WeatherViewModel,
 ): List<Address?>? {
     var result: List<Address?>? = null
 
@@ -61,7 +61,7 @@ private fun getAddress(
         location.latitude,
         location.longitude, 1
     )
-    mainViewModel.updateCityInfo(location, result)
+    weatherViewModel.updateCityInfo(location, result)
     XLog.v("获取地址信息：${result[0]?.adminArea}")
     return result
 }

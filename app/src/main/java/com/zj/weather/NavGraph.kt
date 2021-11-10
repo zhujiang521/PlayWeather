@@ -17,94 +17,57 @@
 package com.zj.weather
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.common.PlayActions
 import com.zj.weather.common.PlayDestinations
-import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.setComposable
-import com.zj.weather.ui.view.WeatherViewPager
 import com.zj.weather.ui.view.city.CityListPage
-import com.zj.weather.ui.view.getLocation
+import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
 import com.zj.weather.ui.view.list.WeatherListPage
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.permission.FeatureThatRequiresLocationPermissions
+import com.zj.weather.ui.view.list.viewmodel.WeatherListViewModel
+import com.zj.weather.ui.view.weather.WeatherViewPager
+import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun NavGraph(
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
-    mainViewModel: MainViewModel
 ) {
-    val city = mainViewModel.getSyncCityList()[0]
-    mainViewModel.getWeather(city.location)
-    FeatureThatRequiresLocationPermissions(mainViewModel)
     val navController = rememberAnimatedNavController()
     val actions = remember(navController) { PlayActions(navController) }
-    val coroutineScope = rememberCoroutineScope()
     AnimatedNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         setComposable(PlayDestinations.HOME_PAGE_ROUTE) {
-            val cityInfoList by mainViewModel.cityInfoList.observeAsState()
-            val initialPage by mainViewModel.searchCityInfo.observeAsState()
-            val pagerState = rememberPagerState()
-            cityInfoList?.apply {
-                if (isNullOrEmpty()) return@apply
-                val index = if (pagerState.currentPage > size - 1) {
-                    0
-                } else pagerState.currentPage
-                val cityInfo = get(index)
-                val location = getLocation(cityInfo = cityInfo)
-                LaunchedEffect(location) {
-                    mainViewModel.getWeather(location)
-                    XLog.e("查询 initialPage:$initialPage")
-                }
-            }
+            val weatherViewModel = hiltViewModel<WeatherViewModel>()
             WeatherViewPager(
-                mainViewModel, coroutineScope, actions, initialPage ?: 0,
-                cityInfoList ?: mainViewModel.makeDefault(cityInfoList), pagerState
+                weatherViewModel = weatherViewModel,
+                toCityList = actions.toCityList,
+                toWeatherList = actions.toWeatherList
             )
         }
         setComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
-            mainViewModel.getGeoTopCity()
-            val locationBeanState by mainViewModel.locationBeanList.observeAsState(PlayLoading)
+            val weatherListViewModel = hiltViewModel<WeatherListViewModel>()
             WeatherListPage(
-                locationBeanState = locationBeanState,
+                weatherListViewModel = weatherListViewModel,
                 onBack = actions.upPress,
-                onSearchCity = { cityName ->
-                    mainViewModel.getGeoCityLookup(cityName)
-                },
-                onErrorClick = {
-                    mainViewModel.getGeoTopCity()
-                },
-                toWeatherDetails = { cityInfo ->
-                    mainViewModel.insertCityInfo(cityInfo) {
-                        val count = mainViewModel.getCount()
-                        mainViewModel.onSearchCityInfoChanged(count - 1)
-                        actions.upPress()
-                    }
-                })
+                toWeatherDetails = actions.upPress
+            )
         }
         setComposable(PlayDestinations.CITY_LIST_ROUTE) {
-            mainViewModel.refreshCityList()
-            val cityInfoList by mainViewModel.cityInfoList.observeAsState(listOf())
+            val cityListViewModel = hiltViewModel<CityListViewModel>()
             CityListPage(
-                cityInfoList = cityInfoList,
+                cityListViewModel = cityListViewModel,
                 onBack = actions.upPress,
-                toWeatherDetails = {
-                    mainViewModel.onSearchCityInfoChanged(cityInfoList.indexOf(it))
-                    actions.upPress()
-                },
-                onDeleteListener = {
-                    mainViewModel.deleteCityInfo(it)
-                })
+                toWeatherDetails = actions.upPress
+            )
         }
     }
 }

@@ -1,34 +1,49 @@
 package com.zj.weather.ui.view.list
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
-import com.zj.weather.MainViewModel
 import com.zj.weather.R
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.lce.LcePage
 import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
+import com.zj.weather.ui.view.list.viewmodel.WeatherListViewModel
+import com.zj.weather.ui.view.list.widget.CityItem
 import com.zj.weather.utils.showToast
 
+@Composable
+fun WeatherListPage(
+    weatherListViewModel: WeatherListViewModel,
+    onBack: () -> Unit,
+    toWeatherDetails: () -> Unit,
+) {
+    weatherListViewModel.getGeoTopCity()
+    val locationBeanState by weatherListViewModel.locationBeanList.observeAsState(PlayLoading)
+    WeatherListPage(
+        locationBeanState = locationBeanState,
+        onBack = onBack,
+        onSearchCity = { cityName ->
+            weatherListViewModel.getGeoCityLookup(cityName)
+        },
+        onErrorClick = {
+            weatherListViewModel.getGeoTopCity()
+        },
+        toWeatherDetails = { cityInfo ->
+            weatherListViewModel.insertCityInfo(cityInfo)
+            toWeatherDetails()
+        })
+}
 
 @Composable
 fun WeatherListPage(
@@ -63,42 +78,6 @@ fun WeatherListPage(
             }
         } else {
             NoContent(tip = stringResource(id = R.string.add_location_warn2))
-        }
-    }
-}
-
-@Composable
-private fun CityItem(
-    locationBean: GeoBean.LocationBean,
-    toWeatherDetails: (CityInfo) -> Unit,
-) {
-    val alertDialog = remember { mutableStateOf(false) }
-
-    Column {
-        Card(shape = RoundedCornerShape(5.dp)) {
-            Text(
-                text = "${locationBean.adm1} ${locationBean.adm2} ${locationBean.name}",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colors.primaryVariant)
-                    .clickable {
-                        alertDialog.value = true
-                    }
-                    .padding(horizontal = 10.dp, vertical = 15.dp))
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        ShowDialog(alertDialog = alertDialog, "${locationBean.adm2} ${locationBean.name}") {
-            toWeatherDetails(
-                CityInfo(
-                    location = "${locationBean.lon},${
-                        locationBean.lat
-                    }",
-                    name = locationBean.name,
-                    province = locationBean.adm1,
-                    city = locationBean.adm2,
-                    locationId = "CN${locationBean.id}"
-                )
-            )
         }
     }
 }
