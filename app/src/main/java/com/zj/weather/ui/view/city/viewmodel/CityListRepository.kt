@@ -3,10 +3,8 @@ package com.zj.weather.ui.view.city.viewmodel
 import android.app.Application
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.makeDefault
+import com.zj.weather.utils.weather.makeDefault
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ViewModelScoped

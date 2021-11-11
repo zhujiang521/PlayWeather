@@ -3,8 +3,12 @@ package com.zj.weather.utils
 import android.content.Context
 import android.net.ConnectivityManager
 
+/**
+ * 网络状态
+ */
 
 object NetCheckUtil {
+
     fun checkNet(context: Context): Boolean {
         // 判断是否具有可以用于通信渠道
         val mobileConnection = isMobileConnection(context)

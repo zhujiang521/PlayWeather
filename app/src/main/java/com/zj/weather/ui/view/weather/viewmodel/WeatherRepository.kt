@@ -16,6 +16,10 @@ import com.zj.weather.R
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.*
+import com.zj.weather.utils.weather.getDateWeekName
+import com.zj.weather.utils.weather.getTimeName
+import com.zj.weather.utils.weather.getTodayBean
+import com.zj.weather.utils.weather.makeDefault
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine

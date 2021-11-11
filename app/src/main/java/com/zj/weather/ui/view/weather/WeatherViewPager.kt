@@ -13,7 +13,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.list.DrawIndicator
+import com.zj.weather.ui.view.list.widget.DrawIndicator
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.permission.FeatureThatRequiresLocationPermissions

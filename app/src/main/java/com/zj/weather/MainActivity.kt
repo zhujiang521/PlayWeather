@@ -18,9 +18,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
-        transparentStatusBar()
-        setAndroidNativeLightStatusBar()
+        initView()
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -28,6 +26,18 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                 }
             }
         }
+    }
+
+    /**
+     * 初始化View
+     */
+    private fun initView() {
+        // 加载动画
+        installSplashScreen()
+        // 状态栏透明
+        transparentStatusBar()
+        // 状态栏反色
+        setAndroidNativeLightStatusBar()
     }
 
 }

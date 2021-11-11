@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
-import com.zj.weather.utils.IconUtils
+import com.zj.weather.utils.weather.IconUtils
 
 @Composable
 fun WeatherAnimation(weather: String?) {

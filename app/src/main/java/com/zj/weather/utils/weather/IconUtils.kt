@@ -1,7 +1,8 @@
-package com.zj.weather.utils
+package com.zj.weather.utils.weather
 
 import android.content.Context
 import com.zj.weather.R
+import com.zj.weather.utils.isDarkMode
 
 object IconUtils {
 

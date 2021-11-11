@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.list
+package com.zj.weather.ui.view.list.widget
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
@@ -96,7 +96,7 @@ fun DrawIndicator(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@ExperimentalPagerApi
 @Preview(showBackground = false, name = "底部指示器")
 @Composable
 fun DrawIndicatorPreview() {

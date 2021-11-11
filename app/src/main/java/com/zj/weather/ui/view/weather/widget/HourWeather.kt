@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.zj.weather.R
-import com.zj.weather.utils.IconUtils
+import com.zj.weather.utils.weather.IconUtils
 import com.zj.weather.utils.ImageLoader
 
 @Composable

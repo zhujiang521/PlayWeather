@@ -23,7 +23,7 @@ import com.zj.weather.ui.view.weather.widget.HeaderWeather
 import com.zj.weather.ui.view.weather.widget.ShrinkHeaderHeather
 import com.zj.weather.ui.view.weather.widget.WeatherAnimation
 import com.zj.weather.ui.view.weather.widget.WeatherContent
-import com.zj.weather.utils.IconUtils
+import com.zj.weather.utils.weather.IconUtils
 import com.zj.weather.utils.ImageLoader
 
 @Composable

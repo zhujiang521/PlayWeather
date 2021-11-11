@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.zj.weather.R
-import com.zj.weather.utils.getSunriseSunsetContent
-import com.zj.weather.utils.getUvIndexDesc
+import com.zj.weather.utils.weather.getSunriseSunsetContent
+import com.zj.weather.utils.weather.getUvIndexDesc
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

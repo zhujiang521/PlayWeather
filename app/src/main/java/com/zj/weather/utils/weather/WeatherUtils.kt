@@ -1,9 +1,10 @@
-package com.zj.weather.utils
+package com.zj.weather.utils.weather
 
 import android.content.Context
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
+import com.zj.weather.utils.XLog
 import java.util.*
 
 /**

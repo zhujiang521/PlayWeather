@@ -1,8 +1,7 @@
-package com.zj.weather.utils
+package com.zj.weather.utils.weather
 
 import android.content.Context
 import android.text.format.DateUtils
-import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.zj.weather.R
 import java.text.SimpleDateFormat
 import java.util.*
