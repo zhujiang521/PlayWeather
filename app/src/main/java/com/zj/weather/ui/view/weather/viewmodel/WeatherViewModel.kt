@@ -132,8 +132,7 @@ class WeatherViewModel @Inject constructor(
     fun updateCityInfo(location: Location, result: MutableList<Address>) {
         updateCityJob.checkCoroutines()
         updateCityJob = viewModelScope.launch(Dispatchers.IO) {
-            weatherRepository.updateCityInfo(location, result)
-            withContext(Dispatchers.Main) {
+            weatherRepository.updateCityInfo(location, result) {
                 refreshCityList()
             }
         }

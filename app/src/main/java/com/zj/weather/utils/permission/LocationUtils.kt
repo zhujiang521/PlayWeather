@@ -2,13 +2,14 @@ package com.zj.weather.utils.permission
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationManager
+import android.location.*
+import android.os.Build
+import android.os.CancellationSignal
+import android.os.Looper
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
 import java.util.*
+import java.util.function.Consumer
 
 
 @SuppressLint("MissingPermission")
@@ -38,13 +39,25 @@ fun getLocation(context: Context, weatherViewModel: WeatherViewModel) {
             return
         }
     }
-    //3.获取上次的位置，一般第一次运行，此值为null
-    val location: Location? = locationManager.getLastKnownLocation(locationProvider)
-    XLog.v(
-        "获取上次的位置-经纬度：" + location?.longitude
-            .toString() + "   " + location?.latitude
-    )
-    getAddress(context, location,weatherViewModel)
+
+    //3.获取当前位置，R以上的版本需要使用getCurrentLocation
+    //  之前的版本可以可用requestSingleUpdate
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        locationManager.getCurrentLocation(
+            locationProvider,
+            CancellationSignal(),
+            context.mainExecutor,
+            Consumer { location ->
+                getAddress(context, location, weatherViewModel)
+            })
+    } else {
+        locationManager.requestSingleUpdate(
+            locationProvider,
+            LocationListener { location ->
+                getAddress(context, location, weatherViewModel)
+            }, Looper.getMainLooper()
+        )
+    }
 }
 
 //获取地址信息:城市、街道等信息
@@ -53,8 +66,11 @@ private fun getAddress(
     location: Location?,
     weatherViewModel: WeatherViewModel,
 ): List<Address?>? {
+    XLog.e(
+        "获取当前位置-经纬度：" + location?.longitude
+            .toString() + "   " + location?.latitude
+    )
     var result: List<Address?>? = null
-
     if (location == null) return result
     val gc = Geocoder(context, Locale.getDefault())
     result = gc.getFromLocation(
@@ -62,6 +78,6 @@ private fun getAddress(
         location.longitude, 1
     )
     weatherViewModel.updateCityInfo(location, result)
-    XLog.v("获取地址信息：${result[0]?.adminArea}")
+    XLog.e("获取地址信息：${result}")
     return result
 }

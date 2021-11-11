@@ -27,7 +27,9 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
     when {
         // 如果授予定位权限，则显示启用该功能的屏幕
         locationPermissionState.hasPermission -> {
-            getLocation(context,weatherViewModel)
+            LaunchedEffect(Unit) {
+                getLocation(context, weatherViewModel)
+            }
         }
         // 申请权限
         locationPermissionState.shouldShowRationale ||

@@ -174,11 +174,41 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      * @param location 位置
      * @param result Address
      */
-    suspend fun updateCityInfo(location: Location, result: MutableList<Address>) {
+    suspend fun updateCityInfo(
+        location: Location,
+        result: MutableList<Address>,
+        onRefreshListener: () -> kotlin.Unit
+    ) {
         if (result.isNullOrEmpty()) return
         val address = result[0]
         val isLocationList = cityInfoDao.getIsLocationList()
-        val cityInfo = CityInfo(
+        val cityInfo = buildCityInfo(location, address)
+        XLog.e("updateCityInfo: address:${address}")
+        if (isLocationList.isNotEmpty()) {
+            cityInfo.uid = isLocationList[0].uid
+            if (cityInfo == isLocationList[0]) {
+                XLog.e("updateCityInfo: 数据库中已经存在当前的数据并且相等，无需修改:${cityInfo.uid}  ")
+            } else {
+                XLog.e("updateCityInfo: 数据库中已经存在当前的数据，需要修改:${cityInfo.uid}")
+                cityInfoDao.update(cityInfo)
+                withContext(Dispatchers.Main) {
+                    onRefreshListener()
+                }
+            }
+        } else {
+            cityInfoDao.insert(cityInfo)
+            withContext(Dispatchers.Main) {
+                onRefreshListener()
+            }
+            XLog.e("updateCityInfo: 数据库中没有当前的数据，需要新增")
+        }
+    }
+
+    private fun buildCityInfo(
+        location: Location,
+        address: Address
+    ): CityInfo {
+        return CityInfo(
             location = "${location.longitude},${
                 location.latitude
             }",
@@ -187,14 +217,6 @@ class WeatherRepository @Inject constructor(private val context: Application) {
             province = address.adminArea,
             city = address.locality
         )
-        XLog.d("updateCityInfo: address:${address}")
-        if (isLocationList.isNotEmpty()) {
-            XLog.d("updateCityInfo: 数据库中已经存在当前的数据，需要修改")
-            cityInfoDao.update(cityInfo)
-        } else {
-            cityInfoDao.insert(cityInfo)
-            XLog.d("updateCityInfo: 数据库中没有当前的数据，需要新增")
-        }
     }
 
     suspend fun refreshCityList(): List<CityInfo> {

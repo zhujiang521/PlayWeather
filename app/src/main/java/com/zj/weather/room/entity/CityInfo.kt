@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "city_info")
 data class CityInfo(
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
+    @PrimaryKey(autoGenerate = true) var uid: Int = 0,
     @ColumnInfo(name = "location") val location: String = "",
     @ColumnInfo(name = "location_id") val locationId: String = "",
     @ColumnInfo(name = "name") val name: String,
