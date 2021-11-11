@@ -34,7 +34,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      * @param location 位置 可能是地点、或者是地点id
      * @param lang 获取的语言
      */
-    suspend fun getWeatherNow(location: String = "CN101010100", lang: Lang) =
+    suspend fun getWeatherNow(location: String, lang: Lang) =
         suspendCancellableCoroutine<WeatherNowBean.NowBaseBean> { continuation ->
             QWeather.getWeatherNow(context, location, lang,
                 Unit.METRIC, object : QWeather.OnResultWeatherNowListener {
@@ -66,7 +66,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      * @param location 位置 可能是地点、或者是地点id
      * @param lang 获取的语言
      */
-    suspend fun getWeather24Hour(location: String = "CN101010100", lang: Lang) =
+    suspend fun getWeather24Hour(location: String, lang: Lang) =
         suspendCancellableCoroutine<List<WeatherHourlyBean.HourlyBean>> { continuation ->
             QWeather.getWeather24Hourly(context, location, lang,
                 Unit.METRIC, object : QWeather.OnResultWeatherHourlyListener {
@@ -100,7 +100,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      * @param location 位置 可能是地点、或者是地点id
      * @param lang 获取的语言
      */
-    suspend fun getWeather7Day(location: String = "CN101010100", lang: Lang) =
+    suspend fun getWeather7Day(location: String, lang: Lang) =
         suspendCancellableCoroutine<Pair<WeatherDailyBean.DailyBean?, List<WeatherDailyBean.DailyBean>>> { continuation ->
             QWeather.getWeather7D(context, location, lang,
                 Unit.METRIC, object : QWeather.OnResultWeatherDailyListener {
@@ -138,20 +138,17 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      * @param location 位置 可能是地点、或者是地点id
      * @param lang 获取的语言
      */
-    suspend fun getAirNow(location: String = "CN101010100", lang: Lang) =
+    suspend fun getAirNow(location: String, lang: Lang) =
         suspendCancellableCoroutine<AirNowBean.NowBean> { continuation ->
             QWeather.getAirNow(context, location, lang,
                 object : QWeather.OnResultAirNowListener {
                     override fun onError(e: Throwable) {
                         XLog.e("getWeather24Hour onError: $e")
                         showToast(context, e.message)
-
                     }
 
                     override fun onSuccess(airNowBean: AirNowBean?) {
-                        XLog.d(
-                            "getAirNow onSuccess: " + Gson().toJson(airNowBean)
-                        )
+                        XLog.d("getAirNow onSuccess: " + Gson().toJson(airNowBean))
                         //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
                         if (Code.OK === airNowBean?.code) {
                             airNowBean.now.primary = if (airNowBean.now.primary == "NA") "" else {

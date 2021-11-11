@@ -75,7 +75,7 @@ class WeatherViewModel @Inject constructor(
         _weatherModel.postValue(playState)
     }
 
-    fun getWeather(location: String = "CN101010100") {
+    fun getWeather(location: String) {
         if (!NetCheckUtil.checkNet(getApplication())) {
             showToast(getApplication(), R.string.bad_network_view_tip)
             onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
@@ -117,10 +117,6 @@ class WeatherViewModel @Inject constructor(
     fun hasLocation(): Boolean {
         val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
         return isLocation.isNotEmpty()
-    }
-
-    fun makeDefault(cityInfoList: List<CityInfo>?): List<CityInfo> {
-        return makeDefault(context = getApplication(), cityInfoList)
     }
 
     /**

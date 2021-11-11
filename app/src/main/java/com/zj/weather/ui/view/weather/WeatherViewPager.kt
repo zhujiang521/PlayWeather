@@ -27,9 +27,7 @@ fun WeatherViewPager(
     toWeatherList: () -> Unit,
 ) {
     weatherViewModel.refreshCityList()
-    val cityInfoList by weatherViewModel.cityInfoList.observeAsState(
-        weatherViewModel.makeDefault(listOf())
-    )
+    val cityInfoList by weatherViewModel.cityInfoList.observeAsState(listOf())
     val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
     val pagerState = rememberPagerState()
     cityInfoList.apply {
@@ -39,8 +37,10 @@ fun WeatherViewPager(
         } else pagerState.currentPage
         val cityInfo = get(index)
         val location = getLocation(cityInfo = cityInfo)
-        LaunchedEffect(location) {
-            weatherViewModel.getWeather(location)
+        if (location != null) {
+            LaunchedEffect(location) {
+                weatherViewModel.getWeather(location)
+            }
             XLog.e("查询 initialPage:$initialPage")
         }
     }
@@ -75,7 +75,10 @@ fun WeatherViewPager(
             WeatherPage(
                 weatherViewModel, cityInfoList[page],
                 onErrorClick = {
-                    weatherViewModel.getWeather(getLocation(cityInfoList[page]))
+                    val location = getLocation(cityInfoList[page])
+                    if (location != null) {
+                        weatherViewModel.getWeather(location)
+                    }
                 },
                 cityList = toCityList, cityListClick = toWeatherList
             )
@@ -89,8 +92,8 @@ fun WeatherViewPager(
 
 fun getLocation(
     cityInfo: CityInfo?
-): String {
-    if (cityInfo == null) return "CN101010100"
+): String? {
+    if (cityInfo == null) return null
     return if (cityInfo.locationId.isNotEmpty()) {
         cityInfo.locationId
     } else {
