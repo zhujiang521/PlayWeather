@@ -12,8 +12,8 @@ android {
         applicationId "com.zj.weather"
         minSdk 24
         targetSdk 31
-        versionCode 7
-        versionName "1.5.0"
+        versionCode 8
+        versionName "1.5.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -21,8 +21,7 @@ android {
         }
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments += ["room.schemaLocation":
-                                      "$projectDir/schemas".toString()]
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
         // 去除多语言
@@ -72,8 +71,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation files('libs/QWeather_Public_Android_V4.6.jar')
     implementation "com.google.accompanist:accompanist-permissions:0.20.0"
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+    implementation 'com.google.code.gson:gson:2.8.9'
 
     def accompanist_version = "0.20.2"
 
