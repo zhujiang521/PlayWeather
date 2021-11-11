@@ -32,12 +32,14 @@ object IconUtils {
             "100", "900", "901", "999" -> R.raw.weather_moon
             "101", "103" -> R.raw.weather_moon_cloudy
             "102", "104" -> R.raw.weather_cloudy
-            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213",
+            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213" -> R.raw.weather_mist
             "500", "501", "502", "503", "504", "505", "506", "507", "508", "509", "510", "511", "512", "513", "514", "515" -> R.raw.weather_foggy
-            "300", "301", "302", "303", "399", "305", "306", "307", "308", "309", "310" -> R.raw.weather_moon_rain
+            "300", "301", "302", "399", "305", "306", "307", "308", "309", "310" -> R.raw.weather_moon_rain
+            "303" -> R.raw.weather_stormshowersday
             "304" -> R.raw.weather_thunder
             "311", "312", "313", "314", "315", "316", "317", "318" -> R.raw.weather_thunder_rain
-            "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "499" -> R.raw.weather_moon_snows
+            "400", "401", "402", "403", "404", "405" -> R.raw.weather_snow
+            "406", "407", "408", "409", "410", "499" -> R.raw.weather_moon_snows
             else -> R.raw.weather_moon
         }
         return imageId
@@ -54,12 +56,14 @@ object IconUtils {
             "100", "900", "901", "999" -> R.raw.weather_sun
             "101", "103" -> R.raw.weather_sun_cloudy
             "102", "104" -> R.raw.weather_cloudy
-            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213",
+            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213" -> R.raw.weather_mist
             "500", "501", "502", "503", "504", "505", "506", "507", "508", "509", "510", "511", "512", "513", "514", "515" -> R.raw.weather_foggy
-            "300", "301", "302", "303", "399", "305", "306", "307", "308", "309", "310" -> R.raw.weather_rain
+            "300", "301", "302", "399", "305", "306", "307", "308", "309", "310" -> R.raw.weather_rain
+            "303" -> R.raw.weather_stormshowersday
             "304" -> R.raw.weather_thunder
             "311", "312", "313", "314", "315", "316", "317", "318" -> R.raw.weather_thunder_rain
-            "400", "401", "402", "403", "404", "405", "406", "407", "408", "409", "410", "499" -> R.raw.weather_sun_snows
+            "400", "401", "402", "403", "404", "405" -> R.raw.weather_snow
+            "406", "407", "408", "409", "410", "499" -> R.raw.weather_sun_snows
             else -> R.raw.weather_sun
         }
         return imageId
@@ -107,7 +111,7 @@ object IconUtils {
             "103" -> imageId = R.mipmap.icon_103d
             "104" -> imageId = R.mipmap.icon_104d
             "200" -> imageId = R.mipmap.icon_200d
-            "201" -> imageId = R.mipmap.icon_210d
+            "201" -> imageId = R.mipmap.icon_201d
             "202" -> imageId = R.mipmap.icon_202d
             "203" -> imageId = R.mipmap.icon_203d
             "204" -> imageId = R.mipmap.icon_204d
@@ -186,7 +190,7 @@ object IconUtils {
             "103" -> imageId = R.mipmap.icon_103n
             "104" -> imageId = R.mipmap.icon_104n
             "200" -> imageId = R.mipmap.icon_200n
-            "201" -> imageId = R.mipmap.icon_210n
+            "201" -> imageId = R.mipmap.icon_201n
             "202" -> imageId = R.mipmap.icon_202n
             "203" -> imageId = R.mipmap.icon_203n
             "204" -> imageId = R.mipmap.icon_204n
@@ -265,7 +269,7 @@ object IconUtils {
             "103" -> imageId = R.mipmap.back_103d
             "104" -> imageId = R.mipmap.back_104d
             "200" -> imageId = R.mipmap.back_200d
-            "201" -> imageId = R.mipmap.back_210d
+            "201" -> imageId = R.mipmap.back_201d
             "202" -> imageId = R.mipmap.back_202d
             "203" -> imageId = R.mipmap.back_203d
             "204" -> imageId = R.mipmap.back_204d
@@ -344,7 +348,7 @@ object IconUtils {
             "103" -> imageId = R.mipmap.back_103n
             "104" -> imageId = R.mipmap.back_104n
             "200" -> imageId = R.mipmap.back_200n
-            "201" -> imageId = R.mipmap.back_210n
+            "201" -> imageId = R.mipmap.back_201n
             "202" -> imageId = R.mipmap.back_202n
             "203" -> imageId = R.mipmap.back_203n
             "204" -> imageId = R.mipmap.back_204n
