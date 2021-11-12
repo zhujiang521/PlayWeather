@@ -15,9 +15,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.zj.weather.R
-import com.zj.weather.ui.view.list.BannerGravity.BottomCenter
-import com.zj.weather.ui.view.list.BannerGravity.BottomLeft
-import com.zj.weather.ui.view.list.BannerGravity.BottomRight
+import com.zj.weather.ui.view.list.widget.BannerGravity.BottomCenter
+import com.zj.weather.ui.view.list.widget.BannerGravity.BottomLeft
+import com.zj.weather.ui.view.list.widget.BannerGravity.BottomRight
 
 /**
  * 圆形指示器 eg：。。. 。。

@@ -20,6 +20,7 @@ import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.list.viewmodel.WeatherListViewModel
 import com.zj.weather.ui.view.list.widget.CityItem
+import com.zj.weather.ui.view.list.widget.SearchBar
 import com.zj.weather.utils.showToast
 
 @Composable

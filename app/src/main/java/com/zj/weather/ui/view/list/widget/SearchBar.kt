@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.list
+package com.zj.weather.ui.view.list.widget
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -20,6 +20,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
@@ -105,6 +107,10 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                         )
                     }
                 }
+                val requester = FocusRequester()
+                LaunchedEffect(Unit) {
+                    requester.requestFocus()
+                }
                 BasicTextField(
                     value = value,
                     onValueChange = { value = it },
@@ -124,6 +130,7 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 5.dp, end = 45.dp)
+                        .focusRequester(requester)
                 )
             }
             IconButton(
@@ -142,7 +149,7 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
 }
 
 
-@Preview(name = "搜索头", widthDp = 360, heightDp = 70, showBackground = true)
+@Preview(name = "搜索头", widthDp = 360, showBackground = true)
 @Composable
 fun SearchBarPreview() {
     SearchBar({}) {}

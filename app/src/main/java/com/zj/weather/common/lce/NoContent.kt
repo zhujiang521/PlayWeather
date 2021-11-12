@@ -13,7 +13,7 @@ import com.zj.weather.R
 @Composable
 fun NoContent(tip: String = "当前无内容") {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.weather_error)
+        LottieCompositionSpec.RawRes(R.raw.weather_no_data)
     )
 
     val progress by animateLottieCompositionAsState(

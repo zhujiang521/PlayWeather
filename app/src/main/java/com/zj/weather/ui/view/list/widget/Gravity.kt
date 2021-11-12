@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.list
+package com.zj.weather.ui.view.list.widget
 
 /**
  * BannerGravity 设置指示器位置

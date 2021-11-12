@@ -18,6 +18,7 @@ package com.zj.weather
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -47,7 +48,9 @@ fun NavGraph(
     ) {
         setComposable(PlayDestinations.HOME_PAGE_ROUTE) {
             val weatherViewModel = hiltViewModel<WeatherViewModel>()
-            weatherViewModel.refreshCityList()
+            LaunchedEffect(Unit) {
+                weatherViewModel.refreshCityList()
+            }
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
                 toCityList = actions.toCityList,
@@ -56,7 +59,9 @@ fun NavGraph(
         }
         setComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
             val weatherListViewModel = hiltViewModel<WeatherListViewModel>()
-            weatherListViewModel.getGeoTopCity()
+            LaunchedEffect(Unit) {
+                weatherListViewModel.getGeoTopCity()
+            }
             WeatherListPage(
                 weatherListViewModel = weatherListViewModel,
                 onBack = actions.upPress,
@@ -65,7 +70,9 @@ fun NavGraph(
         }
         setComposable(PlayDestinations.CITY_LIST_ROUTE) {
             val cityListViewModel = hiltViewModel<CityListViewModel>()
-            cityListViewModel.refreshCityList()
+            LaunchedEffect(Unit) {
+                cityListViewModel.refreshCityList()
+            }
             CityListPage(
                 cityListViewModel = cityListViewModel,
                 onBack = actions.upPress,
