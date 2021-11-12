@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
+import com.zj.weather.R
+import com.zj.weather.common.dialog.ShowDialog
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.list.ShowDialog
 
 @Composable
 fun CityItem(
@@ -36,7 +38,15 @@ fun CityItem(
                     .padding(horizontal = 10.dp, vertical = 15.dp))
         }
         Spacer(modifier = Modifier.height(10.dp))
-        ShowDialog(alertDialog = alertDialog, "${locationBean.adm2} ${locationBean.name}") {
+        ShowDialog(
+            alertDialog = alertDialog,
+            title = stringResource(id = R.string.city_dialog_title),
+            content = stringResource(
+                id = R.string.city_dialog_content,
+                "${locationBean.adm2} ${locationBean.name}"
+            ), cancelString = stringResource(id = R.string.city_dialog_cancel),
+            confirmString = stringResource(id = R.string.city_dialog_confirm)
+        ) {
             toWeatherDetails(
                 CityInfo(
                     location = "${locationBean.lon},${

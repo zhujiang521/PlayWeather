@@ -10,9 +10,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.zj.weather.R
+import com.zj.weather.common.dialog.ShowDialog
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -42,7 +44,13 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
         // 以防他们想了解更多信息并将其发送到“设置”屏幕，以便将来在那里启用它（如果他们愿意）。
         else -> {
             alertDialog.value = true
-            ShowPermissionDialog(alertDialog = alertDialog) {
+            ShowDialog(
+                alertDialog = alertDialog,
+                title = stringResource(id = R.string.permission_title),
+                content = stringResource(id = R.string.permission_content),
+                cancelString = stringResource(id = R.string.permission_cancel),
+                confirmString = stringResource(id = R.string.permission_sure)
+            ) {
                 startSettingAppPermission(context)
             }
         }
