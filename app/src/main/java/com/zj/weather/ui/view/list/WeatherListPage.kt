@@ -28,7 +28,6 @@ fun WeatherListPage(
     onBack: () -> Unit,
     toWeatherDetails: () -> Unit,
 ) {
-    weatherListViewModel.getGeoTopCity()
     val locationBeanState by weatherListViewModel.locationBeanList.observeAsState(PlayLoading)
     WeatherListPage(
         locationBeanState = locationBeanState,
@@ -55,17 +54,17 @@ fun WeatherListPage(
 ) {
     val context = LocalContext.current
     LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
-        if (locationBeanList.isNotEmpty()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                SearchBar(onBack) { city ->
-                    if (city.isNotEmpty()) {
-                        onSearchCity(city)
-                    } else {
-                        // 搜索城市为空，提醒用户输入城市名称
-                        showToast(context = context, R.string.city_list_search_hint)
-                    }
+        Column(modifier = Modifier.fillMaxSize()) {
+            SearchBar(onBack) { city ->
+                if (city.isNotEmpty()) {
+                    onSearchCity(city)
+                } else {
+                    // 搜索城市为空，提醒用户输入城市名称
+                    showToast(context = context, R.string.city_list_search_hint)
                 }
-                Spacer(Modifier.height(10.dp))
+            }
+            Spacer(Modifier.height(10.dp))
+            if (locationBeanList.isNotEmpty()) {
                 val listState = rememberLazyListState()
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 15.dp),
@@ -75,9 +74,10 @@ fun WeatherListPage(
                         CityItem(locationBean, toWeatherDetails)
                     }
                 }
+            } else {
+                NoContent(tip = stringResource(id = R.string.add_location_warn2))
             }
-        } else {
-            NoContent(tip = stringResource(id = R.string.add_location_warn2))
         }
+
     }
 }

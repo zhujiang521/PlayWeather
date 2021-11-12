@@ -22,7 +22,6 @@ fun CityListPage(
     onBack: () -> Unit,
     toWeatherDetails: () -> Unit
 ) {
-    cityListViewModel.refreshCityList()
     val cityInfoList by cityListViewModel.cityInfoList.observeAsState(listOf())
     CityListPage(
         cityInfoList = cityInfoList, onBack = onBack, toWeatherDetails = {

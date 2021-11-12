@@ -1,8 +1,6 @@
 package com.zj.weather.common.lce
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,8 +22,7 @@ fun NoContent(tip: String = "当前无内容") {
     )
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colors.onSecondary),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

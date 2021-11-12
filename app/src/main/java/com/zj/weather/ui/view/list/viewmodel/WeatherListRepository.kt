@@ -42,7 +42,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
             }
             QWeather.getGeoCityLookup(context, cityName, object : QWeather.OnResultGeoListener {
                 override fun onError(e: Throwable) {
-                    continuation.resume(PlayError(e))
+                    continuation.resume(PlaySuccess(listOf()))
                     XLog.e("getGeoCityLookup onError: ${e.message}")
                     showToast(context, R.string.add_location_warn2)
                 }
@@ -82,8 +82,9 @@ class WeatherListRepository @Inject constructor(private val context: Application
             QWeather.getGeoTopCity(context, 20, Range.CN, lang,
                 object : QWeather.OnResultGeoListener {
                     override fun onError(e: Throwable) {
-                        continuation.resume(PlayError(e))
+                        continuation.resume(PlaySuccess(listOf()))
                         XLog.e("getGeoTopCity onError: $e")
+                        showToast(context, R.string.add_location_warn2)
                     }
 
                     override fun onSuccess(geoBean: GeoBean?) {

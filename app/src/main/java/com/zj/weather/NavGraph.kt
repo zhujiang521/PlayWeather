@@ -47,6 +47,7 @@ fun NavGraph(
     ) {
         setComposable(PlayDestinations.HOME_PAGE_ROUTE) {
             val weatherViewModel = hiltViewModel<WeatherViewModel>()
+            weatherViewModel.refreshCityList()
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
                 toCityList = actions.toCityList,
@@ -55,6 +56,7 @@ fun NavGraph(
         }
         setComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
             val weatherListViewModel = hiltViewModel<WeatherListViewModel>()
+            weatherListViewModel.getGeoTopCity()
             WeatherListPage(
                 weatherListViewModel = weatherListViewModel,
                 onBack = actions.upPress,
@@ -63,6 +65,7 @@ fun NavGraph(
         }
         setComposable(PlayDestinations.CITY_LIST_ROUTE) {
             val cityListViewModel = hiltViewModel<CityListViewModel>()
+            cityListViewModel.refreshCityList()
             CityListPage(
                 cityListViewModel = cityListViewModel,
                 onBack = actions.upPress,

@@ -26,7 +26,6 @@ fun WeatherViewPager(
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
 ) {
-    weatherViewModel.refreshCityList()
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState(listOf())
     val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
     val pagerState = rememberPagerState()
