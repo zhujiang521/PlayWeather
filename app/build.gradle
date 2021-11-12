@@ -61,6 +61,8 @@ android {
 
 dependencies {
 
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
@@ -69,7 +71,6 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation files('libs/QWeather_Public_Android_V4.6.jar')
     implementation "com.google.accompanist:accompanist-permissions:0.20.0"
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'com.google.code.gson:gson:2.8.9'
