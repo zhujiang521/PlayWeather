@@ -2,18 +2,16 @@ package com.zj.weather.ui.view.weather.widget
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,30 +39,7 @@ fun HeaderWeather(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(
-                    modifier = Modifier
-                        .wrapContentWidth(Alignment.Start), onClick = cityListClick
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = "add"
-                    )
-                }
-                IconButton(
-                    modifier = Modifier
-                        .wrapContentWidth(Alignment.Start), onClick = cityList
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.List,
-                        contentDescription = "list"
-                    )
-                }
-            }
+            HeaderAction(Modifier.fillMaxWidth(), cityListClick, cityList)
 
             Text(
                 text = "${cityInfo.city} ${cityInfo.name}",
@@ -79,7 +54,15 @@ fun HeaderWeather(
                 fontSize = if (isLand) 45.sp else fontSize,
                 color = MaterialTheme.colors.primary
             )
-
         }
     }
+}
+
+@Preview(showBackground = false, name = "未收起时的头部")
+@Composable
+fun HeaderWeatherPreview() {
+    val nowBean = WeatherNowBean.NowBaseBean()
+    nowBean.text = "多云"
+    nowBean.temp = "25"
+    HeaderWeather(45.sp, {}, {}, CityInfo(name = "测试"), nowBean)
 }

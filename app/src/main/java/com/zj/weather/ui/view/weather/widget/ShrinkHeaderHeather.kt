@@ -13,7 +13,9 @@ import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,27 +73,7 @@ fun ShrinkHeaderHeather(
                         color = MaterialTheme.colors.primary,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    Row(modifier = Modifier.wrapContentWidth(Alignment.End)) {
-                        IconButton(
-                            modifier = Modifier.wrapContentWidth(Alignment.End),
-                            onClick = cityListClick
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Add,
-                                contentDescription = "add"
-                            )
-                        }
-                        IconButton(
-                            modifier = Modifier
-                                .wrapContentWidth(Alignment.Start), onClick = cityList
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.List,
-                                contentDescription = "list"
-                            )
-                        }
-                    }
-
+                    HeaderAction(cityListClick = cityListClick, cityList = cityList)
                 }
 
                 Text(
@@ -102,4 +84,43 @@ fun ShrinkHeaderHeather(
             }
         }
     }
+}
+
+@Composable
+fun HeaderAction(modifier: Modifier = Modifier, cityListClick: () -> Unit, cityList: () -> Unit) {
+    Row(modifier = modifier.wrapContentWidth(Alignment.End)) {
+        IconButton(
+            modifier = Modifier.wrapContentWidth(Alignment.End),
+            onClick = cityListClick
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Add,
+                contentDescription = "add"
+            )
+        }
+        IconButton(
+            modifier = Modifier
+                .wrapContentWidth(Alignment.Start), onClick = cityList
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.List,
+                contentDescription = "list"
+            )
+        }
+    }
+}
+
+@Preview(showBackground = false, name = "头部事件")
+@Composable
+fun HeaderActionPreview() {
+    HeaderAction(Modifier, {}, {})
+}
+
+@Preview(showBackground = false, name = "头部")
+@Composable
+fun ShrinkHeaderHeatherPreview() {
+    val nowBean = WeatherNowBean.NowBaseBean()
+    nowBean.text = "多云"
+    nowBean.temp = "25"
+    ShrinkHeaderHeather(25.sp, CityInfo(name = "测试"), {}, {}, nowBean)
 }
