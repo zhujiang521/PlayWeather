@@ -10,11 +10,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.R
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
+import com.zj.weather.common.PlaySuccess
 import com.zj.weather.common.lce.LcePage
 import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
@@ -81,4 +83,19 @@ fun WeatherListPage(
         }
 
     }
+}
+
+@Preview(showBackground = false, name = "城市列表")
+@Composable
+fun WeatherListPagePreview() {
+    val list = arrayListOf<GeoBean.LocationBean>()
+    for (index in 0..11) {
+        val bean = GeoBean.LocationBean()
+        bean.name = "某地"
+        bean.adm1 = "某某省"
+        bean.adm2 = "前列县"
+        list.add(bean)
+    }
+    val playState = PlaySuccess(list)
+    WeatherListPage(playState, {}, {}, {}, {})
 }
