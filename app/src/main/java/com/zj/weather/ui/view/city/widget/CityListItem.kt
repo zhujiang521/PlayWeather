@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +21,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CityItem(
+fun CityListItem(
     cityInfo: CityInfo,
     isShowDelete: Boolean = true,
     toWeatherDetails: (CityInfo) -> Unit,
@@ -85,5 +84,5 @@ fun CityItemPreview() {
         province = "微子国",
         city = "南街"
     )
-    CityItem(cityInfo = cityInfo, true, {}, {})
+    CityListItem(cityInfo = cityInfo, true, {}, {})
 }

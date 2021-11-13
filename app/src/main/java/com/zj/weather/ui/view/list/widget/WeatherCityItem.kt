@@ -19,7 +19,7 @@ import com.zj.weather.common.dialog.ShowDialog
 import com.zj.weather.room.entity.CityInfo
 
 @Composable
-fun CityItem(
+fun WeatherCityItem(
     locationBean: GeoBean.LocationBean,
     toWeatherDetails: (CityInfo) -> Unit,
 ) {

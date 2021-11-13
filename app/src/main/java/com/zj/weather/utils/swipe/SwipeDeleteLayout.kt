@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.IntOffset
  * @param childContent 子item
  * @param content item
  */
-@OptIn(ExperimentalMaterialApi::class)
+@ExperimentalMaterialApi
 @Composable
 fun SwipeDeleteLayout(
     modifier: Modifier = Modifier,

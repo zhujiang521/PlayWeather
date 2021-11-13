@@ -15,6 +15,7 @@ import com.zj.weather.R
 import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
+import com.zj.weather.ui.view.city.widget.CityListItem
 
 @Composable
 fun CityListPage(
@@ -56,7 +57,7 @@ fun CityListPage(
                 state = listState
             ) {
                 items(cityInfoList) { cityInfo ->
-                    CityItem(
+                    CityListItem(
                         cityInfo,
                         cityInfo.isLocation != 1,
                         toWeatherDetails, deleteCityInfo

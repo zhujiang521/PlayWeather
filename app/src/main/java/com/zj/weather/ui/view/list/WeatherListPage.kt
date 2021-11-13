@@ -22,7 +22,7 @@ import com.zj.weather.common.lce.LcePage
 import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.list.viewmodel.WeatherListViewModel
-import com.zj.weather.ui.view.list.widget.CityItem
+import com.zj.weather.ui.view.list.widget.WeatherCityItem
 import com.zj.weather.ui.view.list.widget.SearchBar
 import com.zj.weather.utils.showToast
 
@@ -75,7 +75,7 @@ fun WeatherListPage(
                     state = listState
                 ) {
                     items(locationBeanList) { locationBean ->
-                        CityItem(locationBean, toWeatherDetails)
+                        WeatherCityItem(locationBean, toWeatherDetails)
                     }
                 }
             } else {
