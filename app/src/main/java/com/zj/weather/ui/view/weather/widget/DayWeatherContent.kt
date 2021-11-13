@@ -13,19 +13,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.zj.weather.R
+import com.zj.weather.model.WeatherModel
 import com.zj.weather.utils.weather.getSunriseSunsetContent
 import com.zj.weather.utils.weather.getUvIndexDesc
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DayWeatherContent(
-    weatherNow: WeatherNowBean.NowBaseBean?,
-    dailyBean: WeatherDailyBean.DailyBean?
+    weatherModel: WeatherModel?,
 ) {
     val context = LocalContext.current
+    val dailyBean = weatherModel?.dailyBean
+    val nowBaseBean = weatherModel?.nowBaseBean
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,14 +67,14 @@ fun DayWeatherContent(
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.body_temperature_title),
-            "${weatherNow?.feelsLike ?: "0"}℃",
+            "${nowBaseBean?.feelsLike ?: "0"}℃",
             stringResource(id = R.string.body_temperature_tip)
         )
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.rainfall_title),
-            "${weatherNow?.precip ?: "0"}${stringResource(id = R.string.rainfall_unit)}",
-            if (weatherNow?.precip?.toFloat() ?: 0f > 0f)
+            "${nowBaseBean?.precip ?: "0"}${stringResource(id = R.string.rainfall_unit)}",
+            if (nowBaseBean?.precip?.toFloat() ?: 0f > 0f)
                 stringResource(id = R.string.rainfall_tip1)
             else stringResource(id = R.string.rainfall_tip2)
         )
@@ -91,14 +91,14 @@ fun DayWeatherContent(
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.humidity_title),
-            "${weatherNow?.humidity ?: "0"}%",
+            "${nowBaseBean?.humidity ?: "0"}%",
             stringResource(id = R.string.humidity_tip)
         )
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.wind_title),
-            "${weatherNow?.windDir ?: "0"}${weatherNow?.windScale ?: ""}${stringResource(id = R.string.wind_unit)}",
-            "${stringResource(id = R.string.wind_tip)}${weatherNow?.windSpeed ?: "0"}Km/H"
+            "${nowBaseBean?.windDir ?: "0"}${nowBaseBean?.windScale ?: ""}${stringResource(id = R.string.wind_unit)}",
+            "${stringResource(id = R.string.wind_tip)}${nowBaseBean?.windSpeed ?: "0"}Km/H"
         )
     }
 
@@ -113,13 +113,13 @@ fun DayWeatherContent(
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.air_pressure_title),
-            "${weatherNow?.pressure ?: "0"}${stringResource(id = R.string.air_pressure_unit)}",
+            "${nowBaseBean?.pressure ?: "0"}${stringResource(id = R.string.air_pressure_unit)}",
             stringResource(id = R.string.air_pressure_tip)
         )
         WeatherContentItem(
             modifier,
             stringResource(id = R.string.visibility_title),
-            "${weatherNow?.vis ?: "0"}${stringResource(id = R.string.visibility_unit)}",
+            "${nowBaseBean?.vis ?: "0"}${stringResource(id = R.string.visibility_unit)}",
             stringResource(id = R.string.visibility_tip)
         )
     }

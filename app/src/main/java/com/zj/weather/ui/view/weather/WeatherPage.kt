@@ -11,9 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.qweather.sdk.bean.air.AirNowBean
+import com.qweather.sdk.bean.weather.WeatherDailyBean
+import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.lce.LcePage
 import com.zj.weather.model.WeatherModel
@@ -78,9 +82,7 @@ private fun VerticalWeather(
     ) {
         Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
         WeatherContent(
-            Modifier, scrollState, fontSize, cityList, cityListClick,
-            cityInfo, weather.nowBaseBean, weather.dailyBean,
-            weather.airNowBean, weather.hourlyBeanList, weather.dailyBeanList
+            Modifier, scrollState, fontSize, cityList, cityListClick, cityInfo, weather
         )
     }
 }
@@ -104,12 +106,7 @@ private fun HorizontalWeather(
         ) {
             // 天气头部，向上滑动时会进行隐藏
             HeaderWeather(
-                fontSize,
-                cityList,
-                cityListClick,
-                cityInfo,
-                weather.nowBaseBean,
-                true
+                fontSize, cityList, cityListClick, cityInfo, weather.nowBaseBean, true
             )
 
             // 天气动画
@@ -117,8 +114,37 @@ private fun HorizontalWeather(
         }
         WeatherContent(
             landModifier, scrollState, fontSize, cityList,
-            cityListClick, cityInfo, weather.nowBaseBean, weather.dailyBean,
-            weather.airNowBean, weather.hourlyBeanList, weather.dailyBeanList, true
+            cityListClick, cityInfo, weather, true
         )
     }
+}
+
+@Preview(showBackground = false, name = "竖屏天气")
+@Composable
+fun VerticalWeatherPreview() {
+    VerticalWeather(25.sp, CityInfo(name = "测试"), {},
+        {}, buildWeatherModel(), rememberScrollState()
+    )
+}
+
+@Composable
+private fun buildWeatherModel(): WeatherModel {
+    val nowBean = WeatherNowBean.NowBaseBean()
+    nowBean.text = "多云"
+    nowBean.temp = "25"
+    return WeatherModel(
+        nowBaseBean = nowBean,
+        hourlyBeanList = listOf(),
+        dailyBean = WeatherDailyBean.DailyBean(),
+        dailyBeanList = listOf(),
+        airNowBean = AirNowBean.NowBean()
+    )
+}
+
+@Preview(showBackground = false, name = "横屏天气",heightDp = 320,widthDp = 640)
+@Composable
+fun HorizontalWeatherPreview() {
+    HorizontalWeather(25.sp, {}, {}, CityInfo(name = "测试"),
+        buildWeatherModel(), rememberScrollState()
+    )
 }
