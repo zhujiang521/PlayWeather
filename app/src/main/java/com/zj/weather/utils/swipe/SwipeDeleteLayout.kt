@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +26,7 @@ import androidx.compose.ui.unit.IntOffset
 @Composable
 fun SwipeDeleteLayout(
     modifier: Modifier = Modifier,
+    swipeState: SwipeableState<Int>,
     isShowChild: Boolean = true,
     swipeStyle: SwipeStyle = SwipeStyle.EndToStart,
     childContent: @Composable () -> Unit,
@@ -42,7 +40,6 @@ fun SwipeDeleteLayout(
         mutableStateOf(1)
     }
 
-    val swipeState = rememberSwipeableState(0)
     Box(
         modifier.swipeable(
             state = swipeState,
