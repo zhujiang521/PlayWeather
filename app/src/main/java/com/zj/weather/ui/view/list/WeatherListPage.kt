@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.R
+import com.zj.weather.common.PlayError
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
@@ -97,5 +98,19 @@ fun WeatherListPagePreview() {
         list.add(bean)
     }
     val playState = PlaySuccess(list)
+    WeatherListPage(playState, {}, {}, {}, {})
+}
+
+@Preview(showBackground = false, name = "城市列表空数据")
+@Composable
+fun WeatherListPageNoContentPreview() {
+    val playState = PlaySuccess(listOf<GeoBean.LocationBean>())
+    WeatherListPage(playState, {}, {}, {}, {})
+}
+
+@Preview(showBackground = false, name = "城市列表错误页面")
+@Composable
+fun WeatherListPageErrorPreview() {
+    val playState = PlayError(NullPointerException())
     WeatherListPage(playState, {}, {}, {}, {})
 }
