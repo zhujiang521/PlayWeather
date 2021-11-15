@@ -43,7 +43,9 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
         // 如果未满足上述条件，则用户拒绝该权限。让我们向用户提供常见问题解答，
         // 以防他们想了解更多信息并将其发送到“设置”屏幕，以便将来在那里启用它（如果他们愿意）。
         else -> {
-            alertDialog.value = true
+            LaunchedEffect(Unit) {
+                alertDialog.value = true
+            }
             ShowDialog(
                 alertDialog = alertDialog,
                 title = stringResource(id = R.string.permission_title),
