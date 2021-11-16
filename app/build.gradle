@@ -71,11 +71,17 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation "com.google.accompanist:accompanist-permissions:0.20.0"
+
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'com.google.code.gson:gson:2.8.9'
 
     def accompanist_version = "0.20.2"
+    // Compose 权限
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
+    // Navigation 动画
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+    // Compose ViewPage
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
 
     // lottie动画
     def lottieVersion = '4.2.0'
@@ -83,9 +89,7 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     // navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
-    // Compose ViewPage
-    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
