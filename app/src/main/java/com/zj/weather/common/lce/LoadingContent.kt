@@ -1,8 +1,9 @@
 package com.zj.weather.common.lce
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,13 +28,12 @@ fun LoadingContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colors.onSecondary),
+            .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         LottieAnimation(
             composition = composition,
-            modifier = Modifier.size(130.dp),
             progress = progress
         )
     }

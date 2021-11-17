@@ -30,7 +30,12 @@ fun ShowDialog(
     Dialog(onDismissRequest = {
         alertDialog.value = false
     }) {
-        Card(shape = RoundedCornerShape(10.dp)) {
+        Card(
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(top = 20.dp)
