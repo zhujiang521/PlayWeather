@@ -1,10 +1,7 @@
 package com.zj.weather.common.lce
 
 import androidx.compose.runtime.Composable
-import com.zj.weather.common.PlayError
-import com.zj.weather.common.PlayLoading
-import com.zj.weather.common.PlayState
-import com.zj.weather.common.PlaySuccess
+import com.zj.weather.common.*
 
 /**
  * 通过State进行控制的Loading、Content、Error页面
@@ -24,6 +21,9 @@ fun <T> LcePage(
     }
     is PlayError -> {
         ErrorContent(onErrorClick = onErrorClick)
+    }
+    is PlayNoContent -> {
+        NoContent(tip = playState.reason)
     }
     is PlaySuccess<T> -> {
         content(playState.data)

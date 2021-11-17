@@ -1,7 +1,6 @@
 package com.zj.weather.ui.view.list.viewmodel
 
 import android.app.Application
-import android.util.Log
 import com.google.gson.Gson
 import com.qweather.sdk.bean.base.Code
 import com.qweather.sdk.bean.base.Lang
@@ -10,6 +9,7 @@ import com.qweather.sdk.bean.geo.GeoBean
 import com.qweather.sdk.view.QWeather
 import com.zj.weather.R
 import com.zj.weather.common.PlayError
+import com.zj.weather.common.PlayNoContent
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.PlayWeatherDatabase
@@ -42,7 +42,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
             }
             QWeather.getGeoCityLookup(context, cityName, object : QWeather.OnResultGeoListener {
                 override fun onError(e: Throwable) {
-                    continuation.resume(PlaySuccess(listOf()))
+                    continuation.resume(PlayNoContent(context.getString(R.string.add_location_warn2)))
                     XLog.e("getGeoCityLookup onError: ${e.message}")
                     showToast(context, R.string.add_location_warn2)
                 }
@@ -82,7 +82,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
             QWeather.getGeoTopCity(context, 20, Range.CN, lang,
                 object : QWeather.OnResultGeoListener {
                     override fun onError(e: Throwable) {
-                        continuation.resume(PlaySuccess(listOf()))
+                        continuation.resume(PlayNoContent(context.getString(R.string.add_location_warn2)))
                         XLog.e("getGeoTopCity onError: $e")
                         showToast(context, R.string.add_location_warn2)
                     }
