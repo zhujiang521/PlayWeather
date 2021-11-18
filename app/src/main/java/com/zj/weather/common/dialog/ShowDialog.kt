@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,12 +46,18 @@ fun ShowDialog(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(horizontal = 20.dp)
                 )
 
                 Text(
                     text = content,
                     fontSize = 15.sp,
-                    modifier = Modifier.padding(top = 12.dp, bottom = 25.dp)
+                    textAlign = TextAlign.Center,
+                    lineHeight = 20.sp,
+                    modifier = Modifier.padding(
+                        top = 12.dp, bottom = 25.dp,
+                        start = 20.dp, end = 20.dp
+                    )
                 )
                 Divider()
                 Row {
