@@ -14,12 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.qweather.sdk.bean.weather.WeatherNowBean
+import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -77,7 +79,7 @@ fun ShrinkHeaderHeather(
                 }
 
                 Text(
-                    text = "${weatherNow?.text}  ${weatherNow?.temp}℃",
+                    text = "${weatherNow?.text ?: stringResource(id = R.string.default_weather)}  ${weatherNow?.temp ?: "0"}℃",
                     fontSize = 20.sp,
                     color = MaterialTheme.colors.primary
                 )
