@@ -15,6 +15,8 @@ import com.qweather.sdk.bean.base.Unit
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.view.QWeather
 import com.zj.weather.R
+import com.zj.weather.room.entity.CityInfo
+import com.zj.weather.ui.view.weather.getLocation
 import com.zj.weather.utils.NetCheckUtil
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.getDefaultLocale
@@ -35,6 +37,7 @@ class WeatherWidgetService : RemoteViewsService() {
 
 private const val TAG = "WeatherWidgetService"
 private const val WEEK_COUNT = 7
+const val CITY_INFO = "city_info"
 
 class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     RemoteViewsService.RemoteViewsFactory, CoroutineScope by MainScope() {
@@ -44,18 +47,25 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
         AppWidgetManager.EXTRA_APPWIDGET_ID,
         AppWidgetManager.INVALID_APPWIDGET_ID
     )
+    private var cityInfo: CityInfo? = null
+
+    init {
+        intent.getStringExtra(CITY_INFO)?.apply {
+            cityInfo = Gson().fromJson(this, CityInfo::class.java)
+        }
+    }
 
     override fun onCreate() {
         if (!NetCheckUtil.checkNet(context = context)) {
             showToast(context, R.string.bad_network_view_tip)
         }
         widgetItems.clear()
-        getWeather7Day("CN101010100", getDefaultLocale(context))
+        getWeather7Day(getDefaultLocale(context))
         Log.e(TAG, "init: $widgetItems")
     }
 
-    private fun getWeather7Day(location: String, lang: Lang) {
-        QWeather.getWeather7D(context, location, lang, Unit.METRIC,
+    private fun getWeather7Day(lang: Lang) {
+        QWeather.getWeather7D(context, getLocation(cityInfo = cityInfo), lang, Unit.METRIC,
             object : QWeather.OnResultWeatherDailyListener {
                 override fun onError(e: Throwable) {
                     XLog.e("getWeather7Day1 onError: $e")
@@ -70,11 +80,10 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
                     if (Code.OK === weatherDailyBean?.code) {
                         val items = arrayListOf<WeekWeather>()
                         weatherDailyBean.daily.forEach { weather ->
-                            weather.fxDate =
-                                getDateWeekName(context, weather.fxDate)
                             val weekWeather =
                                 WeekWeather(
                                     weather.textDay,
+                                    weather.fxDate,
                                     weather.iconDay,
                                     weather.tempMax,
                                     weather.tempMin
@@ -113,7 +122,13 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
                         TAG,
                         "getViewAt: ${weather.text}   ${weather.max}    ${weather.min}"
                     )
-                    setTextViewText(R.id.widget_item, "${weather.min}-${weather.max}")
+                    setTextViewText(R.id.widget_item, "${weather.min}-${weather.max}℃")
+                    setTextViewText(
+                        R.id.widget_tv_city,
+                        "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
+                    )
+                    setTextViewText(R.id.widget_tv_date, weather.time)
+                    Log.e(TAG, "getViewAt: cityInfo:$cityInfo")
                     setImageViewResource(
                         R.id.widget_iv_icon,
                         IconUtils.getWeatherIcon(context, weather.icon)
@@ -157,6 +172,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
 @Parcelize
 data class WeekWeather(
     val text: String,
+    val time: String,
     val icon: String,
     val max: String,
     val min: String

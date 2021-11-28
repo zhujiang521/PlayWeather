@@ -12,11 +12,10 @@ import com.zj.weather.utils.transparentStatusBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -24,18 +23,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    /**
-     * 初始化View
-     */
-    private fun initView() {
-        // 加载动画
-        installSplashScreen()
-        // 状态栏透明
-        transparentStatusBar()
-        // 状态栏反色
-        setAndroidNativeLightStatusBar()
     }
 
 }

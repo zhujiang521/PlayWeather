@@ -17,13 +17,22 @@
         android:layout_gravity="center"
         android:textColor="@color/purple_500"
         android:textSize="30sp"
-        android:text="北京" />
+        tools:text="北京" />
+
+    <TextView
+        android:id="@+id/widget_tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/purple_500"
+        android:textSize="20sp"
+        tools:text="时间" />
 
     <ImageView
         android:id="@+id/widget_iv_icon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         android:src="@mipmap/icon_100d" />
 
     <TextView
@@ -32,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/purple_500"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="test" />
 
 </LinearLayout>

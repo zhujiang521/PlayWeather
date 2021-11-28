@@ -4,27 +4,30 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.gson.Gson
+import com.zj.weather.BaseActivity
 import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
+import com.zj.weather.ui.view.list.widget.DrawIndicator
 import com.zj.weather.utils.XLog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,13 +35,13 @@ import dagger.hilt.android.AndroidEntryPoint
  * The configuration screen for the [WeatherWidget] AppWidget.
  */
 @AndroidEntryPoint
-class WeatherWidgetConfigureActivity : ComponentActivity() {
+class WeatherWidgetConfigureActivity : BaseActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private val viewModel by viewModels<CityListViewModel>()
 
-    public override fun onCreate(icicle: Bundle?) {
-        super.onCreate(icicle)
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
@@ -63,7 +66,6 @@ class WeatherWidgetConfigureActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     ConfigureWidget(
                         viewModel,
-                        loadTitlePref(this@WeatherWidgetConfigureActivity, appWidgetId),
                         onCancelListener = {
                             setResult(RESULT_CANCELED)
                             finish()
@@ -76,9 +78,9 @@ class WeatherWidgetConfigureActivity : ComponentActivity() {
     }
 
     private fun onConfirm(cityInfo: CityInfo) {
+        XLog.e("onConfirm:${cityInfo}")
         val context = this@WeatherWidgetConfigureActivity
-        val widgetText = cityInfo.name
-        saveTitlePref(context, appWidgetId, widgetText)
+        saveTitlePref(context, appWidgetId, cityInfo)
 
         // It is the responsibility of the configuration activity to update the app widget
         val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -97,7 +99,6 @@ class WeatherWidgetConfigureActivity : ComponentActivity() {
 @Composable
 private fun ConfigureWidget(
     viewModel: CityListViewModel,
-    cityName: String,
     onCancelListener: () -> Unit,
     onConfirmListener: (CityInfo) -> Unit
 ) {
@@ -105,59 +106,76 @@ private fun ConfigureWidget(
     val buttonHeight = 45.dp
     var cityInfo by remember { mutableStateOf(CityInfo(name = "北京")) }
     val pagerState = rememberPagerState()
-    XLog.e("cityName:$cityName")
     Column(modifier = Modifier.fillMaxSize()) {
-        Spacer(modifier = Modifier.height(30.dp))
-        HorizontalPager(
-            state = pagerState,
-            count = cityList.size,
-            modifier = Modifier.weight(1f)
-        ) { page ->
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                modifier = Modifier
-                    .size(300.dp)
-                    .background(MaterialTheme.colors.background)
-            ) {
-                cityInfo = cityList[page]
-                Text(text = cityInfo.name, fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(80.dp))
+        Text(
+            text = "小部件城市选择",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontSize = 26.sp,
+            color = Color(red = 53, green = 128, blue = 186)
+        )
+        Box(modifier = Modifier.weight(1f)) {
+            HorizontalPager(
+                state = pagerState,
+                count = cityList.size,
+                modifier = Modifier.fillMaxSize()
+            ) { page ->
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    backgroundColor = MaterialTheme.colors.onSecondary,
+                    modifier = Modifier.size(300.dp)
+                ) {
+                    cityInfo = cityList[page]
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(text = cityInfo.name, fontSize = 30.sp)
+                    }
+                }
             }
+            DrawIndicator(pagerState = pagerState)
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Row {
-                TextButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(buttonHeight),
-                    onClick = {
-                        onCancelListener()
-                    }
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.city_dialog_cancel),
-                        fontSize = 16.sp,
-                        color = Color(red = 53, green = 128, blue = 186)
-                    )
+        Spacer(modifier = Modifier.height(50.dp))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+        )
+        Row {
+            TextButton(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(buttonHeight),
+                onClick = {
+                    onCancelListener()
                 }
-                Divider(
-                    modifier = Modifier
-                        .width(1.dp)
-                        .height(buttonHeight)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.city_dialog_cancel),
+                    fontSize = 16.sp,
+                    color = Color(red = 53, green = 128, blue = 186)
                 )
-                TextButton(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(buttonHeight),
-                    onClick = {
-                        onConfirmListener(cityInfo)
-                    }
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.city_dialog_confirm),
-                        fontSize = 16.sp,
-                        color = Color(red = 53, green = 128, blue = 186)
-                    )
+            }
+            Divider(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(buttonHeight)
+            )
+            TextButton(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(buttonHeight),
+                onClick = {
+                    onConfirmListener(cityInfo)
                 }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.city_dialog_confirm),
+                    fontSize = 16.sp,
+                    color = Color(red = 53, green = 128, blue = 186)
+                )
             }
         }
     }
@@ -167,18 +185,19 @@ private const val PREFS_NAME = "com.zj.weather.common.widget.WeatherWidget"
 private const val PREF_PREFIX_KEY = "appwidget_"
 
 // Write the prefix to the SharedPreferences object for this widget
-internal fun saveTitlePref(context: Context, appWidgetId: Int, text: String) {
+internal fun saveTitlePref(context: Context, appWidgetId: Int, cityInfo: CityInfo) {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
-    prefs.putString(PREF_PREFIX_KEY + appWidgetId, text)
+    prefs.putString(PREF_PREFIX_KEY + appWidgetId, Gson().toJson(cityInfo))
     prefs.apply()
 }
 
 // Read the prefix from the SharedPreferences object for this widget.
 // If there is no preference saved, get the default from a resource
-internal fun loadTitlePref(context: Context, appWidgetId: Int): String {
+internal fun loadTitlePref(context: Context, appWidgetId: Int): CityInfo? {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0)
-    val titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null)
-    return titleValue ?: context.getString(R.string.app_name)
+    val cityString = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: ""
+    if (cityString.isEmpty()) return null
+    return Gson().fromJson(cityString, CityInfo::class.java)
 }
 
 internal fun deleteTitlePref(context: Context, appWidgetId: Int) {

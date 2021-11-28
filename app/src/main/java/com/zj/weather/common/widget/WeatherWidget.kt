@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
 import android.widget.Toast
+import com.google.gson.Gson
 import com.zj.weather.R
 
 const val TOAST_ACTION = "com.zj.weather.common.widget.TOAST_ACTION"
@@ -67,22 +68,21 @@ class WeatherWidget : AppWidgetProvider() {
 
 }
 
-const val WEEK_WEATHER = "WEEK_WEATHER"
-
 internal fun updateAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    val widgetText = loadTitlePref(context, appWidgetId)
+    val cityInfo = loadTitlePref(context, appWidgetId)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setTextViewText(R.id.appwidget_text, widgetText)
+    views.setTextViewText(R.id.appwidget_text, cityInfo?.city)
     // Set up the intent that starts the StackViewService, which will
     // provide the views for this collection.
     val intent = Intent(context, WeatherWidgetService::class.java).apply {
         // Add the app widget ID to the intent extras.
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        putExtra(CITY_INFO,Gson().toJson(cityInfo))
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
     // Instantiate the RemoteViews object for the app widget layout.
