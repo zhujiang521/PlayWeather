@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="weather_widget_width">305dp</dimen>
+    <dimen name="weather_widget_height">329dp</dimen>
+    <dimen name="weather_xml_widget_width">305dp</dimen>
+    <dimen name="weather_xml_widget_height">155dp</dimen>
+
+</resources>

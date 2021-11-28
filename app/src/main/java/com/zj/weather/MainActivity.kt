@@ -10,11 +10,9 @@ import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.utils.setAndroidNativeLightStatusBar
 import com.zj.weather.utils.transparentStatusBar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

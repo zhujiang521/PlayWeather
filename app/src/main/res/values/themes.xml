@@ -24,7 +24,7 @@
         <item name="windowSplashScreenIconBackgroundColor">@color/home_back</item>
 
         <!--「启动画面」底部显示的品牌图标-->
-<!--        <item name="android:windowSplashScreenBrandingImage">@mipmap/ic_launcher_foreground</item>-->
+        <!--        <item name="android:windowSplashScreenBrandingImage">@mipmap/ic_launcher_foreground</item>-->
         <item name="postSplashScreenTheme">@style/Theme.PlayWeather</item>
     </style>
 

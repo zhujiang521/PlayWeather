@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.zj.weather.common.widget.WeatherWidgetConfigureActivity"
+    android:initialKeyguardLayout="@layout/weather_widget"
+    android:initialLayout="@layout/weather_widget"
+    android:minWidth="250dp"
+    android:minHeight="150dp"
+    android:previewLayout="@layout/weather_widget"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellWidth="4"
+    android:targetCellHeight="3"
+    android:updatePeriodMillis="86400000"
+    android:widgetCategory="home_screen" />
