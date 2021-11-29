@@ -3,6 +3,7 @@ package com.zj.weather.common.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.widget.RemoteViews
 import android.widget.Toast
 import com.google.gson.Gson
 import com.zj.weather.R
+import com.zj.weather.utils.XLog
 
 const val TOAST_ACTION = "com.zj.weather.common.widget.TOAST_ACTION"
 const val EXTRA_ITEM = "com.zj.weather.common.widget.EXTRA_ITEM"
@@ -25,6 +27,7 @@ class WeatherWidget : AppWidgetProvider() {
     // displays a Toast message for the current item.
     override fun onReceive(context: Context, intent: Intent) {
         val mgr: AppWidgetManager = AppWidgetManager.getInstance(context)
+        XLog.e("onReceive: intent.action:${intent.action}")
         if (intent.action == TOAST_ACTION) {
             val appWidgetId: Int = intent.getIntExtra(
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -37,6 +40,7 @@ class WeatherWidget : AppWidgetProvider() {
                 RemoteViews(context.packageName, R.layout.weather_widget)
             )
         }
+        updateAppWidget(context, true)
         super.onReceive(context, intent)
     }
 
@@ -66,6 +70,22 @@ class WeatherWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 
+    private fun updateAppWidget(context: Context, refresh: Boolean = false) {
+        val appWidgetIds = AppWidgetManager.getInstance(context)
+            .getAppWidgetIds(ComponentName(context, WeatherWidget::class.java))
+        val appWidgetManager = AppWidgetManager
+            .getInstance(context)
+        if (refresh) {
+            appWidgetManager.notifyAppWidgetViewDataChanged(
+                appWidgetIds,
+                R.id.stack_view
+            )
+        }
+        appWidgetIds.forEach {
+            updateAppWidget(context, appWidgetManager, it)
+        }
+    }
+
 }
 
 internal fun updateAppWidget(
@@ -82,7 +102,7 @@ internal fun updateAppWidget(
     val intent = Intent(context, WeatherWidgetService::class.java).apply {
         // Add the app widget ID to the intent extras.
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        putExtra(CITY_INFO,Gson().toJson(cityInfo))
+        putExtra(CITY_INFO, Gson().toJson(cityInfo))
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
     // Instantiate the RemoteViews object for the app widget layout.
@@ -104,20 +124,25 @@ internal fun updateAppWidget(
     // collection cannot set up their own pending intents. Instead, the collection as a
     // whole sets up a pending intent template, and the individual items set a fillInIntent
     // to create unique behavior on an item-by-item basis.
-//    val toastPendingIntent: PendingIntent = Intent(
-//        context,
-//        WeatherWidgetService::class.java
-//    ).run {
-//        // Set the action for the intent.
-//        // When the user touches a particular view, it will have the effect of
-//        // broadcasting TOAST_ACTION.
-//        action = TOAST_ACTION
-//        putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-//        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-//
-//        PendingIntent.getBroadcast(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
-//    }
-//    views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+    val toastPendingIntent: PendingIntent = Intent(
+        context,
+        WeatherWidgetService::class.java
+    ).run {
+        // Set the action for the intent.
+        // When the user touches a particular view, it will have the effect of
+        // broadcasting TOAST_ACTION.
+        action = TOAST_ACTION
+        putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+
+        PendingIntent.getBroadcast(
+            context,
+            0,
+            this,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+    views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
 
 
     // Instruct the widget manager to update the widget

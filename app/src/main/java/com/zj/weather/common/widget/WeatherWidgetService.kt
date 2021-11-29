@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.google.gson.Gson
@@ -42,10 +41,6 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     RemoteViewsService.RemoteViewsFactory, CoroutineScope by MainScope() {
 
     private var widgetItems: MutableList<WeekWeather> = arrayListOf()
-    private val appWidgetId: Int = intent.getIntExtra(
-        AppWidgetManager.EXTRA_APPWIDGET_ID,
-        AppWidgetManager.INVALID_APPWIDGET_ID
-    )
     private var cityInfo: CityInfo? = null
 
     init {
@@ -60,7 +55,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
         }
         widgetItems.clear()
         getWeather7Day(getDefaultLocale(context))
-        Log.e(TAG, "init: $widgetItems")
+        XLog.e(TAG, "init: $widgetItems")
     }
 
     private fun getWeather7Day(lang: Lang) {
@@ -100,11 +95,11 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun onDataSetChanged() {
-        Log.d(TAG, "onDataSetChanged: ")
+        XLog.d(TAG, "onDataSetChanged: ")
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "onDestroy: ")
+        XLog.d(TAG, "onDestroy: ")
     }
 
     override fun getCount(): Int {
@@ -114,20 +109,20 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     override fun getViewAt(position: Int): RemoteViews {
         if (widgetItems.size == WEEK_COUNT) {
             return RemoteViews(context.packageName, R.layout.widget_item).apply {
-                Log.e(TAG, "getViewAt: ${widgetItems.size}")
+                XLog.e(TAG, "getViewAt: ${widgetItems.size}")
                 if (position < widgetItems.size) {
                     val weather = widgetItems[position]
-                    Log.e(
+                    XLog.e(
                         TAG,
                         "getViewAt: ${weather.text}   ${weather.max}    ${weather.min}"
                     )
-                    setTextViewText(R.id.widget_item, "${weather.min}-${weather.max}℃")
+                    setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
                     setTextViewText(
                         R.id.widget_tv_city,
                         "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
                     )
                     setTextViewText(R.id.widget_tv_date, weather.time)
-                    Log.e(TAG, "getViewAt: cityInfo:$cityInfo")
+                    XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")
                     setImageViewResource(
                         R.id.widget_iv_icon,
                         IconUtils.getWeatherIcon(weather.icon)
@@ -143,7 +138,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
                 }
                 // Make it possible to distinguish the individual on-click
                 // action of a given item
-                setOnClickFillInIntent(R.id.widget_item, fillInIntent)
+                setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
             }
         } else {
             return RemoteViews(context.packageName, R.layout.weather_widget_loading)

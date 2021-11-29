@@ -6,6 +6,7 @@
     android:background="@drawable/app_widget_item_background"
     android:gravity="center"
     android:minWidth="500dp"
+    android:id="@+id/widget_ll_item"
     android:minHeight="500dp"
     android:orientation="vertical"
     android:padding="10dp">
@@ -36,7 +37,7 @@
         android:src="@drawable/icon_100" />
 
     <TextView
-        android:id="@+id/widget_item"
+        android:id="@+id/widget_tv_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
