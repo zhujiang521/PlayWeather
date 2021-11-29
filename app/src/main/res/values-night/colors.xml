@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_500">#FF6200EE</color>
-    <color name="home_back">#477C9A</color>
+    <color name="home_back">#6FBEEC</color>
+    <color name="widget_item_border">#65B9EA</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="currentColor">#FFFFFFFF</color>
 </resources>

@@ -76,7 +76,7 @@ internal fun updateAppWidget(
     val cityInfo = loadTitlePref(context, appWidgetId)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    views.setTextViewText(R.id.appwidget_text, cityInfo?.city)
+    // views.setTextViewText(R.id.appwidget_text, cityInfo?.city)
     // Set up the intent that starts the StackViewService, which will
     // provide the views for this collection.
     val intent = Intent(context, WeatherWidgetService::class.java).apply {
@@ -104,20 +104,20 @@ internal fun updateAppWidget(
     // collection cannot set up their own pending intents. Instead, the collection as a
     // whole sets up a pending intent template, and the individual items set a fillInIntent
     // to create unique behavior on an item-by-item basis.
-    val toastPendingIntent: PendingIntent = Intent(
-        context,
-        WeatherWidgetService::class.java
-    ).run {
-        // Set the action for the intent.
-        // When the user touches a particular view, it will have the effect of
-        // broadcasting TOAST_ACTION.
-        action = TOAST_ACTION
-        putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-
-        PendingIntent.getBroadcast(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-    views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+//    val toastPendingIntent: PendingIntent = Intent(
+//        context,
+//        WeatherWidgetService::class.java
+//    ).run {
+//        // Set the action for the intent.
+//        // When the user touches a particular view, it will have the effect of
+//        // broadcasting TOAST_ACTION.
+//        action = TOAST_ACTION
+//        putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+//        data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
+//
+//        PendingIntent.getBroadcast(context, 0, this, PendingIntent.FLAG_UPDATE_CURRENT)
+//    }
+//    views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
 
 
     // Instruct the widget manager to update the widget

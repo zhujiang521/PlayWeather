@@ -2,5 +2,7 @@
 <resources>
     <color name="purple_500">#FF6200EE</color>
     <color name="home_back">#8AD1FA</color>
+    <color name="widget_item_border">#82CFFB</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="currentColor">#000000</color>
 </resources>

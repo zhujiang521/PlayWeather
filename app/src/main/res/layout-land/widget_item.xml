@@ -7,7 +7,7 @@
     android:gravity="center"
     android:minWidth="500dp"
     android:minHeight="500dp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="10dp">
 
     <TextView
@@ -24,14 +24,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="15dp"
         android:textColor="@color/currentColor"
         android:textSize="20sp"
         tools:text="时间" />
 
     <ImageView
         android:id="@+id/widget_iv_icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_margin="15dp"
         android:src="@drawable/icon_100" />
 

@@ -67,7 +67,7 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
             color = MaterialTheme.colors.primary
         )
         ImageLoader(
-            data = IconUtils.getWeatherIcon(context, hourlyBean.icon),
+            data = IconUtils.getWeatherIcon(hourlyBean.icon),
             modifier = Modifier.padding(top = 7.dp)
         )
         Text(

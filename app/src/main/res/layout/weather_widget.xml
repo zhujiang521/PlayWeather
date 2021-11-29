@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.Design.NoActionBar"
-    android:background="#00000000">
+    android:background="#00000000"
+    android:theme="@style/Theme.Design.NoActionBar">
 
     <StackView
         android:id="@+id/stack_view"
@@ -13,23 +13,13 @@
         android:loopViews="true" />
 
     <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
-        tools:text="@string/app_name" />
-
-    <TextView
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="#ffffff"
+        android:textColor="@color/currentColor"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:text="123" />
+        tools:text="Loading" />
 
 </FrameLayout>

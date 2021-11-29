@@ -22,7 +22,6 @@ import com.zj.weather.utils.XLog
 import com.zj.weather.utils.getDefaultLocale
 import com.zj.weather.utils.showToast
 import com.zj.weather.utils.weather.IconUtils
-import com.zj.weather.utils.weather.getDateWeekName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.parcelize.Parcelize
@@ -131,7 +130,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
                     Log.e(TAG, "getViewAt: cityInfo:$cityInfo")
                     setImageViewResource(
                         R.id.widget_iv_icon,
-                        IconUtils.getWeatherIcon(context, weather.icon)
+                        IconUtils.getWeatherIcon(weather.icon)
                     )
                 }
                 // Next, set a fill-intent, which will be used to fill in the pending intent template

@@ -66,7 +66,7 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         )
         Spacer(modifier = Modifier.weight(1f))
         ImageLoader(
-            data = IconUtils.getWeatherIcon(context, dailyBean.iconDay),
+            data = IconUtils.getWeatherIcon(dailyBean.iconDay),
             modifier = Modifier
                 .padding(start = 7.dp)
         )

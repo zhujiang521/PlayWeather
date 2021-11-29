@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
@@ -104,7 +105,6 @@ private fun ConfigureWidget(
 ) {
     val cityList by viewModel.cityInfoList.observeAsState(arrayListOf())
     val buttonHeight = 45.dp
-    var cityInfo by remember { mutableStateOf(CityInfo(name = "北京")) }
     val pagerState = rememberPagerState()
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(80.dp))
@@ -126,7 +126,7 @@ private fun ConfigureWidget(
                     backgroundColor = MaterialTheme.colors.onSecondary,
                     modifier = Modifier.size(300.dp)
                 ) {
-                    cityInfo = cityList[page]
+                    val cityInfo = cityList[page]
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -168,7 +168,7 @@ private fun ConfigureWidget(
                     .weight(1f)
                     .height(buttonHeight),
                 onClick = {
-                    onConfirmListener(cityInfo)
+                    onConfirmListener(cityList[pagerState.currentPage])
                 }
             ) {
                 Text(
