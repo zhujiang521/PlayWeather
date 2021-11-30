@@ -1,5 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
@@ -17,9 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:text="Loading"
         android:textColor="@color/currentColor"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="Loading" />
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
 </FrameLayout>

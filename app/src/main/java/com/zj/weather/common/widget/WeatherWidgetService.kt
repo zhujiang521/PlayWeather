@@ -1,6 +1,5 @@
 package com.zj.weather.common.widget
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,17 +7,10 @@ import android.os.Parcelable
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.google.gson.Gson
-import com.qweather.sdk.bean.base.Code
-import com.qweather.sdk.bean.base.Lang
-import com.qweather.sdk.bean.base.Unit
-import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.view.QWeather
 import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.weather.getLocation
 import com.zj.weather.utils.NetCheckUtil
 import com.zj.weather.utils.XLog
-import com.zj.weather.utils.getDefaultLocale
 import com.zj.weather.utils.showToast
 import com.zj.weather.utils.weather.IconUtils
 import kotlinx.coroutines.CoroutineScope
@@ -53,45 +45,11 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
         if (!NetCheckUtil.checkNet(context = context)) {
             showToast(context, R.string.bad_network_view_tip)
         }
-        widgetItems.clear()
-        getWeather7Day(getDefaultLocale(context))
+        WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
+            widgetItems.clear()
+            widgetItems = items
+        }
         XLog.e(TAG, "init: $widgetItems")
-    }
-
-    private fun getWeather7Day(lang: Lang) {
-        QWeather.getWeather7D(context, getLocation(cityInfo = cityInfo), lang, Unit.METRIC,
-            object : QWeather.OnResultWeatherDailyListener {
-                override fun onError(e: Throwable) {
-                    XLog.e("getWeather7Day1 onError: $e")
-                    showToast(context, e.message)
-                }
-
-                override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
-                    XLog.d(
-                        "getWeather7Day1 onSuccess: " + Gson().toJson(weatherDailyBean)
-                    )
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === weatherDailyBean?.code) {
-                        val items = arrayListOf<WeekWeather>()
-                        weatherDailyBean.daily.forEach { weather ->
-                            val weekWeather =
-                                WeekWeather(
-                                    weather.textDay,
-                                    weather.fxDate,
-                                    weather.iconDay,
-                                    weather.tempMax,
-                                    weather.tempMin
-                                )
-                            items.add(weekWeather)
-                        }
-                        widgetItems = items
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code? = weatherDailyBean?.code
-                        XLog.w("getWeather7Day1 failed code: $code")
-                    }
-                }
-            })
     }
 
     override fun onDataSetChanged() {
@@ -107,41 +65,40 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun getViewAt(position: Int): RemoteViews {
-        if (widgetItems.size == WEEK_COUNT) {
-            return RemoteViews(context.packageName, R.layout.widget_item).apply {
-                XLog.e(TAG, "getViewAt: ${widgetItems.size}")
-                if (position < widgetItems.size) {
-                    val weather = widgetItems[position]
-                    XLog.e(
-                        TAG,
-                        "getViewAt: ${weather.text}   ${weather.max}    ${weather.min}"
-                    )
-                    setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
-                    setTextViewText(
-                        R.id.widget_tv_city,
-                        "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
-                    )
-                    setTextViewText(R.id.widget_tv_date, weather.time)
-                    XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")
-                    setImageViewResource(
-                        R.id.widget_iv_icon,
-                        IconUtils.getWeatherIcon(weather.icon)
-                    )
-                }
-                // Next, set a fill-intent, which will be used to fill in the pending intent template
-                // that is set on the collection view in StackWidgetProvider.
-                val fillInIntent = Intent().apply {
-                    Bundle().also { extras ->
-                        extras.putInt(EXTRA_ITEM, position)
-                        putExtras(extras)
-                    }
-                }
-                // Make it possible to distinguish the individual on-click
-                // action of a given item
-                setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
-            }
-        } else {
+        if (widgetItems.size != WEEK_COUNT) {
             return RemoteViews(context.packageName, R.layout.weather_widget_loading)
+        }
+        return RemoteViews(context.packageName, R.layout.widget_item).apply {
+            XLog.e(TAG, "getViewAt: ${widgetItems.size}")
+            if (position < widgetItems.size) {
+                val weather = widgetItems[position]
+                XLog.e(
+                    TAG,
+                    "getViewAt: ${weather.text}   ${weather.max}    ${weather.min}"
+                )
+                setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
+                setTextViewText(
+                    R.id.widget_tv_city,
+                    "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
+                )
+                setTextViewText(R.id.widget_tv_date, weather.time)
+                XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")
+                setImageViewResource(
+                    R.id.widget_iv_icon,
+                    IconUtils.getWeatherIcon(weather.icon)
+                )
+            }
+            // Next, set a fill-intent, which will be used to fill in the pending intent template
+            // that is set on the collection view in StackWidgetProvider.
+            val fillInIntent = Intent().apply {
+                Bundle().also { extras ->
+                    extras.putInt(EXTRA_ITEM, position)
+                    putExtras(extras)
+                }
+            }
+            // Make it possible to distinguish the individual on-click
+            // action of a given item
+            setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
         }
     }
 

@@ -40,7 +40,7 @@ class WeatherWidget : AppWidgetProvider() {
                 RemoteViews(context.packageName, R.layout.weather_widget)
             )
         }
-        updateAppWidget(context, true)
+        updateAppWidget(context)
         super.onReceive(context, intent)
     }
 
@@ -70,17 +70,15 @@ class WeatherWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    private fun updateAppWidget(context: Context, refresh: Boolean = false) {
+    private fun updateAppWidget(context: Context) {
         val appWidgetIds = AppWidgetManager.getInstance(context)
             .getAppWidgetIds(ComponentName(context, WeatherWidget::class.java))
         val appWidgetManager = AppWidgetManager
             .getInstance(context)
-        if (refresh) {
-            appWidgetManager.notifyAppWidgetViewDataChanged(
-                appWidgetIds,
-                R.id.stack_view
-            )
-        }
+        appWidgetManager.notifyAppWidgetViewDataChanged(
+            appWidgetIds,
+            R.id.stack_view
+        )
         appWidgetIds.forEach {
             updateAppWidget(context, appWidgetManager, it)
         }
