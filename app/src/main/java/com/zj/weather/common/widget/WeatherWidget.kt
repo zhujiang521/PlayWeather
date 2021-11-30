@@ -10,6 +10,7 @@ import android.net.Uri
 import android.widget.RemoteViews
 import com.google.gson.Gson
 import com.zj.weather.R
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.showToast
 
@@ -36,15 +37,7 @@ class WeatherWidget : AppWidgetProvider() {
         if (intent.action == CLICK_ITEM_ACTION) {
             showToast(context, "Touched view ${cityInfo?.city} ${cityInfo?.name}")
         } else {
-            WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
-                WeatherRemoteViewsFactory.setWidgetItemList(items)
-                val mgr = AppWidgetManager.getInstance(context)
-                val cn = ComponentName(context, WeatherWidget::class.java)
-                mgr.notifyAppWidgetViewDataChanged(
-                    mgr.getAppWidgetIds(cn),
-                    R.id.stack_view
-                )
-            }
+            XLog.e("cityInfo:$cityInfo")
         }
     }
 
@@ -82,6 +75,7 @@ internal fun updateAppWidget(
     appWidgetId: Int
 ) {
     val cityInfo = loadTitlePref(context, appWidgetId)
+    notifyWeatherWidget(context, cityInfo, appWidgetId)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
     // views.setTextViewText(R.id.appwidget_text, cityInfo?.city)
@@ -135,4 +129,19 @@ internal fun updateAppWidget(
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
+}
+
+private fun notifyWeatherWidget(
+    context: Context,
+    cityInfo: CityInfo?,
+    appWidgetId: Int
+) {
+    WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
+        WeatherRemoteViewsFactory.setWidgetItemList(items)
+        val mgr = AppWidgetManager.getInstance(context)
+        mgr.notifyAppWidgetViewDataChanged(
+            appWidgetId,
+            R.id.stack_view
+        )
+    }
 }
