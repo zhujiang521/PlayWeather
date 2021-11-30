@@ -2,7 +2,6 @@ package com.zj.weather.common.widget
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.os.Parcelable
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -32,7 +31,18 @@ const val CITY_INFO = "city_info"
 class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     RemoteViewsService.RemoteViewsFactory, CoroutineScope by MainScope() {
 
-    private var widgetItems: MutableList<WeekWeather> = arrayListOf()
+    companion object {
+        private var widgetItems: List<WeekWeather> = arrayListOf()
+
+        /**
+         * 这块写的不严谨，不应该将这个暴露给外部的，但是目前没有找到更加合适的方法
+         * 如果不这样写的话添加完小部件的话会显示不出数据，刷新也不太对。
+         */
+        fun setWidgetItemList(widgetItems: List<WeekWeather>) {
+            this.widgetItems = widgetItems
+        }
+    }
+
     private var cityInfo: CityInfo? = null
 
     init {
@@ -44,10 +54,6 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     override fun onCreate() {
         if (!NetCheckUtil.checkNet(context = context)) {
             showToast(context, R.string.bad_network_view_tip)
-        }
-        WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
-            widgetItems.clear()
-            widgetItems = items
         }
         XLog.e(TAG, "init: $widgetItems")
     }
@@ -70,34 +76,30 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
         }
         return RemoteViews(context.packageName, R.layout.widget_item).apply {
             XLog.e(TAG, "getViewAt: ${widgetItems.size}")
-            if (position < widgetItems.size) {
-                val weather = widgetItems[position]
-                XLog.e(
-                    TAG,
-                    "getViewAt: ${weather.text}   ${weather.max}    ${weather.min}"
-                )
-                setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
-                setTextViewText(
-                    R.id.widget_tv_city,
-                    "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
-                )
-                setTextViewText(R.id.widget_tv_date, weather.time)
-                XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")
-                setImageViewResource(
-                    R.id.widget_iv_icon,
-                    IconUtils.getWeatherIcon(weather.icon)
-                )
-            }
+            val weather = widgetItems[position]
+            XLog.e(
+                TAG,
+                "getViewAt: ${weather.text}   ${weather.max}    ${weather.min}"
+            )
+            setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
+            setTextViewText(
+                R.id.widget_tv_city,
+                "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
+            )
+            setTextViewText(R.id.widget_tv_date, weather.time)
+            XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")
+            setImageViewResource(
+                R.id.widget_iv_icon,
+                IconUtils.getWeatherIcon(weather.icon)
+            )
             // Next, set a fill-intent, which will be used to fill in the pending intent template
             // that is set on the collection view in StackWidgetProvider.
             val fillInIntent = Intent().apply {
-                Bundle().also { extras ->
-                    extras.putInt(EXTRA_ITEM, position)
-                    putExtras(extras)
-                }
+                putExtra(EXTRA_ITEM, weather.time)
             }
             // Make it possible to distinguish the individual on-click
             // action of a given item
+            XLog.e(TAG, "getViewAt: fillInIntent:${position}")
             setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
         }
     }

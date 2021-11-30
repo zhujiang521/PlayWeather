@@ -8,12 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
-import android.widget.Toast
 import com.google.gson.Gson
 import com.zj.weather.R
 import com.zj.weather.utils.XLog
+import com.zj.weather.utils.showToast
 
-const val TOAST_ACTION = "com.zj.weather.common.widget.TOAST_ACTION"
+const val CLICK_ITEM_ACTION = "com.zj.weather.common.widget.CLICK_ITEM_ACTION"
 const val EXTRA_ITEM = "com.zj.weather.common.widget.EXTRA_ITEM"
 
 /**
@@ -26,22 +26,26 @@ class WeatherWidget : AppWidgetProvider() {
     // Checks to see whether the intent's action is TOAST_ACTION. If it is, the app widget
     // displays a Toast message for the current item.
     override fun onReceive(context: Context, intent: Intent) {
-        val mgr: AppWidgetManager = AppWidgetManager.getInstance(context)
-        XLog.e("onReceive: intent.action:${intent.action}")
-        if (intent.action == TOAST_ACTION) {
-            val appWidgetId: Int = intent.getIntExtra(
-                AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID
-            )
-            val viewIndex: Int = intent.getIntExtra(EXTRA_ITEM, 0)
-            Toast.makeText(context, "Touched view $viewIndex", Toast.LENGTH_SHORT).show()
-            mgr.updateAppWidget(
-                appWidgetId,
-                RemoteViews(context.packageName, R.layout.weather_widget)
-            )
-        }
-        updateAppWidget(context)
         super.onReceive(context, intent)
+        XLog.e("onReceive:测试 intent.action:${intent.action}")
+        val appWidgetId: Int = intent.getIntExtra(
+            AppWidgetManager.EXTRA_APPWIDGET_ID,
+            AppWidgetManager.INVALID_APPWIDGET_ID
+        )
+        val cityInfo = loadTitlePref(context, appWidgetId)
+        if (intent.action == CLICK_ITEM_ACTION) {
+            showToast(context, "Touched view ${cityInfo?.city} ${cityInfo?.name}")
+        } else {
+            WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
+                WeatherRemoteViewsFactory.setWidgetItemList(items)
+                val mgr = AppWidgetManager.getInstance(context)
+                val cn = ComponentName(context, WeatherWidget::class.java)
+                mgr.notifyAppWidgetViewDataChanged(
+                    mgr.getAppWidgetIds(cn),
+                    R.id.stack_view
+                )
+            }
+        }
     }
 
     override fun onUpdate(
@@ -68,20 +72,6 @@ class WeatherWidget : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
-    }
-
-    private fun updateAppWidget(context: Context) {
-        val appWidgetIds = AppWidgetManager.getInstance(context)
-            .getAppWidgetIds(ComponentName(context, WeatherWidget::class.java))
-        val appWidgetManager = AppWidgetManager
-            .getInstance(context)
-        appWidgetManager.notifyAppWidgetViewDataChanged(
-            appWidgetIds,
-            R.id.stack_view
-        )
-        appWidgetIds.forEach {
-            updateAppWidget(context, appWidgetManager, it)
-        }
     }
 
 }
@@ -124,12 +114,12 @@ internal fun updateAppWidget(
     // to create unique behavior on an item-by-item basis.
     val toastPendingIntent: PendingIntent = Intent(
         context,
-        WeatherWidgetService::class.java
+        WeatherWidget::class.java
     ).run {
         // Set the action for the intent.
         // When the user touches a particular view, it will have the effect of
         // broadcasting TOAST_ACTION.
-        action = TOAST_ACTION
+        action = CLICK_ITEM_ACTION
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
 
