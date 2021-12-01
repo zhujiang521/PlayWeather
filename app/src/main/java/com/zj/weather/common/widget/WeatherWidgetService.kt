@@ -12,9 +12,7 @@ import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.BitmapFillet.fillet
 import com.zj.weather.utils.BitmapFillet.zoomImg
-import com.zj.weather.utils.NetCheckUtil
 import com.zj.weather.utils.XLog
-import com.zj.weather.utils.showToast
 import com.zj.weather.utils.weather.IconUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -60,9 +58,6 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun onCreate() {
-        if (!NetCheckUtil.checkNet(context = context)) {
-            showToast(context, R.string.bad_network_view_tip)
-        }
         XLog.e(TAG, "init: $widgetItems")
     }
 

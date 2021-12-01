@@ -76,18 +76,16 @@ class WeatherWidget : AppWidgetProvider() {
         appWidgetId: Int,
         newOptions: Bundle
     ) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
         // See the dimensions and
         val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
         // Get min width and height.
         val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
-
-        val minHeight = options
-            .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+        val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
         val rows: Int = getCellsForSize(minHeight)
         val columns: Int = getCellsForSize(minWidth)
         XLog.e("rows:$rows   columns:$columns")
         updateAppWidget(context, appWidgetManager, appWidgetId, rows, columns)
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
     }
 
 }
