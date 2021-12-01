@@ -3,16 +3,18 @@ package com.zj.weather.common.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.widget.RemoteViews
 import com.google.gson.Gson
 import com.zj.weather.R
+import com.zj.weather.common.widget.WeatherWidgetUtils.getCellsForSize
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.showToast
+
 
 const val CLICK_ITEM_ACTION = "com.zj.weather.common.widget.CLICK_ITEM_ACTION"
 const val EXTRA_ITEM = "com.zj.weather.common.widget.EXTRA_ITEM"
@@ -67,12 +69,37 @@ class WeatherWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
+        // See the dimensions and
+        val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+        // Get min width and height.
+        val minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+
+        val minHeight = options
+            .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
+        val rows: Int = getCellsForSize(minHeight)
+        val columns: Int = getCellsForSize(minWidth)
+        XLog.e("rows:$rows   columns:$columns")
+        updateAppWidget(context, appWidgetManager, appWidgetId, rows, columns)
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+    }
+
 }
+
+const val WEATHER_WIDGET_ROWS = "weather_widget_rows"
+const val WEATHER_WIDGET_COLUMNS = "weather_widget_columns"
 
 internal fun updateAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
+    appWidgetId: Int,
+    rows: Int = 2,
+    columns: Int = 3
 ) {
     val cityInfo = loadTitlePref(context, appWidgetId)
     notifyWeatherWidget(context, cityInfo, appWidgetId)
@@ -85,6 +112,8 @@ internal fun updateAppWidget(
         // Add the app widget ID to the intent extras.
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         putExtra(CITY_INFO, Gson().toJson(cityInfo))
+        putExtra(WEATHER_WIDGET_ROWS, rows)
+        putExtra(WEATHER_WIDGET_COLUMNS, columns)
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
     // Instantiate the RemoteViews object for the app widget layout.

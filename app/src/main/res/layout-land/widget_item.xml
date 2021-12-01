@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@color/currentColor"
-        android:textSize="30sp"
+        android:textSize="25sp"
         tools:text="北京" />
 
     <TextView
@@ -36,6 +36,14 @@
         android:layout_height="50dp"
         android:layout_margin="15dp"
         android:src="@drawable/icon_100" />
+
+    <ImageView
+        android:id="@+id/widget_iv_small_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/icon_100"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/widget_tv_temp"

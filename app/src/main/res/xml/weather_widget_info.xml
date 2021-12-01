@@ -3,8 +3,8 @@
     android:configure="com.zj.weather.common.widget.WeatherWidgetConfigureActivity"
     android:initialKeyguardLayout="@layout/weather_widget"
     android:initialLayout="@layout/weather_widget"
-    android:minWidth="250dp"
-    android:minHeight="150dp"
+    android:minWidth="170dp"
+    android:minHeight="90dp"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen" />

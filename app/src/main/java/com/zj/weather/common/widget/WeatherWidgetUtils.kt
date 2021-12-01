@@ -14,6 +14,13 @@ import com.zj.weather.utils.showToast
 
 object WeatherWidgetUtils {
 
+    /**
+     * 获取之后一周的天气
+     *
+     * @param context /
+     * @param cityInfo 需要获取天气的城市
+     * @param onSuccessListener 获取成功的回调
+     */
     fun getWeather7Day(
         context: Context,
         cityInfo: CityInfo?,
@@ -53,6 +60,20 @@ object WeatherWidgetUtils {
                     }
                 }
             })
+    }
+
+    /**
+     * 返回给定大小的小部件所需的单元格数。
+     *
+     * @param size 以 dp 为单位的小部件大小。
+     * @return 单元格数量的大小。
+     */
+    fun getCellsForSize(size: Int): Int {
+        var n = 2
+        while (70 * n - 30 < size) {
+            ++n
+        }
+        return n - 1
     }
 
 }
