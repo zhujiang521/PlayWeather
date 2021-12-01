@@ -114,6 +114,17 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
+    /**
+     * 修改应该显示的城市
+     */
+    fun updateCityInfoIndex(cityInfo: CityInfo) {
+        updateCityJob.checkCoroutines()
+        updateCityJob = viewModelScope.launch(Dispatchers.IO) {
+            weatherRepository.updateCityIsIndex(cityInfo)
+            refreshCityList()
+        }
+    }
+
     fun hasLocation(): Boolean {
         val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
         return isLocation.isNotEmpty()

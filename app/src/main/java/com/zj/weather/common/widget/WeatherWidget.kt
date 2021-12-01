@@ -9,11 +9,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.RemoteViews
 import com.google.gson.Gson
+import com.zj.weather.MainActivity.Companion.actionNewStart
 import com.zj.weather.R
 import com.zj.weather.common.widget.WeatherWidgetUtils.getCellsForSize
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
-import com.zj.weather.utils.showToast
 
 
 const val CLICK_ITEM_ACTION = "com.zj.weather.common.widget.CLICK_ITEM_ACTION"
@@ -37,11 +37,12 @@ class WeatherWidget : AppWidgetProvider() {
         )
         val cityInfo = loadTitlePref(context, appWidgetId)
         if (intent.action == CLICK_ITEM_ACTION) {
-            showToast(context, "Touched view ${cityInfo?.city} ${cityInfo?.name}")
+            actionNewStart(context, cityInfo)
         } else {
             XLog.e("cityInfo:$cityInfo")
         }
     }
+
 
     override fun onUpdate(
         context: Context,

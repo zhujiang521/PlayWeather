@@ -5,7 +5,7 @@
     android:initialLayout="@layout/weather_widget"
     android:previewLayout="@layout/weather_widget"
     android:resizeMode="horizontal|vertical"
-    android:targetCellWidth="4"
-    android:targetCellHeight="3"
+    android:targetCellWidth="3"
+    android:targetCellHeight="2"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen" />

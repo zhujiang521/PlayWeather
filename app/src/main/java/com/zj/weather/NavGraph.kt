@@ -27,6 +27,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.zj.weather.common.PlayActions
 import com.zj.weather.common.PlayDestinations
 import com.zj.weather.common.setComposable
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
 import com.zj.weather.ui.view.list.WeatherListPage
@@ -38,6 +39,7 @@ import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun NavGraph(
+    defaultCityInfo: CityInfo?,
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
 ) {
     val navController = rememberAnimatedNavController()
@@ -49,6 +51,9 @@ fun NavGraph(
         setComposable(PlayDestinations.HOME_PAGE_ROUTE) {
             val weatherViewModel = hiltViewModel<WeatherViewModel>()
             LaunchedEffect(Unit) {
+                if (defaultCityInfo != null) {
+                    weatherViewModel.updateCityInfoIndex(cityInfo = defaultCityInfo)
+                }
                 weatherViewModel.refreshCityList()
             }
             WeatherViewPager(

@@ -226,6 +226,11 @@ class WeatherRepository @Inject constructor(private val context: Application) {
         return cityInfoList
     }
 
+    suspend fun updateCityIsIndex(cityInfo: CityInfo) {
+        cityInfo.isIndex = 1
+        cityInfoDao.update(cityInfo)
+    }
+
     suspend fun updateCityIsIndex(
         cityInfoList: List<CityInfo>,
         onRefreshListener: (Int) -> kotlin.Unit

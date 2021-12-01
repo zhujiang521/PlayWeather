@@ -1,27 +1,45 @@
 package com.zj.weather
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.gson.Gson
+import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
-import com.zj.weather.utils.setAndroidNativeLightStatusBar
-import com.zj.weather.utils.transparentStatusBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
+    private var defaultCityInfo: CityInfo? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val cityInfoString = intent.getStringExtra(WIDGET_CITY_INFO) ?: ""
+        if (cityInfoString.isNotEmpty()) {
+            defaultCityInfo = Gson().fromJson(cityInfoString, CityInfo::class.java)
+        }
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    NavGraph()
+                    NavGraph(defaultCityInfo = defaultCityInfo)
                 }
             }
+        }
+    }
+
+    companion object {
+
+        private const val WIDGET_CITY_INFO = "widget_city_info"
+
+        fun actionNewStart(context: Context, cityInfo: CityInfo?) {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(WIDGET_CITY_INFO, Gson().toJson(cityInfo))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            context.startActivity(intent)
         }
     }
 
