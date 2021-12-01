@@ -8,6 +8,8 @@ import android.widget.RemoteViewsService
 import com.google.gson.Gson
 import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
+import com.zj.weather.utils.BitmapFillet.fillet
+import com.zj.weather.utils.BitmapFillet.zoomImg
 import com.zj.weather.utils.NetCheckUtil
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.showToast
@@ -85,6 +87,10 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
             setTextViewText(
                 R.id.widget_tv_city,
                 "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
+            )
+            setImageViewBitmap(
+                R.id.widget_iv_bg,
+                fillet(context = context, bitmap = zoomImg(context, weather.icon), roundDp = 10)
             )
             setTextViewText(R.id.widget_tv_date, weather.time)
             XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")

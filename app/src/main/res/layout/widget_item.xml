@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/app_widget_item_background"
-    android:gravity="center"
-    android:minWidth="500dp"
     android:id="@+id/widget_ll_item"
-    android:minHeight="500dp"
-    android:orientation="vertical"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/widget_tv_city"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/currentColor"
-        android:textSize="30sp"
-        tools:text="北京" />
-
-    <TextView
-        android:id="@+id/widget_tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/currentColor"
-        android:textSize="20sp"
-        tools:text="时间" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/widget_iv_icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="15dp"
-        android:src="@drawable/icon_100" />
+        android:id="@+id/widget_iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/widget_tv_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@color/currentColor"
-        android:textSize="25sp"
-        tools:text="test" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:minWidth="500dp"
+        android:minHeight="500dp"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/widget_tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/currentColor"
+            android:textSize="30sp"
+            tools:text="北京" />
+
+        <TextView
+            android:id="@+id/widget_tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/currentColor"
+            android:textSize="20sp"
+            tools:text="时间" />
+
+        <ImageView
+            android:id="@+id/widget_iv_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="15dp"
+            android:src="@drawable/icon_100" />
+
+        <TextView
+            android:id="@+id/widget_tv_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/currentColor"
+            android:textSize="25sp"
+            tools:text="test" />
+
+    </LinearLayout>
+
+</FrameLayout>
