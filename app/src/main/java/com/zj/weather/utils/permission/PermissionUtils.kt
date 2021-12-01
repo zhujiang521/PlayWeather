@@ -12,7 +12,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.PermissionsRequired
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.zj.weather.R
 import com.zj.weather.common.dialog.ShowDialog
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
@@ -23,26 +24,23 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
     val context = LocalContext.current
     val alertDialog = rememberSaveable { mutableStateOf(false) }
     // 权限状态
-    val locationPermissionState = rememberPermissionState(
-        Manifest.permission.ACCESS_FINE_LOCATION,
+    val locationPermissionState = rememberMultiplePermissionsState(
+        permissions = arrayListOf(
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )
     )
-    when {
-        // 如果授予定位权限，则显示启用该功能的屏幕
-        locationPermissionState.hasPermission -> {
+    PermissionsRequired(
+        multiplePermissionsState = locationPermissionState,
+        permissionsNotGrantedContent = {
             LaunchedEffect(Unit) {
-                getLocation(context, weatherViewModel)
+                locationPermissionState.permissions.forEach {
+                    it.launchPermissionRequest()
+                }
             }
-        }
-        // 申请权限
-        locationPermissionState.shouldShowRationale ||
-                !locationPermissionState.permissionRequested -> {
-            LaunchedEffect(Unit) {
-                locationPermissionState.launchPermissionRequest()
-            }
-        }
-        // 如果未满足上述条件，则用户拒绝该权限。让我们向用户提供常见问题解答，
-        // 以防他们想了解更多信息并将其发送到“设置”屏幕，以便将来在那里启用它（如果他们愿意）。
-        else -> {
+        },
+        permissionsNotAvailableContent = {
             LaunchedEffect(Unit) {
                 alertDialog.value = true
             }
@@ -55,6 +53,9 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
             ) {
                 startSettingAppPermission(context)
             }
+        }) {
+        LaunchedEffect(Unit) {
+            getLocation(context, weatherViewModel)
         }
     }
 }

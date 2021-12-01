@@ -26,6 +26,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
+import kotlin.math.abs
 
 @ViewModelScoped
 class WeatherRepository @Inject constructor(private val context: Application) {
@@ -210,8 +211,8 @@ class WeatherRepository @Inject constructor(private val context: Application) {
         address: Address
     ): CityInfo {
         return CityInfo(
-            location = "${location.longitude},${
-                location.latitude
+            location = "${abs(location.longitude)},${
+                abs(location.latitude)
             }",
             name = address.subLocality ?: "",
             isLocation = 1,
