@@ -101,7 +101,6 @@ internal fun updateAppWidget(
     columns: Int = 3
 ) {
     val cityInfo = loadTitlePref(context, appWidgetId)
-    notifyWeatherWidget(context, cityInfo, appWidgetId)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
     // views.setTextViewText(R.id.appwidget_text, cityInfo?.city)
@@ -157,19 +156,4 @@ internal fun updateAppWidget(
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
-}
-
-private fun notifyWeatherWidget(
-    context: Context,
-    cityInfo: CityInfo?,
-    appWidgetId: Int
-) {
-    WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
-        WeatherRemoteViewsFactory.setWidgetItemList(items)
-        val mgr = AppWidgetManager.getInstance(context)
-        mgr.notifyAppWidgetViewDataChanged(
-            appWidgetId,
-            R.id.stack_view
-        )
-    }
 }

@@ -1,5 +1,6 @@
 package com.zj.weather.common.widget
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
@@ -33,21 +34,14 @@ const val CITY_INFO = "city_info"
 class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     RemoteViewsService.RemoteViewsFactory, CoroutineScope by MainScope() {
 
-    companion object {
-        private var widgetItems: List<WeekWeather> = arrayListOf()
-
-        /**
-         * 这块写的不严谨，不应该将这个暴露给外部的，但是目前没有找到更加合适的方法
-         * 如果不这样写的话添加完小部件的话会显示不出数据，刷新也不太对。
-         */
-        fun setWidgetItemList(widgetItems: List<WeekWeather>) {
-            this.widgetItems = widgetItems
-        }
-    }
-
     private var cityInfo: CityInfo? = null
     private var widgetRows: Int = 2
     private var widgetColumns: Int = 3
+    private var mAppWidgetId = intent.getIntExtra(
+        AppWidgetManager.EXTRA_APPWIDGET_ID,
+        AppWidgetManager.INVALID_APPWIDGET_ID
+    )
+    private var widgetItems: List<WeekWeather> = listOf()
 
     init {
         intent.getStringExtra(CITY_INFO)?.apply {
@@ -58,7 +52,22 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun onCreate() {
-        XLog.e(TAG, "init: $widgetItems")
+        notifyWeatherWidget(context, mAppWidgetId)
+    }
+
+    private fun notifyWeatherWidget(
+        context: Context,
+        appWidgetId: Int
+    ) {
+        WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
+            widgetItems = items
+            val mgr = AppWidgetManager.getInstance(context)
+            mgr.notifyAppWidgetViewDataChanged(
+                appWidgetId,
+                R.id.stack_view
+            )
+            XLog.e(TAG, "init: $widgetItems")
+        }
     }
 
     override fun onDataSetChanged() {
