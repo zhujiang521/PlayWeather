@@ -3,7 +3,6 @@ package com.zj.weather.common.widget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.os.Parcelable
 import android.util.TypedValue.COMPLEX_UNIT_SP
 import android.view.View
 import android.widget.RemoteViews
@@ -17,7 +16,6 @@ import com.zj.weather.utils.XLog
 import com.zj.weather.utils.weather.IconUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.parcelize.Parcelize
 
 class WeatherWidgetService : RemoteViewsService() {
 
@@ -190,11 +188,10 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
 
 }
 
-@Parcelize
 data class WeekWeather(
     val text: String,
     val time: String,
     val icon: String,
     val max: String,
     val min: String
-) : Parcelable
+)

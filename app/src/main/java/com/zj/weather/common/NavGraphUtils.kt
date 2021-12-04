@@ -26,10 +26,10 @@ fun NavGraphBuilder.setComposable(
         route = route,
         arguments = arguments,
         deepLinks = deepLinks,
-        enterTransition = { _, _ ->
+        enterTransition = {
             expandVertically(animationSpec = tween(300))
         },
-        exitTransition = { _, _ ->
+        exitTransition = {
             shrinkOut(animationSpec = tween(300))
         },
         content = content,

@@ -12,11 +12,11 @@ import com.google.gson.Gson
 import com.zj.weather.MainActivity.Companion.actionNewStart
 import com.zj.weather.R
 import com.zj.weather.common.widget.WeatherWidgetUtils.getCellsForSize
-import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
 
 
 const val CLICK_ITEM_ACTION = "com.zj.weather.common.widget.CLICK_ITEM_ACTION"
+const val CLICK_LOADING_ITEM_ACTION = "com.zj.weather.common.widget.CLICK_LOADING_ITEM_ACTION"
 const val EXTRA_ITEM = "com.zj.weather.common.widget.EXTRA_ITEM"
 
 /**
@@ -25,9 +25,6 @@ const val EXTRA_ITEM = "com.zj.weather.common.widget.EXTRA_ITEM"
  */
 class WeatherWidget : AppWidgetProvider() {
 
-    // Called when the BroadcastReceiver receives an Intent broadcast.
-    // Checks to see whether the intent's action is TOAST_ACTION. If it is, the app widget
-    // displays a Toast message for the current item.
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         XLog.e("onReceive:测试 intent.action:${intent.action}")
@@ -36,10 +33,16 @@ class WeatherWidget : AppWidgetProvider() {
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
         val cityInfo = loadTitlePref(context, appWidgetId)
-        if (intent.action == CLICK_ITEM_ACTION) {
-            actionNewStart(context, cityInfo)
-        } else {
-            XLog.e("cityInfo:$cityInfo")
+        when (intent.action) {
+            CLICK_ITEM_ACTION -> {
+                actionNewStart(context, cityInfo)
+            }
+            CLICK_LOADING_ITEM_ACTION -> {
+                updateAppWidget(context, AppWidgetManager.getInstance(context), appWidgetId)
+            }
+            else -> {
+                XLog.e("cityInfo:$cityInfo")
+            }
         }
     }
 
@@ -103,9 +106,7 @@ internal fun updateAppWidget(
     val cityInfo = loadTitlePref(context, appWidgetId)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
-    // views.setTextViewText(R.id.appwidget_text, cityInfo?.city)
-    // Set up the intent that starts the StackViewService, which will
-    // provide the views for this collection.
+    // 构建适配器
     val intent = Intent(context, WeatherWidgetService::class.java).apply {
         // Add the app widget ID to the intent extras.
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
@@ -114,36 +115,34 @@ internal fun updateAppWidget(
         putExtra(WEATHER_WIDGET_COLUMNS, columns)
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
-    // Instantiate the RemoteViews object for the app widget layout.
+    // 实例化应用小部件布局的 RemoteViews 对象。
     views.apply {
-        // Set up the RemoteViews object to use a RemoteViews adapter.
-        // This adapter connects
-        // to a RemoteViewsService  through the specified intent.
-        // This is how you populate the data.
+        // 设置 RemoteViews 对象以使用 RemoteViews 适配器
         setRemoteAdapter(R.id.stack_view, intent)
 
         // The empty view is displayed when the collection has no items.
         // It should be in the same layout used to instantiate the RemoteViews
         // object above.
         setEmptyView(R.id.stack_view, R.id.empty_view)
+        setOnClickPendingIntent(
+            R.id.empty_view,
+            PendingIntent.getBroadcast(
+                context, 0,
+                Intent(context, WeatherWidget::class.java)
+                    .setAction(CLICK_LOADING_ITEM_ACTION),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        )
     }
 
-    // This section makes it possible for items to have individualized behavior.
-    // It does this by setting up a pending intent template. Individuals items of a
-    // collection cannot set up their own pending intents. Instead, the collection as a
-    // whole sets up a pending intent template, and the individual items set a fillInIntent
-    // to create unique behavior on an item-by-item basis.
-    val toastPendingIntent: PendingIntent = Intent(
+    // 点击事件模版
+    val clickPendingIntent: PendingIntent = Intent(
         context,
         WeatherWidget::class.java
     ).run {
-        // Set the action for the intent.
-        // When the user touches a particular view, it will have the effect of
-        // broadcasting TOAST_ACTION.
         action = CLICK_ITEM_ACTION
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-
         PendingIntent.getBroadcast(
             context,
             0,
@@ -151,9 +150,8 @@ internal fun updateAppWidget(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
-    views.setPendingIntentTemplate(R.id.stack_view, toastPendingIntent)
+    views.setPendingIntentTemplate(R.id.stack_view, clickPendingIntent)
 
-
-    // Instruct the widget manager to update the widget
+    // 小部件管理器更新小部件
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }
