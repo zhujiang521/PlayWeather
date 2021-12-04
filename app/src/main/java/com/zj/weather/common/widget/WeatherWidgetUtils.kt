@@ -1,11 +1,13 @@
 package com.zj.weather.common.widget
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import com.google.gson.Gson
 import com.qweather.sdk.bean.base.Code
 import com.qweather.sdk.bean.base.Unit
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.view.QWeather
+import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.getLocation
 import com.zj.weather.utils.XLog
@@ -21,7 +23,7 @@ object WeatherWidgetUtils {
      * @param cityInfo 需要获取天气的城市
      * @param onSuccessListener 获取成功的回调
      */
-    fun getWeather7Day(
+    private fun getWeather7Day(
         context: Context,
         cityInfo: CityInfo?,
         onSuccessListener: (MutableList<WeekWeather>) -> kotlin.Unit
@@ -60,6 +62,26 @@ object WeatherWidgetUtils {
                     }
                 }
             })
+    }
+
+    /**
+     * 刷新天气List
+     */
+    fun notifyWeatherWidget(
+        context: Context,
+        cityInfo: CityInfo?,
+        appWidgetId: Int
+    ) {
+        XLog.e("notifyWeatherWidget: 刷新天气")
+        getWeather7Day(context = context, cityInfo = cityInfo) { items ->
+            WeatherRemoteViewsFactory.setWidgetItemList(items)
+            val mgr = AppWidgetManager.getInstance(context)
+            mgr.notifyAppWidgetViewDataChanged(
+                appWidgetId,
+                R.id.stack_view
+            )
+            XLog.e("notifyWeatherWidget: ${items.size}")
+        }
     }
 
     /**

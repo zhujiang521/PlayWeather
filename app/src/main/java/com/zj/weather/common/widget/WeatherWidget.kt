@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import com.zj.weather.MainActivity.Companion.actionNewStart
 import com.zj.weather.R
 import com.zj.weather.common.widget.WeatherWidgetUtils.getCellsForSize
+import com.zj.weather.common.widget.WeatherWidgetUtils.notifyWeatherWidget
 import com.zj.weather.utils.XLog
 
 
@@ -38,10 +39,11 @@ class WeatherWidget : AppWidgetProvider() {
                 actionNewStart(context, cityInfo)
             }
             CLICK_LOADING_ITEM_ACTION -> {
-                updateAppWidget(context, AppWidgetManager.getInstance(context), appWidgetId)
+                XLog.e("onReceive: action:${intent.action}")
+                notifyWeatherWidget(context, cityInfo, appWidgetId)
             }
             else -> {
-                XLog.e("cityInfo:$cityInfo")
+                XLog.e("onReceive")
             }
         }
     }
@@ -120,19 +122,16 @@ internal fun updateAppWidget(
         // 设置 RemoteViews 对象以使用 RemoteViews 适配器
         setRemoteAdapter(R.id.stack_view, intent)
 
-        // The empty view is displayed when the collection has no items.
-        // It should be in the same layout used to instantiate the RemoteViews
-        // object above.
+        // 当集合没有项目时显示空视图
         setEmptyView(R.id.stack_view, R.id.empty_view)
-        setOnClickPendingIntent(
-            R.id.empty_view,
-            PendingIntent.getBroadcast(
-                context, 0,
-                Intent(context, WeatherWidget::class.java)
-                    .setAction(CLICK_LOADING_ITEM_ACTION),
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            )
+        val itemLoading = PendingIntent.getBroadcast(
+            context, 0,
+            Intent(context, WeatherWidget::class.java)
+                .setAction(CLICK_LOADING_ITEM_ACTION),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
+        setOnClickPendingIntent(R.id.empty_view, itemLoading)
+        setOnClickPendingIntent(R.id.empty_tv, itemLoading)
     }
 
     // 点击事件模版

@@ -30,13 +30,15 @@
             android:src="@drawable/bad_loading" />
 
         <TextView
+            android:id="@+id/empty_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:text="Loading"
+            android:gravity="center"
+            android:text="@string/bad_network_view_tip"
             android:textColor="@color/currentColor"
-            android:textSize="30sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

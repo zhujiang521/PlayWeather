@@ -9,6 +9,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.google.gson.Gson
 import com.zj.weather.R
+import com.zj.weather.common.widget.WeatherWidgetUtils.notifyWeatherWidget
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.BitmapFillet.fillet
 import com.zj.weather.utils.BitmapFillet.zoomImg
@@ -25,7 +26,6 @@ class WeatherWidgetService : RemoteViewsService() {
 
 }
 
-private const val TAG = "WeatherWidgetService"
 private const val WEEK_COUNT = 7
 const val CITY_INFO = "city_info"
 
@@ -39,7 +39,19 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
         AppWidgetManager.EXTRA_APPWIDGET_ID,
         AppWidgetManager.INVALID_APPWIDGET_ID
     )
-    private var widgetItems: List<WeekWeather> = listOf()
+
+    companion object {
+        private var widgetItems: List<WeekWeather> = arrayListOf()
+
+        /**
+         * 这块写的不严谨，不应该将这个暴露给外部的，但是目前没有找到更加合适的方法
+         * 如果不这样写的话添加完小部件的话会显示不出数据，刷新也不太对。
+         */
+        fun setWidgetItemList(widgetItems: List<WeekWeather>) {
+            this.widgetItems = widgetItems
+        }
+
+    }
 
     init {
         intent.getStringExtra(CITY_INFO)?.apply {
@@ -50,30 +62,15 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun onCreate() {
-        notifyWeatherWidget(context, mAppWidgetId)
-    }
-
-    private fun notifyWeatherWidget(
-        context: Context,
-        appWidgetId: Int
-    ) {
-        WeatherWidgetUtils.getWeather7Day(context = context, cityInfo = cityInfo) { items ->
-            widgetItems = items
-            val mgr = AppWidgetManager.getInstance(context)
-            mgr.notifyAppWidgetViewDataChanged(
-                appWidgetId,
-                R.id.stack_view
-            )
-            XLog.e(TAG, "init: $widgetItems")
-        }
+        notifyWeatherWidget(context, cityInfo, mAppWidgetId)
     }
 
     override fun onDataSetChanged() {
-        XLog.d(TAG, "onDataSetChanged: ")
+        XLog.e("onDataSetChanged: ")
     }
 
     override fun onDestroy() {
-        XLog.d(TAG, "onDestroy: ")
+        XLog.d("onDestroy: ")
     }
 
     override fun getCount(): Int {
@@ -81,13 +78,14 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun getViewAt(position: Int): RemoteViews {
+        XLog.e("getViewAt:${widgetItems.size}")
         if (widgetItems.size != WEEK_COUNT) {
             return RemoteViews(context.packageName, R.layout.weather_widget_loading)
         }
         return RemoteViews(context.packageName, R.layout.widget_item).apply {
             val weather = widgetItems[position]
-            XLog.e(TAG, "getViewAt: ${weather.text}")
-            XLog.e(TAG, "getViewAt: cityInfo:$cityInfo")
+            XLog.e("getViewAt: ${weather.text}")
+            XLog.e("getViewAt: ${weather.text} cityInfo:$cityInfo")
             setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
             setTextViewText(
                 R.id.widget_tv_city,
@@ -103,14 +101,11 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
                 R.id.widget_iv_icon,
                 IconUtils.getWeatherIcon(weather.icon)
             )
-            // Next, set a fill-intent, which will be used to fill in the pending intent template
-            // that is set on the collection view in StackWidgetProvider.
+            // 可以区分给定项目的单个点击操作
             val fillInIntent = Intent().apply {
                 putExtra(EXTRA_ITEM, weather.time)
             }
-            // Make it possible to distinguish the individual on-click
-            // action of a given item
-            XLog.e(TAG, "getViewAt: fillInIntent:${position}")
+            XLog.e("getViewAt: fillInIntent:${position}")
             setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
         }
     }
