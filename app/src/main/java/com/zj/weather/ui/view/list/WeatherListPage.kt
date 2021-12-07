@@ -18,6 +18,7 @@ import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.common.lce.LcePage
+import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.list.viewmodel.WeatherListViewModel
 import com.zj.weather.ui.view.list.widget.SearchBar
@@ -66,13 +67,17 @@ fun WeatherListPage(
         }
         Spacer(Modifier.height(10.dp))
         LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
-            val listState = rememberLazyListState()
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = 15.dp),
-                state = listState
-            ) {
-                items(locationBeanList) { locationBean ->
-                    WeatherCityItem(locationBean, toWeatherDetails)
+            if (locationBeanList.isEmpty()){
+                NoContent()
+            }else {
+                val listState = rememberLazyListState()
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 15.dp),
+                    state = listState
+                ) {
+                    items(locationBeanList) { locationBean ->
+                        WeatherCityItem(locationBean, toWeatherDetails)
+                    }
                 }
             }
         }

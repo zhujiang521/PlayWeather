@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.qweather.sdk.bean.air.AirNowBean
 import com.qweather.sdk.bean.base.Lang
+import com.qweather.sdk.bean.weather.WeatherHourlyBean
 import com.zj.weather.R
 import com.zj.weather.common.PlayError
 import com.zj.weather.common.PlayLoading
@@ -84,9 +86,11 @@ class WeatherViewModel @Inject constructor(
         weatherJob.checkCoroutines()
         weatherJob = viewModelScope.launch(Dispatchers.IO) {
             val weatherNow = weatherRepository.getWeatherNow(location, language)
-            val weather24Hour = weatherRepository.getWeather24Hour(location, language)
+            // val weather24Hour = weatherRepository.getWeather24Hour(location, language)
+            val weather24Hour = arrayListOf<WeatherHourlyBean.HourlyBean>()
             val weather7Day = weatherRepository.getWeather7Day(location, language)
-            val airNow = weatherRepository.getAirNow(location, language)
+            // val airNow = weatherRepository.getAirNow(location, language)
+            val airNow = AirNowBean.NowBean()
             val weatherModel = WeatherModel(
                 nowBaseBean = weatherNow,
                 hourlyBeanList = weather24Hour,

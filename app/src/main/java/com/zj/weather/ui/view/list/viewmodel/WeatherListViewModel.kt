@@ -9,6 +9,7 @@ import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
+import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.checkCoroutines
@@ -62,7 +63,8 @@ class WeatherListViewModel @Inject constructor(
     fun getGeoTopCity() {
         topCityJob.checkCoroutines()
         topCityJob = viewModelScope.launch {
-            val cityLookup = weatherListRepository.getGeoTopCity(language)
+            //val cityLookup = weatherListRepository.getGeoTopCity(language)
+            val cityLookup = PlaySuccess(arrayListOf<GeoBean.LocationBean>())
             onLocationBeanListChanged(cityLookup)
         }
     }
