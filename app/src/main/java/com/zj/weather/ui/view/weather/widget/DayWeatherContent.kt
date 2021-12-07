@@ -43,16 +43,8 @@ fun DayWeatherContent(
         WeatherContentItem(
             modifier.fillMaxHeight(),
             stringResource(id = R.string.sun_title),
-            getSunriseSunsetContent(
-                context,
-                dailyBean?.sunrise ?: "07:00",
-                dailyBean?.sunset ?: "19:00"
-            ),
-            "${stringResource(id = R.string.sun_sunrise)}${dailyBean?.sunrise ?: "07:00"}\n${
-                stringResource(
-                    id = R.string.sun_sunset
-                )
-            }${dailyBean?.sunset ?: "19:00"}"
+            "${stringResource(id = R.string.sun_sunrise)}${dailyBean?.sunrise ?: "07:00"}",
+            "${stringResource(id = R.string.sun_sunset)}${dailyBean?.sunset ?: "19:00"}"
         )
     }
 

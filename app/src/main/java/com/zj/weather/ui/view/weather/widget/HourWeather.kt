@@ -47,9 +47,9 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
                     HourWeatherItem(hourlyBean)
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
 }
 
 @Composable
