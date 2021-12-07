@@ -33,7 +33,7 @@ class WeatherWidget : AppWidgetProvider() {
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
-        val cityInfo = loadTitlePref(context, appWidgetId)
+        val cityInfo = loadCityInfoPref(context, appWidgetId)
         when (intent.action) {
             CLICK_ITEM_ACTION -> {
                 actionNewStart(context, cityInfo)
@@ -63,7 +63,7 @@ class WeatherWidget : AppWidgetProvider() {
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
         for (appWidgetId in appWidgetIds) {
-            deleteTitlePref(context, appWidgetId)
+            deleteCityInfoPref(context, appWidgetId)
         }
     }
 
@@ -105,7 +105,7 @@ internal fun updateAppWidget(
     rows: Int = 2,
     columns: Int = 3
 ) {
-    val cityInfo = loadTitlePref(context, appWidgetId)
+    val cityInfo = loadCityInfoPref(context, appWidgetId)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
     // 构建适配器

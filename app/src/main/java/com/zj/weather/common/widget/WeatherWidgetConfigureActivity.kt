@@ -85,7 +85,7 @@ class WeatherWidgetConfigureActivity : BaseActivity() {
         }
         XLog.e("onConfirm:${cityInfo}")
         val context = this@WeatherWidgetConfigureActivity
-        saveTitlePref(context, appWidgetId, cityInfo)
+        saveCityInfoPref(context, appWidgetId, cityInfo)
 
         // It is the responsibility of the configuration activity to update the app widget
         val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -189,7 +189,7 @@ private const val PREFS_NAME = "com.zj.weather.common.widget.WeatherWidget"
 private const val PREF_PREFIX_KEY = "appwidget_"
 
 // Write the prefix to the SharedPreferences object for this widget
-internal fun saveTitlePref(context: Context, appWidgetId: Int, cityInfo: CityInfo) {
+internal fun saveCityInfoPref(context: Context, appWidgetId: Int, cityInfo: CityInfo) {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
     prefs.putString(PREF_PREFIX_KEY + appWidgetId, Gson().toJson(cityInfo))
     prefs.apply()
@@ -197,14 +197,14 @@ internal fun saveTitlePref(context: Context, appWidgetId: Int, cityInfo: CityInf
 
 // Read the prefix from the SharedPreferences object for this widget.
 // If there is no preference saved, get the default from a resource
-internal fun loadTitlePref(context: Context, appWidgetId: Int): CityInfo? {
+internal fun loadCityInfoPref(context: Context, appWidgetId: Int): CityInfo? {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0)
     val cityString = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: ""
     if (cityString.isEmpty()) return null
     return Gson().fromJson(cityString, CityInfo::class.java)
 }
 
-internal fun deleteTitlePref(context: Context, appWidgetId: Int) {
+internal fun deleteCityInfoPref(context: Context, appWidgetId: Int) {
     val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
     prefs.remove(PREF_PREFIX_KEY + appWidgetId)
     prefs.apply()
