@@ -61,29 +61,6 @@ fun getUvIndexDesc(context: Context, uv: String?): String {
 }
 
 /**
- * 获取当前该显示日出还是日落
- *
- * @param sunrise 日出时间
- * @param sunset 日落时间
- * @return 当前应该显示的值
- */
-fun getSunriseSunsetContent(context: Context, sunrise: String, sunset: String): String {
-    if (sunrise.isEmpty() || sunset.isEmpty()) {
-        return "${context.getString(R.string.sun_sunrise)}7:00"
-    }
-    val sunrises = sunrise.split(":")
-    val sunsets = sunset.split(":")
-    XLog.d("getSunriseSunsetContent: sunrises:$sunrises  sunsets:$sunsets")
-    val calendar = Calendar.getInstance()
-    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-    return if (hour < sunrises[0].toInt()) {
-        "${context.getString(R.string.sun_sunrise)}${sunrise}"
-    } else {
-        "${context.getString(R.string.sun_sunset)}${sunset}"
-    }
-}
-
-/**
  * 创建默认的CityInfo
  */
 fun makeDefault(context: Context, cityInfoList: List<CityInfo>?): List<CityInfo> {

@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.weather.R
 import com.zj.weather.model.WeatherModel
-import com.zj.weather.utils.weather.getSunriseSunsetContent
 import com.zj.weather.utils.weather.getUvIndexDesc
 
 @OptIn(ExperimentalFoundationApi::class)
