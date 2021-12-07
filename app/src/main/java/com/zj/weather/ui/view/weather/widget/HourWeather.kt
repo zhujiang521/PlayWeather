@@ -1,8 +1,6 @@
 package com.zj.weather.ui.view.weather.widget
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,6 +47,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
                     HourWeatherItem(hourlyBean)
                 }
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }

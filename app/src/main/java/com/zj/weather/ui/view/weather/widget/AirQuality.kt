@@ -27,8 +27,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            ,
+            .padding(horizontal = 10.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(
@@ -54,6 +53,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
             )
             Spacer(modifier = Modifier.height(10.dp))
             AirQualityProgress((airNowBean.aqi ?: "10").toInt())
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }

@@ -46,12 +46,8 @@ fun WeatherContent(
         // 当前空气质量
         AirQuality(weatherModel?.airNowBean)
 
-        Spacer(modifier = Modifier.height(10.dp))
-
         // 未来24小时天气预报
         HourWeather(weatherModel?.hourlyBeanList)
-
-        Spacer(modifier = Modifier.height(10.dp))
 
         // 未来7天天气预报
         DayWeather(weatherModel?.dailyBeanList)
