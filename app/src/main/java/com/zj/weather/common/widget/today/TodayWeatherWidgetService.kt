@@ -81,7 +81,7 @@ class TodayWeatherRemoteViewsFactory(private val context: Context, intent: Inten
                 R.id.widget_iv_bg,
                 fillet(context = context, bitmap = zoomImg(context, weather.icon), roundDp = 10)
             )
-            setTextViewText(R.id.today_tv_one_date, weather.time)
+            setTextViewText(R.id.today_tv_one_date, weather.week)
             setImageViewResource(
                 R.id.today_iv_one,
                 IconUtils.getWeatherIcon(weather.icon)

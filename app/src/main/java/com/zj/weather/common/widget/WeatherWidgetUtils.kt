@@ -17,6 +17,7 @@ import com.zj.weather.ui.view.weather.getLocation
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.getDefaultLocale
 import com.zj.weather.utils.showToast
+import com.zj.weather.utils.weather.getDateWeekName
 
 object WeatherWidgetUtils {
 
@@ -48,13 +49,15 @@ object WeatherWidgetUtils {
                     if (Code.OK === weatherDailyBean?.code) {
                         val items = arrayListOf<WeekWeather>()
                         weatherDailyBean.daily.forEach { weather ->
+                            val fxDate = getDateWeekName(context, weather.fxDate)
                             val weekWeather =
                                 WeekWeather(
                                     weather.textDay,
                                     weather.fxDate,
                                     weather.iconDay,
                                     weather.tempMax,
-                                    weather.tempMin
+                                    weather.tempMin,
+                                    fxDate
                                 )
                             items.add(weekWeather)
                         }

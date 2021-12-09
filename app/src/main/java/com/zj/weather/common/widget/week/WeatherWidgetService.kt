@@ -188,5 +188,6 @@ data class WeekWeather(
     val time: String,
     val icon: String,
     val max: String,
-    val min: String
+    val min: String,
+    val week: String
 )

@@ -140,7 +140,12 @@
         <entry key="app/src/main/res/layout/today_weather_widget_configure.xml" value="0.2703804347826087" />
         <entry key="app/src/main/res/layout/today_weather_widget_large.xml" value="0.2644927536231884" />
         <entry key="app/src/main/res/layout/today_weather_widget_medium.xml" value="0.2644927536231884" />
+        <entry key="app/src/main/res/layout/today_weather_widget_medium_large.xml" value="0.2586050724637681" />
+        <entry key="app/src/main/res/layout/today_weather_widget_medium_medium.xml" value="0.2586050724637681" />
         <entry key="app/src/main/res/layout/today_weather_widget_small.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/today_weather_widget_small_large.xml" value="0.2586050724637681" />
+        <entry key="app/src/main/res/layout/today_weather_widget_small_medium.xml" value="0.2586050724637681" />
+        <entry key="app/src/main/res/layout/today_weather_widget_vertical.xml" value="0.2586050724637681" />
         <entry key="app/src/main/res/layout/today_widget_item.xml" value="0.2644927536231884" />
         <entry key="app/src/main/res/layout/weather_widget.xml" value="0.2898550724637681" />
         <entry key="app/src/main/res/layout/weather_widget_configure.xml" value="0.2898550724637681" />

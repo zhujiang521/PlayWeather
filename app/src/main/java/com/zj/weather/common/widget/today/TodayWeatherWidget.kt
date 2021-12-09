@@ -77,14 +77,29 @@ internal fun updateAppWidget(
         val mediumView = RemoteViews(context.packageName, R.layout.today_weather_widget_medium)
         val largeView = RemoteViews(context.packageName, R.layout.today_weather_widget_large)
 
+        val smallLargeView =
+            RemoteViews(context.packageName, R.layout.today_weather_widget_small_large)
+
         val viewMapping: Map<SizeF, RemoteViews> = mapOf(
             SizeF(140f, 40f) to smallView,
+            SizeF(170f, 40f) to mediumView,
             SizeF(170f, 70f) to mediumView,
-            SizeF(270f, 110f) to largeView
+            SizeF(270f, 110f) to largeView,
+            SizeF(140f, 110f) to smallLargeView,
+            SizeF(170f, 70f) to largeView,
+            SizeF(170f, 110f) to largeView
         )
         buildRemoteViews(context, cityInfo, smallView, viewMapping, appWidgetManager, appWidgetId)
         buildRemoteViews(context, cityInfo, mediumView, viewMapping, appWidgetManager, appWidgetId)
         buildRemoteViews(context, cityInfo, largeView, viewMapping, appWidgetManager, appWidgetId)
+        buildRemoteViews(
+            context,
+            cityInfo,
+            smallLargeView,
+            viewMapping,
+            appWidgetManager,
+            appWidgetId
+        )
     } else {
         val views = RemoteViews(context.packageName, R.layout.today_weather_widget_medium)
         buildRemoteViews(context, cityInfo, views, appWidgetManager, appWidgetId)
@@ -121,29 +136,25 @@ private fun buildRemoteViews(
             R.id.today_tv_tomorrow_temp,
             "${tomorrowBaseBean.min}/${tomorrowBaseBean.max}℃"
         )
-        if (views.layoutId == R.layout.today_weather_widget_medium || views.layoutId == R.layout.today_weather_widget_large) {
-            val afterBaseBean = items[2]
-            views.setImageViewResource(
-                R.id.today_iv_after,
-                IconUtils.getWeatherIcon(afterBaseBean.icon)
-            )
-            views.setTextViewText(R.id.today_tv_after_text, afterBaseBean.text)
-            views.setTextViewText(
-                R.id.today_tv_after_temp,
-                "${afterBaseBean.min}/${afterBaseBean.max}℃"
-            )
-            if (views.layoutId == R.layout.today_weather_widget_large) {
-                // 构建适配器
-                val intent = Intent(context, TodayWeatherWidgetService::class.java).apply {
-                    // Add the app widget ID to the intent extras.
-                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                    putExtra(LOCATION_INFO, getLocation(cityInfo = cityInfo))
-                    data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
-                }
-                // 设置 RemoteViews 对象以使用 RemoteViews 适配器
-                views.setRemoteAdapter(R.id.today_list_view, intent)
-            }
+        val afterBaseBean = items[2]
+        views.setImageViewResource(
+            R.id.today_iv_after,
+            IconUtils.getWeatherIcon(afterBaseBean.icon)
+        )
+        views.setTextViewText(R.id.today_tv_after_text, afterBaseBean.text)
+        views.setTextViewText(
+            R.id.today_tv_after_temp,
+            "${afterBaseBean.min}/${afterBaseBean.max}℃"
+        )
+        // 构建适配器
+        val intent = Intent(context, TodayWeatherWidgetService::class.java).apply {
+            // Add the app widget ID to the intent extras.
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            putExtra(LOCATION_INFO, getLocation(cityInfo = cityInfo))
+            data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
         }
+        // 设置 RemoteViews 对象以使用 RemoteViews 适配器
+        views.setRemoteAdapter(R.id.today_list_view, intent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             appWidgetManager.updateAppWidget(appWidgetId, RemoteViews(viewMapping))
         }
