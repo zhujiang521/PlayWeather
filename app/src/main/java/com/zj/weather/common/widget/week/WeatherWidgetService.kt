@@ -1,4 +1,4 @@
-package com.zj.weather.common.widget
+package com.zj.weather.common.widget.week
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -48,7 +48,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
          * 如果不这样写的话添加完小部件的话会显示不出数据，刷新也不太对。
          */
         fun setWidgetItemList(widgetItems: List<WeekWeather>) {
-            this.widgetItems = widgetItems
+            Companion.widgetItems = widgetItems
         }
 
     }

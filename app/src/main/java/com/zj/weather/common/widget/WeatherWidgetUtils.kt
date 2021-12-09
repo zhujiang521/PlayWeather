@@ -6,8 +6,12 @@ import com.google.gson.Gson
 import com.qweather.sdk.bean.base.Code
 import com.qweather.sdk.bean.base.Unit
 import com.qweather.sdk.bean.weather.WeatherDailyBean
+import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather
 import com.zj.weather.R
+import com.zj.weather.common.widget.today.TodayWeatherRemoteViewsFactory
+import com.zj.weather.common.widget.week.WeatherRemoteViewsFactory
+import com.zj.weather.common.widget.week.WeekWeather
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.getLocation
 import com.zj.weather.utils.XLog
@@ -23,12 +27,12 @@ object WeatherWidgetUtils {
      * @param cityInfo 需要获取天气的城市
      * @param onSuccessListener 获取成功的回调
      */
-    private fun getWeather7Day(
+    fun getWeather7Day(
         context: Context,
-        cityInfo: CityInfo?,
+        location: String?,
         onSuccessListener: (MutableList<WeekWeather>) -> kotlin.Unit
     ) {
-        QWeather.getWeather7D(context, getLocation(cityInfo = cityInfo),
+        QWeather.getWeather7D(context, location,
             getDefaultLocale(context), Unit.METRIC,
             object : QWeather.OnResultWeatherDailyListener {
                 override fun onError(e: Throwable) {
@@ -73,12 +77,32 @@ object WeatherWidgetUtils {
         appWidgetId: Int
     ) {
         XLog.e("notifyWeatherWidget: 刷新天气")
-        getWeather7Day(context = context, cityInfo = cityInfo) { items ->
+        getWeather7Day(context = context, location = getLocation(cityInfo = cityInfo)) { items ->
             WeatherRemoteViewsFactory.setWidgetItemList(items)
             val mgr = AppWidgetManager.getInstance(context)
             mgr.notifyAppWidgetViewDataChanged(
                 appWidgetId,
                 R.id.stack_view
+            )
+            XLog.e("notifyWeatherWidget: ${items.size}")
+        }
+    }
+
+    /**
+     * 刷新天气List
+     */
+    fun notifyWeatherWidget(
+        context: Context,
+        location: String?,
+        appWidgetId: Int
+    ) {
+        XLog.e("notifyWeatherWidget: 刷新天气:$location")
+        getWeather7Day(context = context, location = location) { items ->
+            TodayWeatherRemoteViewsFactory.setWidgetItemList(items)
+            val mgr = AppWidgetManager.getInstance(context)
+            mgr.notifyAppWidgetViewDataChanged(
+                appWidgetId,
+                R.id.today_list_view
             )
             XLog.e("notifyWeatherWidget: ${items.size}")
         }

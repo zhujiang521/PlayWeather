@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zj.weather" >
+    package="com.zj.weather">
 
     <!-- 和风天气所需权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,12 +17,32 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/MySplashTheme" >
+        android:theme="@style/MySplashTheme">
+        <receiver
+            android:name=".common.widget.today.TodayWeatherWidget"
+            android:exported="true"
+            android:label="@string/bad_network_view_tip">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/today_weather_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".common.widget.today.TodayWeatherWidgetConfigureActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/MySplashTheme" >
+            android:theme="@style/MySplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,8 +51,8 @@
         </activity>
 
         <receiver
-            android:name=".common.widget.WeatherWidget"
-            android:exported="true" >
+            android:name=".common.widget.week.WeatherWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -43,15 +63,20 @@
         </receiver>
 
         <activity
-            android:name=".common.widget.WeatherWidgetConfigureActivity"
-            android:exported="true" >
+            android:name=".common.widget.week.WeatherWidgetConfigureActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <service
-            android:name=".common.widget.WeatherWidgetService"
+            android:name=".common.widget.week.WeatherWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name=".common.widget.today.TodayWeatherWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 

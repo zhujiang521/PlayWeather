@@ -1,4 +1,4 @@
-package com.zj.weather.common.widget
+package com.zj.weather.common.widget.week
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -13,6 +13,8 @@ import com.zj.weather.MainActivity.Companion.actionNewStart
 import com.zj.weather.R
 import com.zj.weather.common.widget.WeatherWidgetUtils.getCellsForSize
 import com.zj.weather.common.widget.WeatherWidgetUtils.notifyWeatherWidget
+import com.zj.weather.common.widget.utils.deleteCityInfoPref
+import com.zj.weather.common.widget.utils.loadCityInfoPref
 import com.zj.weather.utils.XLog
 
 
@@ -33,7 +35,7 @@ class WeatherWidget : AppWidgetProvider() {
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
-        val cityInfo = loadCityInfoPref(context, appWidgetId)
+        val cityInfo = loadCityInfoPref(context, appWidgetId, PREFS_NAME)
         when (intent.action) {
             CLICK_ITEM_ACTION -> {
                 actionNewStart(context, cityInfo)
@@ -63,7 +65,7 @@ class WeatherWidget : AppWidgetProvider() {
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         // When the user deletes the widget, delete the preference associated with it.
         for (appWidgetId in appWidgetIds) {
-            deleteCityInfoPref(context, appWidgetId)
+            deleteCityInfoPref(context, appWidgetId, PREFS_NAME)
         }
     }
 
@@ -105,7 +107,7 @@ internal fun updateAppWidget(
     rows: Int = 2,
     columns: Int = 3
 ) {
-    val cityInfo = loadCityInfoPref(context, appWidgetId)
+    val cityInfo = loadCityInfoPref(context, appWidgetId, PREFS_NAME)
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.weather_widget)
     // 构建适配器

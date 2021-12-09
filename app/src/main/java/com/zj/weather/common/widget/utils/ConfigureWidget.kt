@@ -1,15 +1,11 @@
-package com.zj.weather.common.widget
+package com.zj.weather.common.widget.utils
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,87 +18,15 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.gson.Gson
-import com.zj.weather.BaseActivity
 import com.zj.weather.R
+import com.zj.weather.common.widget.week.PREF_PREFIX_KEY
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
 import com.zj.weather.ui.view.list.widget.DrawIndicator
-import com.zj.weather.utils.NetCheckUtil
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.showToast
-import dagger.hilt.android.AndroidEntryPoint
-
-/**
- * The configuration screen for the [WeatherWidget] AppWidget.
- */
-@AndroidEntryPoint
-class WeatherWidgetConfigureActivity : BaseActivity() {
-
-    private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-    private val viewModel by viewModels<CityListViewModel>()
-
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Set the result to CANCELED.  This will cause the widget host to cancel
-        // out of the widget placement if the user presses the back button.
-        setResult(RESULT_CANCELED)
-        // Find the widget id from the intent.
-        val intent = intent
-        val extras = intent.extras
-        if (extras != null) {
-            appWidgetId = extras.getInt(
-                AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID
-            )
-        }
-
-        // If this activity was started with an intent without an app widget ID, finish with an error.
-        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish()
-            return
-        }
-        viewModel.refreshCityList()
-        setContent {
-            PlayWeatherTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    ConfigureWidget(
-                        viewModel,
-                        onCancelListener = {
-                            setResult(RESULT_CANCELED)
-                            finish()
-                        }) { cityInfo ->
-                        onConfirm(cityInfo)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun onConfirm(cityInfo: CityInfo) {
-        if (!NetCheckUtil.checkNet(this)) {
-            showToast(this, R.string.bad_network_view_tip)
-        }
-        XLog.e("onConfirm:${cityInfo}")
-        val context = this@WeatherWidgetConfigureActivity
-        saveCityInfoPref(context, appWidgetId, cityInfo)
-
-        // It is the responsibility of the configuration activity to update the app widget
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        updateAppWidget(context, appWidgetManager, appWidgetId)
-
-        // Make sure we pass back the original appWidgetId
-        val resultValue = Intent()
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(RESULT_OK, resultValue)
-        finish()
-    }
-
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun ConfigureWidget(
+fun ConfigureWidget(
     viewModel: CityListViewModel,
     onCancelListener: () -> Unit,
     onConfirmListener: (CityInfo) -> Unit
@@ -185,27 +109,29 @@ private fun ConfigureWidget(
     }
 }
 
-private const val PREFS_NAME = "com.zj.weather.common.widget.WeatherWidget"
-private const val PREF_PREFIX_KEY = "appwidget_"
-
 // Write the prefix to the SharedPreferences object for this widget
-internal fun saveCityInfoPref(context: Context, appWidgetId: Int, cityInfo: CityInfo) {
-    val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
+internal fun saveCityInfoPref(
+    context: Context,
+    appWidgetId: Int,
+    cityInfo: CityInfo,
+    prefsName: String
+) {
+    val prefs = context.getSharedPreferences(prefsName, 0).edit()
     prefs.putString(PREF_PREFIX_KEY + appWidgetId, Gson().toJson(cityInfo))
     prefs.apply()
 }
 
 // Read the prefix from the SharedPreferences object for this widget.
 // If there is no preference saved, get the default from a resource
-internal fun loadCityInfoPref(context: Context, appWidgetId: Int): CityInfo? {
-    val prefs = context.getSharedPreferences(PREFS_NAME, 0)
+internal fun loadCityInfoPref(context: Context, appWidgetId: Int, prefsName: String): CityInfo? {
+    val prefs = context.getSharedPreferences(prefsName, 0)
     val cityString = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: ""
     if (cityString.isEmpty()) return null
     return Gson().fromJson(cityString, CityInfo::class.java)
 }
 
-internal fun deleteCityInfoPref(context: Context, appWidgetId: Int) {
-    val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
+internal fun deleteCityInfoPref(context: Context, appWidgetId: Int, prefsName: String) {
+    val prefs = context.getSharedPreferences(prefsName, 0).edit()
     prefs.remove(PREF_PREFIX_KEY + appWidgetId)
     prefs.apply()
 }

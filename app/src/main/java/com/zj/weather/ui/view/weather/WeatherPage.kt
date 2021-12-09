@@ -122,7 +122,8 @@ private fun HorizontalWeather(
 @Preview(showBackground = false, name = "竖屏天气")
 @Composable
 fun VerticalWeatherPreview() {
-    VerticalWeather(25.sp, CityInfo(name = "测试"), {},
+    VerticalWeather(
+        25.sp, CityInfo(name = "测试"), {},
         {}, buildWeatherModel(), rememberScrollState()
     )
 }
@@ -141,7 +142,7 @@ private fun buildWeatherModel(): WeatherModel {
     )
 }
 
-@Preview(showBackground = false, name = "横屏天气",heightDp = 320,widthDp = 640)
+@Preview(showBackground = false, name = "横屏天气", heightDp = 320, widthDp = 640)
 @Composable
 fun HorizontalWeatherPreview() {
     HorizontalWeather(25.sp, {}, {}, CityInfo(name = "测试"),
