@@ -72,4 +72,10 @@
     <string name="permission_sure">打开设置</string>
     <string name="permission_cancel">取消</string>
 
+    <string name="widget_week_name">周天气卡片</string>
+    <string name="widget_today_name">今天天气卡片</string>
+
+    <string name="widget_tomorrow">明天</string>
+    <string name="widget_after_tomorrow">后天</string>
+
 </resources>

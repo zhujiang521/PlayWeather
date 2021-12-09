@@ -21,7 +21,7 @@
         <receiver
             android:name=".common.widget.today.TodayWeatherWidget"
             android:exported="true"
-            android:label="@string/bad_network_view_tip">
+            android:label="@string/widget_today_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -52,7 +52,8 @@
 
         <receiver
             android:name=".common.widget.week.WeatherWidget"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/widget_week_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

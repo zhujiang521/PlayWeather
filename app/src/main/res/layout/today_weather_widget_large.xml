@@ -13,6 +13,7 @@
         android:background="@drawable/app_widget_item_background" />
 
     <RelativeLayout
+        android:id="@+id/today_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -107,8 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/white"
-                tools:text="明天" />
+                android:text="@string/widget_tomorrow"
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/today_iv_tomorrow"
@@ -129,15 +130,6 @@
                 tools:text="晴" />
 
             <TextView
-                android:id="@+id/today_tv_tomorrow_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/white"
-                tools:text="-2/9" />
-
-            <TextView
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
@@ -148,8 +140,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/white"
-                tools:text="后天" />
+                android:text="@string/widget_after_tomorrow"
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/today_iv_after"
@@ -168,15 +160,6 @@
                 android:layout_marginEnd="8dp"
                 android:textColor="@color/white"
                 tools:text="晴" />
-
-            <TextView
-                android:id="@+id/today_tv_after_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/white"
-                tools:text="-2/9" />
 
         </LinearLayout>
 

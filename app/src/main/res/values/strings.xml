@@ -72,4 +72,10 @@
     <string name="permission_sure">Open settings</string>
     <string name="permission_cancel">Cancel</string>
 
+    <string name="widget_week_name">Week Weather Card</string>
+    <string name="widget_today_name">Today Weather Card</string>
+
+    <string name="widget_tomorrow">Tomorrow</string>
+    <string name="widget_after_tomorrow">After tomorrow</string>
+
 </resources>
