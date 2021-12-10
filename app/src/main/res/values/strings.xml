@@ -78,4 +78,6 @@
     <string name="widget_tomorrow">Tomorrow</string>
     <string name="widget_after_tomorrow">After tomorrow</string>
 
+    <string name="widget_city_choose">City choose</string>
+
 </resources>

@@ -37,7 +37,7 @@ fun ConfigureWidget(
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
-            text = "小部件城市选择",
+            text = stringResource(id = R.string.widget_city_choose),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             fontSize = 26.sp,
