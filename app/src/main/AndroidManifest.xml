@@ -24,6 +24,7 @@
             android:label="@string/widget_today_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.zj.weather.LOCATION_REFRESH" />
             </intent-filter>
 
             <meta-data

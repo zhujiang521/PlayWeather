@@ -20,6 +20,8 @@ import com.zj.weather.utils.XLog
 import com.zj.weather.utils.weather.IconUtils
 
 const val CLICK_TODAY_ACTION = "com.zj.weather.common.widget.today.CLICK_TODAY_ACTION"
+const val LOCATION_REFRESH = "com.zj.weather.LOCATION_REFRESH"
+
 
 /**
  * Implementation of App Widget functionality.
@@ -35,10 +37,19 @@ class TodayWeatherWidget : AppWidgetProvider() {
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
         val cityInfo = loadCityInfoPref(context, appWidgetId, TODAY_PREFS_NAME)
+        XLog.e("cityInfo:$cityInfo")
         if (intent.action == CLICK_TODAY_ACTION) {
             MainActivity.actionNewStart(context, cityInfo)
+        } else if (intent.action == LOCATION_REFRESH) {
+            // 如果isLocation == 1的话证明当前小部件使用的是当前位置
+            // 那么在当前位置发生修改的情况下就需要同时进行修改
+            if (cityInfo?.isLocation != 1) return
+            refreshLocationWeather(
+                context = context,
+                cityInfo = cityInfo,
+                appWidgetId = appWidgetId
+            )
         }
-        XLog.e("cityInfo:$cityInfo")
     }
 
 

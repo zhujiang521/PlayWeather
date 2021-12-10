@@ -1,6 +1,7 @@
 package com.zj.weather.ui.view.weather.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.location.Address
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
@@ -145,6 +146,7 @@ class WeatherViewModel @Inject constructor(
         updateCityJob = viewModelScope.launch(Dispatchers.IO) {
             weatherRepository.updateCityInfo(location, result) {
                 refreshCityList()
+                getApplication<Application>().sendBroadcast(Intent())
             }
         }
     }

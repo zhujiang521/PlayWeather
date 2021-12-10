@@ -1,6 +1,7 @@
 package com.zj.weather.common.widget.today
 
 import android.appwidget.AppWidgetManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -65,16 +66,7 @@ class TodayWeatherWidgetConfigureActivity : BaseActivity() {
     }
 
     private fun onConfirm(cityInfo: CityInfo) {
-        if (!NetCheckUtil.checkNet(this)) {
-            showToast(this, R.string.bad_network_view_tip)
-        }
-        XLog.e("onConfirm:${cityInfo}")
-        val context = this@TodayWeatherWidgetConfigureActivity
-        saveCityInfoPref(context, appWidgetId, cityInfo, TODAY_PREFS_NAME)
-
-        // It is the responsibility of the configuration activity to update the app widget
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        updateAppWidget(context, appWidgetManager, appWidgetId)
+        refreshLocationWeather(context = this, cityInfo = cityInfo, appWidgetId = appWidgetId)
 
         // Make sure we pass back the original appWidgetId
         val resultValue = Intent()
@@ -82,6 +74,24 @@ class TodayWeatherWidgetConfigureActivity : BaseActivity() {
         setResult(RESULT_OK, resultValue)
         finish()
     }
+
+}
+
+fun refreshLocationWeather(
+    context: Context,
+    cityInfo: CityInfo,
+    appWidgetId: Int,
+    prefsName: String = TODAY_PREFS_NAME
+) {
+    if (!NetCheckUtil.checkNet(context)) {
+        showToast(context, R.string.bad_network_view_tip)
+    }
+    XLog.e("refreshLocationWeather:${cityInfo}")
+    saveCityInfoPref(context, appWidgetId, cityInfo, prefsName)
+
+    // It is the responsibility of the configuration activity to update the app widget
+    val appWidgetManager = AppWidgetManager.getInstance(context)
+    updateAppWidget(context, appWidgetManager, appWidgetId)
 }
 
 const val TODAY_PREFS_NAME = "com.zj.weather.common.widget.today.TodayWeatherWidget"

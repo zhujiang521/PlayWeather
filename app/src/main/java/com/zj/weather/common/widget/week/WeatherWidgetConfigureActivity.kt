@@ -5,19 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import com.zj.weather.BaseActivity
-import com.zj.weather.R
+import com.zj.weather.common.widget.today.refreshLocationWeather
 import com.zj.weather.common.widget.utils.ConfigureWidget
-import com.zj.weather.common.widget.utils.saveCityInfoPref
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
-import com.zj.weather.utils.NetCheckUtil
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -67,16 +62,12 @@ class WeatherWidgetConfigureActivity : BaseActivity() {
     }
 
     private fun onConfirm(cityInfo: CityInfo) {
-        if (!NetCheckUtil.checkNet(this)) {
-            showToast(this, R.string.bad_network_view_tip)
-        }
-        XLog.e("onConfirm:${cityInfo}")
-        val context = this@WeatherWidgetConfigureActivity
-        saveCityInfoPref(context, appWidgetId, cityInfo, PREFS_NAME)
-
-        // It is the responsibility of the configuration activity to update the app widget
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        updateAppWidget(context, appWidgetManager, appWidgetId)
+        refreshLocationWeather(
+            context = this,
+            cityInfo = cityInfo,
+            appWidgetId = appWidgetId,
+            prefsName = PREFS_NAME
+        )
 
         // Make sure we pass back the original appWidgetId
         val resultValue = Intent()
