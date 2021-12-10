@@ -58,7 +58,7 @@ class WeatherWidget : AppWidgetProvider() {
     ) {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
+            updateWeekAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
@@ -92,7 +92,7 @@ class WeatherWidget : AppWidgetProvider() {
         val rows: Int = getCellsForSize(minHeight)
         val columns: Int = getCellsForSize(minWidth)
         XLog.e("rows:$rows   columns:$columns")
-        updateAppWidget(context, appWidgetManager, appWidgetId, rows, columns)
+        updateWeekAppWidget(context, appWidgetManager, appWidgetId, rows, columns)
     }
 
 }
@@ -100,7 +100,7 @@ class WeatherWidget : AppWidgetProvider() {
 const val WEATHER_WIDGET_ROWS = "weather_widget_rows"
 const val WEATHER_WIDGET_COLUMNS = "weather_widget_columns"
 
-internal fun updateAppWidget(
+internal fun updateWeekAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int,

@@ -12,6 +12,7 @@ import com.zj.weather.BaseActivity
 import com.zj.weather.R
 import com.zj.weather.common.widget.utils.ConfigureWidget
 import com.zj.weather.common.widget.utils.saveCityInfoPref
+import com.zj.weather.common.widget.week.updateWeekAppWidget
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
@@ -91,7 +92,11 @@ fun refreshLocationWeather(
 
     // It is the responsibility of the configuration activity to update the app widget
     val appWidgetManager = AppWidgetManager.getInstance(context)
-    updateAppWidget(context, appWidgetManager, appWidgetId)
+    if (prefsName == TODAY_PREFS_NAME) {
+        updateAppWidget(context, appWidgetManager, appWidgetId)
+    } else {
+        updateWeekAppWidget(context, appWidgetManager, appWidgetId)
+    }
 }
 
 const val TODAY_PREFS_NAME = "com.zj.weather.common.widget.today.TodayWeatherWidget"
