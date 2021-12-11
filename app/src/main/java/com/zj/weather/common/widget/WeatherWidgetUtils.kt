@@ -25,7 +25,7 @@ object WeatherWidgetUtils {
      * 获取之后一周的天气
      *
      * @param context /
-     * @param cityInfo 需要获取天气的城市
+     * @param location 需要获取天气的城市
      * @param onSuccessListener 获取成功的回调
      */
     fun getWeather7Day(

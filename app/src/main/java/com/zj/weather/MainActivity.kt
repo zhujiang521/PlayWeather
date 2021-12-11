@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import com.google.gson.Gson
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
+import com.zj.weather.utils.XLog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +37,7 @@ class MainActivity : BaseActivity() {
         private const val WIDGET_CITY_INFO = "widget_city_info"
 
         fun actionNewStart(context: Context, cityInfo: CityInfo?) {
+            XLog.e("cityInfo:$cityInfo")
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra(WIDGET_CITY_INFO, Gson().toJson(cityInfo))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
