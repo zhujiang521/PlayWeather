@@ -118,6 +118,10 @@
         <entry key="../../../../layout/compose-model-1638946621833.xml" value="0.21477272727272728" />
         <entry key="../../../../layout/compose-model-1638947235209.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1638966507722.xml" value="0.3685185185185185" />
+        <entry key="../../../../layout/compose-model-1639362569617.xml" value="0.3657094594594595" />
+        <entry key="../../../../layout/compose-model-1639363518798.xml" value="0.36203703703703705" />
+        <entry key="../../../../layout/compose-model-1639364168770.xml" value="0.3574074074074074" />
+        <entry key="../../../../layout/compose-model-1639364659651.xml" value="0.3898989898989899" />
         <entry key="app/src/main/res/drawable-v21/app_widget_background.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2604166666666667" />
@@ -125,6 +129,7 @@
         <entry key="app/src/main/res/drawable/app_widget_week_item_background.xml" value="0.3685185185185185" />
         <entry key="app/src/main/res/drawable/bad_loading.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/bad_network_image.xml" value="0.2953703703703704" />
+        <entry key="app/src/main/res/drawable/gray_back.xml" value="0.3574074074074074" />
         <entry key="app/src/main/res/drawable/icon_100.xml" value="0.37222222222222223" />
         <entry key="app/src/main/res/drawable/icon_101.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/icon_103.xml" value="0.2604166666666667" />

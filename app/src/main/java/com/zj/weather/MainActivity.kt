@@ -4,8 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
 import com.google.gson.Gson
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
@@ -27,6 +32,13 @@ class MainActivity : BaseActivity() {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
                     NavGraph(defaultCityInfo = defaultCityInfo)
+                    // 黑白化
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        drawRect(
+                            color = Color.White,
+                            blendMode = BlendMode.Saturation
+                        )
+                    }
                 }
             }
         }
