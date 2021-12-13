@@ -8,10 +8,12 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import com.google.gson.Gson
+import com.zj.weather.common.GrayAppAdapter
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.utils.XLog
@@ -28,17 +30,11 @@ class MainActivity : BaseActivity() {
         if (cityInfoString.isNotEmpty()) {
             defaultCityInfo = Gson().fromJson(cityInfoString, CityInfo::class.java)
         }
+
         setContent {
             PlayWeatherTheme {
-                Surface(color = MaterialTheme.colors.background) {
+                GrayAppAdapter {
                     NavGraph(defaultCityInfo = defaultCityInfo)
-                    // 黑白化
-                    Canvas(modifier = Modifier.fillMaxSize()) {
-                        drawRect(
-                            color = Color.White,
-                            blendMode = BlendMode.Saturation
-                        )
-                    }
                 }
             }
         }
