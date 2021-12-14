@@ -26,7 +26,7 @@ class WeatherListViewModel @Inject constructor(
     private val weatherListRepository: WeatherListRepository
 ) : AndroidViewModel(application) {
 
-    private var language: Lang = getDefaultLocale(getApplication())
+    private var language: Lang = application.getDefaultLocale()
     private var nameToCityJob: Job? = null
     private var topCityJob: Job? = null
     private var insertCityJob: Job? = null

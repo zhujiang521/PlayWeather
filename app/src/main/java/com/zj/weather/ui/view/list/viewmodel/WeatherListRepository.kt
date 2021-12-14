@@ -14,8 +14,8 @@ import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.NetCheckUtil
 import com.zj.weather.utils.XLog
+import com.zj.weather.utils.checkNetConnect
 import com.zj.weather.utils.showToast
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +36,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
      */
     suspend fun getGeoCityLookup(cityName: String = "北京") =
         suspendCancellableCoroutine<PlayState<List<GeoBean.LocationBean>>> { continuation ->
-            if (!NetCheckUtil.checkNet(context)) {
+            if (!context.checkNetConnect()) {
                 continuation.resume(PlayError(IllegalStateException("无网络链接")))
                 return@suspendCancellableCoroutine
             }
@@ -75,7 +75,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
      */
     suspend fun getGeoTopCity(lang: Lang) =
         suspendCancellableCoroutine<PlayState<List<GeoBean.LocationBean>>> { continuation ->
-            if (!NetCheckUtil.checkNet(context)) {
+            if (!context.checkNetConnect()) {
                 continuation.resume(PlayError(IllegalStateException("无网络链接")))
                 return@suspendCancellableCoroutine
             }

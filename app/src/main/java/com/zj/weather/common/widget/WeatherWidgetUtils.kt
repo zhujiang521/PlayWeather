@@ -6,7 +6,6 @@ import com.google.gson.Gson
 import com.qweather.sdk.bean.base.Code
 import com.qweather.sdk.bean.base.Unit
 import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.bean.weather.WeatherNowBean
 import com.qweather.sdk.view.QWeather
 import com.zj.weather.R
 import com.zj.weather.common.widget.today.TodayWeatherRemoteViewsFactory
@@ -34,7 +33,7 @@ object WeatherWidgetUtils {
         onSuccessListener: (MutableList<WeekWeather>) -> kotlin.Unit
     ) {
         QWeather.getWeather7D(context, location,
-            getDefaultLocale(context), Unit.METRIC,
+            context.getDefaultLocale(), Unit.METRIC,
             object : QWeather.OnResultWeatherDailyListener {
                 override fun onError(e: Throwable) {
                     XLog.e("getWeather7Day1 onError: $e")

@@ -16,8 +16,8 @@ import com.zj.weather.common.widget.week.updateWeekAppWidget
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
-import com.zj.weather.utils.NetCheckUtil
 import com.zj.weather.utils.XLog
+import com.zj.weather.utils.checkNetConnect
 import com.zj.weather.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -84,7 +84,7 @@ fun refreshLocationWeather(
     appWidgetId: Int,
     prefsName: String = TODAY_PREFS_NAME
 ) {
-    if (!NetCheckUtil.checkNet(context)) {
+    if (!context.checkNetConnect()) {
         showToast(context, R.string.bad_network_view_tip)
     }
     XLog.e("refreshLocationWeather:${cityInfo}")

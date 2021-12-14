@@ -39,7 +39,7 @@ class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) : AndroidViewModel(application) {
 
-    private var language: Lang = getDefaultLocale(getApplication())
+    private var language: Lang = application.getDefaultLocale()
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
     private var weatherJob: Job? = null
     private var refreshCityJob: Job? = null
@@ -79,7 +79,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getWeather(location: String) {
-        if (!NetCheckUtil.checkNet(getApplication())) {
+        if (!getApplication<Application>().checkNetConnect()) {
             showToast(getApplication(), R.string.bad_network_view_tip)
             onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
             return
