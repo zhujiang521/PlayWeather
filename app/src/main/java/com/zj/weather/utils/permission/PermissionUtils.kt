@@ -18,7 +18,7 @@ import com.zj.weather.R
 import com.zj.weather.common.dialog.ShowDialog
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 
-@OptIn(ExperimentalPermissionsApi::class)
+@ExperimentalPermissionsApi
 @Composable
 fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
     val context = LocalContext.current

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.PlayWeather" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="MySplashTheme" parent="Theme.SplashScreen">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/purple_500</item>

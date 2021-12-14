@@ -1,7 +1,6 @@
 package com.zj.weather.utils.weather
 
 import android.content.Context
-import android.text.format.DateUtils
 import com.zj.weather.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,9 +22,9 @@ fun getDateWeekName(context: Context, date: String): String {
     return if (todayWeek == week) {
         context.getString(R.string.time_today)
     } else {
-        DateUtils.getDayOfWeekString(week, DateUtils.LENGTH_SHORT).toUpperCase(
-            Locale.ROOT
-        )
+        val format = SimpleDateFormat("E", Locale.getDefault())
+        val weekString = format.format(Date(calendar.timeInMillis))
+        weekString
     }
 }
 

@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zj.weather.common.PlayActions
 import com.zj.weather.common.PlayDestinations
 import com.zj.weather.common.setComposable
@@ -36,7 +37,10 @@ import com.zj.weather.ui.view.weather.WeatherViewPager
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+@OptIn(
+    ExperimentalAnimationApi::class, ExperimentalPagerApi::class,
+    ExperimentalPermissionsApi::class
+)
 @Composable
 fun NavGraph(
     defaultCityInfo: CityInfo?,

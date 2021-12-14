@@ -1,11 +1,14 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.PlayWeather" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.PlayWeather" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/home_back</item>
         <item name="colorAccent">@color/white</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="MySplashTheme" parent="Theme.SplashScreen">
@@ -26,6 +29,10 @@
         <!--「启动画面」底部显示的品牌图标-->
 <!--        <item name="android:windowSplashScreenBrandingImage">@mipmap/ic_launcher_foreground</item>-->
         <item name="postSplashScreenTheme">@style/Theme.PlayWeather</item>
+
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
