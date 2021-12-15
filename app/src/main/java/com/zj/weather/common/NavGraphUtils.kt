@@ -16,7 +16,7 @@ object PlayDestinations {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.setComposable(
+fun NavGraphBuilder.composable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),

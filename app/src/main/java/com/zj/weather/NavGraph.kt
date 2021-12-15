@@ -27,7 +27,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zj.weather.common.PlayActions
 import com.zj.weather.common.PlayDestinations
-import com.zj.weather.common.setComposable
+import com.zj.weather.common.composable
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.city.CityListPage
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
@@ -52,7 +52,7 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        setComposable(PlayDestinations.HOME_PAGE_ROUTE) {
+        composable(PlayDestinations.HOME_PAGE_ROUTE) {
             val weatherViewModel = hiltViewModel<WeatherViewModel>()
             LaunchedEffect(Unit) {
                 if (defaultCityInfo != null) {
@@ -66,7 +66,7 @@ fun NavGraph(
                 toWeatherList = actions.toWeatherList
             )
         }
-        setComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
+        composable(PlayDestinations.WEATHER_LIST_ROUTE) {
             val weatherListViewModel = hiltViewModel<WeatherListViewModel>()
             LaunchedEffect(Unit) {
                 weatherListViewModel.getGeoTopCity()
@@ -77,7 +77,7 @@ fun NavGraph(
                 toWeatherDetails = actions.upPress
             )
         }
-        setComposable(PlayDestinations.CITY_LIST_ROUTE) {
+        composable(PlayDestinations.CITY_LIST_ROUTE) {
             val cityListViewModel = hiltViewModel<CityListViewModel>()
             LaunchedEffect(Unit) {
                 cityListViewModel.refreshCityList()
