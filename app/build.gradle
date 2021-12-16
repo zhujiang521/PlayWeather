@@ -85,10 +85,10 @@ dependencies {
     // lottie动画
     implementation "com.airbnb.android:lottie-compose:4.2.2"
     // navigation
-    implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+    implementation "androidx.navigation:navigation-compose:2.4.0-rc01"
 
     // Room
-    def room_version = "2.3.0"
+    def room_version = "2.4.0"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // 对 Room 的 Kotlin 扩展和协程支持
@@ -98,7 +98,7 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha03'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     testImplementation 'junit:junit:4.13.2'
