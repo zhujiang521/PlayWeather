@@ -96,10 +96,14 @@ dependencies {
 
     // 启动动画
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // 使用Compose 编写小部件（Widget）
+    implementation "androidx.glance:glance-appwidget:1.0.0-alpha01"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
