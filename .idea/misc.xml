@@ -133,6 +133,7 @@
         <entry key="app/src/main/res/drawable/app_widget_week_item_background.xml" value="0.3685185185185185" />
         <entry key="app/src/main/res/drawable/bad_loading.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/bad_network_image.xml" value="0.2953703703703704" />
+        <entry key="app/src/main/res/drawable/desk_widget_item_background.xml" value="0.3398148148148148" />
         <entry key="app/src/main/res/drawable/gray_back.xml" value="0.3574074074074074" />
         <entry key="app/src/main/res/drawable/icon_100.xml" value="0.37222222222222223" />
         <entry key="app/src/main/res/drawable/icon_101.xml" value="0.2604166666666667" />
@@ -144,6 +145,7 @@
         <entry key="app/src/main/res/drawable/no_content_image.xml" value="0.3314814814814815" />
         <entry key="app/src/main/res/layout-land/widget_item.xml" value="0.20679012345679013" />
         <entry key="app/src/main/res/layout-v28/today_weather_widget.xml" value="0.2703804347826087" />
+        <entry key="app/src/main/res/layout/desk_calendar_widget.xml" value="0.29483695652173914" />
         <entry key="app/src/main/res/layout/new_app_widget.xml" value="0.2898550724637681" />
         <entry key="app/src/main/res/layout/today_weather_widget.xml" value="0.375" />
         <entry key="app/src/main/res/layout/today_weather_widget_configure.xml" value="0.2703804347826087" />
@@ -156,9 +158,11 @@
         <entry key="app/src/main/res/layout/today_weather_widget_small_medium.xml" value="0.2586050724637681" />
         <entry key="app/src/main/res/layout/today_weather_widget_vertical.xml" value="0.2586050724637681" />
         <entry key="app/src/main/res/layout/today_widget_item.xml" value="0.2644927536231884" />
+        <entry key="app/src/main/res/layout/weather_desk_loading.xml" value="0.29483695652173914" />
         <entry key="app/src/main/res/layout/weather_widget.xml" value="0.2898550724637681" />
         <entry key="app/src/main/res/layout/weather_widget_configure.xml" value="0.2898550724637681" />
         <entry key="app/src/main/res/layout/weather_widget_loading.xml" value="0.24427083333333333" />
+        <entry key="app/src/main/res/layout/widget_desk_item.xml" value="0.29483695652173914" />
         <entry key="app/src/main/res/layout/widget_item.xml" value="0.24427083333333333" />
       </map>
     </option>
