@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/desk_bg"
+    android:background="@drawable/desk_widget_item_background"
+    android:minWidth="500dp"
+    android:minHeight="500dp"
     android:orientation="vertical"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="35dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/deskTvLunar"
