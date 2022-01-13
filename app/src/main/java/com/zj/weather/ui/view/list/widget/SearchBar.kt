@@ -33,6 +33,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import com.zj.weather.R
 
 @Composable
@@ -42,8 +44,9 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
+            .statusBarsPadding()
+            .navigationBarsPadding(bottom = false)
     ) {
-        Spacer(Modifier.height(30.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,

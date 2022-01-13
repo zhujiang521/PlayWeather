@@ -82,13 +82,16 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     // Compose ViewPage
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    // Inset
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
+
     // lottie动画
     implementation "com.airbnb.android:lottie-compose:4.2.2"
     // navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-rc01"
 
     // Room
-    def room_version = "2.4.0"
+    def room_version = "2.4.1"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // 对 Room 的 Kotlin 扩展和协程支持

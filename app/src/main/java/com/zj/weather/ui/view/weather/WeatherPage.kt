@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.insets.statusBarsPadding
 import com.qweather.sdk.bean.air.AirNowBean
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.qweather.sdk.bean.weather.WeatherNowBean
@@ -23,12 +25,12 @@ import com.zj.weather.common.lce.LcePage
 import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
+import com.zj.weather.ui.view.weather.widget.HeaderAction
 import com.zj.weather.ui.view.weather.widget.HeaderWeather
-import com.zj.weather.ui.view.weather.widget.ShrinkHeaderHeather
 import com.zj.weather.ui.view.weather.widget.WeatherAnimation
 import com.zj.weather.ui.view.weather.widget.WeatherContent
-import com.zj.weather.utils.weather.IconUtils
 import com.zj.weather.utils.ImageLoader
+import com.zj.weather.utils.weather.IconUtils
 
 @Composable
 fun WeatherPage(
@@ -42,6 +44,7 @@ fun WeatherPage(
     val weatherModel by weatherViewModel.weatherModel.observeAsState(PlayLoading)
     val scrollState = rememberScrollState()
     val fontSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
+    val topPaddingSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(0f).coerceAtMost(45f).dp
     val config = LocalConfiguration.current
 
     LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->
@@ -51,12 +54,28 @@ fun WeatherPage(
                 data = IconUtils.getWeatherBack(context, weather.nowBaseBean.icon)
             )
             val isLand = config.orientation == Configuration.ORIENTATION_LANDSCAPE
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                HeaderAction(
+                    modifier = Modifier.weight(1f),
+                    cityListClick = cityListClick,
+                    cityList = cityList
+                )
+                if (isLand) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
             if (isLand) {
                 // 横屏适配
-                HorizontalWeather(fontSize, cityList, cityListClick, cityInfo, weather, scrollState)
+                HorizontalWeather(fontSize, cityInfo, weather, scrollState)
             } else {
                 // 竖屏适配
-                VerticalWeather(fontSize, cityInfo, cityList, cityListClick, weather, scrollState)
+                VerticalWeather(fontSize, topPaddingSize, cityInfo, weather, scrollState)
             }
         }
     }
@@ -65,24 +84,17 @@ fun WeatherPage(
 @Composable
 private fun VerticalWeather(
     fontSize: TextUnit,
+    topPadding: Dp,
     cityInfo: CityInfo,
-    cityList: () -> Unit,
-    cityListClick: () -> Unit,
     weather: WeatherModel,
     scrollState: ScrollState
 ) {
-    // 正常状态下是隐藏状态，向上滑动时展示
-    ShrinkHeaderHeather(
-        fontSize, cityInfo, cityList, cityListClick, weather.nowBaseBean
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(if (fontSize.value > 40f) 0.dp else 110.dp))
         WeatherContent(
-            Modifier, scrollState, fontSize, cityList, cityListClick, cityInfo, weather
+            Modifier, scrollState, fontSize, topPadding, cityInfo, weather
         )
     }
 }
@@ -90,8 +102,6 @@ private fun VerticalWeather(
 @Composable
 private fun HorizontalWeather(
     fontSize: TextUnit,
-    cityList: () -> Unit,
-    cityListClick: () -> Unit,
     cityInfo: CityInfo,
     weather: WeatherModel,
     scrollState: ScrollState
@@ -103,18 +113,20 @@ private fun HorizontalWeather(
         Column(
             modifier = landModifier,
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
-            // 天气头部，向上滑动时会进行隐藏
+
+            // 天气头部
             HeaderWeather(
-                fontSize, cityList, cityListClick, cityInfo, weather.nowBaseBean, true
+                fontSize, 0.dp, cityInfo, weather.nowBaseBean, true
             )
 
             // 天气动画
             WeatherAnimation(weather.nowBaseBean.icon)
         }
         WeatherContent(
-            landModifier, scrollState, fontSize, cityList,
-            cityListClick, cityInfo, weather, true
+            landModifier, scrollState, fontSize, 0.dp, cityInfo,
+            weather, true
         )
     }
 }
@@ -123,8 +135,8 @@ private fun HorizontalWeather(
 @Composable
 fun VerticalWeatherPreview() {
     VerticalWeather(
-        25.sp, CityInfo(name = "测试"), {},
-        {}, buildWeatherModel(), rememberScrollState()
+        25.sp, 0.dp, CityInfo(name = "测试"), buildWeatherModel(),
+        rememberScrollState()
     )
 }
 
@@ -145,7 +157,7 @@ private fun buildWeatherModel(): WeatherModel {
 @Preview(showBackground = false, name = "横屏天气", heightDp = 320, widthDp = 640)
 @Composable
 fun HorizontalWeatherPreview() {
-    HorizontalWeather(25.sp, {}, {}, CityInfo(name = "测试"),
-        buildWeatherModel(), rememberScrollState()
+    HorizontalWeather(
+        25.sp, CityInfo(name = "测试"), buildWeatherModel(), rememberScrollState()
     )
 }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.gson.Gson
 import com.zj.weather.common.GrayAppAdapter
 import com.zj.weather.room.entity.CityInfo
@@ -33,8 +34,10 @@ class MainActivity : BaseActivity() {
 
         setContent {
             PlayWeatherTheme {
-                GrayAppAdapter {
-                    NavGraph(defaultCityInfo = defaultCityInfo)
+                ProvideWindowInsets {
+                    GrayAppAdapter {
+                        NavGraph(defaultCityInfo = defaultCityInfo)
+                    }
                 }
             }
         }
