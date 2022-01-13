@@ -4,12 +4,15 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -28,6 +31,11 @@ fun HeaderWeather(
     weatherNow: WeatherNowBean.NowBaseBean?,
     isLand: Boolean = false
 ) {
+    val cityName = if (cityInfo.city.length > 5 || cityInfo.name.length > 5) {
+        cityInfo.name
+    } else {
+        "${cityInfo.city} ${cityInfo.name}"
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,9 +43,13 @@ fun HeaderWeather(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "${cityInfo.city} ${cityInfo.name}",
+            modifier = Modifier.width(200.dp),
+            text = cityName,
             fontSize = 30.sp,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.primary,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Ellipsis
         )
 
         Text(
