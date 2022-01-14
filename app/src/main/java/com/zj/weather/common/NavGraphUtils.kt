@@ -2,7 +2,6 @@ package com.zj.weather.common
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkOut
 import androidx.compose.runtime.Composable
@@ -27,10 +26,10 @@ fun NavGraphBuilder.composable(
         arguments = arguments,
         deepLinks = deepLinks,
         enterTransition = {
-            expandVertically(animationSpec = tween(300))
+            expandVertically()
         },
         exitTransition = {
-            shrinkOut(animationSpec = tween(300))
+            shrinkOut()
         },
         content = content,
     )

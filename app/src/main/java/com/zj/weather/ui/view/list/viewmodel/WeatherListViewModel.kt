@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
@@ -13,7 +12,6 @@ import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.checkCoroutines
-import com.zj.weather.utils.getDefaultLocale
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,7 +24,6 @@ class WeatherListViewModel @Inject constructor(
     private val weatherListRepository: WeatherListRepository
 ) : AndroidViewModel(application) {
 
-    private var language: Lang = application.getDefaultLocale()
     private var nameToCityJob: Job? = null
     private var topCityJob: Job? = null
     private var insertCityJob: Job? = null

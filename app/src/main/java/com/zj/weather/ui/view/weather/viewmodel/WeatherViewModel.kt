@@ -22,6 +22,7 @@ import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -39,6 +40,10 @@ class WeatherViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) : AndroidViewModel(application) {
 
+    companion object {
+        private const val FIFTEEN_MINUTES = 60 * 1000 * 15
+    }
+
     private var language: Lang = application.getDefaultLocale()
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
     private var weatherJob: Job? = null
@@ -47,6 +52,7 @@ class WeatherViewModel @Inject constructor(
 
     private val _searchCityInfo = MutableLiveData(0)
     val searchCityInfo: LiveData<Int> = _searchCityInfo
+    private val weatherMap = hashMapOf<String, Pair<Long, WeatherModel>>()
 
     fun onSearchCityInfoChanged(page: Int) {
         if (page == _searchCityInfo.value) {
@@ -84,6 +90,14 @@ class WeatherViewModel @Inject constructor(
             onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
             return
         }
+        if (weatherMap.containsKey(location)) {
+            val weather = weatherMap[location]
+            if (weather != null && weather.first + FIFTEEN_MINUTES > System.currentTimeMillis()) {
+                XLog.d("有东西了，直接返回")
+                onWeatherModelChanged(PlaySuccess(weather.second))
+                return
+            }
+        }
         weatherJob.checkCoroutines()
         weatherJob = viewModelScope.launch(Dispatchers.IO) {
             val weatherNow = weatherRepository.getWeatherNow(location, language)
@@ -92,6 +106,7 @@ class WeatherViewModel @Inject constructor(
             val weather7Day = weatherRepository.getWeather7Day(location, language)
             // val airNow = weatherRepository.getAirNow(location, language)
             val airNow = AirNowBean.NowBean()
+            airNow.aqi = Random().nextInt(500).toString()
             val weatherModel = WeatherModel(
                 nowBaseBean = weatherNow,
                 hourlyBeanList = weather24Hour,
@@ -99,6 +114,7 @@ class WeatherViewModel @Inject constructor(
                 dailyBeanList = weather7Day.second,
                 airNowBean = airNow
             )
+            weatherMap[location] = Pair(System.currentTimeMillis(), weatherModel)
             withContext(Dispatchers.Main) {
                 onWeatherModelChanged(PlaySuccess(weatherModel))
             }
