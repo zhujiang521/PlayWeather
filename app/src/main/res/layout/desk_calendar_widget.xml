@@ -6,7 +6,7 @@
     android:theme="@style/Theme.Design.NoActionBar">
 
     <StackView
-        android:id="@+id/stack_view"
+        android:id="@+id/desk_stack_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

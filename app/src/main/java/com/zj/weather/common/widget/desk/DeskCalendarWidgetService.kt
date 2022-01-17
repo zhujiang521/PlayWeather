@@ -1,6 +1,5 @@
 package com.zj.weather.common.widget.desk
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -10,67 +9,49 @@ import com.zj.weather.utils.XLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import java.util.*
-import kotlin.collections.ArrayList
 
 class DeskCalendarWidgetService : RemoteViewsService() {
 
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
-        return DeskCalendarRemoteViewsFactory(this.applicationContext, intent)
+        return DeskCalendarRemoteViewsFactory(this.applicationContext)
     }
 
 }
 
-class DeskCalendarRemoteViewsFactory(private val context: Context, intent: Intent) :
+class DeskCalendarRemoteViewsFactory(private val context: Context) :
     RemoteViewsService.RemoteViewsFactory, CoroutineScope by MainScope() {
 
-    private var mAppWidgetId = intent.getIntExtra(
-        AppWidgetManager.EXTRA_APPWIDGET_ID,
-        AppWidgetManager.INVALID_APPWIDGET_ID
-    )
+    private var widgetItems = arrayListOf<DeskCalendar>()
 
-
-    companion object {
-        private var widgetItems = arrayListOf<Int>()
-
-        /**
-         * 这块写的不严谨，不应该将这个暴露给外部的，但是目前没有找到更加合适的方法
-         * 如果不这样写的话添加完小部件的话会显示不出数据，刷新也不太对。
-         */
-        private fun setWidgetItemList(widgetItems: ArrayList<Int>) {
-            Companion.widgetItems = widgetItems
-        }
-
-        /**
-         * 刷新List
-         */
-        fun notifyDeskWidget(
-            context: Context?,
-            appWidgetId: Int
-        ) {
-            XLog.e("notifyWeatherWidget: 刷新cal")
-            // 刷新数据
-            widgetItems.clear()
-            val calendar = Calendar.getInstance()
-            for (index in 0..6) {
-                calendar.add(Calendar.DAY_OF_MONTH, if (index == 0) 0 else 1)
-                widgetItems.add(calendar.get(Calendar.DAY_OF_MONTH))
-            }
-            setWidgetItemList(widgetItems)
-            val mgr = AppWidgetManager.getInstance(context)
-            mgr.notifyAppWidgetViewDataChanged(
-                appWidgetId,
-                R.id.stack_view
+    /**
+     * 刷新List
+     */
+    private fun notifyDeskWidget() {
+        XLog.e("notifyWeatherWidget: 刷新cal")
+        // 刷新数据
+        widgetItems.clear()
+        val calendar = Calendar.getInstance()
+        for (index in 0..6) {
+            calendar.add(Calendar.DAY_OF_MONTH, if (index == 0) 0 else 1)
+            widgetItems.add(
+                DeskCalendar(
+                    day = calendar.get(Calendar.DAY_OF_MONTH),
+                    lunar = "",
+                    advisable = "",
+                    avoid = "",
+                    mills = calendar.timeInMillis
+                )
             )
         }
-
     }
 
     override fun onCreate() {
-        notifyDeskWidget(context, mAppWidgetId)
+        notifyDeskWidget()
     }
 
     override fun onDataSetChanged() {
-
+        notifyDeskWidget()
+        XLog.e("刷新了，刷新了，$widgetItems")
     }
 
     override fun onDestroy() {
@@ -83,24 +64,13 @@ class DeskCalendarRemoteViewsFactory(private val context: Context, intent: Inten
 
     override fun getViewAt(position: Int): RemoteViews {
         return RemoteViews(context.packageName, R.layout.widget_desk_item).apply {
-            val weather = widgetItems[position]
-
-            setTextViewText(R.id.deskTvDay, weather.toString())
-//            setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
-//            setTextViewText(
-//                R.id.widget_tv_city,
-//                "${cityInfo?.city ?: ""} ${cityInfo?.name ?: "北京"}"
-//            )
-//            setImageViewBitmap(
-//                R.id.widget_iv_bg,
-//                fillet(context = context, bitmap = zoomImg(context, weather.icon), roundDp = 10)
-//            )
-//            setTextViewText(R.id.widget_tv_date, weather.time)
-//            // 可以区分给定项目的单个点击操作
-//            val fillInIntent = Intent().apply {
-//                putExtra(EXTRA_ITEM, weather.time)
-//            }
-//            setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
+            val deskCalendar = widgetItems[position]
+            setTextViewText(R.id.deskTvDay, deskCalendar.day.toString())
+            // 可以区分给定项目的单个点击操作
+            val fillInIntent = Intent().apply {
+                putExtra(CLICK_DESK_ACTION_VALUES, deskCalendar.mills)
+            }
+            setOnClickFillInIntent(R.id.desk_ll_item, fillInIntent)
         }
     }
 
@@ -121,3 +91,20 @@ class DeskCalendarRemoteViewsFactory(private val context: Context, intent: Inten
     }
 
 }
+
+/**
+ * 桌面台历数据类
+ *
+ * @param day 天
+ * @param lunar 农历
+ * @param advisable 适宜
+ * @param avoid 忌
+ * @param mills 时间戳
+ */
+data class DeskCalendar(
+    val day: Int,
+    val lunar: String,
+    val advisable: String,
+    val avoid: String,
+    val mills: Long
+)
