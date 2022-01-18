@@ -15,18 +15,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="周二 农历七月十二"
         android:textColor="#62B1FF"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="周二 农历七月十二" />
 
     <TextView
         android:id="@+id/deskTvDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="2dp"
-        android:text="11"
         android:textColor="#333333"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        tools:text="11" />
 
 
     <LinearLayout
@@ -38,7 +38,7 @@
             android:id="@+id/deskTvYi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="宜 "
+            android:text="@string/desk_yi"
             android:textColor="#596DFF"
             android:textSize="12sp" />
 
@@ -66,7 +66,7 @@
             android:id="@+id/deskTvJi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="忌 "
+            android:text="@string/desk_ji"
             android:textColor="#596DFF"
             android:textSize="12sp" />
 
@@ -94,7 +94,7 @@
             android:id="@+id/deskTvSeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="座位 "
+            android:text="@string/desk_seat"
             android:textColor="#596DFF"
             android:textSize="12sp" />
 
@@ -123,7 +123,7 @@
             android:id="@+id/deskTvDrink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="宜饮 "
+            android:text="@string/desk_drink"
             android:textColor="#596DFF"
             android:textSize="12sp" />
 
@@ -151,7 +151,7 @@
             android:id="@+id/deskTvCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="代码 "
+            android:text="@string/desk_code"
             android:textColor="#596DFF"
             android:textSize="12sp" />
 

@@ -79,5 +79,10 @@
     <string name="widget_after_tomorrow">后天</string>
 
     <string name="widget_city_choose">城市选择</string>
+    <string name="desk_yi">宜</string>
+    <string name="desk_ji">忌</string>
+    <string name="desk_seat">座位</string>
+    <string name="desk_drink">宜饮</string>
+    <string name="desk_code">代码</string>
 
 </resources>

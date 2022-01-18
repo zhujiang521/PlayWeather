@@ -10,7 +10,8 @@
         android:id="@+id/today_iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/app_widget_item_background" />
+        android:background="@drawable/app_widget_item_background"
+        android:contentDescription="@string/app_name" />
 
     <RelativeLayout
         android:id="@+id/today_rl"
@@ -51,7 +52,7 @@
                 android:shadowDy="0"
                 android:shadowRadius="10"
                 android:textColor="@color/white"
-                android:textSize="35dp"
+                android:textSize="35sp"
                 tools:text="21℃" />
 
         </LinearLayout>
@@ -61,7 +62,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/today_ll_today"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/today_tv_text"
@@ -72,15 +74,16 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="10"
-                android:text="晴"
                 android:textColor="@color/white"
-                android:textSize="25dp" />
+                android:textSize="25sp"
+                tools:text="晴" />
 
             <ImageView
                 android:id="@+id/today_iv_icon"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/icon_100"
                 android:tint="@color/white" />
 

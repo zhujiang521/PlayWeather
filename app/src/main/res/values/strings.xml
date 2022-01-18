@@ -79,5 +79,10 @@
     <string name="widget_after_tomorrow">After tomorrow</string>
 
     <string name="widget_city_choose">City choose</string>
+    <string name="desk_yi">Should</string>
+    <string name="desk_ji">Avoid</string>
+    <string name="desk_seat">Seat</string>
+    <string name="desk_drink">Drink</string>
+    <string name="desk_code">Code</string>
 
 </resources>
