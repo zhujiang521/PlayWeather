@@ -5,6 +5,8 @@ import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.zj.weather.R
+import com.zj.weather.common.widget.utils.ProgrammerCalendar
+import com.zj.weather.utils.Lunar
 import com.zj.weather.utils.XLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -33,12 +35,12 @@ class DeskCalendarRemoteViewsFactory(private val context: Context) :
         val calendar = Calendar.getInstance()
         for (index in 0..6) {
             calendar.add(Calendar.DAY_OF_MONTH, if (index == 0) 0 else 1)
+            val hl = ProgrammerCalendar(calendar.timeInMillis)
             widgetItems.add(
                 DeskCalendar(
                     day = calendar.get(Calendar.DAY_OF_MONTH),
-                    lunar = "",
-                    advisable = "",
-                    avoid = "",
+                    lunar = Lunar(cal = calendar).toString(),
+                    programmer = hl,
                     mills = calendar.timeInMillis
                 )
             )
@@ -65,7 +67,18 @@ class DeskCalendarRemoteViewsFactory(private val context: Context) :
     override fun getViewAt(position: Int): RemoteViews {
         return RemoteViews(context.packageName, R.layout.widget_desk_item).apply {
             val deskCalendar = widgetItems[position]
+            val hl = deskCalendar.programmer
+            val pickTodayLuck = hl.pickTodayLuck()
+            setTextViewText(R.id.deskTvLunar, deskCalendar.lunar)
             setTextViewText(R.id.deskTvDay, deskCalendar.day.toString())
+            setTextViewText(R.id.deskTvYiDetail, pickTodayLuck[0])
+            setTextViewText(R.id.deskTvJiDetail, pickTodayLuck[1])
+            setTextViewText(
+                R.id.deskTvSeatDetail,
+                hl.directions[hl.random(hl.iday, 2) % hl.directions.size]
+            )
+            setTextViewText(R.id.deskTvDrinkDetail, hl.pickRandomDrinks(2).toString())
+            setTextViewText(R.id.deskTvCodeDetail, hl.star(hl.random(hl.iday, 6) % 5 + 1))
             // 可以区分给定项目的单个点击操作
             val fillInIntent = Intent().apply {
                 putExtra(CLICK_DESK_ACTION_VALUES, deskCalendar.mills)
@@ -97,14 +110,12 @@ class DeskCalendarRemoteViewsFactory(private val context: Context) :
  *
  * @param day 天
  * @param lunar 农历
- * @param advisable 适宜
- * @param avoid 忌
+ * @param programmer 黄历
  * @param mills 时间戳
  */
 data class DeskCalendar(
     val day: Int,
     val lunar: String,
-    val advisable: String,
-    val avoid: String,
+    val programmer: ProgrammerCalendar,
     val mills: Long
 )

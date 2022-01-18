@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/desk_ll_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,12 +8,13 @@
     android:minWidth="500dp"
     android:minHeight="500dp"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/deskTvLunar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="周二 农历七月十二"
         android:textColor="#62B1FF"
         android:textSize="15sp" />
@@ -21,6 +23,7 @@
         android:id="@+id/deskTvDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="2dp"
         android:text="11"
         android:textColor="#333333"
         android:textSize="30sp" />
@@ -35,7 +38,7 @@
             android:id="@+id/deskTvYi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="宜"
+            android:text="宜 "
             android:textColor="#596DFF"
             android:textSize="12sp" />
 
@@ -47,9 +50,9 @@
             android:ellipsize="end"
             android:maxLength="15"
             android:maxLines="1"
-            android:text="搬家、结婚、入宅、领证、动土、安床、出行、订婚、安葬、上梁、旅游、求嗣、赴任、破土、祈福、祭祀、立碑、解除、安香、拆卸、订盟、嫁娶、纳采、移徙、认养、谢土、入殓、移柩、造仓、进人口"
             android:textColor="#666666"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="搬家、结婚、入宅、领证、动土、安床、出行、订婚、安葬、上梁、旅游、求嗣、赴任、破土、祈福、祭祀、立碑、解除、安香、拆卸、订盟、嫁娶、纳采、移徙、认养、谢土、入殓、移柩、造仓、进人口" />
 
     </LinearLayout>
 
@@ -63,7 +66,7 @@
             android:id="@+id/deskTvJi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="忌"
+            android:text="忌 "
             android:textColor="#596DFF"
             android:textSize="12sp" />
 
@@ -75,9 +78,94 @@
             android:ellipsize="end"
             android:maxLength="25"
             android:maxLines="1"
-            android:text="开光"
             android:textColor="#666666"
+            android:textSize="12sp"
+            tools:text="开光" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/deskTvSeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="座位 "
+            android:textColor="#596DFF"
             android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/deskTvSeatDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:ellipsize="end"
+            android:maxLength="25"
+            android:maxLines="1"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            tools:text="座位朝向" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/deskTvDrink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宜饮 "
+            android:textColor="#596DFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/deskTvDrinkDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:ellipsize="end"
+            android:maxLength="25"
+            android:maxLines="1"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            tools:text="座位朝向" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/deskTvCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="代码 "
+            android:textColor="#596DFF"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/deskTvCodeDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:ellipsize="end"
+            android:maxLength="25"
+            android:maxLines="1"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            tools:text="座位朝向" />
 
     </LinearLayout>
 
