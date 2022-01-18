@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
@@ -11,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
-        android:text="周一"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        tools:text="周一" />
 
     <TextView
         android:layout_width="0dp"
@@ -25,6 +26,7 @@
         android:layout_height="25dp"
         android:layout_gravity="center"
         android:layout_marginEnd="10dp"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/icon_100"
         android:tint="@color/white" />
 
@@ -34,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
-        android:text="晴"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        tools:text="晴" />
 
     <TextView
         android:id="@+id/today_tv_one_temp"
@@ -43,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
-        android:text="-2/9"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        tools:text="-2/9" />
 
 </LinearLayout>
