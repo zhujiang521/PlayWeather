@@ -17,6 +17,8 @@ import com.google.gson.Gson
 import com.zj.weather.common.GrayAppAdapter
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
+import com.zj.weather.ui.view.tiger.NewYearWidget
+import com.zj.weather.ui.view.tiger.TigerWidget
 import com.zj.weather.utils.XLog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,6 +39,7 @@ class MainActivity : BaseActivity() {
                 ProvideWindowInsets {
                     GrayAppAdapter {
                         NavGraph(defaultCityInfo = defaultCityInfo)
+                        // NewYearWidget()
                     }
                 }
             }
