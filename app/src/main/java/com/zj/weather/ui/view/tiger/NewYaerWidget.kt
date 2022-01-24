@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -53,4 +54,16 @@ fun TextWidget() {
         Text(text = "恭喜", fontSize = 150.sp, color = Color.Yellow, fontFamily = FontFamily.Serif)
         Text(text = "发财", fontSize = 150.sp, color = Color.Yellow, fontFamily = FontFamily.Serif)
     }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun TextWidgetPreview() {
+    TextWidget()
+}
+
+@Preview(showBackground = false)
+@Composable
+fun NewYearPreview() {
+    NewYearWidget()
 }

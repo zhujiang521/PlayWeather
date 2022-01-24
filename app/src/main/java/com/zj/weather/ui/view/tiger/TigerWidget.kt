@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -88,52 +89,22 @@ fun TigerWidget() {
 
         // 画胡须
         path.addRect(
-            Rect(
-                start - 70f,
-                680f,
-                start + 70f,
-                685f
-            )
+            Rect(start - 70f, 680f, start + 70f, 685f)
         )
         path.addRect(
-            Rect(
-                start - 100f,
-                725f,
-                start + 100f,
-                730f
-            )
+            Rect(start - 100f, 725f, start + 100f, 730f)
         )
         path.addRect(
-            Rect(
-                start - 80f,
-                770f,
-                start + 80f,
-                775f
-            )
+            Rect(start - 80f, 770f, start + 80f, 775f)
         )
         path.addRect(
-            Rect(
-                start * 5 - 70f,
-                680f,
-                start * 5 + 70f,
-                685f
-            )
+            Rect(start * 5 - 70f, 680f, start * 5 + 70f, 685f)
         )
         path.addRect(
-            Rect(
-                start * 5 - 100f,
-                725f,
-                start * 5 + 100f,
-                730f
-            )
+            Rect(start * 5 - 100f, 725f, start * 5 + 100f, 730f)
         )
         path.addRect(
-            Rect(
-                start * 5 - 80f,
-                770f,
-                start * 5 + 80f,
-                775f
-            )
+            Rect(start * 5 - 80f, 770f, start * 5 + 80f, 775f)
         )
 
         // 画耳朵
@@ -161,4 +132,10 @@ fun TigerWidget() {
         )
     }
 
+}
+
+@Preview(showBackground = false)
+@Composable
+fun TigerWidgetPreview() {
+    TigerWidget()
 }
