@@ -75,7 +75,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
     implementation 'com.google.code.gson:gson:2.8.9'
 
-    def accompanist_version = "0.22.0-rc"
+    def accompanist_version = "0.24.0-alpha"
     // Compose 权限
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
     // Navigation 动画
