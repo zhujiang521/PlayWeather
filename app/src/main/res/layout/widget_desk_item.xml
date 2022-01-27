@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="2dp"
-        android:textColor="#333333"
+        android:textColor="@color/desk_date"
         android:textSize="30sp"
         tools:text="11" />
 
@@ -50,7 +50,7 @@
             android:ellipsize="end"
             android:maxLength="15"
             android:maxLines="1"
-            android:textColor="#666666"
+            android:textColor="@color/desk_content"
             android:textSize="12sp"
             tools:text="搬家、结婚、入宅、领证、动土、安床、出行、订婚、安葬、上梁、旅游、求嗣、赴任、破土、祈福、祭祀、立碑、解除、安香、拆卸、订盟、嫁娶、纳采、移徙、认养、谢土、入殓、移柩、造仓、进人口" />
 
@@ -78,7 +78,7 @@
             android:ellipsize="end"
             android:maxLength="25"
             android:maxLines="1"
-            android:textColor="#666666"
+            android:textColor="@color/desk_content"
             android:textSize="12sp"
             tools:text="开光" />
 
@@ -106,7 +106,7 @@
             android:ellipsize="end"
             android:maxLength="25"
             android:maxLines="1"
-            android:textColor="#666666"
+            android:textColor="@color/desk_content"
             android:textSize="12sp"
             tools:text="座位朝向" />
 
@@ -135,7 +135,7 @@
             android:ellipsize="end"
             android:maxLength="25"
             android:maxLines="1"
-            android:textColor="#666666"
+            android:textColor="@color/desk_content"
             android:textSize="12sp"
             tools:text="座位朝向" />
 
@@ -163,7 +163,7 @@
             android:ellipsize="end"
             android:maxLength="25"
             android:maxLines="1"
-            android:textColor="#666666"
+            android:textColor="@color/desk_content"
             android:textSize="12sp"
             tools:text="座位朝向" />
 

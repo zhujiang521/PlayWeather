@@ -8,7 +8,12 @@
 
     <color name="week_widget_item">#E6ABDBF6</color>
 
-    <color name="clock_back">#EAEAEA</color>
+    <color name="desk_back_stroke">#F3F3F3</color>
+
+    <color name="desk_date">#333333</color>
+    <color name="desk_content">#666666</color>
+
+    <color name="clock_back">#FDFDFD</color>
     <color name="hour_color">#333333</color>
     <color name="minute_color">#515151</color>
 
