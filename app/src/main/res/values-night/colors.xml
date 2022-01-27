@@ -5,4 +5,9 @@
     <color name="widget_item_border">#65B9EA</color>
     <color name="white">#FFFFFFFF</color>
     <color name="currentColor">#FFFFFFFF</color>
+
+    <color name="clock_back">#151515</color>
+    <color name="hour_color">#A3A3A3</color>
+    <color name="minute_color">#787878</color>
+
 </resources>
