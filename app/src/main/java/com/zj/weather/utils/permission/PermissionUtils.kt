@@ -12,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionsRequired
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.zj.weather.R
 import com.zj.weather.common.dialog.ShowDialog
@@ -31,16 +30,23 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
             Manifest.permission.ACCESS_COARSE_LOCATION,
         )
     )
-    PermissionsRequired(
-        multiplePermissionsState = locationPermissionState,
-        permissionsNotGrantedContent = {
+
+    when {
+        // 成功获取权限
+        locationPermissionState.allPermissionsGranted -> {
             LaunchedEffect(Unit) {
-                locationPermissionState.permissions.forEach {
-                    it.launchPermissionRequest()
-                }
+                getLocation(context, weatherViewModel)
             }
-        },
-        permissionsNotAvailableContent = {
+        }
+        // 当前没有权限，需要申请权限
+        locationPermissionState.shouldShowRationale ||
+                !locationPermissionState.allPermissionsGranted -> {
+            LaunchedEffect(Unit) {
+                locationPermissionState.launchMultiplePermissionRequest()
+            }
+        }
+        // 用户拒绝该权限，弹出对话框提醒用户跳转设置进行获取
+        else -> {
             LaunchedEffect(Unit) {
                 alertDialog.value = true
             }
@@ -53,11 +59,9 @@ fun FeatureThatRequiresLocationPermissions(weatherViewModel: WeatherViewModel) {
             ) {
                 startSettingAppPermission(context)
             }
-        }) {
-        LaunchedEffect(Unit) {
-            getLocation(context, weatherViewModel)
         }
     }
+
 }
 
 /**

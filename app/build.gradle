@@ -62,7 +62,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0-alpha04'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -72,10 +72,10 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.4'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
-    def accompanist_version = "0.24.0-alpha"
+    def accompanist_version = "0.24.2-alpha"
     // Compose 权限
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
     // Navigation 动画
@@ -88,7 +88,7 @@ dependencies {
     // lottie动画
     implementation "com.airbnb.android:lottie-compose:4.2.2"
     // navigation
-    implementation "androidx.navigation:navigation-compose:2.4.0-rc01"
+    implementation "androidx.navigation:navigation-compose:2.4.0"
 
     // Room
     def room_version = "2.4.1"
@@ -102,7 +102,7 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // 使用Compose 编写小部件（Widget）
