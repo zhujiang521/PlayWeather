@@ -82,6 +82,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     // Compose ViewPage
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    // Compose ViewPage 指示器
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
     // Inset
     implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
 
