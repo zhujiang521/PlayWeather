@@ -94,9 +94,7 @@ fun getLocation(
     cityInfo: CityInfo?
 ): String {
     if (cityInfo == null) return "CN101010100"
-    return if (cityInfo.locationId.isNotEmpty()) {
-        cityInfo.locationId
-    } else {
+    return cityInfo.locationId.ifEmpty {
         cityInfo.location
     }
 }
