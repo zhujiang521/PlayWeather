@@ -72,10 +72,10 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.5'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.6'
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    def accompanist_version = "0.24.3-alpha"
+    def accompanist_version = "0.24.4-alpha"
     // Compose 权限
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
     // Navigation 动画
