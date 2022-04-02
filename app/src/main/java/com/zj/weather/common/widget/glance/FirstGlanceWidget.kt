@@ -13,7 +13,6 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.action.actionStartBroadcastReceiver
@@ -83,7 +82,7 @@ class FirstGlanceWidget : GlanceAppWidget() {
             Button(text = "Glance按钮", onClick = actionStartService<TestService>())
             Button(text = "Glance按钮", onClick = actionStartService(TestService::class.java))
 
-            val size = LocalSize.current
+            // val size = LocalSize.current
 
             // 广播
             Button(

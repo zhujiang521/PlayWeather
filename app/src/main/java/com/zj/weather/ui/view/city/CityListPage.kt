@@ -11,8 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 import com.zj.weather.R
 import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
@@ -48,7 +46,7 @@ fun CityListPage(
             .fillMaxSize()
             .padding(horizontal = 10.dp)
             .statusBarsPadding()
-            .navigationBarsPadding(bottom = false)
+            .navigationBarsPadding()
     ) {
         // 标题栏
         CityListTitleBar(onBack)

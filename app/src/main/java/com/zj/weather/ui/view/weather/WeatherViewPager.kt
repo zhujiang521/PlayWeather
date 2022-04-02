@@ -41,8 +41,8 @@ fun WeatherViewPager(
         val location = getLocation(cityInfo = cityInfo)
         LaunchedEffect(location) {
             weatherViewModel.getWeather(location)
+            XLog.e("查询 initialPage:$initialPage")
         }
-        XLog.e("查询 initialPage:$initialPage")
     }
     WeatherViewPager(
         weatherViewModel, initialPage,
@@ -65,12 +65,12 @@ fun WeatherViewPager(
     if (pagerState.currentPage == 0) {
         FeatureThatRequiresLocationPermissions(weatherViewModel)
     }
+    XLog.e("initialPage:${initialPage}    currentPage:${pagerState.currentPage}")
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {
-        if (initialPage > 0 && initialPage < pagerState.pageCount) {
+        if (initialPage < pagerState.pageCount) {
             coroutineScope.launch {
                 pagerState.scrollToPage(initialPage)
-                weatherViewModel.onSearchCityInfoChanged(0)
             }
         }
         HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->

@@ -4,21 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Color
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.gson.Gson
 import com.zj.weather.common.GrayAppAdapter
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.theme.PlayWeatherTheme
-import com.zj.weather.ui.view.tiger.NewYearWidget
-import com.zj.weather.ui.view.tiger.TigerWidget
 import com.zj.weather.utils.XLog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,11 +25,9 @@ class MainActivity : BaseActivity() {
 
         setContent {
             PlayWeatherTheme {
-                ProvideWindowInsets {
-                    GrayAppAdapter {
-                        NavGraph(defaultCityInfo = defaultCityInfo)
-                        // NewYearWidget()
-                    }
+                GrayAppAdapter {
+                    NavGraph(defaultCityInfo = defaultCityInfo)
+                    // NewYearWidget()
                 }
             }
         }
