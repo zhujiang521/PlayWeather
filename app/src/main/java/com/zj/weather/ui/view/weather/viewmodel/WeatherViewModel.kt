@@ -45,23 +45,6 @@ class WeatherViewModel @Inject constructor(
     private var weatherJob: Job? = null
     private var updateCityJob: Job? = null
 
-    val searchCityInfo: LiveData<Int> = liveData {
-        var cityIndex = 0
-        cityInfoList.observeForever {
-            var city: CityInfo? = null
-            for (index in it.indices) {
-                if (it[index].isIndex == 1) {
-                    city = it[index]
-                    XLog.e("city:${city}")
-                }
-            }
-            cityIndex = it.indexOf(city)
-            XLog.e("cityList:${it.size}   cityIndex:$cityIndex")
-        }
-        if (cityIndex < 0) cityIndex = 0
-        XLog.e("cityIndex:$cityIndex")
-        emit(cityIndex)
-    }
     private val weatherMap = hashMapOf<String, Pair<Long, WeatherModel>>()
 
 

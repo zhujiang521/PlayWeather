@@ -68,3 +68,17 @@ fun defaultCityInfo(context: Context): CityInfo {
         name = context.getString(R.string.default_location),
     )
 }
+
+fun getCityIndex(cityInfoList: List<CityInfo>?): Int {
+    if (cityInfoList == null) return 0
+    var city: CityInfo? = null
+    for (index in cityInfoList.indices) {
+        if (cityInfoList[index].isIndex == 1) {
+            city = cityInfoList[index]
+            XLog.e("city:${city}")
+        }
+    }
+    val index = cityInfoList.indexOf(city)
+    XLog.e("index:$index")
+    return index
+}

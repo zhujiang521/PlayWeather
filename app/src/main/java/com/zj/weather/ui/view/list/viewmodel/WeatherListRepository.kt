@@ -115,6 +115,12 @@ class WeatherListRepository @Inject constructor(private val context: Application
     suspend fun insertCityInfo(cityInfo: CityInfo) {
         val hasLocation = cityInfoDao.getHasLocation(cityInfo.name)
         if (hasLocation <= 0) {
+            val indexList = cityInfoDao.getIndexCity()
+            if (indexList.isNotEmpty()) {
+                val indexCity = indexList[0]
+                indexCity.isIndex = 0
+                cityInfoDao.update(indexCity)
+            }
             cityInfoDao.insert(cityInfo)
         } else {
             XLog.e("insertCityInfo: hasLocation：$hasLocation")

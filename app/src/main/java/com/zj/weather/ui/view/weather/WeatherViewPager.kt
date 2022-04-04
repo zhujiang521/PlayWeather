@@ -18,6 +18,7 @@ import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.permission.FeatureThatRequiresLocationPermissions
+import com.zj.weather.utils.weather.getCityIndex
 import kotlinx.coroutines.launch
 
 @ExperimentalPermissionsApi
@@ -29,7 +30,6 @@ fun WeatherViewPager(
     toWeatherList: () -> Unit,
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
-    val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
     val pagerState = rememberPagerState()
     if (cityInfoList == null || cityInfoList.isNullOrEmpty()) {
         XLog.e("空的,刷新")
@@ -47,7 +47,7 @@ fun WeatherViewPager(
         }
         WeatherViewPager(
             weatherViewModel,
-            cityInfoList!!, pagerState, initialPage, toCityList, toWeatherList
+            cityInfoList!!, pagerState, getCityIndex(cityInfoList), toCityList, toWeatherList
         )
     }
 }
