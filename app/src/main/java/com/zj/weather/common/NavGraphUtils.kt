@@ -1,9 +1,6 @@
 package com.zj.weather.common
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.composable
@@ -26,11 +23,32 @@ fun NavGraphBuilder.composable(
         arguments = arguments,
         deepLinks = deepLinks,
         enterTransition = {
-            expandVertically()
+            slideInHorizontally()
         },
-        exitTransition = {
-            shrinkOut()
+//        exitTransition = {
+//            shrinkOut()
+//        },
+        content = content,
+    )
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.searchComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = {
+            slideInVertically()
         },
+//        exitTransition = {
+//            shrinkOut()
+//        },
         content = content,
     )
 }

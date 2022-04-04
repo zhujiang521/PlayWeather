@@ -1,5 +1,6 @@
 package com.zj.weather.room.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.zj.weather.room.entity.CityInfo
 
@@ -16,7 +17,7 @@ import com.zj.weather.room.entity.CityInfo
 interface CityInfoDao {
 
     @Query("SELECT * FROM city_info order by is_location desc,uid")
-    suspend fun getCityInfoList(): List<CityInfo>
+    fun getCityInfoList(): LiveData<List<CityInfo>>
 
     @Query("SELECT * FROM city_info where is_location = :isLocation")
     suspend fun getIsLocationList(isLocation: Int = 1): List<CityInfo>

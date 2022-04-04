@@ -16,6 +16,7 @@ import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
 import com.zj.weather.ui.view.city.widget.CityListItem
+import com.zj.weather.ui.view.city.widget.CityListTitleBar
 
 @Composable
 fun CityListPage(

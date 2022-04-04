@@ -1,6 +1,8 @@
 package com.zj.weather.utils.weather
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.qweather.sdk.bean.weather.WeatherDailyBean
 import com.zj.weather.R
 import com.zj.weather.room.entity.CityInfo
@@ -60,20 +62,9 @@ fun getUvIndexDesc(context: Context, uv: String?): String {
     }
 }
 
-/**
- * 创建默认的CityInfo
- */
-fun makeDefault(context: Context, cityInfoList: List<CityInfo>?): List<CityInfo> {
-    return if (cityInfoList.isNullOrEmpty()) {
-        val cityInfo = listOf(
-            CityInfo(
-                location = "CN101010100",
-                name = context.getString(R.string.default_location),
-            )
-        )
-        cityInfo
-    } else {
-        XLog.e("cityInfoList:$cityInfoList")
-        cityInfoList
-    }
+fun defaultCityInfo(context: Context): CityInfo {
+    return CityInfo(
+        location = "CN101010100",
+        name = context.getString(R.string.default_location),
+    )
 }

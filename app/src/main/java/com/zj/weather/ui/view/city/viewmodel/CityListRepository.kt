@@ -1,9 +1,9 @@
 package com.zj.weather.ui.view.city.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.weather.makeDefault
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -12,11 +12,7 @@ class CityListRepository @Inject constructor(private val context: Application) {
 
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
 
-    suspend fun refreshCityList(): List<CityInfo> {
-        var cityInfoList = cityInfoDao.getCityInfoList()
-        cityInfoList = makeDefault(context, cityInfoList)
-        return cityInfoList
-    }
+    fun refreshCityList(): LiveData<List<CityInfo>> = cityInfoDao.getCityInfoList()
 
     suspend fun deleteCityInfo(cityInfo: CityInfo) {
         cityInfoDao.delete(cityInfo)

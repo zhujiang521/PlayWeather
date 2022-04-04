@@ -1,7 +1,6 @@
 package com.zj.weather.ui.view.weather.viewmodel
 
 import android.app.Application
-import android.content.Intent
 import android.location.Address
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
@@ -20,11 +19,11 @@ import com.zj.weather.model.WeatherModel
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.*
+import com.zj.weather.utils.weather.defaultCityInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
-
 
 /**
  * 版权：Zhujiang 个人版权
@@ -45,16 +44,14 @@ class WeatherViewModel @Inject constructor(
     }
 
     private var language: Lang = application.getDefaultLocale()
-    private val cityInfoDao = PlayWeatherDatabase.getDatabase(getApplication()).cityInfoDao()
     private var weatherJob: Job? = null
-    private var refreshCityJob: Job? = null
     private var updateCityJob: Job? = null
 
     private val _searchCityInfo = MutableLiveData(0)
     val searchCityInfo: LiveData<Int> = _searchCityInfo
     private val weatherMap = hashMapOf<String, Pair<Long, WeatherModel>>()
 
-    fun onSearchCityInfoChanged(page: Int) {
+    private fun onSearchCityInfoChanged(page: Int) {
         if (page == _searchCityInfo.value) {
             XLog.d("onSearchCityInfoChanged no change")
             return
@@ -62,16 +59,7 @@ class WeatherViewModel @Inject constructor(
         _searchCityInfo.postValue(page)
     }
 
-    private val _cityInfoList = MutableLiveData(listOf<CityInfo>())
-    val cityInfoList: LiveData<List<CityInfo>> = _cityInfoList
-
-    private fun onCityInfoListChanged(list: List<CityInfo>) {
-        if (list == _cityInfoList.value) {
-            XLog.d("onCityInfoListChanged no change")
-            return
-        }
-        _cityInfoList.postValue(list)
-    }
+    val cityInfoList: LiveData<List<CityInfo>> = weatherRepository.refreshCityList()
 
     private val _weatherModel = MutableLiveData<PlayState<WeatherModel>>(PlayLoading)
     val weatherModel: LiveData<PlayState<WeatherModel>> = _weatherModel
@@ -122,15 +110,10 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    fun refreshCityList() {
-        refreshCityJob.checkCoroutines()
-        refreshCityJob = viewModelScope.launch(Dispatchers.IO) {
-            val cityInfoList = weatherRepository.refreshCityList()
-            withContext(Dispatchers.Main) {
-                onCityInfoListChanged(cityInfoList)
-                weatherRepository.updateCityIsIndex(cityInfoList) { index ->
-                    onSearchCityInfoChanged(index)
-                }
+    private fun refreshCityList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            weatherRepository.updateCityIsIndex(cityInfoList.value) { index ->
+                onSearchCityInfoChanged(index)
             }
         }
     }
@@ -138,17 +121,13 @@ class WeatherViewModel @Inject constructor(
     /**
      * 修改应该显示的城市
      */
-    fun updateCityInfoIndex(cityInfo: CityInfo) {
-        updateCityJob.checkCoroutines()
-        updateCityJob = viewModelScope.launch(Dispatchers.IO) {
-            weatherRepository.updateCityIsIndex(cityInfo)
-            refreshCityList()
+    fun updateCityInfoIndex(cityInfo: CityInfo?) {
+        cityInfo?.apply {
+            viewModelScope.launch(Dispatchers.IO) {
+                weatherRepository.updateCityIsIndex(cityInfo)
+            }
         }
-    }
-
-    fun hasLocation(): Boolean {
-        val isLocation = runBlocking { cityInfoDao.getIsLocationList() }
-        return isLocation.isNotEmpty()
+        refreshCityList()
     }
 
     /**
@@ -160,10 +139,7 @@ class WeatherViewModel @Inject constructor(
     fun updateCityInfo(location: Location, result: MutableList<Address>) {
         updateCityJob.checkCoroutines()
         updateCityJob = viewModelScope.launch(Dispatchers.IO) {
-            weatherRepository.updateCityInfo(location, result) {
-                refreshCityList()
-                getApplication<Application>().sendBroadcast(Intent())
-            }
+            weatherRepository.updateCityInfo(location, result)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.zj.weather.ui.view.city
+package com.zj.weather.ui.view.city.widget
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

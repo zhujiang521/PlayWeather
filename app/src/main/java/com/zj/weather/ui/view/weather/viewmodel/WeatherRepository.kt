@@ -15,15 +15,13 @@ import com.qweather.sdk.view.QWeather
 import com.zj.weather.R
 import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.utils.*
+import com.zj.weather.utils.XLog
+import com.zj.weather.utils.showToast
 import com.zj.weather.utils.weather.getDateWeekName
 import com.zj.weather.utils.weather.getTimeName
 import com.zj.weather.utils.weather.getTodayBean
-import com.zj.weather.utils.weather.makeDefault
 import dagger.hilt.android.scopes.ViewModelScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.math.abs
@@ -179,7 +177,6 @@ class WeatherRepository @Inject constructor(private val context: Application) {
     suspend fun updateCityInfo(
         location: Location,
         result: MutableList<Address>,
-        onRefreshListener: () -> kotlin.Unit
     ) {
         if (result.isNullOrEmpty()) return
         val address = result[0]
@@ -193,15 +190,9 @@ class WeatherRepository @Inject constructor(private val context: Application) {
             } else {
                 XLog.e("updateCityInfo: 数据库中已经存在当前的数据，需要修改:${cityInfo.uid}")
                 cityInfoDao.update(cityInfo)
-                withContext(Dispatchers.Main) {
-                    onRefreshListener()
-                }
             }
         } else {
             cityInfoDao.insert(cityInfo)
-            withContext(Dispatchers.Main) {
-                onRefreshListener()
-            }
             XLog.e("updateCityInfo: 数据库中没有当前的数据，需要新增")
         }
     }
@@ -221,11 +212,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
         )
     }
 
-    suspend fun refreshCityList(): List<CityInfo> {
-        var cityInfoList = cityInfoDao.getCityInfoList()
-        cityInfoList = makeDefault(context, cityInfoList)
-        return cityInfoList
-    }
+    fun refreshCityList() = cityInfoDao.getCityInfoList()
 
     suspend fun updateCityIsIndex(cityInfo: CityInfo) {
         cityInfo.isIndex = 1
@@ -233,16 +220,15 @@ class WeatherRepository @Inject constructor(private val context: Application) {
     }
 
     suspend fun updateCityIsIndex(
-        cityInfoList: List<CityInfo>,
+        cityInfoList: List<CityInfo>?,
         onRefreshListener: (Int) -> kotlin.Unit
     ) {
-        withContext(Dispatchers.IO) {
-            cityInfoList.forEach {
-                if (it.isIndex == 1) {
-                    onRefreshListener(cityInfoList.indexOf(it))
-                    it.isIndex = 0
-                    cityInfoDao.update(it)
-                }
+        if (cityInfoList.isNullOrEmpty()) return
+        cityInfoList.forEach {
+            if (it.isIndex == 1) {
+                onRefreshListener(cityInfoList.indexOf(it))
+                it.isIndex = 0
+                cityInfoDao.update(it)
             }
         }
     }

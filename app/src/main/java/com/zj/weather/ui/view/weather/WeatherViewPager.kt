@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
@@ -28,25 +29,26 @@ fun WeatherViewPager(
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
 ) {
-    val cityInfoList by weatherViewModel.cityInfoList.observeAsState(listOf())
-    val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
+    val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
     val pagerState = rememberPagerState()
-    cityInfoList.apply {
-        if (isNullOrEmpty()) return@apply
-        val index = if (pagerState.currentPage > size - 1) {
-            0
-        } else pagerState.currentPage
-        val cityInfo = get(index)
+    if (cityInfoList == null || cityInfoList.isNullOrEmpty()) {
+        XLog.e("空的，没必要刷新")
+        NoContent()
+        return
+    } else {
+        val index =
+            if (pagerState.currentPage > cityInfoList!!.size - 1) 0 else pagerState.currentPage
+        val cityInfo = cityInfoList!![index]
         val location = getLocation(cityInfo = cityInfo)
         LaunchedEffect(location) {
             weatherViewModel.getWeather(location)
-            XLog.e("查询 initialPage:$initialPage")
+            XLog.e("查询 initialPage")
         }
+        WeatherViewPager(
+            weatherViewModel,
+            cityInfoList!!, pagerState, toCityList, toWeatherList
+        )
     }
-    WeatherViewPager(
-        weatherViewModel, initialPage,
-        cityInfoList, pagerState, toCityList, toWeatherList
-    )
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -55,7 +57,6 @@ fun WeatherViewPager(
 @Composable
 fun WeatherViewPager(
     weatherViewModel: WeatherViewModel,
-    initialPage: Int = 0,
     cityInfoList: List<CityInfo>,
     pagerState: PagerState,
     toCityList: () -> Unit,
@@ -64,6 +65,7 @@ fun WeatherViewPager(
     if (pagerState.currentPage == 0) {
         FeatureThatRequiresLocationPermissions(weatherViewModel)
     }
+    val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
     XLog.e("initialPage:${initialPage}    currentPage:${pagerState.currentPage}")
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {

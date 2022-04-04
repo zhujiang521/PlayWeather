@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.view.WindowManager
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.Type.statusBars
 
 /**
@@ -25,4 +26,22 @@ fun Activity.transparentStatusBar() {
 fun Activity.setAndroidNativeLightStatusBar() {
     val controller = ViewCompat.getWindowInsetsController(window.decorView)
     controller?.isAppearanceLightStatusBars = !isDarkMode()
+}
+
+/**
+ * 隐藏ime
+ */
+fun Activity?.hideIme() {
+    if (this == null || window == null) return
+    val controller = ViewCompat.getWindowInsetsController(window.decorView)
+    controller?.hide(ime())
+}
+
+/**
+ * 显示ime
+ */
+fun Activity?.showIme() {
+    if (this == null || window == null) return
+    val controller = ViewCompat.getWindowInsetsController(window.decorView)
+    controller?.show(ime())
 }

@@ -11,10 +11,8 @@ import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
-import com.zj.weather.utils.checkCoroutines
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,10 +21,6 @@ class WeatherListViewModel @Inject constructor(
     application: Application,
     private val weatherListRepository: WeatherListRepository
 ) : AndroidViewModel(application) {
-
-    private var nameToCityJob: Job? = null
-    private var topCityJob: Job? = null
-    private var insertCityJob: Job? = null
 
     private val _locationBeanList =
         MutableLiveData<PlayState<List<GeoBean.LocationBean>>>(PlayLoading)
@@ -47,8 +41,7 @@ class WeatherListViewModel @Inject constructor(
      * @param cityName 城市名称
      */
     fun getGeoCityLookup(cityName: String = "北京") {
-        nameToCityJob.checkCoroutines()
-        nameToCityJob = viewModelScope.launch {
+        viewModelScope.launch {
             val cityLookup = weatherListRepository.getGeoCityLookup(cityName)
             onLocationBeanListChanged(cityLookup)
         }
@@ -58,8 +51,7 @@ class WeatherListViewModel @Inject constructor(
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
-        topCityJob.checkCoroutines()
-        topCityJob = viewModelScope.launch {
+        viewModelScope.launch {
             //val cityLookup = weatherListRepository.getGeoTopCity(language)
             val cityLookup = PlaySuccess(arrayListOf<GeoBean.LocationBean>())
             onLocationBeanListChanged(cityLookup)
@@ -72,8 +64,7 @@ class WeatherListViewModel @Inject constructor(
      * @param cityInfo 城市信息
      */
     fun insertCityInfo(cityInfo: CityInfo) {
-        insertCityJob.checkCoroutines()
-        insertCityJob = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             weatherListRepository.insertCityInfo(cityInfo)
         }
     }

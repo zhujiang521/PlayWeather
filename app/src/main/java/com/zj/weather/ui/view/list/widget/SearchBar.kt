@@ -1,5 +1,6 @@
 package com.zj.weather.ui.view.list.widget
 
+import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -25,6 +26,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -34,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.weather.R
+import com.zj.weather.utils.hideIme
 
 @Composable
 fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
     var value by rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,7 +55,10 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
         ) {
             IconButton(
                 modifier = Modifier.wrapContentWidth(Alignment.End),
-                onClick = onBack
+                onClick = {
+                    (context as Activity).hideIme()
+                    onBack()
+                }
             ) {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBack,

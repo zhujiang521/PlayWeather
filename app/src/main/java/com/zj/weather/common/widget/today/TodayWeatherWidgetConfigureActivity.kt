@@ -49,7 +49,6 @@ class TodayWeatherWidgetConfigureActivity : BaseActivity() {
             finish()
             return
         }
-        viewModel.refreshCityList()
         setContent {
             PlayWeatherTheme {
                 Surface(color = MaterialTheme.colors.background) {
