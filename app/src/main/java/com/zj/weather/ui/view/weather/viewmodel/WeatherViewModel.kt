@@ -3,10 +3,7 @@ package com.zj.weather.ui.view.weather.viewmodel
 import android.app.Application
 import android.location.Address
 import android.location.Location
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.qweather.sdk.bean.air.AirNowBean
 import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.weather.WeatherHourlyBean
@@ -16,12 +13,13 @@ import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.model.WeatherModel
-import com.zj.weather.room.PlayWeatherDatabase
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.*
-import com.zj.weather.utils.weather.defaultCityInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -47,17 +45,25 @@ class WeatherViewModel @Inject constructor(
     private var weatherJob: Job? = null
     private var updateCityJob: Job? = null
 
-    private val _searchCityInfo = MutableLiveData(0)
-    val searchCityInfo: LiveData<Int> = _searchCityInfo
+    val searchCityInfo: LiveData<Int> = liveData {
+        var cityIndex = 0
+        cityInfoList.observeForever {
+            var city: CityInfo? = null
+            for (index in it.indices) {
+                if (it[index].isIndex == 1) {
+                    city = it[index]
+                    XLog.e("city:${city}")
+                }
+            }
+            cityIndex = it.indexOf(city)
+            XLog.e("cityList:${it.size}   cityIndex:$cityIndex")
+        }
+        if (cityIndex < 0) cityIndex = 0
+        XLog.e("cityIndex:$cityIndex")
+        emit(cityIndex)
+    }
     private val weatherMap = hashMapOf<String, Pair<Long, WeatherModel>>()
 
-    private fun onSearchCityInfoChanged(page: Int) {
-        if (page == _searchCityInfo.value) {
-            XLog.d("onSearchCityInfoChanged no change")
-            return
-        }
-        _searchCityInfo.postValue(page)
-    }
 
     val cityInfoList: LiveData<List<CityInfo>> = weatherRepository.refreshCityList()
 
@@ -108,26 +114,6 @@ class WeatherViewModel @Inject constructor(
             }
             XLog.e("获取天气:$location")
         }
-    }
-
-    private fun refreshCityList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            weatherRepository.updateCityIsIndex(cityInfoList.value) { index ->
-                onSearchCityInfoChanged(index)
-            }
-        }
-    }
-
-    /**
-     * 修改应该显示的城市
-     */
-    fun updateCityInfoIndex(cityInfo: CityInfo?) {
-        cityInfo?.apply {
-            viewModelScope.launch(Dispatchers.IO) {
-                weatherRepository.updateCityIsIndex(cityInfo)
-            }
-        }
-        refreshCityList()
     }
 
     /**

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
@@ -30,11 +29,13 @@ fun WeatherViewPager(
     toWeatherList: () -> Unit,
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
+    val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
     val pagerState = rememberPagerState()
     if (cityInfoList == null || cityInfoList.isNullOrEmpty()) {
-        XLog.e("空的，没必要刷新")
-        NoContent()
-        return
+        XLog.e("空的,刷新")
+        if (pagerState.currentPage == 0) {
+            FeatureThatRequiresLocationPermissions(weatherViewModel)
+        }
     } else {
         val index =
             if (pagerState.currentPage > cityInfoList!!.size - 1) 0 else pagerState.currentPage
@@ -46,7 +47,7 @@ fun WeatherViewPager(
         }
         WeatherViewPager(
             weatherViewModel,
-            cityInfoList!!, pagerState, toCityList, toWeatherList
+            cityInfoList!!, pagerState, initialPage, toCityList, toWeatherList
         )
     }
 }
@@ -59,13 +60,10 @@ fun WeatherViewPager(
     weatherViewModel: WeatherViewModel,
     cityInfoList: List<CityInfo>,
     pagerState: PagerState,
+    initialPage: Int,
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
 ) {
-    if (pagerState.currentPage == 0) {
-        FeatureThatRequiresLocationPermissions(weatherViewModel)
-    }
-    val initialPage by weatherViewModel.searchCityInfo.observeAsState(0)
     XLog.e("initialPage:${initialPage}    currentPage:${pagerState.currentPage}")
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {

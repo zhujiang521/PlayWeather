@@ -55,9 +55,6 @@ fun NavGraph(
     ) {
         composable(PlayDestinations.HOME_PAGE_ROUTE) {
             val weatherViewModel = hiltViewModel<WeatherViewModel>()
-            LaunchedEffect(Unit) {
-                weatherViewModel.updateCityInfoIndex(cityInfo = defaultCityInfo)
-            }
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
                 toCityList = actions.toCityList,

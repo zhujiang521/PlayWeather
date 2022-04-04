@@ -19,6 +19,12 @@ class CityListRepository @Inject constructor(private val context: Application) {
     }
 
     suspend fun updateCityIsIndex(cityInfo: CityInfo) {
+        val indexList = cityInfoDao.getIndexCity()
+        if (indexList.isNotEmpty()) {
+            val indexCity = indexList[0]
+            indexCity.isIndex = 0
+            cityInfoDao.update(indexCity)
+        }
         cityInfo.isIndex = 1
         cityInfoDao.update(cityInfo)
     }

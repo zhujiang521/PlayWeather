@@ -23,10 +23,10 @@ fun NavGraphBuilder.composable(
         arguments = arguments,
         deepLinks = deepLinks,
         enterTransition = {
-            slideInHorizontally()
+            slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
         },
 //        exitTransition = {
-//            shrinkOut()
+//            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right)
 //        },
         content = content,
     )
@@ -44,10 +44,10 @@ fun NavGraphBuilder.searchComposable(
         arguments = arguments,
         deepLinks = deepLinks,
         enterTransition = {
-            slideInVertically()
+            slideIntoContainer(AnimatedContentScope.SlideDirection.Up)
         },
 //        exitTransition = {
-//            shrinkOut()
+//            slideOutOfContainer(AnimatedContentScope.SlideDirection.Down)
 //        },
         content = content,
     )

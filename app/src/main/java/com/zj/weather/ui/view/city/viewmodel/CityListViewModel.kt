@@ -18,17 +18,13 @@ class CityListViewModel @Inject constructor(
     private val cityListRepository: CityListRepository
 ) : AndroidViewModel(application) {
 
-    private var deleteCityJob: Job? = null
-    private var updateCityJob: Job? = null
-
     val cityInfoList: LiveData<List<CityInfo>> = cityListRepository.refreshCityList()
 
     /**
      * 删除相应的城市信息
      */
     fun deleteCityInfo(cityInfo: CityInfo) {
-        deleteCityJob.checkCoroutines()
-        deleteCityJob = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             cityListRepository.deleteCityInfo(cityInfo)
         }
     }
@@ -37,8 +33,7 @@ class CityListViewModel @Inject constructor(
      * 修改应该显示的城市
      */
     fun updateCityInfoIndex(cityInfo: CityInfo) {
-        updateCityJob.checkCoroutines()
-        updateCityJob = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             cityListRepository.updateCityIsIndex(cityInfo)
         }
     }
