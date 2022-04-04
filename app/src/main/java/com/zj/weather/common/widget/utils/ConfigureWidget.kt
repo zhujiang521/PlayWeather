@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.google.gson.Gson
 import com.zj.weather.R
 import com.zj.weather.common.widget.week.PREF_PREFIX_KEY
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
-import com.zj.weather.ui.view.list.widget.DrawIndicator
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -63,7 +63,12 @@ fun ConfigureWidget(
                     }
                 }
             }
-            DrawIndicator(pagerState = pagerState)
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp),
+            )
         }
         Spacer(modifier = Modifier.height(50.dp))
         Divider(

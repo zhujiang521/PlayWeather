@@ -3,19 +3,18 @@ package com.zj.weather.ui.view.weather
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.list.widget.DrawIndicator
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.permission.FeatureThatRequiresLocationPermissions
@@ -83,11 +82,13 @@ fun WeatherViewPager(
                 cityList = toCityList, cityListClick = toWeatherList
             )
         }
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+        )
     }
-    DrawIndicator(
-        pagerState = pagerState,
-        hasCurrentPosition = weatherViewModel.hasLocation()
-    )
 }
 
 fun getLocation(
