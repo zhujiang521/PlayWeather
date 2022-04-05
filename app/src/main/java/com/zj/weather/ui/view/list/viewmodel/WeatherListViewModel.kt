@@ -5,12 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.qweather.sdk.bean.base.Lang
 import com.qweather.sdk.bean.geo.GeoBean
 import com.zj.weather.common.PlayLoading
 import com.zj.weather.common.PlayState
 import com.zj.weather.common.PlaySuccess
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.utils.XLog
+import com.zj.weather.utils.getDefaultLocale
+import com.zj.weather.utils.isSOrLater
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +55,13 @@ class WeatherListViewModel @Inject constructor(
      */
     fun getGeoTopCity() {
         viewModelScope.launch {
+            // 这块由于这两个接口有问题，和风天气的jar包问题，提交反馈人家说没问题。。qtmd。
+            // 目前发现在S版本上有问题，R中没有发现
+            if (isSOrLater) {
+                PlaySuccess(arrayListOf<GeoBean.LocationBean>())
+            } else {
+                weatherListRepository.getGeoTopCity(getApplication<Application>().getDefaultLocale())
+            }
             //val cityLookup = weatherListRepository.getGeoTopCity(language)
             val cityLookup = PlaySuccess(arrayListOf<GeoBean.LocationBean>())
             onLocationBeanListChanged(cityLookup)

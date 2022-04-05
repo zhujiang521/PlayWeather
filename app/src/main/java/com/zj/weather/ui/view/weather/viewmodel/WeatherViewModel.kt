@@ -78,12 +78,21 @@ class WeatherViewModel @Inject constructor(
         weatherJob.checkCoroutines()
         weatherJob = viewModelScope.launch(Dispatchers.IO) {
             val weatherNow = weatherRepository.getWeatherNow(location, language)
-            // val weather24Hour = weatherRepository.getWeather24Hour(location, language)
-            val weather24Hour = arrayListOf<WeatherHourlyBean.HourlyBean>()
+            // 这块由于这两个接口有问题，和风天气的jar包问题，提交反馈人家说没问题。。qtmd。
+            // 目前发现在S版本上有问题，R中没有发现
+            val weather24Hour = if (isSOrLater) {
+                arrayListOf()
+            } else {
+                weatherRepository.getWeather24Hour(location, language)
+            }
             val weather7Day = weatherRepository.getWeather7Day(location, language)
-            // val airNow = weatherRepository.getAirNow(location, language)
-            val airNow = AirNowBean.NowBean()
-            airNow.aqi = Random().nextInt(500).toString()
+            val airNow = if (isSOrLater) {
+                AirNowBean.NowBean().apply {
+                    aqi = Random().nextInt(500).toString()
+                }
+            } else {
+                weatherRepository.getAirNow(location, language)
+            }
             val weatherModel = WeatherModel(
                 nowBaseBean = weatherNow,
                 hourlyBeanList = weather24Hour,

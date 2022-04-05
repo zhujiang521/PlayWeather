@@ -67,7 +67,7 @@ fun WeatherViewPager(
     XLog.e("initialPage:${initialPage}    currentPage:${pagerState.currentPage}")
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {
-        if (initialPage < pagerState.pageCount) {
+        if (initialPage >= 0 && initialPage < pagerState.pageCount) {
             coroutineScope.launch {
                 pagerState.scrollToPage(initialPage)
             }
