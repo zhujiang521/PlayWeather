@@ -1,9 +1,8 @@
 package com.zj.weather.ui.view.weather
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,11 +10,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.zj.weather.common.lce.NoContent
 import com.zj.weather.room.entity.CityInfo
 import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
+import com.zj.weather.ui.view.weather.widget.HeaderAction
 import com.zj.weather.utils.XLog
 import com.zj.weather.utils.permission.FeatureThatRequiresLocationPermissions
 import com.zj.weather.utils.weather.getCityIndex
@@ -36,6 +38,7 @@ fun WeatherViewPager(
         if (pagerState.currentPage == 0) {
             FeatureThatRequiresLocationPermissions(weatherViewModel)
         }
+        NoCityContent(toWeatherList, toCityList)
     } else {
         val index =
             if (pagerState.currentPage > cityInfoList!!.size - 1) 0 else pagerState.currentPage
@@ -49,6 +52,34 @@ fun WeatherViewPager(
             weatherViewModel,
             cityInfoList!!, pagerState, getCityIndex(cityInfoList), toCityList, toWeatherList
         )
+    }
+}
+
+@Composable
+private fun NoCityContent(
+    toWeatherList: () -> Unit,
+    toCityList: () -> Unit,
+) {
+    val config = LocalConfiguration.current
+    val isLand = config.orientation == Configuration.ORIENTATION_LANDSCAPE
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            HeaderAction(
+                modifier = Modifier.weight(1f),
+                cityListClick = toWeatherList,
+                cityList = toCityList
+            )
+            if (isLand) {
+                Spacer(modifier = Modifier.weight(1f))
+            }
+        }
+        NoContent()
     }
 }
 
