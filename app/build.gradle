@@ -12,8 +12,8 @@ android {
         applicationId "com.zj.weather"
         minSdk 24
         targetSdk 31
-        versionCode 18
-        versionName "2.5.0"
+        versionCode 19
+        versionName "2.5.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -62,9 +62,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.8.0-alpha04'
+    implementation 'androidx.core:core-ktx:1.8.0-alpha06'
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
