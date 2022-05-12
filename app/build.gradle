@@ -12,8 +12,8 @@ android {
         applicationId "com.zj.weather"
         minSdk 24
         targetSdk 31
-        versionCode 19
-        versionName "2.5.1"
+        versionCode 20
+        versionName "2.5.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -72,10 +72,10 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.6'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
     implementation 'com.google.code.gson:gson:2.9.0'
 
-    def accompanist_version = "0.24.6-alpha"
+    def accompanist_version = "0.24.8-beta"
     // Compose 权限
     implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
     // Navigation 动画
@@ -98,7 +98,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     // 启动动画
-    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
