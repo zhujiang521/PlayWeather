@@ -14,10 +14,10 @@ import com.zj.utils.checkCoroutines
 import com.zj.utils.checkNetConnect
 import com.zj.utils.showToast
 import com.zj.weather.R
-import com.zj.weather.common.PlayError
-import com.zj.weather.common.PlayLoading
-import com.zj.weather.common.PlayState
-import com.zj.weather.common.PlaySuccess
+import com.zj.model.PlayError
+import com.zj.model.PlayLoading
+import com.zj.model.PlayState
+import com.zj.model.PlaySuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

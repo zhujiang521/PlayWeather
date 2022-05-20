@@ -56,8 +56,6 @@
     <string name="sun_sunrise">Sunrise:</string>
     <string name="sun_sunset">Sunset:</string>
 
-    <string name="bad_network_view_tip">Your network is not working well, click on the screen to reload</string>
-
     <string name="permission_title">Permission settings</string>
     <string name="permission_content">The weather needs to get the current location to show the current weather</string>
     <string name="permission_sure">Open settings</string>

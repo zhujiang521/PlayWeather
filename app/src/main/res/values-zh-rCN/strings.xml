@@ -56,8 +56,6 @@
     <string name="sun_sunrise">日出：</string>
     <string name="sun_sunset">日落：</string>
 
-    <string name="bad_network_view_tip">点击重新加载</string>
-
     <string name="permission_title">权限设置</string>
     <string name="permission_content">天气需要获取当前位置以展示当前的天气</string>
     <string name="permission_sure">打开设置</string>

@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.zj.model.city.GeoBean
 import com.zj.utils.XLog
 import com.zj.utils.checkNetConnect
-import com.zj.weather.common.PlayError
-import com.zj.weather.common.PlayLoading
-import com.zj.weather.common.PlayState
+import com.zj.model.PlayError
+import com.zj.model.PlayLoading
+import com.zj.model.PlayState
 import com.zj.model.room.entity.CityInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

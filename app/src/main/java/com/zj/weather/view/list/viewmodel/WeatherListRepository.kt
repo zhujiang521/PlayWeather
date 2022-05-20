@@ -10,9 +10,9 @@ import com.zj.weather.R
 import com.zj.model.room.PlayWeatherDatabase
 import com.zj.model.room.entity.CityInfo
 import com.zj.network.PlayWeatherNetwork
-import com.zj.weather.common.PlayError
-import com.zj.weather.common.PlayState
-import com.zj.weather.common.PlaySuccess
+import com.zj.model.PlayError
+import com.zj.model.PlayState
+import com.zj.model.PlaySuccess
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,7 +47,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
      * 热门城市信息查询
      *
      */
-    suspend fun getGeoTopCity(): PlayState<List<GeoBean.LocationBean>>{
+    suspend fun getGeoTopCity(): PlayState<List<GeoBean.LocationBean>> {
         val cityTop = network.getCityTop()
         val code = cityTop.code.toInt()
         return if (code == SUCCESSFUL) {

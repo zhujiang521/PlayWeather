@@ -10,4 +10,6 @@
     <string name="time_now">现在</string>
     <string name="time_hour">时</string>
 
+    <string name="bad_network_view_tip">点击重新加载</string>
+
 </resources>

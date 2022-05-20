@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.zj.weather.common.widget.today.TodayWeatherWidgetConfigureActivity"
+    android:configure="com.zj.weather.widget.today.TodayWeatherWidgetConfigureActivity"
     android:initialKeyguardLayout="@layout/today_weather_widget_medium"
     android:initialLayout="@layout/today_weather_widget_medium"
     android:maxResizeWidth="530dp"

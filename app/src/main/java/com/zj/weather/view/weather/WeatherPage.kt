@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import com.zj.model.air.AirNowBean
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.model.weather.WeatherNowBean
-import com.zj.weather.common.PlayLoading
-import com.zj.weather.common.lce.LcePage
+import com.zj.model.PlayLoading
+import com.zj.utils.lce.LcePage
 import com.zj.model.WeatherModel
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel

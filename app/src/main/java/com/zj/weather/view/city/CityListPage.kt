@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zj.weather.R
-import com.zj.weather.common.lce.NoContent
+import com.zj.utils.lce.NoContent
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.city.widget.CityListItem

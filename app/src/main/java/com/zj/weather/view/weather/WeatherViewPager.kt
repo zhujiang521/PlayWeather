@@ -14,12 +14,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.zj.weather.common.lce.NoContent
+import com.zj.utils.lce.NoContent
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
 import com.zj.utils.XLog
-import com.zj.weather.common.permission.FeatureThatRequiresLocationPermissions
+import com.zj.weather.permission.FeatureThatRequiresLocationPermissions
 import com.zj.utils.weather.getCityIndex
 import kotlinx.coroutines.launch
 

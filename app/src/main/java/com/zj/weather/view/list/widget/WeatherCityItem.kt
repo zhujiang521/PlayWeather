@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zj.model.city.GeoBean
 import com.zj.weather.R
-import com.zj.weather.common.dialog.ShowDialog
+import com.zj.utils.dialog.ShowDialog
 import com.zj.model.room.entity.CityInfo
 
 @Composable

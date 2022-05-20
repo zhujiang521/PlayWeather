@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/MySplashTheme">
         <receiver
-            android:name=".common.widget.today.TodayWeatherWidget"
+            android:name="com.zj.weather.widget.today.TodayWeatherWidget"
             android:exported="true"
             android:label="@string/widget_today_name">
             <intent-filter>
@@ -35,7 +35,7 @@
         </receiver>
 
         <activity
-            android:name=".common.widget.today.TodayWeatherWidgetConfigureActivity"
+            android:name="com.zj.weather.widget.today.TodayWeatherWidgetConfigureActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -54,7 +54,7 @@
         </activity>
 
         <receiver
-            android:name=".common.widget.week.WeatherWidget"
+            android:name="com.zj.weather.widget.week.WeatherWidget"
             android:exported="true"
             android:label="@string/widget_week_name">
             <intent-filter>
@@ -67,7 +67,7 @@
         </receiver>
 
         <activity
-            android:name=".common.widget.week.WeatherWidgetConfigureActivity"
+            android:name="com.zj.weather.widget.week.WeatherWidgetConfigureActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -75,17 +75,17 @@
         </activity>
 
         <service
-            android:name=".common.widget.week.WeatherWidgetService"
+            android:name="com.zj.weather.widget.week.WeatherWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <service
-            android:name=".common.widget.today.TodayWeatherWidgetService"
+            android:name="com.zj.weather.widget.today.TodayWeatherWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <receiver
-            android:name=".common.widget.glance.FirstGlanceWidgetReceiver"
+            android:name="com.zj.weather.widget.glance.FirstGlanceWidgetReceiver"
             android:enabled="@bool/glance_appwidget_available"
             android:exported="false">
             <intent-filter>
@@ -98,7 +98,7 @@
         </receiver>
 
         <receiver
-            android:name=".common.widget.desk.DeskCalendarWidget"
+            android:name="com.zj.weather.widget.desk.DeskCalendarWidget"
             android:exported="true"
             android:label="Desk Calendar">
             <intent-filter>
@@ -114,12 +114,12 @@
         </receiver>
 
         <service
-            android:name=".common.widget.desk.DeskCalendarWidgetService"
+            android:name="com.zj.weather.widget.desk.DeskCalendarWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <receiver
-            android:name=".common.widget.clock.ClockAppWidget"
+            android:name="com.zj.weather.widget.clock.ClockAppWidget"
             android:exported="true"
             android:label="时钟">
             <intent-filter>

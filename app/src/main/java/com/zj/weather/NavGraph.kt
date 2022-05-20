@@ -16,19 +16,19 @@
 
 package com.zj.weather
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.zj.weather.common.PlayActions
-import com.zj.weather.common.PlayDestinations
-import com.zj.weather.common.composable
-import com.zj.weather.common.searchComposable
 import com.zj.weather.view.city.CityListPage
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.list.WeatherListPage
@@ -79,4 +79,71 @@ fun NavGraph(
             )
         }
     }
+}
+
+object PlayDestinations {
+    const val HOME_PAGE_ROUTE = "home_page_route"
+    const val WEATHER_LIST_ROUTE = "weather_list_route"
+    const val CITY_LIST_ROUTE = "city_list_route"
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.composable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = {
+            slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
+        },
+//        exitTransition = {
+//            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right)
+//        },
+        content = content,
+    )
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.searchComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = {
+            slideIntoContainer(AnimatedContentScope.SlideDirection.Up)
+        },
+//        exitTransition = {
+//            slideOutOfContainer(AnimatedContentScope.SlideDirection.Down)
+//        },
+        content = content,
+    )
+}
+
+/**
+ * 对应用程序中的导航操作进行建模。
+ */
+class PlayActions(navController: NavHostController) {
+
+    val toWeatherList: () -> Unit = {
+        navController.navigate(PlayDestinations.WEATHER_LIST_ROUTE)
+    }
+
+    val toCityList: () -> Unit = {
+        navController.navigate(PlayDestinations.CITY_LIST_ROUTE)
+    }
+
+    val upPress: () -> Unit = {
+        navController.navigateUp()
+    }
+
 }
