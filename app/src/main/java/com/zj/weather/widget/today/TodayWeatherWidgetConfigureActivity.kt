@@ -18,7 +18,7 @@ import com.zj.weather.theme.PlayWeatherTheme
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.utils.XLog
 import com.zj.utils.checkNetConnect
-import com.zj.utils.showToast
+import com.zj.utils.view.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

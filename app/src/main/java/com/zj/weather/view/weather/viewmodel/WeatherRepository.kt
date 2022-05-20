@@ -13,7 +13,7 @@ import com.zj.model.weather.WeatherHourlyBean
 import com.zj.model.weather.WeatherNowBean
 import com.zj.network.PlayWeatherNetwork
 import com.zj.utils.XLog
-import com.zj.utils.showToast
+import com.zj.utils.view.showToast
 import com.zj.utils.weather.getDateWeekName
 import com.zj.utils.weather.getTimeName
 import com.zj.utils.weather.getTodayBean

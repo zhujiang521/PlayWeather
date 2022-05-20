@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.weather.R
-import com.zj.utils.ImageLoader
+import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
 
 @Composable

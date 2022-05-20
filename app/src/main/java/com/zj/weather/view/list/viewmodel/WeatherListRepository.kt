@@ -5,7 +5,7 @@ import com.zj.model.SUCCESSFUL
 import com.zj.model.city.GeoBean
 import com.zj.model.getErrorText
 import com.zj.utils.XLog
-import com.zj.utils.showToast
+import com.zj.utils.view.showToast
 import com.zj.weather.R
 import com.zj.model.room.PlayWeatherDatabase
 import com.zj.model.room.entity.CityInfo

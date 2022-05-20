@@ -2,16 +2,17 @@ package com.zj.utils.view
 
 import android.content.Context
 import android.graphics.*
-import com.zj.utils.BitmapFillet.CORNER_ALL
-import com.zj.utils.BitmapFillet.CORNER_BOTTOM
-import com.zj.utils.BitmapFillet.CORNER_BOTTOM_LEFT
-import com.zj.utils.BitmapFillet.CORNER_BOTTOM_RIGHT
-import com.zj.utils.BitmapFillet.CORNER_LEFT
-import com.zj.utils.BitmapFillet.CORNER_NONE
-import com.zj.utils.BitmapFillet.CORNER_RIGHT
-import com.zj.utils.BitmapFillet.CORNER_TOP
-import com.zj.utils.BitmapFillet.CORNER_TOP_LEFT
-import com.zj.utils.BitmapFillet.CORNER_TOP_RIGHT
+import com.zj.utils.XLog
+import com.zj.utils.view.BitmapFillet.CORNER_ALL
+import com.zj.utils.view.BitmapFillet.CORNER_BOTTOM
+import com.zj.utils.view.BitmapFillet.CORNER_BOTTOM_LEFT
+import com.zj.utils.view.BitmapFillet.CORNER_BOTTOM_RIGHT
+import com.zj.utils.view.BitmapFillet.CORNER_LEFT
+import com.zj.utils.view.BitmapFillet.CORNER_NONE
+import com.zj.utils.view.BitmapFillet.CORNER_RIGHT
+import com.zj.utils.view.BitmapFillet.CORNER_TOP
+import com.zj.utils.view.BitmapFillet.CORNER_TOP_LEFT
+import com.zj.utils.view.BitmapFillet.CORNER_TOP_RIGHT
 import com.zj.utils.weather.IconUtils
 
 /**

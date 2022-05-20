@@ -36,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.weather.R
-import com.zj.utils.hideIme
+import com.zj.utils.view.hideIme
 
 @Composable
 fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {

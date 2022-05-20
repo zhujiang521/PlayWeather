@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.google.gson.Gson
-import com.zj.weather.common.GrayAppAdapter
+import com.zj.utils.view.GrayAppAdapter
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.theme.PlayWeatherTheme
 import com.zj.utils.XLog

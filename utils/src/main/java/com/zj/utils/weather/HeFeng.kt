@@ -1,4 +1,4 @@
-package com.zj.utils
+package com.zj.utils.weather
 
 // 和风天气 Public Id
 const val WEATHER_PUBLIC_ID = "HE2205201110151628"

@@ -1,8 +1,9 @@
-package com.zj.utils
+package com.zj.utils.view
 
 import android.app.Activity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type.ime
+import com.zj.utils.isDarkMode
 
 /**
  * 设置透明状态栏

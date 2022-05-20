@@ -12,7 +12,7 @@ import com.zj.model.room.entity.CityInfo
 import com.zj.utils.XLog
 import com.zj.utils.checkCoroutines
 import com.zj.utils.checkNetConnect
-import com.zj.utils.showToast
+import com.zj.utils.view.showToast
 import com.zj.weather.R
 import com.zj.model.PlayError
 import com.zj.model.PlayLoading

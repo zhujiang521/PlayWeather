@@ -1,4 +1,4 @@
-package com.zj.utils
+package com.zj.utils.view
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image

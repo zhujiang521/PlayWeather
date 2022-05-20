@@ -11,8 +11,8 @@ import com.google.gson.Gson
 import com.zj.weather.R
 import com.zj.weather.widget.WeatherWidgetUtils.notifyWeatherWidget
 import com.zj.model.room.entity.CityInfo
-import com.zj.utils.BitmapFillet.fillet
-import com.zj.utils.BitmapFillet.zoomImg
+import com.zj.utils.view.BitmapFillet.fillet
+import com.zj.utils.view.BitmapFillet.zoomImg
 import com.zj.utils.XLog
 import com.zj.utils.weather.IconUtils
 import kotlinx.coroutines.CoroutineScope

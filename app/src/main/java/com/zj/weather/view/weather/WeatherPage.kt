@@ -28,7 +28,7 @@ import com.zj.weather.view.weather.widget.HeaderAction
 import com.zj.weather.view.weather.widget.HeaderWeather
 import com.zj.weather.view.weather.widget.WeatherAnimation
 import com.zj.weather.view.weather.widget.WeatherContent
-import com.zj.utils.ImageLoader
+import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
 
 @Composable

@@ -1,4 +1,4 @@
-package com.zj.weather.common
+package com.zj.utils.view
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize

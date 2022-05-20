@@ -23,7 +23,7 @@ import com.zj.model.room.entity.CityInfo
 import com.zj.weather.view.list.viewmodel.WeatherListViewModel
 import com.zj.weather.view.list.widget.SearchBar
 import com.zj.weather.view.list.widget.WeatherCityItem
-import com.zj.utils.showToast
+import com.zj.utils.view.showToast
 
 @Composable
 fun WeatherListPage(

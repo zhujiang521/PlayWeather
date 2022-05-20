@@ -3,7 +3,7 @@ package com.zj.network.service
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.model.weather.WeatherHourlyBean
 import com.zj.model.weather.WeatherNowBean
-import com.zj.utils.WEATHER_KEY
+import com.zj.utils.weather.WEATHER_KEY
 import retrofit2.http.GET
 import retrofit2.http.Query
 
