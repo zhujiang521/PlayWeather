@@ -88,7 +88,7 @@ class DeskCalendarRemoteViewsFactory(private val context: Context) :
     }
 
     override fun getLoadingView(): RemoteViews {
-        return RemoteViews(context.packageName, R.layout.weather_desk_loading)
+        return RemoteViews(context.packageName, R.layout.widget_loading)
     }
 
     override fun getViewTypeCount(): Int {

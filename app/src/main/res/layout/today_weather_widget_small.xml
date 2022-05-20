@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
-    android:orientation="vertical"
-    android:theme="@style/Theme.Design.NoActionBar">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/today_iv_bg"

@@ -2,8 +2,7 @@
     android:id="@android:id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000"
-    android:theme="@style/Theme.Design.NoActionBar">
+    android:background="#00000000">
 
     <StackView
         android:id="@+id/stack_view"

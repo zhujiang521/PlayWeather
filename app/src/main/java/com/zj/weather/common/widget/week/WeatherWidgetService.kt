@@ -80,7 +80,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     override fun getViewAt(position: Int): RemoteViews {
         XLog.e("getViewAt:${widgetItems.size}")
         if (widgetItems.size != WEEK_COUNT) {
-            return RemoteViews(context.packageName, R.layout.weather_widget_loading)
+            return RemoteViews(context.packageName, R.layout.widget_loading)
         }
         return RemoteViews(context.packageName, R.layout.widget_item).apply {
             val weather = widgetItems[position]
@@ -166,7 +166,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun getLoadingView(): RemoteViews {
-        return RemoteViews(context.packageName, R.layout.weather_widget_loading)
+        return RemoteViews(context.packageName, R.layout.widget_loading)
     }
 
     override fun getViewTypeCount(): Int {
