@@ -8,10 +8,10 @@ import android.widget.RemoteViewsService
 import com.zj.weather.R
 import com.zj.weather.common.widget.WeatherWidgetUtils.notifyWeatherWidget
 import com.zj.weather.common.widget.week.WeekWeather
-import com.zj.weather.utils.BitmapFillet.fillet
-import com.zj.weather.utils.BitmapFillet.zoomImg
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.weather.IconUtils
+import com.zj.utils.BitmapFillet.fillet
+import com.zj.utils.BitmapFillet.zoomImg
+import com.zj.utils.XLog
+import com.zj.utils.weather.IconUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 

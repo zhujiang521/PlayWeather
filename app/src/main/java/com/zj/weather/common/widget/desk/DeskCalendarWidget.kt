@@ -10,7 +10,7 @@ import android.net.Uri
 import android.widget.RemoteViews
 import com.zj.weather.R
 import com.zj.weather.common.widget.utils.startCalendar
-import com.zj.weather.utils.XLog
+import com.zj.utils.XLog
 
 const val CLICK_DESK_ACTION = "com.zj.weather.common.widget.CLICK_DESK_ACTION"
 const val CLICK_DESK_ACTION_VALUES = "com.zj.weather.common.widget.CLICK_DESK_ACTION_VALUES"

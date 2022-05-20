@@ -7,3 +7,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "PlayWeather"
 include ':app'
+include ':network'
+include ':model'
+include ':utils'

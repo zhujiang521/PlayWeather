@@ -21,8 +21,8 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.gson.Gson
 import com.zj.weather.R
 import com.zj.weather.common.widget.week.PREF_PREFIX_KEY
-import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
+import com.zj.model.room.entity.CityInfo
+import com.zj.weather.view.city.viewmodel.CityListViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable

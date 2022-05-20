@@ -15,7 +15,7 @@ import com.zj.weather.common.widget.WeatherWidgetUtils.getCellsForSize
 import com.zj.weather.common.widget.WeatherWidgetUtils.notifyWeatherWidget
 import com.zj.weather.common.widget.utils.deleteCityInfoPref
 import com.zj.weather.common.widget.utils.loadCityInfoPref
-import com.zj.weather.utils.XLog
+import com.zj.utils.XLog
 
 
 const val CLICK_ITEM_ACTION = "com.zj.weather.common.widget.CLICK_ITEM_ACTION"

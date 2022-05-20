@@ -20,12 +20,20 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-#  排除okhttp
- -dontwarn com.squareup.**
- -dontwarn okio.**
- -keep public class org.codehaus.* { *; }
- -keep public class java.nio.* { *; }
+# Gson
+-keep class com.zj.model**{*;} # 自定义数据模型的bean目录
+-keep class com.google.gson.stream.** { *; }
+-keepattributes EnclosingMethod
 
-#  排除QWeather
- -dontwarn com.qweather.sdk.**
- -keep class com.qweather.sdk.** { *;}
+#retrofit2  混淆
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+# OkHttp3
+-dontwarn okhttp3.logging.**
+-keep class okhttp3.internal.**{*;}
+-dontwarn okio.**
+# Retrofit
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions

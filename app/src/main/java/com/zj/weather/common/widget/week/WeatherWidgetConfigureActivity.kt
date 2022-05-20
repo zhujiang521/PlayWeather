@@ -10,9 +10,9 @@ import androidx.compose.material.Surface
 import com.zj.weather.BaseActivity
 import com.zj.weather.common.widget.today.refreshLocationWeather
 import com.zj.weather.common.widget.utils.ConfigureWidget
-import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.theme.PlayWeatherTheme
-import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
+import com.zj.model.room.entity.CityInfo
+import com.zj.weather.theme.PlayWeatherTheme
+import com.zj.weather.view.city.viewmodel.CityListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

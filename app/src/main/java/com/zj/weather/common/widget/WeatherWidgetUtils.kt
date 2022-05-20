@@ -2,23 +2,18 @@ package com.zj.weather.common.widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import com.google.gson.Gson
-import com.qweather.sdk.bean.base.Code
-import com.qweather.sdk.bean.base.Unit
-import com.qweather.sdk.bean.weather.WeatherDailyBean
-import com.qweather.sdk.view.QWeather
+import com.zj.network.PlayWeatherNetwork
+import com.zj.utils.XLog
+import com.zj.utils.weather.getDateWeekName
 import com.zj.weather.R
 import com.zj.weather.common.widget.today.TodayWeatherRemoteViewsFactory
 import com.zj.weather.common.widget.week.WeatherRemoteViewsFactory
 import com.zj.weather.common.widget.week.WeekWeather
-import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.weather.getLocation
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.getDefaultLocale
-import com.zj.weather.utils.showToast
-import com.zj.weather.utils.weather.getDateWeekName
+import com.zj.model.room.entity.CityInfo
+import com.zj.weather.view.weather.getLocation
+import kotlinx.coroutines.*
 
-object WeatherWidgetUtils {
+object WeatherWidgetUtils : CoroutineScope by MainScope() {
 
     /**
      * 获取之后一周的天气
@@ -30,44 +25,27 @@ object WeatherWidgetUtils {
     fun getWeather7Day(
         context: Context,
         location: String?,
-        onSuccessListener: (MutableList<WeekWeather>) -> kotlin.Unit
+        onSuccessListener: (MutableList<WeekWeather>) -> Unit
     ) {
-        QWeather.getWeather7D(context, location,
-            context.getDefaultLocale(), Unit.METRIC,
-            object : QWeather.OnResultWeatherDailyListener {
-                override fun onError(e: Throwable) {
-                    XLog.e("getWeather7Day1 onError: $e")
-                    showToast(context, e.message)
-                }
-
-                override fun onSuccess(weatherDailyBean: WeatherDailyBean?) {
-                    XLog.d(
-                        "getWeather7Day1 onSuccess: " + Gson().toJson(weatherDailyBean)
+        val network = PlayWeatherNetwork(context)
+        launch(Dispatchers.IO) {
+            val weatherDailyBean = network.getWeather7Day(location ?: "")
+            val items = arrayListOf<WeekWeather>()
+            weatherDailyBean.daily.forEach { weather ->
+                val fxDate = getDateWeekName(context, weather.fxDate)
+                val weekWeather =
+                    WeekWeather(
+                        weather.textDay,
+                        weather.fxDate,
+                        weather.iconDay,
+                        weather.tempMax,
+                        weather.tempMin,
+                        fxDate
                     )
-                    //先判断返回的status是否正确，当status正确时获取数据，若status不正确，可查看status对应的Code值找到原因
-                    if (Code.OK === weatherDailyBean?.code) {
-                        val items = arrayListOf<WeekWeather>()
-                        weatherDailyBean.daily.forEach { weather ->
-                            val fxDate = getDateWeekName(context, weather.fxDate)
-                            val weekWeather =
-                                WeekWeather(
-                                    weather.textDay,
-                                    weather.fxDate,
-                                    weather.iconDay,
-                                    weather.tempMax,
-                                    weather.tempMin,
-                                    fxDate
-                                )
-                            items.add(weekWeather)
-                        }
-                        onSuccessListener(items)
-                    } else {
-                        //在此查看返回数据失败的原因
-                        val code: Code? = weatherDailyBean?.code
-                        XLog.w("getWeather7Day1 failed code: $code")
-                    }
-                }
-            })
+                items.add(weekWeather)
+            }
+            onSuccessListener(items)
+        }
     }
 
     /**

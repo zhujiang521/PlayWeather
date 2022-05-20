@@ -6,8 +6,8 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.zj.weather.R
 import com.zj.weather.common.widget.utils.ProgrammerCalendar
-import com.zj.weather.utils.Lunar
-import com.zj.weather.utils.XLog
+import com.zj.utils.Lunar
+import com.zj.utils.XLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import java.util.*

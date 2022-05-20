@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="uv_index1">紫外線強度最弱，外出時戴上太陽帽即可</string>
+    <string name="uv_index2">紫外線強度較弱，外出時需要在身上塗上防曬霜</string>
+    <string name="uv_index3">紫外線強度較強，外出時必須在陰涼處行走</string>
+    <string name="uv_index4">紫外線強度很強，最好不要到沙灘場地上曬太陽</string>
+    <string name="uv_index5">紫外線強度特別強，盡量避免外出</string>
+
+    <string name="time_today">今天</string>
+    <string name="time_now">現在</string>
+    <string name="time_hour">時</string>
+
+</resources>

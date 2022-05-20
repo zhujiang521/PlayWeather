@@ -6,24 +6,20 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdkVersion cfgs.compileSdkVersion
 
     defaultConfig {
         applicationId "com.zj.weather"
-        minSdk 24
-        targetSdk 31
-        versionCode 20
-        versionName "2.5.2"
+        minSdkVersion cfgs.minSdkVersion
+        targetSdkVersion cfgs.targetSdkVersion
+        versionCode cfgs.versionCode
+        versionName cfgs.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
+
         // 去除多语言
         resConfigs "zh", "zh-rCN", "zh-rHK", "zh-rTW"
     }
@@ -38,12 +34,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility cfgs.javaVersion
+        targetCompatibility cfgs.javaVersion
     }
     kotlinOptions {
-        jvmTarget = '1.8'
-        useIR = true
+        jvmTarget = cfgs.jvmTarget
     }
     buildFeatures {
         compose true
@@ -62,8 +57,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.9.0-alpha03'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation des.coreKtx
+    implementation des.appcompat
     implementation 'com.google.android.material:material:1.5.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
@@ -72,30 +67,12 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.5.0-alpha05'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.7'
-    implementation 'com.google.code.gson:gson:2.9.0'
-
-    def accompanist_version = "0.24.9-beta"
-    // Compose 权限
-    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
-    // Navigation 动画
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
-    // Compose ViewPage
-    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
-    // Compose ViewPage 指示器
-    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+    implementation project(path: ':network')
 
     // lottie动画
     implementation "com.airbnb.android:lottie-compose:5.0.3"
     // navigation
     implementation "androidx.navigation:navigation-compose:2.5.0-alpha04"
-
-    // Room
-    def room_version = "2.4.1"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    // 对 Room 的 Kotlin 扩展和协程支持
-    implementation "androidx.room:room-ktx:$room_version"
 
     // 启动动画
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
@@ -108,9 +85,9 @@ dependencies {
     // 使用Compose 编写小部件（Widget）
     implementation "androidx.glance:glance-appwidget:1.0.0-alpha01"
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation des.junit
+    androidTestImplementation des.extJunit
+    androidTestImplementation des.espressoCore
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 }

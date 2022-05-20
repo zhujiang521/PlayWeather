@@ -3,8 +3,8 @@ package com.zj.weather
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.zj.weather.utils.setAndroidNativeLightStatusBar
-import com.zj.weather.utils.transparentStatusBar
+import com.zj.utils.setAndroidNativeLightStatusBar
+import com.zj.utils.transparentStatusBar
 
 abstract class BaseActivity : ComponentActivity() {
 

@@ -29,13 +29,12 @@ import com.zj.weather.common.PlayActions
 import com.zj.weather.common.PlayDestinations
 import com.zj.weather.common.composable
 import com.zj.weather.common.searchComposable
-import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.city.CityListPage
-import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
-import com.zj.weather.ui.view.list.WeatherListPage
-import com.zj.weather.ui.view.list.viewmodel.WeatherListViewModel
-import com.zj.weather.ui.view.weather.WeatherViewPager
-import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
+import com.zj.weather.view.city.CityListPage
+import com.zj.weather.view.city.viewmodel.CityListViewModel
+import com.zj.weather.view.list.WeatherListPage
+import com.zj.weather.view.list.viewmodel.WeatherListViewModel
+import com.zj.weather.view.weather.WeatherViewPager
+import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 
 
 @OptIn(
@@ -44,7 +43,6 @@ import com.zj.weather.ui.view.weather.viewmodel.WeatherViewModel
 )
 @Composable
 fun NavGraph(
-    defaultCityInfo: CityInfo?,
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
 ) {
     val navController = rememberAnimatedNavController()

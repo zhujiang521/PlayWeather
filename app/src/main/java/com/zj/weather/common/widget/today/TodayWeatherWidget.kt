@@ -14,10 +14,10 @@ import com.zj.weather.R
 import com.zj.weather.common.widget.WeatherWidgetUtils
 import com.zj.weather.common.widget.utils.deleteCityInfoPref
 import com.zj.weather.common.widget.utils.loadCityInfoPref
-import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.view.weather.getLocation
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.weather.IconUtils
+import com.zj.model.room.entity.CityInfo
+import com.zj.weather.view.weather.getLocation
+import com.zj.utils.XLog
+import com.zj.utils.weather.IconUtils
 
 const val CLICK_TODAY_ACTION = "com.zj.weather.common.widget.today.CLICK_TODAY_ACTION"
 const val LOCATION_REFRESH = "com.zj.weather.LOCATION_REFRESH"

@@ -150,6 +150,14 @@
         <entry key="../../../../layout/compose-model-1645523220175.xml" value="0.3656565656565657" />
         <entry key="../../../../layout/compose-model-1649121826588.xml" value="0.24602272727272728" />
         <entry key="../../../../layout/compose-model-1649857635106.xml" value="0.26464646464646463" />
+        <entry key="../../../../layout/compose-model-1653011037988.xml" value="0.12013888888888889" />
+        <entry key="../../../../layout/compose-model-1653014539582.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1653016371093.xml" value="0.2759259259259259" />
+        <entry key="../../../../layout/compose-model-1653016376248.xml" value="0.2759259259259259" />
+        <entry key="../../../../layout/compose-model-1653026183886.xml" value="0.1486161251504212" />
+        <entry key="../../../../layout/compose-model-1653026341012.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1653026574776.xml" value="0.2759259259259259" />
+        <entry key="../../../../layout/compose-model-1653026585244.xml" value="0.2759259259259259" />
         <entry key="../../.gradle/caches/transforms-3/25f387e98bdbd0fee4e18406628b2b7b/transformed/jetified-glance-appwidget-1.0.0-alpha01/res/layout/glance_error_layout.xml" value="0.266304347826087" />
         <entry key="app/src/main/res/drawable-v21/app_widget_background.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable-v21/app_widget_inner_view_background.xml" value="0.2604166666666667" />
@@ -199,6 +207,10 @@
         <entry key="app/src/main/res/layout/weather_widget_loading.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/widget_desk_item.xml" value="0.19767441860465115" />
         <entry key="app/src/main/res/layout/widget_item.xml" value="0.24427083333333333" />
+        <entry key="utils/src/main/res/drawable/icon_303.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/icon_304.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/icon_305.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/icon_513.xml" value="0.149" />
       </map>
     </option>
   </component>

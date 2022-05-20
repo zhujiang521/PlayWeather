@@ -4,7 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import com.zj.weather.utils.XLog
+import com.zj.utils.XLog
 
 private const val ZUI_CALENDAR = "com.zui.calendar"
 private const val ZUI_CALENDAR_ACTIVITY = "com.zui.calendar.LaunchActivity"

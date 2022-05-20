@@ -13,12 +13,12 @@ import com.zj.weather.R
 import com.zj.weather.common.widget.utils.ConfigureWidget
 import com.zj.weather.common.widget.utils.saveCityInfoPref
 import com.zj.weather.common.widget.week.updateWeekAppWidget
-import com.zj.weather.room.entity.CityInfo
-import com.zj.weather.ui.theme.PlayWeatherTheme
-import com.zj.weather.ui.view.city.viewmodel.CityListViewModel
-import com.zj.weather.utils.XLog
-import com.zj.weather.utils.checkNetConnect
-import com.zj.weather.utils.showToast
+import com.zj.model.room.entity.CityInfo
+import com.zj.weather.theme.PlayWeatherTheme
+import com.zj.weather.view.city.viewmodel.CityListViewModel
+import com.zj.utils.XLog
+import com.zj.utils.checkNetConnect
+import com.zj.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
