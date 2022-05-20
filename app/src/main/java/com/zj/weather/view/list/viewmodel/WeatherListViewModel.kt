@@ -44,6 +44,7 @@ class WeatherListViewModel @Inject constructor(
     fun getGeoCityLookup(cityName: String = "北京") {
         if (!getApplication<Application>().checkNetConnect()) {
             onLocationBeanListChanged(PlayError(IllegalStateException("无网络链接")))
+            return
         }
         viewModelScope.launch {
             val geoCityLookup = weatherListRepository.getGeoCityLookup(cityName)
@@ -55,6 +56,10 @@ class WeatherListViewModel @Inject constructor(
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
+        if (!getApplication<Application>().checkNetConnect()) {
+            onLocationBeanListChanged(PlayError(IllegalStateException("无网络链接")))
+            return
+        }
         viewModelScope.launch {
             // 这块由于这两个接口有问题，和风天气的jar包问题，提交反馈人家说没问题。。qtmd。
             // 目前发现在S版本上有问题，R中没有发现
