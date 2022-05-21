@@ -12,4 +12,6 @@
 
     <string name="bad_network_view_tip">點擊屏幕可重新加載</string>
 
+    <string name="dialog_sure">確定</string>
+
 </resources>

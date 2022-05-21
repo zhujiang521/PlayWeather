@@ -13,4 +13,6 @@
 
     <string name="bad_network_view_tip">Click on the screen to reload</string>
 
+    <string name="dialog_sure">Sure</string>
+
 </resources>

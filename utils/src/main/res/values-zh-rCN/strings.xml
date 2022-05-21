@@ -12,4 +12,6 @@
 
     <string name="bad_network_view_tip">点击重新加载</string>
 
+    <string name="dialog_sure">确定</string>
+
 </resources>

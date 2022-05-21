@@ -63,6 +63,7 @@ class WeatherListViewModel @Inject constructor(
         viewModelScope.launch {
             // 这块由于这两个接口有问题，和风天气的jar包问题，提交反馈人家说没问题。。qtmd。
             // 目前发现在S版本上有问题，R中没有发现
+            // 求人不如求自己，自己实现一套就行，没有那些问题
             val geoCityLookup = weatherListRepository.getGeoTopCity()
             onLocationBeanListChanged(geoCityLookup)
         }

@@ -11,20 +11,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zj.model.city.GeoBean
-import com.zj.weather.R
-import com.zj.utils.dialog.ShowDialog
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.dialog.ShowDialog
+import com.zj.utils.dialog.ShowWarnDialog
+import com.zj.weather.R
 
 @Composable
 fun WeatherCityItem(
     locationBean: GeoBean.LocationBean,
     toWeatherDetails: (CityInfo) -> Unit,
 ) {
+    val warnDialog = remember { mutableStateOf(false) }
     val alertDialog = remember { mutableStateOf(false) }
-
+    val hasLocation = locationBean.hasLocation
     Column {
         Card(shape = RoundedCornerShape(5.dp)) {
             Text(
@@ -33,9 +36,14 @@ fun WeatherCityItem(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colors.primaryVariant)
                     .clickable {
-                        alertDialog.value = true
+                        if (!hasLocation) {
+                            alertDialog.value = true
+                        } else {
+                            warnDialog.value = true
+                        }
                     }
-                    .padding(horizontal = 10.dp, vertical = 15.dp))
+                    .padding(horizontal = 10.dp, vertical = 15.dp),
+                color = if (!hasLocation) Color.Unspecified else Color.Gray)
         }
         Spacer(modifier = Modifier.height(10.dp))
         ShowDialog(
@@ -60,5 +68,10 @@ fun WeatherCityItem(
                 )
             )
         }
+        ShowWarnDialog(
+            alertDialog = warnDialog,
+            titleId = R.string.city_dialog_title,
+            contentId = R.string.add_location_warn
+        )
     }
 }

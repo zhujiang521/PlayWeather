@@ -35,6 +35,7 @@ public class GeoBean {
 		private String rank;
 		private String id;
 		private String lat;
+		private boolean hasLocation;
 
 		public String getCountry(){
 			return country;
@@ -88,6 +89,10 @@ public class GeoBean {
 			return lat;
 		}
 
+		public boolean getHasLocation(){
+			return hasLocation;
+		}
+
 		public void setAdm2(String adm2) {
 			this.adm2 = adm2;
 		}
@@ -98,6 +103,10 @@ public class GeoBean {
 
 		public void setName(String name) {
 			this.name = name;
+		}
+
+		public void setHasLocation(boolean hasLocation) {
+			this.hasLocation = hasLocation;
 		}
 
 		@Override
