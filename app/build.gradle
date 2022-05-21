@@ -80,7 +80,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // 使用Compose 编写小部件（Widget）
-    implementation "androidx.glance:glance-appwidget:1.0.0-alpha01"
+    implementation "androidx.glance:glance-appwidget:1.0.0-alpha03"
 
     testImplementation des.junit
     androidTestImplementation des.extJunit
