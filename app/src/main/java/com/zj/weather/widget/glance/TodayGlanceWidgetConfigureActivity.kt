@@ -1,36 +1,26 @@
-package com.zj.weather.widget.today
+package com.zj.weather.widget.glance
 
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.glance.GlanceId
 import com.zj.weather.BaseActivity
-import com.zj.weather.R
+import com.zj.weather.widget.today.refreshLocationWeather
 import com.zj.weather.widget.utils.ConfigureWidget
-import com.zj.weather.widget.utils.saveCityInfoPref
-import com.zj.weather.widget.week.updateWeekAppWidget
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.theme.PlayWeatherTheme
 import com.zj.weather.view.city.viewmodel.CityListViewModel
-import com.zj.utils.XLog
-import com.zj.utils.checkNetConnect
-import com.zj.utils.view.showToast
-import com.zj.weather.widget.glance.TODAY_GLANCE_PREFS_NAME
-import com.zj.weather.widget.glance.TodayGlanceReceiver
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 /**
- * The configuration screen for the [TodayWeatherWidget] AppWidget.
+ * The configuration screen for the [WeatherWidget] AppWidget.
  */
 @AndroidEntryPoint
-class TodayWeatherWidgetConfigureActivity : BaseActivity() {
+class TodayGlanceWidgetConfigureActivity : BaseActivity() {
+
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private val viewModel by viewModels<CityListViewModel>()
 
@@ -71,7 +61,12 @@ class TodayWeatherWidgetConfigureActivity : BaseActivity() {
     }
 
     private fun onConfirm(cityInfo: CityInfo) {
-        refreshLocationWeather(context = this, cityInfo = cityInfo, appWidgetId = appWidgetId)
+        refreshLocationWeather(
+            context = this,
+            cityInfo = cityInfo,
+            appWidgetId = appWidgetId,
+            prefsName = TODAY_GLANCE_PREFS_NAME
+        )
 
         // Make sure we pass back the original appWidgetId
         val resultValue = Intent()
@@ -82,35 +77,4 @@ class TodayWeatherWidgetConfigureActivity : BaseActivity() {
 
 }
 
-fun refreshLocationWeather(
-    context: Context,
-    cityInfo: CityInfo,
-    appWidgetId: Int,
-    prefsName: String = TODAY_PREFS_NAME
-) {
-    if (!context.checkNetConnect()) {
-        showToast(context, R.string.bad_network_view_tip)
-    }
-    XLog.e("refreshLocationWeather:${cityInfo}")
-    saveCityInfoPref(context, appWidgetId, cityInfo, prefsName)
-
-    // It is the responsibility of the configuration activity to update the app widget
-    val appWidgetManager = AppWidgetManager.getInstance(context)
-    when (prefsName) {
-        TODAY_PREFS_NAME -> {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
-        }
-        TODAY_GLANCE_PREFS_NAME -> {
-            GlobalScope.launch {
-                TodayGlanceReceiver().glanceAppWidget.update(context, AppWidgetId(appWidgetId))
-            }
-        }
-        else -> {
-            updateWeekAppWidget(context, appWidgetManager, appWidgetId)
-        }
-    }
-}
-
-internal data class AppWidgetId(val appWidgetId: Int) : GlanceId
-
-const val TODAY_PREFS_NAME = "com.zj.weather.widget.today.TodayWeatherWidget"
+const val TODAY_GLANCE_PREFS_NAME = "com.zj.weather.widget.TodayGlanceWidget"

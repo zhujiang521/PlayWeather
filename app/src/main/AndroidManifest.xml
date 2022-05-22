@@ -41,6 +41,15 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.zj.weather.widget.glance.TodayGlanceWidgetConfigureActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -94,7 +103,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/first_glance_widget_info" />
+                android:resource="@xml/today_glance_widget_info" />
         </receiver>
 
     </application>

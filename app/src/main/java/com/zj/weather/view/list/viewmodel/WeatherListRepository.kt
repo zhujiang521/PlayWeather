@@ -26,8 +26,13 @@ class WeatherListRepository @Inject constructor(private val context: Application
         val cityLookup = network.getCityLookup(cityName)
         val code = cityLookup.code.toInt()
         return if (code == SUCCESSFUL) {
-            buildHasLocation(cityLookup.location)
-            PlaySuccess(cityLookup.location)
+            val locations = cityLookup.location
+            if (locations.isNullOrEmpty()) {
+                PlayNoContent("")
+            } else {
+                buildHasLocation(locations)
+                PlaySuccess(locations)
+            }
         } else {
             val text = getErrorText(code)
             showToast(context, text)
@@ -54,8 +59,13 @@ class WeatherListRepository @Inject constructor(private val context: Application
         val cityTop = network.getCityTop()
         val code = cityTop.code.toInt()
         return if (code == SUCCESSFUL) {
-            buildHasLocation(cityTop.topCityList)
-            PlaySuccess(cityTop.topCityList)
+            val locations = cityTop.topCityList
+            if (locations.isNullOrEmpty()) {
+                PlayNoContent("")
+            } else {
+                buildHasLocation(locations)
+                PlaySuccess(locations)
+            }
         } else {
             val text = getErrorText(code)
             showToast(context, text)

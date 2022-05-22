@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.zj.weather.widget.glance.TodayGlanceWidgetConfigureActivity"
+    android:maxResizeWidth="250dp"
+    android:minWidth="110dp"
+    android:minHeight="80dp"
+    android:resizeMode="horizontal"
+    android:targetCellWidth="2"
+    android:targetCellHeight="2"
+    android:widgetCategory="home_screen"
+    android:widgetFeatures="reconfigurable|configuration_optional" />
