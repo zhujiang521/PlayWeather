@@ -1,6 +1,7 @@
 package com.zj.weather.view.weather.viewmodel
 
 import android.app.Application
+import android.content.Intent
 import android.location.Address
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
@@ -18,6 +19,7 @@ import com.zj.model.PlayError
 import com.zj.model.PlayLoading
 import com.zj.model.PlayState
 import com.zj.model.PlaySuccess
+import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -110,6 +112,7 @@ class WeatherViewModel @Inject constructor(
         updateCityJob.checkCoroutines()
         updateCityJob = viewModelScope.launch(Dispatchers.IO) {
             weatherRepository.updateCityInfo(location, result)
+            getApplication<Application>().sendBroadcast(Intent(LOCATION_REFRESH))
         }
     }
 

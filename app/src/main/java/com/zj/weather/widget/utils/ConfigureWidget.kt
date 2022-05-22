@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -121,9 +122,9 @@ internal fun saveCityInfoPref(
     cityInfo: CityInfo,
     prefsName: String
 ) {
-    val prefs = context.getSharedPreferences(prefsName, 0).edit()
-    prefs.putString(PREF_PREFIX_KEY + appWidgetId, Gson().toJson(cityInfo))
-    prefs.apply()
+    context.getSharedPreferences(prefsName, 0).edit {
+        putString(PREF_PREFIX_KEY + appWidgetId, Gson().toJson(cityInfo))
+    }
 }
 
 // Read the prefix from the SharedPreferences object for this widget.
