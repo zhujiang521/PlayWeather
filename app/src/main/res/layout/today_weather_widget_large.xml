@@ -29,6 +29,7 @@
                 android:id="@+id/today_tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 tools:text="北京市" />
 
             <TextView
@@ -172,7 +173,6 @@
             android:layout_height="match_parent"
             android:layout_below="@id/today_ll_tomorrow"
             android:layout_marginTop="10dp"
-            android:background="@drawable/app_widget_week_item_background"
             android:divider="#00000000"
             android:listSelector="@android:color/transparent"
             android:padding="5dp"

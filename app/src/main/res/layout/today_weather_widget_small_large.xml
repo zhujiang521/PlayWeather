@@ -29,6 +29,7 @@
                 android:id="@+id/today_tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 tools:text="北京市" />
 
         </LinearLayout>
@@ -51,7 +52,7 @@
                 android:shadowDy="0"
                 android:shadowRadius="10"
                 android:textColor="@color/white"
-                android:textSize="35sp"
+                android:textSize="30sp"
                 tools:text="21℃" />
 
         </LinearLayout>
@@ -74,13 +75,13 @@
                 android:shadowDy="0"
                 android:shadowRadius="10"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 tools:text="晴" />
 
             <ImageView
                 android:id="@+id/today_iv_icon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/icon_100"
@@ -94,7 +95,6 @@
             android:layout_height="match_parent"
             android:layout_below="@id/today_ll_temp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/app_widget_week_item_background"
             android:divider="#00000000"
             android:listSelector="@android:color/transparent"
             android:padding="5dp"

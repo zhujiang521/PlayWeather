@@ -27,6 +27,7 @@
                 android:id="@+id/today_tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 tools:text="北京市" />
 
             <TextView
