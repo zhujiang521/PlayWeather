@@ -17,4 +17,6 @@
     <color name="hour_color">#333333</color>
     <color name="minute_color">#515151</color>
 
+    <color name="yellow">#FFC651</color>
+
 </resources>

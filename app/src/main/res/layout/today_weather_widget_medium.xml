@@ -14,13 +14,15 @@
     <LinearLayout
         android:id="@+id/today_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -34,7 +36,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/today_tv_date"
@@ -49,6 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="3dp"
+            android:layout_weight="0.4"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -61,14 +66,16 @@
                 android:shadowDy="0"
                 android:shadowRadius="10"
                 android:textColor="@color/white"
-                android:textSize="35dp"
+                android:textSize="28dp"
+                tools:ignore="SpUsage"
                 tools:text="21℃" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
 
             <ImageView
                 android:id="@+id/today_iv_icon"
@@ -77,7 +84,8 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/icon_100"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:id="@+id/today_tv_text"
@@ -96,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="0.4"
             android:orientation="horizontal">
 
             <TextView
@@ -113,7 +122,8 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/icon_100"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:id="@+id/today_tv_tomorrow_text"
@@ -128,7 +138,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -145,7 +156,8 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/icon_100"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:id="@+id/today_tv_after_text"

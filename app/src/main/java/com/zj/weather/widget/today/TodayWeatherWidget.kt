@@ -72,14 +72,6 @@ class TodayWeatherWidget : AppWidgetProvider() {
         }
     }
 
-    override fun onEnabled(context: Context) {
-        // Enter relevant functionality for when the first widget is created
-    }
-
-    override fun onDisabled(context: Context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
-
 }
 
 internal fun updateAppWidget(
@@ -94,29 +86,14 @@ internal fun updateAppWidget(
         val mediumView = RemoteViews(context.packageName, R.layout.today_weather_widget_medium)
         val largeView = RemoteViews(context.packageName, R.layout.today_weather_widget_large)
 
-        val smallLargeView =
-            RemoteViews(context.packageName, R.layout.today_weather_widget_small_large)
-
         val viewMapping: Map<SizeF, RemoteViews> = mapOf(
             SizeF(140f, 40f) to smallView,
-            SizeF(170f, 40f) to mediumView,
             SizeF(170f, 70f) to mediumView,
             SizeF(270f, 110f) to largeView,
-            SizeF(140f, 110f) to smallLargeView,
-            SizeF(170f, 70f) to largeView,
-            SizeF(170f, 110f) to largeView
         )
         buildRemoteViews(context, cityInfo, smallView, appWidgetManager, appWidgetId, viewMapping)
         buildRemoteViews(context, cityInfo, mediumView, appWidgetManager, appWidgetId, viewMapping)
         buildRemoteViews(context, cityInfo, largeView, appWidgetManager, appWidgetId, viewMapping)
-        buildRemoteViews(
-            context,
-            cityInfo,
-            smallLargeView,
-            appWidgetManager,
-            appWidgetId,
-            viewMapping
-        )
     } else {
         val views = RemoteViews(context.packageName, R.layout.today_weather_widget_medium)
         buildRemoteViews(context, cityInfo, views, appWidgetManager, appWidgetId)

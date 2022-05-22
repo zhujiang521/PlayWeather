@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/currentColor"
+            android:textColor="@color/white"
             android:textSize="25sp"
             tools:text="北京" />
 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/currentColor"
+            android:textColor="@color/white"
             android:textSize="20sp"
             tools:text="时间" />
 
@@ -44,7 +44,9 @@
             android:layout_height="100dp"
             android:layout_margin="15dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_100" />
+            android:src="@drawable/icon_100"
+            android:tint="@color/yellow"
+            tools:ignore="UseAppTint" />
 
         <ImageView
             android:id="@+id/widget_iv_small_icon"
@@ -53,14 +55,16 @@
             android:layout_margin="15dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/icon_100"
-            android:visibility="gone" />
+            android:tint="@color/yellow"
+            android:visibility="gone"
+            tools:ignore="UseAppTint" />
 
         <TextView
             android:id="@+id/widget_tv_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/currentColor"
+            android:textColor="@color/white"
             android:textSize="20sp"
             tools:text="test" />
 

@@ -50,7 +50,7 @@ class TodayGlanceWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
-                    provider = ImageProvider(R.drawable.icon_102),
+                    provider = ImageProvider(R.drawable.day_icon),
                     contentDescription = "",
                     modifier = GlanceModifier.size(40.dp)
                 )

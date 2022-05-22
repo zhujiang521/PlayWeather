@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <LinearLayout
             android:id="@+id/today_ll_location"
@@ -65,7 +65,7 @@
                 android:shadowDy="0"
                 android:shadowRadius="10"
                 android:textColor="@color/white"
-                android:textSize="40sp"
+                android:textSize="28sp"
                 tools:text="21℃" />
 
             <TextView
@@ -76,13 +76,14 @@
 
             <ImageView
                 android:id="@+id/today_iv_icon"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/icon_100"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:id="@+id/today_tv_text"
@@ -93,7 +94,7 @@
                 android:shadowDy="0"
                 android:shadowRadius="10"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 tools:text="多云" />
         </LinearLayout>
 
@@ -121,7 +122,8 @@
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/icon_100"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:id="@+id/today_tv_tomorrow_text"
@@ -154,7 +156,8 @@
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/icon_100"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:id="@+id/today_tv_after_text"

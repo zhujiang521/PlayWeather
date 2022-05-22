@@ -164,6 +164,7 @@
         <entry key="../../../../layout/compose-model-1653122394703.xml" value="0.4037940379403794" />
         <entry key="../../../../layout/compose-model-1653123067193.xml" value="0.4037940379403794" />
         <entry key="../../../../layout/compose-model-1653203339859.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1653206349657.xml" value="0.301010101010101" />
         <entry key="../../.gradle/caches/transforms-3/25f387e98bdbd0fee4e18406628b2b7b/transformed/jetified-glance-appwidget-1.0.0-alpha01/res/layout/glance_error_layout.xml" value="0.266304347826087" />
         <entry key="../../.gradle/caches/transforms-3/b34e317472e4fc4523600a2b9e1921ae/transformed/jetified-glance-appwidget-1.0.0-alpha03/res/layout/glance_error_layout.xml" value="0.28894927536231885" />
         <entry key="app/src/main/res/drawable-v21/app_widget_background.xml" value="0.2604166666666667" />
@@ -214,6 +215,7 @@
         <entry key="app/src/main/res/layout/weather_widget_loading.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/widget_desk_item.xml" value="0.19767441860465115" />
         <entry key="app/src/main/res/layout/widget_item.xml" value="0.24427083333333333" />
+        <entry key="app/src/main/res/layout/widget_loading.xml" value="0.23229166666666667" />
         <entry key="utils/src/main/res/drawable/icon_303.xml" value="0.149" />
         <entry key="utils/src/main/res/drawable/icon_304.xml" value="0.149" />
         <entry key="utils/src/main/res/drawable/icon_305.xml" value="0.149" />
