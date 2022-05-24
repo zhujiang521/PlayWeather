@@ -35,8 +35,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="15dp"
-        android:src="@drawable/icon_100"
-        android:tint="@color/yellow"
+        android:src="@drawable/x_sunny"
         tools:ignore="UseAppTint" />
 
     <ImageView
@@ -44,8 +43,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="10dp"
-        android:src="@drawable/icon_100"
-        android:tint="@color/yellow"
+        android:src="@drawable/x_sunny"
         android:visibility="gone"
         tools:ignore="UseAppTint" />
 

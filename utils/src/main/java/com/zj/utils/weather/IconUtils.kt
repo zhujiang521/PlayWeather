@@ -70,17 +70,6 @@ object IconUtils {
     }
 
     /**
-     * 获取天气图标
-     *
-     * @param weather 天气状况代码
-     * @return 天气icon
-     */
-    fun getWeatherIcon(weather: String?): Int {
-        if (weather == null) return R.drawable.icon_100
-        return getDayIconDark(weather)
-    }
-
-    /**
      * 获取天气背景
      *
      * @param weather 天气状况代码
@@ -96,70 +85,43 @@ object IconUtils {
     }
 
     /**
-     * 获取白天天气图标
+     * 获取天气图标
+     *
+     * @param weather 天气状况代码
+     * @return 天气icon
      */
-    private fun getDayIconDark(weather: String?): Int {
-        val imageId: Int
-        when (weather) {
-            "100" -> imageId = R.drawable.icon_100
-            "101" -> imageId = R.drawable.icon_101
-            "102" -> imageId = R.drawable.icon_102
-            "103" -> imageId = R.drawable.icon_103
-            "104" -> imageId = R.drawable.icon_104
-            "200", "201", "202", "203", "204", "205", "206", "207", "208", "209", "210", "211", "212", "213" ->
-                imageId = R.drawable.icon_510
-            "300" -> imageId = R.drawable.icon_300
-            "301" -> imageId = R.drawable.icon_301
-            "302" -> imageId = R.drawable.icon_302
-            "303" -> imageId = R.drawable.icon_303
-            "304" -> imageId = R.drawable.icon_304
-            "305" -> imageId = R.drawable.icon_305
-            "306" -> imageId = R.drawable.icon_306
-            "307" -> imageId = R.drawable.icon_307
-            "308" -> imageId = R.drawable.icon_308
-            "309" -> imageId = R.drawable.icon_309
-            "310" -> imageId = R.drawable.icon_310
-            "311" -> imageId = R.drawable.icon_311
-            "312" -> imageId = R.drawable.icon_312
-            "313" -> imageId = R.drawable.icon_313
-            "314" -> imageId = R.drawable.icon_314
-            "315" -> imageId = R.drawable.icon_315
-            "316" -> imageId = R.drawable.icon_316
-            "317" -> imageId = R.drawable.icon_317
-            "318" -> imageId = R.drawable.icon_318
-            "399" -> imageId = R.drawable.icon_399
-            "400" -> imageId = R.drawable.icon_400
-            "401" -> imageId = R.drawable.icon_401
-            "402" -> imageId = R.drawable.icon_402
-            "403" -> imageId = R.drawable.icon_403
-            "404" -> imageId = R.drawable.icon_404
-            "405" -> imageId = R.drawable.icon_405
-            "406" -> imageId = R.drawable.icon_406
-            "407" -> imageId = R.drawable.icon_407
-            "408" -> imageId = R.drawable.icon_408
-            "409" -> imageId = R.drawable.icon_409
-            "410" -> imageId = R.drawable.icon_410
-            "499" -> imageId = R.drawable.icon_499
-            "500" -> imageId = R.drawable.icon_500
-            "501" -> imageId = R.drawable.icon_501
-            "502" -> imageId = R.drawable.icon_502
-            "503" -> imageId = R.drawable.icon_503
-            "504" -> imageId = R.drawable.icon_504
-            "507" -> imageId = R.drawable.icon_507
-            "508" -> imageId = R.drawable.icon_508
-            "509" -> imageId = R.drawable.icon_509
-            "510" -> imageId = R.drawable.icon_510
-            "511" -> imageId = R.drawable.icon_511
-            "512" -> imageId = R.drawable.icon_512
-            "513" -> imageId = R.drawable.icon_513
-            "514" -> imageId = R.drawable.icon_514
-            "515" -> imageId = R.drawable.icon_515
-            "900" -> imageId = R.drawable.icon_900
-            "901" -> imageId = R.drawable.icon_901
-            "999" -> imageId = R.drawable.icon_999
-            else -> imageId = R.drawable.icon_100
+    fun getWeatherIcon(weather: String?, context: Context? = null): Int {
+        if (weather == null) return R.drawable.x_sunny
+        var isDay = true
+        if (context != null) {
+            isDay = !context.isDarkMode()
         }
-        return imageId
+        return when (weather) {
+            "100", "150" -> return if (isDay) R.drawable.x_sunny else R.drawable.x_yewan_qing
+            "101", "102", "103", "151", "152", "153" -> return if (isDay) R.drawable.x_cloud else R.drawable.x_cloudy_night
+            "104", "154", "200", "201", "202", "203", "204", "205", "206", "207", "208",
+            "209", "210", "211", "212", "213" -> return R.drawable.x_overcast
+            "300", "301" -> return if (isDay) R.drawable.x_shower else R.drawable.x_yejian_zhenyu
+            "302", "303", "304" -> return R.drawable.x_thunder_rain
+            "313" -> return R.drawable.x_rain_ice
+            "404", "405", "406" -> return R.drawable.x_rain_snow
+            "305", "308", "309" -> return R.drawable.x_small_rain
+            "306", "350", "351", "399" -> return R.drawable.x_middle_rain
+            "307" -> return R.drawable.x_big_rain
+            "310", "311", "312" -> return R.drawable.x_storm
+            "456", "457", "499" -> return if (isDay) R.drawable.x_snow_flurry else R.drawable.x_snow_flurry_night
+            "400", "407", "408" -> return R.drawable.x_light_snow
+            "401", "409" -> return R.drawable.x_moderate_snow
+            "402", "410" -> return R.drawable.x_heavy_snow
+            "403" -> return R.drawable.x_snow_storm
+            "500", "501", "509", "510", "514", "515" -> return R.drawable.x_fog
+            "507" -> return R.drawable.x_shachebao
+            "504" -> return R.drawable.x_fuchen
+            "503" -> return R.drawable.x_yangsha
+            "508" -> return R.drawable.x_shachebao
+            "502", "511", "512", "513" -> return R.drawable.x_haze
+            else -> return R.drawable.x_nodata
+        }
     }
 
     /**

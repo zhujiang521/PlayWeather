@@ -46,6 +46,7 @@ public class WeatherNowBean {
         private String text;
         private String windSpeed;
         private String windScale;
+        private String city;
 
         public String getVis() {
             return vis;
@@ -113,6 +114,14 @@ public class WeatherNowBean {
 
         public void setText(String text) {
             this.text = text;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
         }
     }
 

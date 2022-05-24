@@ -81,7 +81,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/icon_100"
+                android:src="@drawable/x_sunny"
                 android:tint="@color/white"
                 tools:ignore="UseAppTint" />
 
@@ -121,7 +121,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/icon_100"
+                android:src="@drawable/x_sunny"
                 android:tint="@color/white"
                 tools:ignore="UseAppTint" />
 
@@ -155,7 +155,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/icon_100"
+                android:src="@drawable/x_sunny"
                 android:tint="@color/white"
                 tools:ignore="UseAppTint" />
 

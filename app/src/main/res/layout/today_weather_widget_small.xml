@@ -54,7 +54,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/icon_100"
+                android:src="@drawable/x_sunny"
                 android:tint="@color/white"
                 tools:ignore="UseAppTint" />
 

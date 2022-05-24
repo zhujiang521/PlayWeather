@@ -22,6 +22,7 @@ import com.zj.utils.checkNetConnect
 import com.zj.utils.view.showToast
 import com.zj.weather.widget.glance.TODAY_GLANCE_PREFS_NAME
 import com.zj.weather.widget.glance.TodayGlanceReceiver
+import com.zj.weather.widget.glance.updateTodayWeather
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -101,9 +102,7 @@ fun refreshLocationWeather(
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
         TODAY_GLANCE_PREFS_NAME -> {
-            GlobalScope.launch {
-                TodayGlanceReceiver().glanceAppWidget.update(context, AppWidgetId(appWidgetId))
-            }
+            updateTodayWeather(context, appWidgetId)
         }
         else -> {
             updateWeekAppWidget(context, appWidgetManager, appWidgetId)

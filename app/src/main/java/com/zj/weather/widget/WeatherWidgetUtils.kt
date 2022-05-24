@@ -3,18 +3,18 @@ package com.zj.weather.widget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import com.zj.model.*
+import com.zj.model.room.entity.CityInfo
+import com.zj.model.weather.WeatherNowBean
 import com.zj.network.PlayWeatherNetwork
 import com.zj.utils.XLog
 import com.zj.utils.weather.getDateWeekName
 import com.zj.weather.R
+import com.zj.weather.view.weather.getLocation
 import com.zj.weather.widget.today.TodayWeatherRemoteViewsFactory
 import com.zj.weather.widget.week.WeatherRemoteViewsFactory
 import com.zj.weather.widget.week.WeekWeather
-import com.zj.model.room.entity.CityInfo
-import com.zj.model.weather.WeatherNowBean
-import com.zj.utils.view.showToast
-import com.zj.weather.view.weather.getLocation
 import kotlinx.coroutines.*
+import kotlin.coroutines.resume
 
 object WeatherWidgetUtils : CoroutineScope by MainScope() {
 
@@ -53,29 +53,31 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
 
 
     /**
-     * 获取之后一周的天气
+     * 获取当前天气
      *
      * @param context /
      * @param location 需要获取天气的城市
-     * @param onSuccessListener 获取成功的回调
      */
-    fun getWeatherNow(
+    suspend fun getWeatherNow(
         context: Context,
-        location: String?,
-        onSuccessListener: (PlayState<WeatherNowBean.NowBaseBean>) -> Unit
-    ) {
-        onSuccessListener(PlayLoading)
-        val network = PlayWeatherNetwork(context)
-        launch(Dispatchers.IO) {
-            val weatherNowBean = network.getWeatherNow(location ?: "")
-            val code = weatherNowBean.code.toInt()
-            if (code == SUCCESSFUL) {
-                onSuccessListener(PlaySuccess(weatherNowBean.now))
-            } else {
-                val text = getErrorText(code)
-                XLog.e("error:$text")
-                onSuccessListener(PlayError(NullPointerException(text)))
+        location: CityInfo?,
+    ) = coroutineScope {
+        suspendCancellableCoroutine<PlayState<WeatherNowBean.NowBaseBean>> { continuation ->
+            val network = PlayWeatherNetwork(context)
+            launch(Dispatchers.IO) {
+                val weatherNowBean = network.getWeatherNow(location?.location ?: "")
+                val code = weatherNowBean.code.toInt()
+                if (code == SUCCESSFUL) {
+                    val now = weatherNowBean.now
+                    now.city = location?.name
+                    continuation.resume(PlaySuccess(now))
+                } else {
+                    val text = getErrorText(code)
+                    XLog.e("error:$text")
+                    continuation.resume(PlayError(NullPointerException(text)))
+                }
             }
+
         }
     }
 

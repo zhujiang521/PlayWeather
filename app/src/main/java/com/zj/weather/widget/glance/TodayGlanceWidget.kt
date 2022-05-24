@@ -1,7 +1,6 @@
 package com.zj.weather.widget.glance
 
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -15,27 +14,57 @@ import androidx.glance.layout.*
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.zj.model.PlayError
-import com.zj.model.PlayLoading
-import com.zj.model.PlayNoContent
-import com.zj.model.PlaySuccess
+import com.zj.model.*
+import com.zj.model.weather.WeatherNowBean
 import com.zj.utils.XLog
+import com.zj.utils.weather.IconUtils.getWeatherBack
+import com.zj.utils.weather.IconUtils.getWeatherIcon
 import com.zj.weather.MainActivity
 import com.zj.weather.R
-import com.zj.weather.widget.WeatherWidgetUtils
-import com.zj.weather.widget.utils.loadCityInfoPref
 
-class TodayGlanceWidget : GlanceAppWidget() {
+class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>) :
+    GlanceAppWidget() {
 
     @Composable
     override fun Content() {
-        LoadData()
+        when (state) {
+            is PlaySuccess -> {
+                SuccessWeather(state.data)
+            }
+            else -> {
+                WarnWeather()
+                XLog.w("Loading")
+            }
+        }
+    }
+
+    @Composable
+    private fun WarnWeather() {
         Column(
             modifier = GlanceModifier
                 .fillMaxSize()
                 .padding(4.dp)
                 .cornerRadius(12.dp)
-                .background(ImageProvider(R.mipmap.back_100d))
+                .background(ImageProvider(R.mipmap.back_100d)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = "NoWeather",
+                style = TextStyle(color = ColorProvider(Color.White), fontSize = 15.sp)
+            )
+        }
+    }
+
+    @Composable
+    private fun SuccessWeather(data: WeatherNowBean.NowBaseBean) {
+        val context = LocalContext.current
+        Column(
+            modifier = GlanceModifier
+                .fillMaxSize()
+                .padding(4.dp)
+                .cornerRadius(12.dp)
+                .background(ImageProvider(getWeatherBack(context, data.icon)))
                 .padding(12.dp)
                 .clickable(actionStartActivity<MainActivity>()),
             horizontalAlignment = Alignment.Start,
@@ -43,12 +72,12 @@ class TodayGlanceWidget : GlanceAppWidget() {
         ) {
             Text(
                 modifier = GlanceModifier.padding(top = 5.dp),
-                text = "昌平区",
+                text = data.city,
                 style = TextStyle(fontSize = 13.sp, color = ColorProvider(Color.White))
             )
             Text(
                 modifier = GlanceModifier.padding(top = 5.dp),
-                text = "29 ℃",
+                text = "${data.temp} ℃",
                 style = TextStyle(fontSize = 30.sp, color = ColorProvider(Color.White))
             )
             Row(
@@ -57,17 +86,17 @@ class TodayGlanceWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
-                    provider = ImageProvider(R.drawable.day_icon),
+                    provider = ImageProvider(getWeatherIcon(data.icon)),
                     contentDescription = "",
-                    modifier = GlanceModifier.size(40.dp)
+                    modifier = GlanceModifier.size(50.dp)
                 )
                 Column(modifier = GlanceModifier.padding(start = 10.dp)) {
                     Text(
-                        text = "晴",
+                        text = data.text,
                         style = TextStyle(fontSize = 11.sp, color = ColorProvider(Color.White))
                     )
                     Text(
-                        text = "17度/36度",
+                        text = "${data.temp} ℃/${data.feelsLike} ℃",
                         style = TextStyle(fontSize = 11.sp, color = ColorProvider(Color.White))
                     )
                 }
@@ -75,34 +104,8 @@ class TodayGlanceWidget : GlanceAppWidget() {
         }
     }
 
-    @Composable
-    private fun LoadData() {
-        val context = LocalContext.current
-        val instance = AppWidgetManager.getInstance(context)
-        val appWidgetIds = instance.getAppWidgetIds(
-            ComponentName(
-                context,
-                TodayGlanceReceiver::class.java
-            )
-        )
-        appWidgetIds.forEach { appWidgetId ->
-            val cityInfo = loadCityInfoPref(context, appWidgetId, TODAY_GLANCE_PREFS_NAME)
-            WeatherWidgetUtils.getWeatherNow(context, cityInfo?.location) {
-                when (it) {
-                    is PlaySuccess -> {
-                        XLog.w("it.data:${it.data}")
-                    }
-                    PlayLoading -> {
-                        XLog.w("PlayLoading")
-                    }
-                    is PlayNoContent -> {
-                        XLog.w("PlayNoContent")
-                    }
-                    is PlayError -> {
-                        XLog.w("PlayError:${it.error}")
-                    }
-                }
-            }
-        }
+    override suspend fun onDelete(context: Context, glanceId: GlanceId) {
+        super.onDelete(context, glanceId)
     }
+
 }
