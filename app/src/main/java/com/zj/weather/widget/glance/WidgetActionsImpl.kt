@@ -21,11 +21,11 @@ class WidgetActionsImpl : WidgetActions {
 
         job = CoroutineScope(Dispatchers.Default).launch {
             updateWidget(context, PlayLoading)
-            loadPokemonInfo(context, id)
+            loadWeatherInfo(context, id)
         }
     }
 
-    private suspend fun loadPokemonInfo(context: Context, id: Int) {
+    private suspend fun loadWeatherInfo(context: Context, id: Int) {
         val cityInfo = loadCityInfoPref(context, id, TODAY_GLANCE_PREFS_NAME)
         XLog.e("cityInfo:$cityInfo")
         val weatherNow = WeatherWidgetUtils.getWeatherNow(context, cityInfo)
@@ -37,7 +37,6 @@ class WidgetActionsImpl : WidgetActions {
         state: PlayState<WeatherNowBean.NowBaseBean>
     ) {
         context.getGlanceId()?.let {
-            XLog.w("更新Widget")
             TodayGlanceWidget(state).update(context, it)
         }
     }

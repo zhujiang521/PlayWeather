@@ -7,6 +7,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +25,7 @@ fun DayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            ,
+            .padding(horizontal = 10.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(
@@ -51,7 +51,8 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = dailyBean.fxDate,

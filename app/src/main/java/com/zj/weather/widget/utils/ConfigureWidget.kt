@@ -23,6 +23,7 @@ import com.google.gson.Gson
 import com.zj.weather.R
 import com.zj.weather.widget.week.PREF_PREFIX_KEY
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.lce.NoContent
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -44,72 +45,76 @@ fun ConfigureWidget(
             fontSize = 26.sp,
             color = Color(red = 53, green = 128, blue = 186)
         )
-        Box(modifier = Modifier.weight(1f)) {
-            HorizontalPager(
-                state = pagerState,
-                count = cityList.size,
-                modifier = Modifier.fillMaxSize()
-            ) { page ->
-                Card(
-                    shape = RoundedCornerShape(10.dp),
-                    backgroundColor = MaterialTheme.colors.onSecondary,
-                    modifier = Modifier.size(300.dp)
-                ) {
-                    val cityInfo = cityList[page]
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
+        if (cityList.isEmpty()) {
+            NoContent("请进入应用添加城市")
+        } else {
+            Box(modifier = Modifier.weight(1f)) {
+                HorizontalPager(
+                    state = pagerState,
+                    count = cityList.size,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    Card(
+                        shape = RoundedCornerShape(10.dp),
+                        backgroundColor = MaterialTheme.colors.onSecondary,
+                        modifier = Modifier.size(300.dp)
                     ) {
-                        Text(text = cityInfo.name, fontSize = 30.sp)
+                        val cityInfo = cityList[page]
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(text = cityInfo.name, fontSize = 30.sp)
+                        }
                     }
                 }
-            }
-            HorizontalPagerIndicator(
-                pagerState = pagerState,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp),
-            )
-        }
-        Spacer(modifier = Modifier.height(50.dp))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-        )
-        Row {
-            TextButton(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(buttonHeight),
-                onClick = {
-                    onCancelListener()
-                }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.city_dialog_cancel),
-                    fontSize = 16.sp,
-                    color = Color(red = 53, green = 128, blue = 186)
+                HorizontalPagerIndicator(
+                    pagerState = pagerState,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp),
                 )
             }
+            Spacer(modifier = Modifier.height(50.dp))
             Divider(
                 modifier = Modifier
-                    .width(1.dp)
-                    .height(buttonHeight)
+                    .fillMaxWidth()
+                    .height(1.dp)
             )
-            TextButton(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(buttonHeight),
-                onClick = {
-                    onConfirmListener(cityList[pagerState.currentPage])
+            Row {
+                TextButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(buttonHeight),
+                    onClick = {
+                        onCancelListener()
+                    }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.city_dialog_cancel),
+                        fontSize = 16.sp,
+                        color = Color(red = 53, green = 128, blue = 186)
+                    )
                 }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.city_dialog_confirm),
-                    fontSize = 16.sp,
-                    color = Color(red = 53, green = 128, blue = 186)
+                Divider(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(buttonHeight)
                 )
+                TextButton(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(buttonHeight),
+                    onClick = {
+                        onConfirmListener(cityList[pagerState.currentPage])
+                    }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.city_dialog_confirm),
+                        fontSize = 16.sp,
+                        color = Color(red = 53, green = 128, blue = 186)
+                    )
+                }
             }
         }
     }

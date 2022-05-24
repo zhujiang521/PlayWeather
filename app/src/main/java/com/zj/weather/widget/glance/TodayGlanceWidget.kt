@@ -45,7 +45,8 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
                 .fillMaxSize()
                 .padding(4.dp)
                 .cornerRadius(12.dp)
-                .background(ImageProvider(R.mipmap.back_100d)),
+                .background(ImageProvider(R.mipmap.back_100d))
+                .clickable(actionStartActivity<MainActivity>()),
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -88,15 +89,16 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
                 Image(
                     provider = ImageProvider(getWeatherIcon(data.icon)),
                     contentDescription = "",
-                    modifier = GlanceModifier.size(50.dp)
+                    modifier = GlanceModifier.size(65.dp),
+                    contentScale = ContentScale.FillBounds
                 )
-                Column(modifier = GlanceModifier.padding(start = 10.dp)) {
+                Column {
                     Text(
                         text = data.text,
                         style = TextStyle(fontSize = 11.sp, color = ColorProvider(Color.White))
                     )
                     Text(
-                        text = "${data.temp} ℃/${data.feelsLike} ℃",
+                        text = data.windDir,
                         style = TextStyle(fontSize = 11.sp, color = ColorProvider(Color.White))
                     )
                 }
