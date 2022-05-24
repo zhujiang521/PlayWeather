@@ -42,8 +42,8 @@
     <string name="data_source">Data from wind weather.</string>
 
     <string name="life_sport">Sport</string>
-    <string name="life_car">洗车</string>
-    <string name="life_clothes">Car wash</string>
+    <string name="life_car">Car wash</string>
+    <string name="life_clothes">dress</string>
     <string name="life_uv">UV</string>
     <string name="life_travel">Travel</string>
     <string name="life_cold">Cold</string>
