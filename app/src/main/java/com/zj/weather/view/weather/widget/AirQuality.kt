@@ -27,8 +27,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            ,
+            .padding(horizontal = 10.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(
@@ -42,7 +41,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
                     airNowBean.category ?: stringResource(id = R.string.air_quality_level)
                 }",
                 modifier = Modifier.padding(top = 5.dp),
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 color = MaterialTheme.colors.primary
             )
             Text(
