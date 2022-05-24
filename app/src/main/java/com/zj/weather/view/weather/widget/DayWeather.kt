@@ -10,15 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.model.weather.WeatherDailyBean
-import com.zj.weather.R
 import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
+import com.zj.weather.R
 
 @Composable
 fun DayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
@@ -39,7 +38,7 @@ fun DayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
             dayBeanList?.forEach { dailyBean ->
-                Divider(modifier = Modifier.padding(horizontal = 10.dp))
+                Divider(modifier = Modifier.padding(horizontal = 10.dp), thickness = 0.4.dp)
                 DayWeatherItem(dailyBean)
             }
         }
@@ -60,8 +59,7 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
                 .weight(1f)
                 .padding(start = 3.dp),
             fontSize = 15.sp,
-            color = MaterialTheme.colors.primary,
-            fontWeight = FontWeight.Bold
+            color = MaterialTheme.colors.primary
         )
         Spacer(modifier = Modifier.weight(1f))
         ImageLoader(

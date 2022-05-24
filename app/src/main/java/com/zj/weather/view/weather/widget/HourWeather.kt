@@ -26,8 +26,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            ,
+            .padding(horizontal = 10.dp),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -37,7 +36,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
-            Divider(modifier = Modifier.padding(horizontal = 10.dp))
+            Divider(modifier = Modifier.padding(horizontal = 10.dp), thickness = 0.4.dp)
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()

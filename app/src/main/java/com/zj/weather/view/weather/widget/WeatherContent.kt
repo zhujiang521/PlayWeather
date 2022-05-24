@@ -61,6 +61,9 @@ fun WeatherContent(
 
             // 当天具体天气数值
             DayWeatherContent(weatherModel)
+
+            // 当天生活指数
+            LifeWeatherContent(weatherModel?.weatherLifeList)
         }
     }
 }

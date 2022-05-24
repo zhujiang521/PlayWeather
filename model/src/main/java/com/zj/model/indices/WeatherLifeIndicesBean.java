@@ -8,7 +8,7 @@ public class WeatherLifeIndicesBean {
 	private String fxLink;
 	private String code;
 	private Refer refer;
-	private List<DailyItem> daily;
+	private List<WeatherLifeIndicesItem> daily;
 	private String updateTime;
 
 	public String getFxLink(){
@@ -23,11 +23,46 @@ public class WeatherLifeIndicesBean {
 		return refer;
 	}
 
-	public List<DailyItem> getDaily(){
+	public List<WeatherLifeIndicesItem> getDaily(){
 		return daily;
 	}
 
 	public String getUpdateTime(){
 		return updateTime;
 	}
+
+	public static class WeatherLifeIndicesItem{
+		private String date;
+		private String level;
+		private String name;
+		private String text;
+		private String type;
+		private String category;
+
+		public String getDate(){
+			return date;
+		}
+
+		public String getLevel(){
+			return level;
+		}
+
+		public String getName(){
+			return name;
+		}
+
+		public String getText(){
+			return text;
+		}
+
+		public String getType(){
+			return type;
+		}
+
+		public String getCategory(){
+			return category;
+		}
+	}
+
+
 }

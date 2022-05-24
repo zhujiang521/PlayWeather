@@ -38,6 +38,15 @@
 
     <string name="twenty_four_hour_title">24小時天氣預報</string>
     <string name="seven_day_title">7日天氣預報</string>
+    <string name="life_day_title">生活指數</string>
+    <string name="data_source">數據來自和風天氣</string>
+
+    <string name="life_sport">運動</string>
+    <string name="life_car">洗車</string>
+    <string name="life_clothes">穿衣</string>
+    <string name="life_uv">紫外線</string>
+    <string name="life_travel">旅遊</string>
+    <string name="life_cold">感冒</string>
 
     <string name="city_list_title">城市天氣</string>
     <string name="city_list_search_hint">請輸入城市名稱</string>

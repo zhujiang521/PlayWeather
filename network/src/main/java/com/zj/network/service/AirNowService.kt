@@ -33,7 +33,8 @@ interface AirNowService {
     suspend fun getWeatherLifeIndicesBean(
         @Query("key") key: String = WEATHER_KEY,
         @Query("location") location: String,
-        @Query("lang") lang: String
+        @Query("lang") lang: String,
+        @Query("type") type: String
     ): WeatherLifeIndicesBean
 
 }

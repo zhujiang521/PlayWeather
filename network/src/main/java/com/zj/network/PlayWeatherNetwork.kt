@@ -31,7 +31,11 @@ class PlayWeatherNetwork(private val context: Context) {
     private val airNowService = ServiceCreator.create(AirNowService::class.java)
 
     suspend fun getWeatherLifeIndicesBean(location: String): WeatherLifeIndicesBean =
-        airNowService.getWeatherLifeIndicesBean(location = location, lang = language.code)
+        airNowService.getWeatherLifeIndicesBean(
+            location = location,
+            lang = language.code,
+            type = "1,2,3,5,6,9"
+        )
 
 
     private val cityLookupService = ServiceCreator.createCity(CityLookupService::class.java)

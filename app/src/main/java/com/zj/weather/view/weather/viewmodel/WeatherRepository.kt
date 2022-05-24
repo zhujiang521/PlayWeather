@@ -6,6 +6,7 @@ import android.location.Location
 import com.zj.model.SUCCESSFUL
 import com.zj.model.air.AirNowBean
 import com.zj.model.getErrorText
+import com.zj.model.indices.WeatherLifeIndicesBean
 import com.zj.model.room.PlayWeatherDatabase
 import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherDailyBean
@@ -110,6 +111,25 @@ class WeatherRepository @Inject constructor(private val context: Application) {
             showToast(context, text)
             XLog.e("code:$code, text:$text")
             null
+        }
+    }
+
+
+    /**
+     * 获取对应位置的生活指数
+     *
+     * @param location 位置 可能是地点、或者是地点id
+     */
+    suspend fun getWeatherLifeIndicesList(location: String): List<WeatherLifeIndicesBean.WeatherLifeIndicesItem> {
+        val weatherLifeIndicesBean = network.getWeatherLifeIndicesBean(location)
+        val code = weatherLifeIndicesBean.code.toInt()
+        return if (code == SUCCESSFUL) {
+            weatherLifeIndicesBean.daily
+        } else {
+            val text = getErrorText(code)
+            showToast(context, text)
+            XLog.e("code:$code, text:$text")
+            arrayListOf()
         }
     }
 

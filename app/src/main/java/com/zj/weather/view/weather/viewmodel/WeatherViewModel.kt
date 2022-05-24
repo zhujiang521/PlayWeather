@@ -86,13 +86,15 @@ class WeatherViewModel @Inject constructor(
             val weather24Hour = weatherRepository.getWeather24Hour(location)
             val weather7Day = weatherRepository.getWeather7Day(location)
             val airNow = weatherRepository.getAirNow(location)
+            val weatherLifeIndicesList = weatherRepository.getWeatherLifeIndicesList(location)
 
             val weatherModel = WeatherModel(
                 nowBaseBean = weatherNow,
                 hourlyBeanList = weather24Hour,
                 dailyBean = weather7Day?.first,
                 dailyBeanList = weather7Day?.second ?: arrayListOf(),
-                airNowBean = airNow
+                airNowBean = airNow,
+                weatherLifeList = weatherLifeIndicesList
             )
             weatherMap[location] = Pair(System.currentTimeMillis(), weatherModel)
             withContext(Dispatchers.Main) {

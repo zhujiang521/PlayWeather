@@ -1,6 +1,7 @@
 package com.zj.model
 
 import com.zj.model.air.AirNowBean
+import com.zj.model.indices.WeatherLifeIndicesBean
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.model.weather.WeatherHourlyBean
 import com.zj.model.weather.WeatherNowBean
@@ -18,5 +19,6 @@ data class WeatherModel(
     val hourlyBeanList: List<WeatherHourlyBean.HourlyBean> = arrayListOf(),
     val dailyBean: WeatherDailyBean.DailyBean? = WeatherDailyBean.DailyBean(),
     val dailyBeanList: List<WeatherDailyBean.DailyBean> = arrayListOf(),
-    val airNowBean: AirNowBean.NowBean? = AirNowBean.NowBean()
+    val airNowBean: AirNowBean.NowBean? = AirNowBean.NowBean(),
+    val weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem> = arrayListOf()
 )
