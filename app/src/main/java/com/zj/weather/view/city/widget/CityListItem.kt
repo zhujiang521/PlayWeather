@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.zj.weather.R
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.swipe.SwipeDeleteLayout
+import com.zj.utils.view.ImageLoader
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -53,7 +54,7 @@ fun CityListItem(
                     Text(
                         text = stringResource(id = R.string.city_delete),
                         fontSize = 14.sp,
-                        color = MaterialTheme.colors.primary
+                        color = Color.White
                     )
                 }
             }
@@ -62,14 +63,32 @@ fun CityListItem(
     }) {
         Column {
             Card(shape = RoundedCornerShape(5.dp)) {
-                Text(text = "${cityInfo.province} ${cityInfo.city} ${cityInfo.name}",
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(color = MaterialTheme.colors.primaryVariant)
                         .clickable {
                             toWeatherDetails(cityInfo)
                         }
-                        .padding(horizontal = 10.dp, vertical = 15.dp))
+                        .padding(horizontal = 10.dp, vertical = 15.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "${cityInfo.province} ${cityInfo.city} ${cityInfo.name}",
+                        color =
+                        if (cityInfo.isIndex > 0) Color(
+                            red = 53,
+                            green = 128,
+                            blue = 186
+                        ) else Color.Unspecified
+                    )
+                    if (cityInfo.isLocation == 1) {
+                        ImageLoader(
+                            data = R.drawable.ic_baseline_location_on_24,
+                            modifier = Modifier.wrapContentWidth(Alignment.End)
+                        )
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(10.dp))
         }

@@ -137,6 +137,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
                 cityInfoDao.update(cityInfo)
             }
         } else {
+            cityInfo.isIndex = 1
             cityInfoDao.insert(cityInfo)
             XLog.e("updateCityInfo: 数据库中没有当前的数据，需要新增")
         }
