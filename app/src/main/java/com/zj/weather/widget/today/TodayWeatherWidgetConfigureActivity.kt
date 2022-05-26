@@ -110,6 +110,4 @@ fun refreshLocationWeather(
     }
 }
 
-internal data class AppWidgetId(val appWidgetId: Int) : GlanceId
-
 const val TODAY_PREFS_NAME = "com.zj.weather.widget.today.TodayWeatherWidget"

@@ -97,30 +97,30 @@ object IconUtils {
             isDay = !context.isDarkMode()
         }
         return when (weather) {
-            "100", "150" -> return if (isDay) R.drawable.x_sunny else R.drawable.x_yewan_qing
-            "101", "102", "103", "151", "152", "153" -> return if (isDay) R.drawable.x_cloud else R.drawable.x_cloudy_night
+            "100", "150" -> if (isDay) R.drawable.x_sunny else R.drawable.x_yewan_qing
+            "101", "102", "103", "151", "152", "153" -> if (isDay) R.drawable.x_cloud else R.drawable.x_cloudy_night
             "104", "154", "200", "201", "202", "203", "204", "205", "206", "207", "208",
-            "209", "210", "211", "212", "213" -> return R.drawable.x_overcast
-            "300", "301" -> return if (isDay) R.drawable.x_shower else R.drawable.x_yejian_zhenyu
-            "302", "303", "304" -> return R.drawable.x_thunder_rain
-            "313" -> return R.drawable.x_rain_ice
-            "404", "405", "406" -> return R.drawable.x_rain_snow
-            "305", "308", "309" -> return R.drawable.x_small_rain
-            "306", "350", "351", "399" -> return R.drawable.x_middle_rain
-            "307" -> return R.drawable.x_big_rain
-            "310", "311", "312" -> return R.drawable.x_storm
-            "456", "457", "499" -> return if (isDay) R.drawable.x_snow_flurry else R.drawable.x_snow_flurry_night
-            "400", "407", "408" -> return R.drawable.x_light_snow
-            "401", "409" -> return R.drawable.x_moderate_snow
-            "402", "410" -> return R.drawable.x_heavy_snow
-            "403" -> return R.drawable.x_snow_storm
-            "500", "501", "509", "510", "514", "515" -> return R.drawable.x_fog
-            "507" -> return R.drawable.x_shachebao
-            "504" -> return R.drawable.x_fuchen
-            "503" -> return R.drawable.x_yangsha
-            "508" -> return R.drawable.x_shachebao
-            "502", "511", "512", "513" -> return R.drawable.x_haze
-            else -> return R.drawable.x_nodata
+            "209", "210", "211", "212", "213" -> R.drawable.x_overcast
+            "300", "301" -> if (isDay) R.drawable.x_shower else R.drawable.x_yejian_zhenyu
+            "302", "303", "304" -> R.drawable.x_thunder_rain
+            "313" -> R.drawable.x_rain_ice
+            "404", "405", "406" -> R.drawable.x_rain_snow
+            "305", "308", "309" -> R.drawable.x_small_rain
+            "306", "350", "351", "399" -> R.drawable.x_middle_rain
+            "307" -> R.drawable.x_big_rain
+            "310", "311", "312" -> R.drawable.x_storm
+            "456", "457", "499" -> if (isDay) R.drawable.x_snow_flurry else R.drawable.x_snow_flurry_night
+            "400", "407", "408" -> R.drawable.x_light_snow
+            "401", "409" -> R.drawable.x_moderate_snow
+            "402", "410" -> R.drawable.x_heavy_snow
+            "403" -> R.drawable.x_snow_storm
+            "500", "501", "509", "510", "514", "515" -> R.drawable.x_fog
+            "507" -> R.drawable.x_shachebao
+            "504" -> R.drawable.x_fuchen
+            "503" -> R.drawable.x_yangsha
+            "508" -> R.drawable.x_shachebao
+            "502", "511", "512", "513" -> R.drawable.x_haze
+            else -> R.drawable.x_nodata
         }
     }
 

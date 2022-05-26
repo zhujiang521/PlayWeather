@@ -142,7 +142,7 @@ internal fun loadCityInfoPref(context: Context, appWidgetId: Int, prefsName: Str
 }
 
 internal fun deleteCityInfoPref(context: Context, appWidgetId: Int, prefsName: String) {
-    val prefs = context.getSharedPreferences(prefsName, 0).edit()
-    prefs.remove(PREF_PREFIX_KEY + appWidgetId)
-    prefs.apply()
+    context.getSharedPreferences(prefsName, 0).edit {
+        remove(PREF_PREFIX_KEY + appWidgetId)
+    }
 }
