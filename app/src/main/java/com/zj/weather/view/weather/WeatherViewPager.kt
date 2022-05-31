@@ -3,17 +3,16 @@ package com.zj.weather.view.weather
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.zj.utils.lce.NoContent
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
@@ -104,14 +103,19 @@ fun WeatherViewPager(
             }
         }
         HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->
-            WeatherPage(
-                weatherViewModel, cityInfoList[page],
-                onErrorClick = {
-                    val location = getLocation(cityInfoList[page])
-                    weatherViewModel.getWeather(location)
-                },
-                cityList = toCityList, cityListClick = toWeatherList
-            )
+            val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
+            SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing), onRefresh = {
+                weatherViewModel.refresh(getLocation(cityInfoList[page]))
+            }) {
+                WeatherPage(
+                    weatherViewModel, cityInfoList[page],
+                    onErrorClick = {
+                        val location = getLocation(cityInfoList[page])
+                        weatherViewModel.getWeather(location)
+                    },
+                    cityList = toCityList, cityListClick = toWeatherList
+                )
+            }
         }
         HorizontalPagerIndicator(
             pagerState = pagerState,

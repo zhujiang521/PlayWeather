@@ -154,13 +154,24 @@ class WeatherRepository @Inject constructor(private val context: Application) {
                 XLog.e("updateCityInfo: 数据库中已经存在当前的数据并且相等，无需修改:${cityInfo.uid}  ")
             } else {
                 XLog.e("updateCityInfo: 数据库中已经存在当前的数据，需要修改:${cityInfo.uid}")
+                updateCityIndex(cityInfo)
                 cityInfoDao.update(cityInfo)
             }
         } else {
-            cityInfo.isIndex = 1
+            updateCityIndex(cityInfo)
             cityInfoDao.insert(cityInfo)
             XLog.e("updateCityInfo: 数据库中没有当前的数据，需要新增")
         }
+    }
+
+    private suspend fun updateCityIndex(cityInfo: CityInfo) {
+        val indexList = cityInfoDao.getIndexCity()
+        if (indexList.isNotEmpty()) {
+            val indexCity = indexList[0]
+            indexCity.isIndex = 0
+            cityInfoDao.update(indexCity)
+        }
+        cityInfo.isIndex = 1
     }
 
     private fun buildCityInfo(
@@ -179,25 +190,5 @@ class WeatherRepository @Inject constructor(private val context: Application) {
     }
 
     fun refreshCityList() = cityInfoDao.getCityInfoList()
-
-    suspend fun updateCityIsIndex(cityInfo: CityInfo) {
-        cityInfo.isIndex = 1
-        cityInfoDao.update(cityInfo)
-    }
-
-    suspend fun updateCityIsIndex(
-        cityInfoList: List<CityInfo>?,
-        onRefreshListener: (Int) -> kotlin.Unit
-    ) {
-        if (cityInfoList.isNullOrEmpty()) return
-        cityInfoList.forEach {
-            if (it.isIndex == 1) {
-                onRefreshListener(cityInfoList.indexOf(it))
-                it.isIndex = 0
-                cityInfoDao.update(it)
-            }
-        }
-    }
-
 
 }

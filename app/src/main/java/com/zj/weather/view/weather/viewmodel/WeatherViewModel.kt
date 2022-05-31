@@ -21,12 +21,13 @@ import com.zj.model.PlayState
 import com.zj.model.PlaySuccess
 import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import kotlin.collections.set
+import kotlin.system.measureTimeMillis
 
 /**
  * 版权：Zhujiang 个人版权
@@ -62,6 +63,24 @@ class WeatherViewModel @Inject constructor(
             return
         }
         _weatherModel.postValue(playState)
+    }
+
+    private val _isRefreshing = MutableStateFlow(false)
+
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
+    fun refresh(location: String) {
+        // This doesn't handle multiple 'refreshing' tasks, don't use this
+        viewModelScope.launch {
+            // A fake 2 second 'refresh'
+            _isRefreshing.emit(true)
+            val time = measureTimeMillis {
+                getWeather(location)
+            }
+            delay(if (time > 1000L) time else 1000L)
+            _isRefreshing.emit(false)
+        }
     }
 
     fun getWeather(location: String) {

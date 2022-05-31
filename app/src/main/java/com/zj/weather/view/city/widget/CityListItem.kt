@@ -14,6 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.placeholder.shimmer
 import com.zj.weather.R
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.swipe.SwipeDeleteLayout
@@ -32,7 +35,9 @@ fun CityListItem(
 
     val coroutineScope = rememberCoroutineScope()
     SwipeDeleteLayout(swipeState = swipeState, isShowChild = isShowDelete, childContent = {
-        Column(modifier = Modifier.fillMaxHeight()) {
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .padding(vertical = 6.dp)) {
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(0.dp, 5.dp, 5.dp, 0.dp),
@@ -58,29 +63,46 @@ fun CityListItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
         }
     }) {
-        Column {
-            Card(shape = RoundedCornerShape(5.dp)) {
+        Card(
+            shape = RoundedCornerShape(5.dp), modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 5.dp)
+                .clickable {
+                    toWeatherDetails(cityInfo)
+                }
+                .placeholder(
+                    visible = cityInfo.name.isEmpty() &&
+                            cityInfo.province.isEmpty() &&
+                            cityInfo.city.isEmpty(),
+                    color = MaterialTheme.colors.primaryVariant,
+                    // optional, defaults to RectangleShape
+                    shape = RoundedCornerShape(4.dp),
+                    highlight = PlaceholderHighlight.shimmer(
+                        highlightColor = Color.White,
+                    ),
+                )
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 10.dp, vertical = 10.dp)
+            ) {
+
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colors.primaryVariant)
-                        .clickable {
-                            toWeatherDetails(cityInfo)
-                        }
-                        .padding(horizontal = 10.dp, vertical = 15.dp),
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "${cityInfo.province} ${cityInfo.city} ${cityInfo.name}",
-                        color =
-                        if (cityInfo.isIndex > 0) Color(
+                        text = cityInfo.name,
+                        color = if (cityInfo.isIndex > 0) Color(
                             red = 53,
                             green = 128,
                             blue = 186
-                        ) else Color.Unspecified
+                        ) else Color.Unspecified, fontSize = 18.sp
                     )
                     if (cityInfo.isLocation == 1) {
                         ImageLoader(
@@ -89,9 +111,18 @@ fun CityListItem(
                         )
                     }
                 }
+                Text(
+                    text = "${cityInfo.province} ${cityInfo.city}",
+                    modifier = Modifier.padding(top = 3.dp),
+                    color = if (cityInfo.isIndex > 0) Color(
+                        red = 53,
+                        green = 128,
+                        blue = 186
+                    ) else Color.Gray
+                )
             }
-            Spacer(modifier = Modifier.height(10.dp))
         }
+
     }
 }
 

@@ -1,6 +1,8 @@
 package com.zj.weather.view.list
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,19 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.zj.model.*
 import com.zj.model.city.GeoBean
-import com.zj.weather.R
-import com.zj.model.PlayError
-import com.zj.model.PlayLoading
-import com.zj.model.PlayState
-import com.zj.model.PlaySuccess
-import com.zj.utils.lce.LcePage
-import com.zj.utils.lce.NoContent
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.lce.ErrorContent
+import com.zj.utils.lce.NoContent
+import com.zj.utils.view.showToast
+import com.zj.weather.R
 import com.zj.weather.view.list.viewmodel.WeatherListViewModel
 import com.zj.weather.view.list.widget.SearchBar
 import com.zj.weather.view.list.widget.WeatherCityItem
-import com.zj.utils.view.showToast
 
 @Composable
 fun WeatherListPage(
@@ -65,20 +64,31 @@ fun WeatherListPage(
                 showToast(context = context, R.string.city_list_search_hint)
             }
         }
-        Spacer(Modifier.height(10.dp))
-        LcePage(playState = locationBeanState, onErrorClick = onErrorClick) { locationBeanList ->
-            if (locationBeanList.isEmpty()){
-                NoContent()
-            }else {
+        when (locationBeanState) {
+            is PlayError -> {
+                ErrorContent(onErrorClick = onErrorClick)
+            }
+            is PlayNoContent -> {
+                NoContent(tip = locationBeanState.reason)
+            }
+            PlayLoading, is PlaySuccess -> {
                 val listState = rememberLazyListState()
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 15.dp),
                     state = listState
                 ) {
-                    items(locationBeanList) { locationBean ->
-                        WeatherCityItem(locationBean, toWeatherDetails)
+                    if (locationBeanState is PlaySuccess) {
+                        items(locationBeanState.data) { locationBean ->
+                            WeatherCityItem(locationBean, toWeatherDetails)
+                        }
+                    } else {
+                        items(10) {
+                            WeatherCityItem(GeoBean.LocationBean(), toWeatherDetails)
+                        }
                     }
+
                 }
+
             }
         }
 

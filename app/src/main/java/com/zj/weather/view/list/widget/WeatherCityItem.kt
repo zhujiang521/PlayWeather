@@ -1,8 +1,10 @@
 package com.zj.weather.view.list.widget
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -14,6 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.placeholder.shimmer
 import com.zj.model.city.GeoBean
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.dialog.ShowDialog
@@ -28,50 +34,72 @@ fun WeatherCityItem(
     val warnDialog = remember { mutableStateOf(false) }
     val alertDialog = remember { mutableStateOf(false) }
     val hasLocation = locationBean.hasLocation
-    Column {
-        Card(shape = RoundedCornerShape(5.dp)) {
-            Text(
-                text = "${locationBean.adm1} ${locationBean.adm2} ${locationBean.name}",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colors.primaryVariant)
-                    .clickable {
-                        if (!hasLocation) {
-                            alertDialog.value = true
-                        } else {
-                            warnDialog.value = true
-                        }
-                    }
-                    .padding(horizontal = 10.dp, vertical = 15.dp),
-                color = if (!hasLocation) Color.Unspecified else Color.Gray)
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        ShowDialog(
-            alertDialog = alertDialog,
-            title = stringResource(id = R.string.city_dialog_title),
-            content = stringResource(
-                id = R.string.city_dialog_content,
-                "${locationBean.adm2} ${locationBean.name}"
-            ), cancelString = stringResource(id = R.string.city_dialog_cancel),
-            confirmString = stringResource(id = R.string.city_dialog_confirm)
+    Card(
+        shape = RoundedCornerShape(5.dp), modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                if (!hasLocation) {
+                    alertDialog.value = true
+                } else {
+                    warnDialog.value = true
+                }
+            }
+            .padding(vertical = 5.dp)
+            .placeholder(
+                visible = locationBean.adm1.isNullOrEmpty() &&
+                        locationBean.adm2.isNullOrEmpty() &&
+                        locationBean.name.isNullOrEmpty(),
+                color = MaterialTheme.colors.primaryVariant,
+                // optional, defaults to RectangleShape
+                shape = RoundedCornerShape(4.dp),
+                highlight = PlaceholderHighlight.shimmer(
+                    highlightColor = Color.White,
+                ),
+            )
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 10.dp)
         ) {
-            toWeatherDetails(
-                CityInfo(
-                    location = "${locationBean.lon},${
-                        locationBean.lat
-                    }",
-                    name = locationBean.name,
-                    province = locationBean.adm1,
-                    city = locationBean.adm2,
-                    locationId = "CN${locationBean.id}",
-                    isIndex = 1
-                )
+            Text(
+                text = locationBean.name ?: "",
+                color = if (!hasLocation) Color.Unspecified else Color.Gray, fontSize = 18.sp
+            )
+
+            Text(
+                text = "${locationBean.adm1} ${locationBean.adm2}",
+                modifier = Modifier.padding(top = 3.dp),
+                color = Color.Gray
             )
         }
-        ShowWarnDialog(
-            alertDialog = warnDialog,
-            titleId = R.string.city_dialog_title,
-            contentId = R.string.add_location_warn
+    }
+    ShowDialog(
+        alertDialog = alertDialog,
+        title = stringResource(id = R.string.city_dialog_title),
+        content = stringResource(
+            id = R.string.city_dialog_content,
+            "${locationBean.adm2} ${locationBean.name}"
+        ), cancelString = stringResource(id = R.string.city_dialog_cancel),
+        confirmString = stringResource(id = R.string.city_dialog_confirm)
+    ) {
+        toWeatherDetails(
+            CityInfo(
+                location = "${locationBean.lon},${
+                    locationBean.lat
+                }",
+                name = locationBean.name,
+                province = locationBean.adm1,
+                city = locationBean.adm2,
+                locationId = "CN${locationBean.id}",
+                isIndex = 1
+            )
         )
     }
+    ShowWarnDialog(
+        alertDialog = warnDialog,
+        titleId = R.string.city_dialog_title,
+        contentId = R.string.add_location_warn
+    )
 }
