@@ -23,8 +23,7 @@ import com.zj.weather.R
 fun DayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(

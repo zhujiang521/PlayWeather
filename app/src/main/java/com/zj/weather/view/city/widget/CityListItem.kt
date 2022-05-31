@@ -35,9 +35,11 @@ fun CityListItem(
 
     val coroutineScope = rememberCoroutineScope()
     SwipeDeleteLayout(swipeState = swipeState, isShowChild = isShowDelete, childContent = {
-        Column(modifier = Modifier
-            .fillMaxHeight()
-            .padding(vertical = 6.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(vertical = 6.dp)
+        ) {
             Card(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(0.dp, 5.dp, 5.dp, 0.dp),
@@ -118,7 +120,7 @@ fun CityListItem(
                         red = 53,
                         green = 128,
                         blue = 186
-                    ) else Color.Gray
+                    ) else Color.Unspecified
                 )
             }
         }

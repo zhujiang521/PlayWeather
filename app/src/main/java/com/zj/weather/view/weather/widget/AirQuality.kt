@@ -26,8 +26,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
     if (airNowBean == null) return
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(

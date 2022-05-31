@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,19 +46,15 @@ fun CityListPage(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
         // 标题栏
         CityListTitleBar(onBack)
-        Spacer(Modifier.height(10.dp))
         if (cityInfoList.isNotEmpty()) {
             val listState = rememberLazyListState()
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = 10.dp),
-                state = listState
-            ) {
+            LazyColumn(state = listState) {
                 items(cityInfoList) { cityInfo ->
                     CityListItem(
                         cityInfo,

@@ -45,7 +45,6 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {

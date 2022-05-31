@@ -1,10 +1,7 @@
 package com.zj.weather.view.list.widget
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -12,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -37,13 +35,6 @@ fun WeatherCityItem(
     Card(
         shape = RoundedCornerShape(5.dp), modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-                if (!hasLocation) {
-                    alertDialog.value = true
-                } else {
-                    warnDialog.value = true
-                }
-            }
             .padding(vertical = 5.dp)
             .placeholder(
                 visible = locationBean.adm1.isNullOrEmpty() &&
@@ -56,24 +47,43 @@ fun WeatherCityItem(
                     highlightColor = Color.White,
                 ),
             )
+            .clickable {
+                if (!hasLocation) {
+                    alertDialog.value = true
+                } else {
+                    warnDialog.value = true
+                }
+            }
     ) {
 
-        Column(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 10.dp, vertical = 10.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = locationBean.name ?: "",
-                color = if (!hasLocation) Color.Unspecified else Color.Gray, fontSize = 18.sp
-            )
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = locationBean.name ?: "",
+                    color = if (!hasLocation) Color.Unspecified else Color.Gray, fontSize = 18.sp
+                )
+
+                Text(
+                    text = "${locationBean.adm1} ${locationBean.adm2}",
+                    modifier = Modifier.padding(top = 3.dp),
+                    color = if (!hasLocation) Color.Unspecified else Color.Gray
+                )
+            }
 
             Text(
-                text = "${locationBean.adm1} ${locationBean.adm2}",
-                modifier = Modifier.padding(top = 3.dp),
-                color = Color.Gray
+                text = "${stringResource(id = R.string.city_rank)}${locationBean.rank}",
+                color = if (!hasLocation) Color.Unspecified else Color.Gray
             )
         }
+
+
     }
     ShowDialog(
         alertDialog = alertDialog,

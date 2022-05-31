@@ -23,19 +23,20 @@ fun DayWeatherContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 5.dp, start = 5.dp, end = 5.dp)
+            .padding(top = 5.dp)
     ) {
-        val modifier = Modifier
-            .weight(1f)
-            .padding(5.dp)
         WeatherContentItem(
-            modifier,
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 5.dp, bottom = 5.dp, end = 5.dp),
             stringResource(id = R.string.visibility_title),
             "${nowBaseBean?.vis ?: "0"}${stringResource(id = R.string.visibility_unit)}",
             stringResource(id = R.string.visibility_tip)
         )
         WeatherContentItem(
-            modifier.fillMaxHeight(),
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
             stringResource(id = R.string.sun_title),
             "${stringResource(id = R.string.sun_sunrise)}${dailyBean?.sunrise ?: "07:00"}",
             "${stringResource(id = R.string.sun_sunset)}${dailyBean?.sunset ?: "19:00"}"
@@ -43,21 +44,20 @@ fun DayWeatherContent(
     }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 5.dp, end = 5.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
-        val modifier = Modifier
-            .weight(1f)
-            .padding(5.dp)
         WeatherContentItem(
-            modifier,
+            Modifier
+                .weight(1f)
+                .padding(top = 5.dp, bottom = 5.dp, end = 5.dp),
             stringResource(id = R.string.body_temperature_title),
             "${nowBaseBean?.feelsLike ?: "0"}℃",
             stringResource(id = R.string.body_temperature_tip)
         )
         WeatherContentItem(
-            modifier,
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
             stringResource(id = R.string.rainfall_title),
             "${nowBaseBean?.precip ?: "0"}${stringResource(id = R.string.rainfall_unit)}",
             if ((nowBaseBean?.precip?.toFloat() ?: 0f) > 0f)
@@ -67,21 +67,20 @@ fun DayWeatherContent(
     }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 5.dp, end = 5.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
-        val modifier = Modifier
-            .weight(1f)
-            .padding(5.dp)
         WeatherContentItem(
-            modifier,
+            Modifier
+                .weight(1f)
+                .padding(top = 5.dp, bottom = 5.dp, end = 5.dp),
             stringResource(id = R.string.humidity_title),
             "${nowBaseBean?.humidity ?: "0"}%",
             stringResource(id = R.string.humidity_tip)
         )
         WeatherContentItem(
-            modifier,
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
             stringResource(id = R.string.wind_title),
             "${nowBaseBean?.windDir ?: "0"}${nowBaseBean?.windScale ?: ""}${stringResource(id = R.string.wind_unit)}",
             "${stringResource(id = R.string.wind_tip)}${nowBaseBean?.windSpeed ?: "0"}Km/H"

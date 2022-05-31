@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -30,6 +31,7 @@ import com.zj.weather.view.weather.widget.WeatherAnimation
 import com.zj.weather.view.weather.widget.WeatherContent
 import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
+import com.zj.weather.R
 
 @Composable
 fun WeatherPage(
@@ -91,6 +93,7 @@ private fun VerticalWeather(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
     ) {
         WeatherContent(
             Modifier, scrollState, fontSize, topPadding, cityInfo, weather
@@ -105,7 +108,11 @@ private fun HorizontalWeather(
     weather: WeatherModel,
     scrollState: ScrollState
 ) {
-    Row(modifier = Modifier.fillMaxSize()) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
+    ) {
         val landModifier = Modifier
             .weight(1f)
             .fillMaxHeight()

@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zj.model.*
@@ -55,7 +56,11 @@ fun WeatherListPage(
     toWeatherDetails: (CityInfo) -> Unit,
 ) {
     val context = LocalContext.current
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
+    ) {
         SearchBar(onBack) { city ->
             if (city.isNotEmpty()) {
                 onSearchCity(city)
@@ -73,10 +78,7 @@ fun WeatherListPage(
             }
             PlayLoading, is PlaySuccess -> {
                 val listState = rememberLazyListState()
-                LazyColumn(
-                    modifier = Modifier.padding(horizontal = 15.dp),
-                    state = listState
-                ) {
+                LazyColumn(state = listState) {
                     if (locationBeanState is PlaySuccess) {
                         items(locationBeanState.data) { locationBean ->
                             WeatherCityItem(locationBean, toWeatherDetails)

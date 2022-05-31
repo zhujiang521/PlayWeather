@@ -24,9 +24,7 @@ import com.zj.weather.R
 fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
     if (hourlyBeanList.isNullOrEmpty()) return
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
