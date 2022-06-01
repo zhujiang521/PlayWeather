@@ -79,16 +79,6 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
             Spacer(modifier = Modifier.height(15.dp))
         }
     }
-    Spacer(modifier = Modifier.height(10.dp))
-
-    Text(
-        text = stringResource(id = R.string.data_source),
-        fontSize = 12.sp,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 35.dp)
-    )
 }
 
 @Composable

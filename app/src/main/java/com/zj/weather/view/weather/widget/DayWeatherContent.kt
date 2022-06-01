@@ -37,9 +37,9 @@ fun DayWeatherContent(
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
-            stringResource(id = R.string.sun_title),
-            "${stringResource(id = R.string.sun_sunrise)}${dailyBean?.sunrise ?: "07:00"}",
-            "${stringResource(id = R.string.sun_sunset)}${dailyBean?.sunset ?: "19:00"}"
+            stringResource(id = R.string.air_pressure_title),
+            "${dailyBean?.pressure ?: "0"}${stringResource(id = R.string.air_pressure_unit)}",
+            stringResource(id = R.string.air_pressure_tip)
         )
     }
 
@@ -97,7 +97,7 @@ private fun WeatherContentItem(modifier: Modifier, title: String, value: String,
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Text(text = title, fontSize = 13.sp)
+            Text(text = title, fontSize = 11.sp)
             Text(
                 text = value,
                 modifier = Modifier.padding(top = 8.dp),
