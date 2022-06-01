@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,6 +24,7 @@ import androidx.core.content.ContextCompat
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.XLog
 import com.zj.weather.R
+import kotlin.math.cos
 import kotlin.math.sin
 
 
@@ -69,6 +71,9 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  */
 @Composable
 fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
+    if (sunrise.isEmpty() || sunset.isEmpty()) {
+        return
+    }
     val result = getAccounted(sunrise, sunset)
     val bitmap = getBitmapFromVectorDrawable(context, R.drawable.x_sunny)
     val image = bitmap?.asImageBitmap()
@@ -81,32 +86,29 @@ fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
+                .height(150.dp)
                 .padding(horizontal = 10.dp)
         ) {
-            val path = Path()
-            path.moveTo(0f, size.height)
-            // 三阶贝塞尔曲线
-            path.cubicTo(
-                0f,
-                size.height,
-                size.width / 2,
-                -size.height,
-                size.width,
-                size.height
-            )
 
-            drawPath(
-                path = path, color = Color(red = 255, green = 193, blue = 7, alpha = 255),
-                style = Stroke(width = 3f)
-            )
+
+            clipRect(0f, 0f, size.width, size.height/2, ClipOp.Intersect) {
+                drawCircle(
+                    color = Color(red = 255, green = 193, blue = 7, alpha = 255),
+                    radius = size.width / 2,
+                    center = Offset(size.width / 2, size.height),
+                    style = Stroke(
+                        width = 3f,
+                    )
+                )
+            }
 
             val mRadius = size.width / 2
-            val y = mRadius - (mRadius * sin((180 * result) * Math.PI / 180)) - 45
+            val x = mRadius - (mRadius * cos((180 * result) * Math.PI / 180)) - 40
+            val y = mRadius - (mRadius * sin((180 * result) * Math.PI / 180)) - 30
             if (image != null) {
                 drawImage(
                     image = image,
-                    topLeft = Offset(size.width * result, y.toFloat())
+                    topLeft = Offset(x.toFloat(), y.toFloat())
                 )
             }
 
@@ -200,9 +202,12 @@ private fun getAccounted(sunrise: String, sunset: String): Float {
  *
  * @return 总分钟数
  */
-fun getMinutes(sunrise: String): Int {
-    val hour = sunrise.substring(0, 2).toInt()
-    val minutes = sunrise.substring(3, 5).toInt()
+fun getMinutes(sunrise: String?): Int {
+    val s = if (sunrise == null || sunrise.isEmpty()) {
+        "00:00"
+    } else sunrise
+    val hour = s.substring(0, 2).toInt()
+    val minutes = s.substring(3, 5).toInt()
     val total = hour * 60 + minutes
     XLog.w("hour:$hour   minutes:$minutes   total:$total")
     return total
