@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,8 +23,6 @@ import androidx.core.content.ContextCompat
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.XLog
 import com.zj.weather.R
-import kotlin.math.cos
-import kotlin.math.sin
 
 
 @Composable
@@ -71,9 +68,6 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  */
 @Composable
 fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
-    if (sunrise.isEmpty() || sunset.isEmpty()) {
-        return
-    }
     val result = getAccounted(sunrise, sunset)
     val bitmap = getBitmapFromVectorDrawable(context, R.drawable.x_sunny)
     val image = bitmap?.asImageBitmap()
@@ -86,29 +80,41 @@ fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(50.dp)
                 .padding(horizontal = 10.dp)
         ) {
+            val path = Path()
+            path.moveTo(0f, size.height)
+            // 三阶贝塞尔曲线
+            path.cubicTo(
+                0f,
+                size.height,
+                size.width / 2,
+                -size.height,
+                size.width,
+                size.height
+            )
+
+            drawPath(
+                path = path, color = Color(red = 255, green = 193, blue = 7, alpha = 255),
+                style = Stroke(width = 3f)
+            )
 
 
-            clipRect(0f, 0f, size.width, size.height/2, ClipOp.Intersect) {
-                drawCircle(
-                    color = Color(red = 255, green = 193, blue = 7, alpha = 255),
-                    radius = size.width / 2,
-                    center = Offset(size.width / 2, size.height),
-                    style = Stroke(
-                        width = 3f,
-                    )
-                )
-            }
-
-            val mRadius = size.width / 2
-            val x = mRadius - (mRadius * cos((180 * result) * Math.PI / 180)) - 40
-            val y = mRadius - (mRadius * sin((180 * result) * Math.PI / 180)) - 30
+            val evaluate = evaluate(
+                result,
+                floatArrayOf(0f, size.height),
+                floatArrayOf(size.width / 4, -size.height / 2),
+                floatArrayOf(size.width / 4 * 3, 0f),
+                floatArrayOf(size.width, size.height)
+            )
             if (image != null) {
                 drawImage(
                     image = image,
-                    topLeft = Offset(x.toFloat(), y.toFloat())
+                    topLeft = Offset(
+                        evaluate[0] - 45,
+                        evaluate[1] - 45
+                    )
                 )
             }
 
@@ -148,6 +154,33 @@ fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
         }
     }
 
+}
+
+
+/**
+ *
+ * @param fraction 变量
+ * @param point0 贝塞尔曲线起点
+ * @param point3 贝塞尔曲线终点
+ * @return 因为需要的点是从下到上....所以p0,p1,p2,p3的点是从下打上的
+ */
+fun evaluate(
+    fraction: Float,
+    point0: FloatArray,
+    point1: FloatArray,
+    point2: FloatArray,
+    point3: FloatArray
+): FloatArray {
+    val currentPosition = FloatArray(2)
+    //贝塞尔公式计算X点
+    currentPosition[0] =
+        point0[0] * (1 - fraction) * (1 - fraction) * (1 - fraction) + point1[0] * 3 * fraction * (
+                1 - fraction) * (1 - fraction) + point2[0] * 3 * (1 - fraction) * fraction * fraction + point3[0] * fraction * fraction * fraction
+    //贝塞尔公式计算Y点
+    currentPosition[1] =
+        point0[1] * (1 - fraction) * (1 - fraction) * (1 - fraction) + point1[1] * 3 * fraction * (1 - fraction) * (1 - fraction) + point2[1] * 3 * (
+                1 - fraction) * fraction * fraction + point3[1] * fraction * fraction * fraction
+    return currentPosition
 }
 
 /**
@@ -202,12 +235,9 @@ private fun getAccounted(sunrise: String, sunset: String): Float {
  *
  * @return 总分钟数
  */
-fun getMinutes(sunrise: String?): Int {
-    val s = if (sunrise == null || sunrise.isEmpty()) {
-        "00:00"
-    } else sunrise
-    val hour = s.substring(0, 2).toInt()
-    val minutes = s.substring(3, 5).toInt()
+fun getMinutes(sunrise: String): Int {
+    val hour = sunrise.substring(0, 2).toInt()
+    val minutes = sunrise.substring(3, 5).toInt()
     val total = hour * 60 + minutes
     XLog.w("hour:$hour   minutes:$minutes   total:$total")
     return total
