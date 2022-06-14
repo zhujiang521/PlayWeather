@@ -221,6 +221,8 @@
         <entry key="../../../../layout/compose-model-1653992686375.xml" value="0.1693181818181818" />
         <entry key="../../../../layout/compose-model-1653992985280.xml" value="0.4037940379403794" />
         <entry key="../../../../layout/compose-model-1654052243959.xml" value="0.4037940379403794" />
+        <entry key="../../../../layout/compose-model-1654849343894.xml" value="0.4037940379403794" />
+        <entry key="../../../../layout/compose-model-1654849831489.xml" value="0.4037940379403794" />
         <entry key="../../.gradle/caches/transforms-3/25f387e98bdbd0fee4e18406628b2b7b/transformed/jetified-glance-appwidget-1.0.0-alpha01/res/layout/glance_error_layout.xml" value="0.266304347826087" />
         <entry key="../../.gradle/caches/transforms-3/b34e317472e4fc4523600a2b9e1921ae/transformed/jetified-glance-appwidget-1.0.0-alpha03/res/layout/glance_error_layout.xml" value="0.28894927536231885" />
         <entry key="app/src/main/res/drawable-v21/app_widget_background.xml" value="0.2604166666666667" />
@@ -277,8 +279,19 @@
         <entry key="utils/src/main/res/drawable/icon_305.xml" value="0.149" />
         <entry key="utils/src/main/res/drawable/icon_513.xml" value="0.149" />
         <entry key="utils/src/main/res/drawable/x_big_rain.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_cloud.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_fog.xml" value="0.149" />
         <entry key="utils/src/main/res/drawable/x_overcast.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_small_rain.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_snow_flurry.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_snow_flurry_night.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_snow_storm.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_storm.xml" value="0.149" />
         <entry key="utils/src/main/res/drawable/x_sunny.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_thunder_rain.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_yangsha.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_yejian_zhenyu.xml" value="0.149" />
+        <entry key="utils/src/main/res/drawable/x_yewan_qing.xml" value="0.149" />
       </map>
     </option>
   </component>
