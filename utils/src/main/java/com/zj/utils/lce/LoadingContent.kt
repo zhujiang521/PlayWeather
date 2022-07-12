@@ -34,7 +34,7 @@ fun LoadingContent(
     ) {
         LottieAnimation(
             composition = composition,
-            progress = progress
+            progress = { progress }
         )
     }
 

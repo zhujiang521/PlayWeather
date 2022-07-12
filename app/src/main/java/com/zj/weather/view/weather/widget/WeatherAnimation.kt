@@ -27,7 +27,7 @@ fun WeatherAnimation(weather: String?) {
     LottieAnimation(
         composition = composition,
         modifier = Modifier.size(130.dp),
-        progress = progress
+        progress = { progress }
     )
 }
 

@@ -37,7 +37,7 @@ fun ErrorContent(
         LottieAnimation(
             composition = composition,
             modifier = Modifier.size(130.dp),
-            progress = progress
+            progress = { progress }
         )
         Button(onClick = onErrorClick) {
             Text(text = stringResource(id = R.string.bad_network_view_tip))
