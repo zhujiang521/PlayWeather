@@ -2,7 +2,6 @@ package com.zj.weather.view.weather
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -100,7 +99,6 @@ fun WeatherViewPager(
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
 ) {
-//    XLog.e("initialPage:${initialPage}    currentPage:${pagerState.currentPage}")
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {
         if (initialPage >= 0 && initialPage < pagerState.pageCount) {
