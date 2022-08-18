@@ -91,7 +91,9 @@ private fun getAddress(
         location.latitude,
         location.longitude, 1
     )
-    weatherViewModel.updateCityInfo(location, result)
+    if (result != null) {
+        weatherViewModel.updateCityInfo(location, result)
+    }
     XLog.e("获取地址信息：${result}")
     return result
 }
