@@ -29,26 +29,26 @@ fun getLocation(
     val providers: List<String> = locationManager?.getProviders(true) ?: arrayListOf()
 
     if (providers.isEmpty()) {
-        XLog.e("getLocation: 没有可用的位置提供器")
+        XLog.w("getLocation: no location providers")
         showLongToast(context, "没有可用的位置提供器，请打开位置使用")
         return
     }
 
-    XLog.e("getLocation: providers:$providers")
+    XLog.w("getLocation: providers:$providers")
     val locationProvider: String?
     when {
         providers.contains(LocationManager.NETWORK_PROVIDER) -> {
             //如果是Network
             locationProvider = LocationManager.NETWORK_PROVIDER
-            XLog.d("定位方式Network")
+            XLog.d("locationManager Network")
         }
         providers.contains(LocationManager.GPS_PROVIDER) -> {
             //如果是GPS
             locationProvider = LocationManager.GPS_PROVIDER
-            XLog.d("定位方式GPS")
+            XLog.d("locationManager GPS")
         }
         else -> {
-            XLog.e("getLocation: 没有可用的位置提供器")
+            XLog.w("getLocation: No location provider is available")
             showLongToast(context, "没有可用的位置提供器，请打开位置使用")
             return
         }
@@ -80,7 +80,7 @@ private fun getAddress(
     location: Location?,
     weatherViewModel: WeatherViewModel,
 ): List<Address?>? {
-    XLog.e(
+    XLog.w(
         "获取当前位置-经纬度：" + location?.longitude
             .toString() + "   " + location?.latitude
     )
@@ -94,6 +94,6 @@ private fun getAddress(
     if (result != null) {
         weatherViewModel.updateCityInfo(location, result)
     }
-    XLog.e("获取地址信息：${result}")
+    XLog.w("Obtaining Address Information：${result}")
     return result
 }

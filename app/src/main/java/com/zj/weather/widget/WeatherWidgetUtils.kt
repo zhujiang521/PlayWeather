@@ -73,7 +73,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
                     continuation.resume(PlaySuccess(now))
                 } else {
                     val text = getErrorText(code)
-                    XLog.e("error:$text")
+                    XLog.w("error:$text")
                     continuation.resume(PlayError(NullPointerException(text)))
                 }
             }
@@ -89,7 +89,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
         cityInfo: CityInfo?,
         appWidgetId: Int
     ) {
-        XLog.e("notifyWeatherWidget: 刷新天气")
+        XLog.w("notifyWeatherWidget: Refresh the weather")
         getWeather7Day(context = context, location = getLocation(cityInfo = cityInfo)) { items ->
             WeatherRemoteViewsFactory.setWidgetItemList(items)
             val mgr = AppWidgetManager.getInstance(context)
@@ -97,7 +97,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
                 appWidgetId,
                 R.id.stack_view
             )
-            XLog.e("notifyWeatherWidget: ${items.size}")
+            XLog.w("notifyWeatherWidget: ${items.size}")
         }
     }
 
@@ -109,7 +109,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
         location: String?,
         appWidgetId: Int
     ) {
-        XLog.e("notifyWeatherWidget: 刷新天气:$location")
+        XLog.w("notifyWeatherWidget: Refresh the weather:$location")
         getWeather7Day(context = context, location = location) { items ->
             TodayWeatherRemoteViewsFactory.setWidgetItemList(items)
             val mgr = AppWidgetManager.getInstance(context)
@@ -117,7 +117,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
                 appWidgetId,
                 R.id.today_list_view
             )
-            XLog.e("notifyWeatherWidget: ${items.size}")
+            XLog.w("notifyWeatherWidget: ${items.size}")
         }
     }
 

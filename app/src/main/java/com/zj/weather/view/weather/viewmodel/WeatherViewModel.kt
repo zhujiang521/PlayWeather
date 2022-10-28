@@ -92,7 +92,7 @@ class WeatherViewModel @Inject constructor(
         if (weatherMap.containsKey(location)) {
             val weather = weatherMap[location]
             if (weather != null && weather.first + FIFTEEN_MINUTES > System.currentTimeMillis()) {
-                XLog.d("有东西了，直接返回")
+                XLog.d("Direct return")
                 onWeatherModelChanged(PlaySuccess(weather.second))
                 return
             }
@@ -119,7 +119,7 @@ class WeatherViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 onWeatherModelChanged(PlaySuccess(weatherModel))
             }
-            XLog.e("获取天气:$location")
+            XLog.w("For the weather:$location")
         }
     }
 

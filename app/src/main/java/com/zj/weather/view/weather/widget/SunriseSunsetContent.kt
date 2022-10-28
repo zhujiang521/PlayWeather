@@ -28,7 +28,7 @@ import com.zj.weather.R
 @Composable
 fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
     if (dailyBean == null) {
-        XLog.e("dailyBean is null")
+        XLog.w("dailyBean is null")
         return
     }
     val context = LocalContext.current

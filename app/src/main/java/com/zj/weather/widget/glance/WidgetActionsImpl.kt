@@ -27,7 +27,7 @@ class WidgetActionsImpl : WidgetActions {
 
     private suspend fun loadWeatherInfo(context: Context, id: Int) {
         val cityInfo = loadCityInfoPref(context, id, TODAY_GLANCE_PREFS_NAME)
-        XLog.e("cityInfo:$cityInfo")
+        XLog.w("cityInfo:$cityInfo")
         val weatherNow = WeatherWidgetUtils.getWeatherNow(context, cityInfo)
         updateWidget(context, weatherNow)
     }

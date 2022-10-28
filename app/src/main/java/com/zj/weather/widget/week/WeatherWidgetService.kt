@@ -66,7 +66,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun onDataSetChanged() {
-        XLog.e("onDataSetChanged: ")
+        XLog.w("onDataSetChanged: ")
     }
 
     override fun onDestroy() {
@@ -78,14 +78,14 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
     }
 
     override fun getViewAt(position: Int): RemoteViews {
-        XLog.e("getViewAt:${widgetItems.size}")
+        XLog.w("getViewAt:${widgetItems.size}")
         if (widgetItems.size != WEEK_COUNT) {
             return RemoteViews(context.packageName, R.layout.widget_loading)
         }
         return RemoteViews(context.packageName, R.layout.widget_item).apply {
             val weather = widgetItems[position]
-            XLog.e("getViewAt: ${weather.text}")
-            XLog.e("getViewAt: ${weather.text} cityInfo:$cityInfo")
+            XLog.w("getViewAt: ${weather.text}")
+            XLog.w("getViewAt: ${weather.text} cityInfo:$cityInfo")
             setTextViewText(R.id.widget_tv_temp, "${weather.min}-${weather.max}℃")
             setTextViewText(
                 R.id.widget_tv_city,
@@ -105,7 +105,7 @@ class WeatherRemoteViewsFactory(private val context: Context, intent: Intent) :
             val fillInIntent = Intent().apply {
                 putExtra(EXTRA_ITEM, weather.time)
             }
-            XLog.e("getViewAt: fillInIntent:${position}")
+            XLog.w("getViewAt: fillInIntent:${position}")
             setOnClickFillInIntent(R.id.widget_ll_item, fillInIntent)
         }
     }

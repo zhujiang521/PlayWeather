@@ -33,7 +33,7 @@ class TodayGlanceReceiver : GlanceAppWidgetReceiver() {
 }
 
 fun updateTodayWeather(context: Context, appWidgetIds: Int) {
-    XLog.e("updateTodayWeather:$appWidgetIds   widgetActions:$widgetActions")
+    XLog.w("updateTodayWeather:$appWidgetIds   widgetActions:$widgetActions")
     if (widgetActions == null) {
         widgetActions = WidgetActionsImpl()
     }

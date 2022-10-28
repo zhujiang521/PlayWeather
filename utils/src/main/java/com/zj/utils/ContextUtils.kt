@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 fun Job?.checkCoroutines() {
     if (this?.isActive == true) return
     this?.cancel()
-    XLog.d("已在查询，先取消之前的协程")
+    XLog.d("Already in the query, first cancel the previous coroutine")
 }
 
 /**
@@ -33,12 +33,12 @@ fun Context.checkNetConnect(): Boolean {
         }
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
             // 当前使用移动网络
-            XLog.d("当前使用移动网络")
+            XLog.d("You are using a mobile network")
             true
         }
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
             // 当前使用WIFI网络
-            XLog.d("当前使用WIFI网络")
+            XLog.d("The WIFI network is in use")
             true
         }
         else -> {

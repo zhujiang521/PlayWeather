@@ -38,7 +38,7 @@ class MainActivity : BaseActivity() {
         private const val WIDGET_CITY_INFO = "widget_city_info"
 
         fun actionNewStart(context: Context, cityInfo: CityInfo?) {
-            XLog.e("cityInfo:$cityInfo")
+            XLog.w("cityInfo:$cityInfo")
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra(WIDGET_CITY_INFO, Gson().toJson(cityInfo))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

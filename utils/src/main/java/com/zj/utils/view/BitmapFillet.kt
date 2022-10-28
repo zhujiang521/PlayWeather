@@ -95,7 +95,7 @@ object BitmapFillet {
      */
     fun fillet(context: Context, bitmap: Bitmap, roundDp: Int, corners: Int = CORNER_ALL): Bitmap {
         val roundPx = context.dp2px(roundDp.toFloat())
-        XLog.e("roundDp:$roundDp  roundPx:$roundPx   corners:$corners")
+        XLog.w("roundDp:$roundDp  roundPx:$roundPx   corners:$corners")
         return try {
             // 其原理就是：先建立一个与图片大小相同的透明的Bitmap画板
             // 然后在画板上画出一个想要的形状的区域。
@@ -139,7 +139,7 @@ object BitmapFillet {
             canvas.drawBitmap(bitmap, src, src, paint)
             paintingBoard
         } catch (exp: Exception) {
-            XLog.e(exp.message)
+            XLog.w(exp.message)
             bitmap
         }
     }

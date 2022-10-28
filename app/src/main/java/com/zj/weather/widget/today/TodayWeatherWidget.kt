@@ -32,13 +32,13 @@ class TodayWeatherWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        XLog.e("onReceive:测试 intent.action:${intent.action}")
+        XLog.w("onReceive intent.action:${intent.action}")
         val appWidgetId: Int = intent.getIntExtra(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID
         )
         val cityInfo = loadCityInfoPref(context, appWidgetId, TODAY_PREFS_NAME)
-        XLog.e("cityInfo:$cityInfo")
+        XLog.w("cityInfo:$cityInfo")
         if (intent.action == CLICK_TODAY_ACTION) {
             MainActivity.actionNewStart(context, cityInfo)
         } else if (intent.action == LOCATION_REFRESH) {

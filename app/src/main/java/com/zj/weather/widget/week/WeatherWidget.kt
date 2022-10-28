@@ -30,7 +30,7 @@ class WeatherWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        XLog.e("onReceive:测试 intent.action:${intent.action}")
+        XLog.w("onReceive intent.action:${intent.action}")
         val appWidgetId: Int = intent.getIntExtra(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID
@@ -41,11 +41,11 @@ class WeatherWidget : AppWidgetProvider() {
                 actionNewStart(context, cityInfo)
             }
             CLICK_LOADING_ITEM_ACTION -> {
-                XLog.e("onReceive: action:${intent.action}")
+                XLog.w("onReceive: action:${intent.action}")
                 notifyWeatherWidget(context, cityInfo, appWidgetId)
             }
             else -> {
-                XLog.e("onReceive")
+                XLog.w("onReceive")
             }
         }
     }
@@ -91,7 +91,7 @@ class WeatherWidget : AppWidgetProvider() {
         val minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
         val rows: Int = getCellsForSize(minHeight)
         val columns: Int = getCellsForSize(minWidth)
-        XLog.e("rows:$rows   columns:$columns")
+        XLog.w("rows:$rows   columns:$columns")
         updateWeekAppWidget(context, appWidgetManager, appWidgetId, rows, columns)
     }
 

@@ -33,7 +33,7 @@ fun WeatherViewPager(
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
     val pagerState = rememberPagerState()
     if (cityInfoList == null || cityInfoList.isNullOrEmpty()) {
-        XLog.e("空的,刷新")
+        XLog.w("Empty, refresh")
         if (pagerState.currentPage == 0) {
             FeatureThatRequiresLocationPermissions(weatherViewModel)
         }
@@ -64,7 +64,7 @@ fun CurrentPageEffect(
         val cityInfo = cityInfoList[index]
         val location = getLocation(cityInfo = cityInfo)
         weatherViewModel.getWeather(location)
-        XLog.e("查询 initialPage")
+        XLog.w("Query initialPage")
     }
 }
 
