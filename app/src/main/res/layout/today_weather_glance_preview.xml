@@ -34,7 +34,7 @@
             android:shadowRadius="10"
             android:text="8/21℃\nGlance"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="25sp"
             tools:ignore="HardcodedText" />
 
         <LinearLayout
