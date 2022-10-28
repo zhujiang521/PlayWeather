@@ -146,15 +146,15 @@ class Lunar(cal: Calendar) {
 
     init {
         val leapMonth: Int
-        var baseDate: Date? = null
+        var baseDate = Date()
         try {
-            baseDate = chineseDateFormat.parse("1900年1月31日")
+            baseDate = chineseDateFormat.parse("1900年1月31日") ?: Date()
         } catch (e: ParseException) {
             e.printStackTrace() //To change body of catch statement use Options | File Templates.
         }
 
         //求出和1900年1月31日相差的天数
-        var offset = ((cal.time.time - baseDate!!.time) / 86400000L).toInt()
+        var offset = ((cal.time.time - baseDate.time) / 86400000L).toInt()
         var monCyl = 14
 
         //用offset减去每农历年的天数

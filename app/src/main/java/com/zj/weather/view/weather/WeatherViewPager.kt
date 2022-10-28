@@ -39,19 +39,28 @@ fun WeatherViewPager(
         }
         NoCityContent(toWeatherList, toCityList)
     } else {
-        CurrentPageEffect(pagerState, cityInfoList!!, weatherViewModel)
+        CurrentPageEffect(pagerState, cityInfoList ?: arrayListOf(), weatherViewModel)
         WeatherViewPager(
             weatherViewModel,
-            cityInfoList!!, pagerState, getCityIndex(cityInfoList), toCityList, toWeatherList
+            cityInfoList ?: arrayListOf(),
+            pagerState,
+            getCityIndex(cityInfoList),
+            toCityList,
+            toWeatherList
         )
     }
 }
 
 @ExperimentalPagerApi
 @Composable
-fun CurrentPageEffect(pagerState: PagerState, cityInfoList: List<CityInfo>, weatherViewModel: WeatherViewModel) {
+fun CurrentPageEffect(
+    pagerState: PagerState,
+    cityInfoList: List<CityInfo>,
+    weatherViewModel: WeatherViewModel
+) {
     LaunchedEffect(pagerState.currentPage) {
-        val index = if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
+        val index =
+            if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
         val cityInfo = cityInfoList[index]
         val location = getLocation(cityInfo = cityInfo)
         weatherViewModel.getWeather(location)

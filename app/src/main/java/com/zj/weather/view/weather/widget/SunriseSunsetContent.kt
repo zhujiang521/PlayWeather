@@ -190,9 +190,13 @@ fun evaluate(
  * @return
  */
 fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
-    val drawable = ContextCompat.getDrawable(context!!, drawableId)
+    if (context == null) {
+        XLog.w("context is null")
+        return null
+    }
+    val drawable = ContextCompat.getDrawable(context, drawableId) ?: return null
     val bitmap = Bitmap.createBitmap(
-        drawable!!.intrinsicWidth,
+        drawable.intrinsicWidth,
         drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
     )
     val canvas = android.graphics.Canvas(bitmap)

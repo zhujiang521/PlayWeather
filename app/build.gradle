@@ -63,13 +63,13 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation 'androidx.activity:activity-compose:1.6.0'
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
     implementation project(path: ':network')
 
     // navigation
-    implementation 'androidx.navigation:navigation-compose:2.5.1'
+    implementation 'androidx.navigation:navigation-compose:2.5.2'
 
     // 启动动画
     implementation 'androidx.core:core-splashscreen:1.0.0'
@@ -80,7 +80,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // 使用Compose 编写小部件（Widget）
-    implementation "androidx.glance:glance-appwidget:1.0.0-alpha03"
+    implementation "androidx.glance:glance-appwidget:1.0.0-alpha05"
 
     testImplementation des.junit
     androidTestImplementation des.extJunit
