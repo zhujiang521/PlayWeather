@@ -72,7 +72,7 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/weather_widget_info" />
+                android:resource="@xml/week_weather_widget_info" />
         </receiver>
 
         <activity
@@ -96,7 +96,8 @@
         <receiver
             android:name="com.zj.weather.widget.glance.TodayGlanceReceiver"
             android:enabled="@bool/glance_appwidget_available"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/widget_today_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

@@ -84,5 +84,7 @@
     <string name="desk_code">Code</string>
 
     <string name="city_rank">Rank:</string>
+    <string name="widget_preview_city">Beijing</string>
+    <string name="widget_preview_weather">Sunny</string>
 
 </resources>

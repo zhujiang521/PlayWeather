@@ -85,4 +85,7 @@
 
     <string name="city_rank">排名:</string>
 
+    <string name="widget_preview_city">北京市</string>
+    <string name="widget_preview_weather">晴</string>
+
 </resources>

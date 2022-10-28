@@ -4,6 +4,7 @@
     android:maxResizeWidth="250dp"
     android:minWidth="110dp"
     android:minHeight="80dp"
+    android:previewLayout="@layout/today_weather_glance_preview"
     android:resizeMode="horizontal"
     android:targetCellWidth="2"
     android:targetCellHeight="2"

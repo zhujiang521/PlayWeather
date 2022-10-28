@@ -5,6 +5,7 @@
     android:initialLayout="@layout/weather_widget"
     android:minWidth="170dp"
     android:minHeight="90dp"
+    android:previewLayout="@layout/widget_item"
     android:resizeMode="horizontal|vertical"
     android:targetCellWidth="3"
     android:targetCellHeight="2"
