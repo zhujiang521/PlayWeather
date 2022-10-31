@@ -33,6 +33,7 @@ import com.zj.weather.view.city.CityListPage
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.list.WeatherListPage
 import com.zj.weather.view.list.viewmodel.WeatherListViewModel
+import com.zj.weather.view.season.SeasonPage
 import com.zj.weather.view.weather.WeatherViewPager
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 
@@ -56,7 +57,8 @@ fun NavGraph(
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
                 toCityList = actions.toCityList,
-                toWeatherList = actions.toWeatherList
+                toWeatherList = actions.toWeatherList,
+                toSeason = actions.toSeason
             )
         }
         searchComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
@@ -78,6 +80,9 @@ fun NavGraph(
                 toWeatherDetails = actions.upPress
             )
         }
+        composable(PlayDestinations.SEASON_PAGE_ROUTE) {
+            SeasonPage()
+        }
     }
 }
 
@@ -85,6 +90,7 @@ object PlayDestinations {
     const val HOME_PAGE_ROUTE = "home_page_route"
     const val WEATHER_LIST_ROUTE = "weather_list_route"
     const val CITY_LIST_ROUTE = "city_list_route"
+    const val SEASON_PAGE_ROUTE = "season_page_route"
 }
 
 @ExperimentalAnimationApi
@@ -140,6 +146,10 @@ class PlayActions(navController: NavHostController) {
 
     val toCityList: () -> Unit = {
         navController.navigate(PlayDestinations.CITY_LIST_ROUTE)
+    }
+
+    val toSeason: () -> Unit = {
+        navController.navigate(PlayDestinations.SEASON_PAGE_ROUTE)
     }
 
     val upPress: () -> Unit = {
