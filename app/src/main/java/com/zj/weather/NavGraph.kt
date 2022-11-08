@@ -16,9 +16,7 @@
 
 package com.zj.weather
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -72,7 +70,7 @@ fun NavGraph(
                 toWeatherDetails = actions.upPress
             )
         }
-        composable(PlayDestinations.CITY_LIST_ROUTE) {
+        playComposable(PlayDestinations.CITY_LIST_ROUTE) {
             val cityListViewModel = hiltViewModel<CityListViewModel>()
             CityListPage(
                 cityListViewModel = cityListViewModel,
@@ -80,7 +78,7 @@ fun NavGraph(
                 toWeatherDetails = actions.upPress
             )
         }
-        composable(PlayDestinations.SEASON_PAGE_ROUTE) {
+        contentComposable(PlayDestinations.SEASON_PAGE_ROUTE) {
             SeasonPage()
         }
     }
@@ -94,7 +92,7 @@ object PlayDestinations {
 }
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.composable(
+fun NavGraphBuilder.playComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
@@ -107,9 +105,9 @@ fun NavGraphBuilder.composable(
         enterTransition = {
             slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
         },
-//        exitTransition = {
-//            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right)
-//        },
+        exitTransition = {
+            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right)
+        },
         content = content,
     )
 }
@@ -128,9 +126,30 @@ fun NavGraphBuilder.searchComposable(
         enterTransition = {
             slideIntoContainer(AnimatedContentScope.SlideDirection.Up)
         },
-//        exitTransition = {
-//            slideOutOfContainer(AnimatedContentScope.SlideDirection.Down)
-//        },
+        exitTransition = {
+            slideOutOfContainer(AnimatedContentScope.SlideDirection.Down)
+        },
+        content = content,
+    )
+}
+
+@ExperimentalAnimationApi
+fun NavGraphBuilder.contentComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+) {
+    composable(
+        route = route,
+        arguments = arguments,
+        deepLinks = deepLinks,
+        enterTransition = {
+            scaleIn()
+        },
+        exitTransition = {
+            scaleOut()
+        },
         content = content,
     )
 }
@@ -153,7 +172,7 @@ class PlayActions(navController: NavHostController) {
     }
 
     val upPress: () -> Unit = {
-        navController.navigateUp()
+        navController.popBackStack()
     }
 
 }
