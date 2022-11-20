@@ -4,6 +4,10 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -12,8 +16,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.XLog
 import com.zj.utils.lce.NoContent
@@ -99,6 +101,7 @@ private fun NoCityContent(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalPermissionsApi
 @ExperimentalPagerApi
@@ -121,11 +124,17 @@ fun WeatherViewPager(
         }
         HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->
             val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
-            SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing), onRefresh = {
-                weatherViewModel.refresh(getLocation(cityInfoList[page]))
-            }, modifier = Modifier.clickable {
-                toSeason()
-            }) {
+
+            val pullRefreshState = rememberPullRefreshState(
+                isRefreshing,
+                { weatherViewModel.refresh(getLocation(cityInfoList[page])) })
+
+            Box(
+                Modifier
+                    .pullRefresh(pullRefreshState)
+                    .clickable {
+                        toSeason()
+                    }) {
                 WeatherPage(
                     weatherViewModel, cityInfoList[page],
                     onErrorClick = {
@@ -133,6 +142,12 @@ fun WeatherViewPager(
                         weatherViewModel.getWeather(location)
                     },
                     cityList = toCityList, cityListClick = toWeatherList
+                )
+
+                PullRefreshIndicator(
+                    isRefreshing,
+                    pullRefreshState,
+                    Modifier.align(Alignment.TopCenter)
                 )
             }
         }
