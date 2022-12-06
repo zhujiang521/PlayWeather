@@ -60,7 +60,7 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  */
 @Composable
 fun SunriseSunsetProgress(sunrise: String, sunset: String) {
-    val result = getAccounted(sunrise, sunset)
+//    val result = getAccounted(sunrise, sunset)
 //    val bitmap = getBitmapFromVectorDrawable(context, R.drawable.x_sunny)
 //    val image = bitmap?.asImageBitmap()
     Column(

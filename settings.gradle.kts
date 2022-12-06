@@ -7,5 +7,5 @@ pluginManagement {
     }
     
 }
-rootProject.name = "LenovoTools"
+rootProject.name = "PlayWeather"
 

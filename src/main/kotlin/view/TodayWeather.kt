@@ -58,7 +58,6 @@ fun TodayWeather(nowBaseBean: WeatherNowBean.NowBaseBean?) {
 
                 Text(
                     text = "${nowBaseBean?.text ?: "晴"}  ${nowBaseBean?.temp ?: "0"}℃",
-                    modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
                     fontSize = 35.sp,
                     color = MaterialTheme.colors.primary
                 )
