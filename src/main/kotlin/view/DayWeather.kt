@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import buildPainter
 import model.weather.WeatherDailyBean
+import utils.getDateWeekName
 
 @Composable
 fun DayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
@@ -51,7 +52,7 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = dailyBean.fxDate ?: "date",
+            text = dailyBean.fxDate?.getDateWeekName() ?: "date",
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 3.dp),

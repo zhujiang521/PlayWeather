@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import buildPainter
 import model.weather.WeatherHourlyBean
+import utils.getTimeName
 
 @Composable
 fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
@@ -54,7 +55,7 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = hourlyBean.fxTime ?: "time",
+            text = hourlyBean.fxTime?.getTimeName() ?: "现在",
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary
         )

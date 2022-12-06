@@ -1,8 +1,5 @@
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
@@ -12,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import model.WeatherModel
@@ -32,8 +28,8 @@ fun WeatherPage(appViewModel: AppViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-        Image(painter = buildPainter("ic_launcher.png"), "")
-
+        // 当天天气数值
+        TodayWeather(weatherModel.nowBaseBean)
 
         // 当前空气质量
         AirQuality(weatherModel.airNowBean)
@@ -54,15 +50,20 @@ fun WeatherPage(appViewModel: AppViewModel) {
         LifeWeatherContent(weatherModel.weatherLifeList)
 
         // 数据源
-        Text(
-            text = "数据来自和风天气",
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 15.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxSize().padding(top = 20.dp, bottom = 15.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(painter = buildPainter("ic_launcher.png"), "", modifier = Modifier.size(15.dp))
 
+            Spacer(modifier = Modifier.width(5.dp))
+
+            Text(
+                text = "数据来自和风天气",
+                fontSize = 12.sp,
+            )
+        }
 
     }
 
