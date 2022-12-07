@@ -29,10 +29,13 @@ import androidx.compose.ui.unit.sp
 import buildPainter
 import kotlinx.coroutines.launch
 import model.city.GeoBean
+import utils.ShowDialog
 
 @Composable
 fun SearchCity(modifier: Modifier, appViewModel: AppViewModel, backClick: () -> Unit) {
-    var inputText by rememberSaveable() { mutableStateOf("") }
+    var inputText by rememberSaveable { mutableStateOf("") }
+
+    val showDialog = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(inputText) {
         if (inputText.isNotBlank()) {
@@ -83,8 +86,12 @@ fun SearchCity(modifier: Modifier, appViewModel: AppViewModel, backClick: () -> 
                     if (inputText.isNotBlank()) {
                         inputText = ""
                         appViewModel.clearSearchCity()
+                    } else {
+                        showDialog.value = true
                     }
                 })
+
+            ShowDialog(showDialog, "建议", "多学一个知识点，就少说一句求人的话！", "努力", "共勉") {}
 
         }
 

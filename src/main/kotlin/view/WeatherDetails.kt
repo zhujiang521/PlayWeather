@@ -8,6 +8,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Add
+import androidx.compose.material.icons.sharp.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,12 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import buildPainter
 import model.weather.WeatherNowBean
+import utils.getTimeNameForObs
 
 @Composable
 fun WeatherDetails(
     modifier: Modifier,
     nowBaseBean: WeatherNowBean.NowBaseBean?,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    onRefreshClick: () -> Unit
 ) {
 
     Column(modifier = modifier) {
@@ -35,7 +38,13 @@ fun WeatherDetails(
             IconButton(onClick = onAddClick) {
                 Icon(Icons.Sharp.Add, "")
             }
-            Text(nowBaseBean?.city?:"北京", fontSize = 14.sp)
+            Text(nowBaseBean?.city ?: "北京", fontSize = 14.sp)
+            Spacer(modifier = Modifier.weight(1f))
+
+            Text(nowBaseBean?.obsTime?.getTimeNameForObs() ?: "现在", fontSize = 14.sp)
+            IconButton(onClick = onRefreshClick) {
+                Icon(Icons.Sharp.Refresh, "")
+            }
         }
 
         Column(

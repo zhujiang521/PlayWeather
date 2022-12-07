@@ -25,7 +25,7 @@ fun WeatherPage(appViewModel: AppViewModel) {
         modifier = Modifier.fillMaxSize().padding(10.dp),
     ) {
         // 信息区域（左边）
-        Information(appViewModel, weatherModel.nowBaseBean)
+        Information(appViewModel, weatherModel.nowBaseBean, currentCityId)
 
         // 天气展示区域（右边）
         Column(
