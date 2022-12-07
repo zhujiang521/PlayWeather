@@ -1,6 +1,5 @@
 package view
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -105,10 +104,4 @@ fun AirQualityProgress(aqi: Int) {
             cap = StrokeCap.Round,
         )
     }
-}
-
-@Preview
-@Composable
-fun AirQualityProgressPreview() {
-    AirQualityProgress(aqi = 400)
 }

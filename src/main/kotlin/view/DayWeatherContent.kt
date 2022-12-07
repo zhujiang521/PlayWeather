@@ -1,6 +1,5 @@
 package view
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -110,10 +109,4 @@ private fun WeatherContentItem(modifier: Modifier, title: String, value: String,
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun WeatherContentItemPreview() {
-    WeatherContentItem(Modifier, "模块标题", "值", "小标题提示")
 }

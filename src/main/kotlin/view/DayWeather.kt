@@ -1,6 +1,5 @@
 package view
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,7 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import buildPainter
+import utils.buildPainter
+import utils.getWeatherIcon
 import model.weather.WeatherDailyBean
 import utils.getDateWeekName
 
@@ -62,9 +62,9 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = buildPainter("drawable/${dailyBean.iconDay}.svg"),
+            painter = buildPainter(getWeatherIcon(dailyBean.iconDay)),
             "",
-            modifier = Modifier.padding(top = 7.dp)
+            modifier = Modifier.size(35.dp)
         )
 
         Spacer(modifier = Modifier.weight(1.2f))
@@ -87,15 +87,4 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
             color = MaterialTheme.colors.onSecondary
         )
     }
-}
-
-@Preview
-@Composable
-fun DayWeatherItemPreview() {
-    val dailyBean = WeatherDailyBean.DailyBean()
-    dailyBean.fxDate = "周一"
-    dailyBean.iconDay = "100"
-    dailyBean.tempMin = "10"
-    dailyBean.tempMax = "20"
-    DayWeatherItem(dailyBean = dailyBean)
 }

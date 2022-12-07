@@ -17,7 +17,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import buildPainter
+import utils.buildPainter
+import utils.getWeatherIcon
 import model.weather.WeatherNowBean
 import utils.getTimeNameForObs
 
@@ -95,21 +96,39 @@ fun WeatherItem(name: String, value: String) {
 
 /**
  * 动画图标
+ *
+ * 这块添加了无限重复动画，如果是晴天，也就是小太阳则旋转，如果不是则进行左右平移操作
  */
 @Composable
 private fun RotateWeatherIcon(icon: String) {
     val infiniteTransition = rememberInfiniteTransition()
-    val rotate by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(3500, easing = LinearOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
+    val modifier = if (icon == "100") {
+        val rotate by infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(3500, easing = LinearOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
+            )
         )
-    )
+        Modifier.rotate(rotate)
+    } else {
+        val offsetX by infiniteTransition.animateValue(
+            initialValue = (-30).dp, // 初始值
+            targetValue = 30.dp, // 目标值
+            typeConverter = TwoWayConverter(
+                { AnimationVector1D(it.value) },
+                { it.value.dp }), // 类型转换
+            animationSpec = infiniteRepeatable(  // 动画规格!!!
+                animation = tween(3500, easing = LinearOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+        Modifier.offset(x = offsetX)
+    }
     Image(
-        painter = buildPainter("drawable/$icon.svg"),
+        painter = buildPainter(getWeatherIcon(icon)),
         "",
-        modifier = Modifier.size(170.dp).padding(10.dp).rotate(rotate)
+        modifier = modifier.size(170.dp).padding(10.dp)
     )
 }

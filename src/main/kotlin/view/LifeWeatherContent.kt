@@ -12,7 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import buildPainter
+import utils.buildPainter
+import utils.lifePrefix
 import model.indices.WeatherLifeIndicesBean
 
 
@@ -34,20 +35,21 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp, start = 5.dp, end = 5.dp)
+                    .padding(top = 10.dp, start = 5.dp, end = 5.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
                 WeatherLifeItem(
-                    modifier, "drawable/100.svg", "运动", weatherLifeList[0].category
+                    modifier, "${lifePrefix}ic_life_sport.svg", "运动", weatherLifeList[0].category
                 )
                 WeatherLifeItem(
-                    modifier, "drawable/101.svg", "洗车", weatherLifeList[1].category
+                    modifier, "${lifePrefix}ic_life_car.svg", "洗车", weatherLifeList[1].category
                 )
                 WeatherLifeItem(
                     modifier,
-                    "drawable/102.svg",
+                    "${lifePrefix}ic_life_clothes.svg",
                     "穿衣",
                     weatherLifeList[2].category
                 )
@@ -56,22 +58,23 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp, start = 5.dp, end = 5.dp)
+                    .padding(top = 10.dp, start = 5.dp, end = 5.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
                 WeatherLifeItem(
-                    modifier, "drawable/103.svg", "紫外线", weatherLifeList[3].category
+                    modifier, "${lifePrefix}ic_life_uv.svg", "紫外线", weatherLifeList[3].category
                 )
                 WeatherLifeItem(
                     modifier,
-                    "drawable/104.svg",
+                    "${lifePrefix}ic_life_travel.svg",
                     "旅游",
                     weatherLifeList[4].category
                 )
                 WeatherLifeItem(
-                    modifier, "drawable/150.svg", "感冒", weatherLifeList[5].category
+                    modifier, "${lifePrefix}ic_life_cold.svg", "感冒", weatherLifeList[5].category
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
@@ -87,7 +90,11 @@ fun WeatherLifeItem(modifier: Modifier, imgRes: String, title: String, value: St
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-        Image(painter = buildPainter(imgRes), contentDescription = "", modifier = Modifier.size(30.dp))
+        Image(
+            painter = buildPainter(imgRes),
+            contentDescription = "",
+            modifier = Modifier.size(35.dp)
+        )
 
         Column(modifier = Modifier.padding(start = 10.dp)) {
             Text(text = title, fontSize = 12.sp)

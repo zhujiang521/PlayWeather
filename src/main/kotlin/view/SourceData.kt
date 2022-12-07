@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import buildPainter
+import utils.buildPainter
 
 @Composable
 fun SourceData() {
@@ -17,7 +17,7 @@ fun SourceData() {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(painter = buildPainter("ic_launcher.png"), "", modifier = Modifier.size(15.dp))
+        Image(painter = buildPainter("image/ic_launcher.svg"), "", modifier = Modifier.size(15.dp))
 
         Spacer(modifier = Modifier.width(5.dp))
 

@@ -1,6 +1,5 @@
 package view
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,7 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import buildPainter
+import utils.buildPainter
+import utils.getWeatherIcon
 import model.weather.WeatherHourlyBean
 import utils.getTimeName
 
@@ -59,7 +59,12 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
             fontSize = 14.sp,
             color = MaterialTheme.colors.onSecondary
         )
-        Image(painter = buildPainter("drawable/${hourlyBean.icon}.svg"), "", modifier = Modifier.padding(top = 7.dp))
+        Spacer(modifier = Modifier.height(7.dp))
+        Image(
+            painter = buildPainter(getWeatherIcon(hourlyBean.icon)),
+            "",
+            modifier = Modifier.size(35.dp)
+        )
         Text(
             text = "${hourlyBean.temp}°",
             modifier = Modifier.padding(top = 7.dp),
@@ -67,14 +72,4 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
             color = MaterialTheme.colors.onSecondary
         )
     }
-}
-
-@Preview
-@Composable
-fun HourWeatherItemPreview() {
-    val hourlyBean = WeatherHourlyBean.HourlyBean()
-    hourlyBean.fxTime = "21时"
-    hourlyBean.temp = "15"
-    hourlyBean.icon = "100"
-    HourWeatherItem(hourlyBean = hourlyBean)
 }
