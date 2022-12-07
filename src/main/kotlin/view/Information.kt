@@ -20,7 +20,6 @@ import model.weather.WeatherNowBean
 fun Information(appViewModel: AppViewModel, nowBaseBean: WeatherNowBean.NowBaseBean?) {
     var showSearch by remember { mutableStateOf(false) }
     val currentCity by appViewModel.currentCity.collectAsState("北京")
-    println("currentCityId:$currentCity")
     Box(
         Modifier.fillMaxHeight().width(300.dp).padding(end = 10.dp)
     ) {
