@@ -57,14 +57,14 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
         Text(
             text = hourlyBean.fxTime?.getTimeName() ?: "现在",
             fontSize = 14.sp,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.onSecondary
         )
         Image(painter = buildPainter("drawable/${hourlyBean.icon}.svg"), "", modifier = Modifier.padding(top = 7.dp))
         Text(
-            text = "${hourlyBean.temp}℃",
+            text = "${hourlyBean.temp}°",
             modifier = Modifier.padding(top = 7.dp),
             fontSize = 14.sp,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.onSecondary
         )
     }
 }

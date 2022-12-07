@@ -49,7 +49,7 @@ fun DayWeatherContent(
                 .weight(1f)
                 .padding(top = 5.dp, bottom = 5.dp, end = 5.dp),
             "体感温度",
-            "${nowBaseBean?.feelsLike ?: "0"}℃",
+            "${nowBaseBean?.feelsLike ?: "0"}°",
             "与实际气温相似"
         )
         WeatherContentItem(
@@ -80,7 +80,7 @@ fun DayWeatherContent(
                 .weight(1f)
                 .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
             "风",
-            "${nowBaseBean?.windDir ?: "0"}${nowBaseBean?.windScale ?: ""}级",
+            "${nowBaseBean?.windDir ?: "南风"}${nowBaseBean?.windScale ?: ""}级",
             "当前风速为${nowBaseBean?.windSpeed ?: "0"}Km/H"
         )
     }
@@ -100,13 +100,13 @@ private fun WeatherContentItem(modifier: Modifier, title: String, value: String,
                 text = value,
                 modifier = Modifier.padding(top = 8.dp),
                 fontSize = 18.sp,
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.onSecondary
             )
             Text(
                 text = tip,
                 modifier = Modifier.padding(top = 8.dp),
                 fontSize = 13.sp,
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.onSecondary
             )
         }
     }

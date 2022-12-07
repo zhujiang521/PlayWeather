@@ -22,3 +22,8 @@ data class WeatherModel(
     val airNowBean: AirNowBean.NowBean? = AirNowBean.NowBean(),
     val weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem> = arrayListOf()
 )
+
+fun WeatherModel.isEmpty(): Boolean {
+    return nowBaseBean == null || hourlyBeanList.isEmpty() || dailyBean == null ||
+            dailyBeanList.isEmpty() || airNowBean == null || weatherLifeList.isEmpty()
+}

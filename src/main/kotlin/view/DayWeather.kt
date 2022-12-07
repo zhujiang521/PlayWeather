@@ -57,7 +57,7 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
                 .weight(1f)
                 .padding(start = 3.dp),
             fontSize = 15.sp,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.onSecondary
         )
         Spacer(modifier = Modifier.weight(1f))
 
@@ -69,22 +69,22 @@ private fun DayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
 
         Spacer(modifier = Modifier.weight(1.2f))
         Text(
-            text = "${dailyBean.tempMin ?: "0"}℃",
+            text = "${dailyBean.tempMin ?: "0"}°",
             modifier = Modifier
                 .padding(start = 7.dp)
                 .weight(2f),
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.onSecondary
         )
         Text(
-            text = "${dailyBean.tempMax ?: "0"}℃",
+            text = "${dailyBean.tempMax ?: "0"}°",
             modifier = Modifier
                 .padding(start = 7.dp, end = 3.dp)
                 .weight(2f),
             fontSize = 15.sp,
             textAlign = TextAlign.End,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.onSecondary
         )
     }
 }

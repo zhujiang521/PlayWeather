@@ -95,7 +95,7 @@ fun WeatherLifeItem(modifier: Modifier, imgRes: String, title: String, value: St
                 text = value ?: "",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp,
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.onSecondary
             )
         }
 

@@ -1,7 +1,6 @@
 package model.city
 
 import model.Refer
-import model.city.GeoBean.LocationBean
 
 class GeoBean {
     val code: String? = null

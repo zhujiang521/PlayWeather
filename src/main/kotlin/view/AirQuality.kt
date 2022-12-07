@@ -44,10 +44,10 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
                 }",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 20.sp,
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colors.onSecondary
             )
             Text(
-                text = "当前AQI（CN）为：${airNowBean.aqi ?: ""}${airNowBean.primary ?: ""}",
+                text = "当前AQI（CN）为：${airNowBean.aqi ?: ""}",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp
             )

@@ -20,6 +20,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -39,6 +40,10 @@ compose.desktop {
                 msiPackageVersion = "1.0.0"
                 exePackageVersion = "1.0.0"
             }
+
+            jvmArgs(
+                "-Dapple.awt.application.appearance=system"
+            )
         }
     }
 }
