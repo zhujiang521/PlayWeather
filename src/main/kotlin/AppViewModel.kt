@@ -17,6 +17,9 @@ class AppViewModel {
 
     private val playWeatherNetwork = PlayWeatherNetwork
 
+    /**
+     * 当前天气
+     */
     private val _weatherModel = MutableStateFlow(WeatherModel())
     val weatherModelData: Flow<WeatherModel>
         get() = _weatherModel
@@ -31,11 +34,16 @@ class AppViewModel {
         DataStoreUtils.putData(CURRENT_CITY_ID, location)
     }
 
+    /**
+     * 当前城市及当前城市 ID
+     */
     val currentCity = DataStoreUtils.getData(CURRENT_CITY, DEFAULT_CITY)
     val currentCityId = DataStoreUtils.getData(CURRENT_CITY_ID, DEFAULT_CITY_ID)
 
     /**
-     * place stone
+     * 获取天气信息
+     *
+     * @param location 位置
      */
     suspend fun getWeather(location: String = DEFAULT_CITY_ID) {
         val weatherNow = playWeatherNetwork.getWeatherNow(location)
@@ -55,9 +63,16 @@ class AppViewModel {
             weatherLifeList = weatherLifeIndicesList.daily ?: arrayListOf()
         )
 
+        if (_weatherModel.value == weatherModel) {
+            println("weatherModel same as before. Skip it")
+            return
+        }
         _weatherModel.value = weatherModel
     }
 
+    /**
+     * 位置列表
+     */
     private val _locationModel = MutableStateFlow(listOf<GeoBean.LocationBean>())
     val locationListData: Flow<List<GeoBean.LocationBean>>
         get() = _locationModel
@@ -66,10 +81,16 @@ class AppViewModel {
         val geoBean = playWeatherNetwork.getCityLookup(inputText)
         val locationBeanList = geoBean.location
         if (!locationBeanList.isNullOrEmpty()) {
+            if (_locationModel.value == locationBeanList) {
+                println("locationModel same as before. Skip it")
+            }
             _locationModel.value = locationBeanList
         }
     }
 
+    /**
+     * 热门城市列表
+     */
     private val _topLocationModel = MutableStateFlow(listOf<GeoBean.LocationBean>())
     val topLocationListData: Flow<List<GeoBean.LocationBean>>
         get() = _topLocationModel
@@ -78,10 +99,16 @@ class AppViewModel {
         val geoBean = playWeatherNetwork.getCityTop()
         val locationBeanList = geoBean.topCityList
         if (!locationBeanList.isNullOrEmpty()) {
+            if (_topLocationModel.value == locationBeanList) {
+                println("topLocationModel same as before. Skip it")
+            }
             _topLocationModel.value = locationBeanList
         }
     }
 
+    /**
+     * 清除城市搜索
+     */
     fun clearSearchCity() {
         _locationModel.value = arrayListOf()
     }

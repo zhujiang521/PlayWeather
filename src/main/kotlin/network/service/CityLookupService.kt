@@ -1,6 +1,6 @@
 package network.service
 
-import com.zj.utils.weather.WEATHER_KEY
+import WEATHER_KEY
 import model.city.GeoBean
 import model.city.TopGeoBean
 import retrofit2.http.GET
@@ -11,7 +11,7 @@ import retrofit2.http.Query
  * 版权：Zhujiang 个人版权
  * @author zhujiang
  * 版本：1.5
- * 创建日期：2022/5/19
+ * 创建日期：2022/12/07
  * 描述：PlayWeather
  *
  */

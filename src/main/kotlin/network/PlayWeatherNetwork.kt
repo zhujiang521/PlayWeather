@@ -17,7 +17,7 @@ import model.weather.WeatherNowBean
  * 版权：Zhujiang 个人版权
  * @author zhujiang
  * 版本：1.5
- * 创建日期：2021/4/30
+ * 创建日期：2022/12/07
  * 描述：SunnyWeather
  *
  */
