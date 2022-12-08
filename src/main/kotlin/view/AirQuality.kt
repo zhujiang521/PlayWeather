@@ -33,7 +33,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
                 .padding(10.dp)
         ) {
             Text(
-                text = "空气质量", fontSize = 14.sp, modifier = Modifier
+                text = "空气质量", fontSize = 13.sp, modifier = Modifier
                     .padding(bottom = 7.dp)
             )
             Divider(thickness = 0.4.dp)
@@ -69,7 +69,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
  * @param aqi 空气质量数值
  */
 @Composable
-fun AirQualityProgress(aqi: Int) {
+private fun AirQualityProgress(aqi: Int) {
     val aqiValue = if (aqi < 500) {
         aqi
     } else {

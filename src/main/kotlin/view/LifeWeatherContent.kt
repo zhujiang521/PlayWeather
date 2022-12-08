@@ -12,9 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import utils.buildPainter
-import utils.lifePrefix
 import model.indices.WeatherLifeIndicesBean
+import utils.buildPainter
 
 
 @Composable
@@ -27,7 +26,7 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "生活指数",
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
@@ -41,18 +40,9 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
-                WeatherLifeItem(
-                    modifier, "${lifePrefix}ic_life_sport.svg", "运动", weatherLifeList[0].category
-                )
-                WeatherLifeItem(
-                    modifier, "${lifePrefix}ic_life_car.svg", "洗车", weatherLifeList[1].category
-                )
-                WeatherLifeItem(
-                    modifier,
-                    "${lifePrefix}ic_life_clothes.svg",
-                    "穿衣",
-                    weatherLifeList[2].category
-                )
+                WeatherLifeItem(modifier, weatherLifeList[0])
+                WeatherLifeItem(modifier, weatherLifeList[1])
+                WeatherLifeItem(modifier, weatherLifeList[2])
             }
 
             Row(
@@ -64,18 +54,9 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
-                WeatherLifeItem(
-                    modifier, "${lifePrefix}ic_life_uv.svg", "紫外线", weatherLifeList[3].category
-                )
-                WeatherLifeItem(
-                    modifier,
-                    "${lifePrefix}ic_life_travel.svg",
-                    "旅游",
-                    weatherLifeList[4].category
-                )
-                WeatherLifeItem(
-                    modifier, "${lifePrefix}ic_life_cold.svg", "感冒", weatherLifeList[5].category
-                )
+                WeatherLifeItem(modifier, weatherLifeList[3])
+                WeatherLifeItem(modifier, weatherLifeList[4])
+                WeatherLifeItem(modifier, weatherLifeList[5])
             }
             Spacer(modifier = Modifier.height(15.dp))
         }
@@ -83,7 +64,7 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
 }
 
 @Composable
-fun WeatherLifeItem(modifier: Modifier, imgRes: String, title: String, value: String?) {
+fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLifeIndicesItem) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
@@ -91,15 +72,15 @@ fun WeatherLifeItem(modifier: Modifier, imgRes: String, title: String, value: St
     ) {
 
         Image(
-            painter = buildPainter(imgRes),
+            painter = buildPainter(item.imgRes),
             contentDescription = "",
-            modifier = Modifier.size(35.dp)
+            modifier = Modifier.size(50.dp)
         )
 
         Column(modifier = Modifier.padding(start = 10.dp)) {
-            Text(text = title, fontSize = 12.sp)
+            Text(text = item.name ?: "运动指数", fontSize = 12.sp)
             Text(
-                text = value ?: "",
+                text = item.category ?: "",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp,
                 color = MaterialTheme.colors.onSecondary

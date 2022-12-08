@@ -3,8 +3,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import model.WeatherModel
 import model.city.GeoBean
 import model.weather.WeatherDailyBean
+import model.weather.WeatherNowBean
 import network.PlayWeatherNetwork
 import utils.DataStoreUtils
+import utils.getDateWeekName
+import utils.lifePrefix
 
 class AppViewModel {
 
@@ -54,6 +57,17 @@ class AppViewModel {
         val airNow = playWeatherNetwork.getAirNowBean(location)
         val weatherLifeIndicesList = playWeatherNetwork.getWeatherLifeIndicesBean(location)
 
+        buildWeekWeather(weather7Day, weatherNow)
+
+        weatherLifeIndicesList.daily?.apply {
+            get(0).imgRes = "${lifePrefix}ic_life_sport.svg"
+            get(1).imgRes = "${lifePrefix}ic_life_car.svg"
+            get(2).imgRes = "${lifePrefix}ic_life_clothes.svg"
+            get(3).imgRes = "${lifePrefix}ic_life_uv.svg"
+            get(4).imgRes = "${lifePrefix}ic_life_travel.svg"
+            get(5).imgRes = "${lifePrefix}ic_life_cold.svg"
+        }
+
         val weatherModel = WeatherModel(
             nowBaseBean = weatherNow.now,
             hourlyBeanList = weather24Hour.hourly,
@@ -68,6 +82,39 @@ class AppViewModel {
             return
         }
         _weatherModel.value = weatherModel
+    }
+
+    /**
+     * 为了构建7天天气的柱状图
+     */
+    private fun buildWeekWeather(
+        weather7Day: WeatherDailyBean,
+        weatherNow: WeatherNowBean
+    ) {
+        var min = Int.MAX_VALUE
+        var max = Int.MIN_VALUE
+        weather7Day.daily.forEach {
+            val currentMin = it.tempMin?.toInt() ?: 0
+            if (min > currentMin) {
+                min = currentMin
+            }
+
+            val currentMax = it.tempMax?.toInt() ?: 0
+            if (max < currentMax) {
+                max = currentMax
+            }
+        }
+
+        weather7Day.daily.forEach {
+            it.weekMin = min
+            it.weekMax = max
+
+            it.fxDate = it.fxDate?.getDateWeekName() ?: "date"
+
+            if (it.fxDate == "今天") {
+                it.temp = weatherNow.now.temp?.toInt() ?: -100
+            }
+        }
     }
 
     /**

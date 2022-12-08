@@ -88,9 +88,9 @@ fun WeatherItem(name: String, value: String) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(name, fontSize = 15.sp, color = Color.LightGray)
+        Text(name, fontSize = 14.sp, color = Color.LightGray)
         Spacer(modifier = Modifier.height(5.dp))
-        Text(value, fontSize = 15.sp, color = Color.DarkGray)
+        Text(value, fontSize = 14.sp, color = Color.DarkGray)
     }
 }
 

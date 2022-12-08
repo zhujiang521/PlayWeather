@@ -33,7 +33,7 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
 
             Text(
                 text = "日出日落",
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )

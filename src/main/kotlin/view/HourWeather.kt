@@ -29,7 +29,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "24小时天气预报",
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
@@ -63,7 +63,7 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
         Image(
             painter = buildPainter(getWeatherIcon(hourlyBean.icon)),
             "",
-            modifier = Modifier.size(35.dp)
+            modifier = Modifier.size(28.dp)
         )
         Text(
             text = "${hourlyBean.temp}°",
