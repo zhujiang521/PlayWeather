@@ -79,7 +79,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Spacer(modifier = Modifier.weight(1.2f))
         Text(
             text = "${dailyBean.tempMin ?: "0"}°",
-            modifier = Modifier
+            modifier = Modifier.width(50.dp)
                 .padding(end = 15.dp),
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
@@ -96,6 +96,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Text(
             text = "${dailyBean.tempMax ?: "0"}°",
             modifier = Modifier
+                .width(55.dp)
                 .padding(start = 15.dp, end = 5.dp),
             fontSize = 15.sp,
             textAlign = TextAlign.End,
