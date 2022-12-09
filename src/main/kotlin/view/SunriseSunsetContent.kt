@@ -10,13 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PointMode
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import model.weather.WeatherDailyBean
+import java.awt.Point
 import java.util.*
 
 
@@ -60,9 +64,8 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  */
 @Composable
 fun SunriseSunsetProgress(sunrise: String, sunset: String) {
-//    val result = getAccounted(sunrise, sunset)
-//    val bitmap = getBitmapFromVectorDrawable(context, R.drawable.x_sunny)
-//    val image = bitmap?.asImageBitmap()
+    val result = getAccounted(sunrise, sunset)
+    val image = useResource("image/weather_sun.png", ::loadImageBitmap)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -75,12 +78,11 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
                 .height(50.dp)
                 .padding(horizontal = 10.dp)
         ) {
+
             val path = Path()
             path.moveTo(0f, size.height)
             // 三阶贝塞尔曲线
-            path.cubicTo(
-                0f,
-                size.height,
+            path.quadraticBezierTo(
                 size.width / 2,
                 -size.height,
                 size.width,
@@ -92,21 +94,17 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
                 style = Stroke(width = 3f)
             )
 
-
-//            val evaluate = evaluate(
-//                result,
-//                floatArrayOf(0f, size.height),
-//                floatArrayOf(size.width / 4, -size.height / 2),
-//                floatArrayOf(size.width / 4 * 3, 0f),
-//                floatArrayOf(size.width, size.height)
-//            )
-//            drawImage(
-//                image = useResource("drawable/100.svg", ::loadImageBitmap),
-//                topLeft = Offset(
-//                    evaluate[0] - 45,
-//                    evaluate[1] - 45
-//                )
-//            )
+            val controlPoints: ArrayList<Point> = arrayListOf()
+            controlPoints.add(Point(0, size.height.toInt()))
+            controlPoints.add(Point((size.width / 2).toInt(), (-size.height).toInt()))
+            controlPoints.add(Point(size.width.toInt(), size.height.toInt()))
+            drawImage(
+                image = image,
+                topLeft = Offset(
+                    bezierX(controlPoints, 2, 0, result) - 12,
+                    bezierY(controlPoints, 2, 0, result) - 12
+                )
+            )
 
             drawPoints(
                 points = arrayListOf(
@@ -146,32 +144,45 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
 
 }
 
+/**
+ * 贝塞尔曲线递归算法, 本方法计算 X 轴坐标值
+ * @param i 贝塞尔曲线阶数
+ * @param j 贝塞尔曲线控制点
+ * @param u 比例 / 时间 , 取值范围 0.0 ~ 1.0
+ * @return
+ */
+private fun bezierX(controlPoints: ArrayList<Point>, i: Int, j: Int, u: Float): Float {
+    return if (i == 1) {
+        // 递归退出条件 : 贝塞尔曲线阶数 降为一阶
+        // 一阶贝塞尔曲线点坐标 计算如下 :
+        (1 - u) * controlPoints[j].y + u * controlPoints[j + 1].x
+    } else (1 - u) * bezierX(controlPoints, i - 1, j, u) + u * bezierX(
+        controlPoints,
+        i - 1,
+        j + 1,
+        u
+    )
+}
 
 /**
- *
- * @param fraction 变量
- * @param point0 贝塞尔曲线起点
- * @param point3 贝塞尔曲线终点
- * @return 因为需要的点是从下到上....所以p0,p1,p2,p3的点是从下打上的
+ * 贝塞尔曲线递归算法, 本方法计算 Y 轴坐标值
+ * @param i 贝塞尔曲线阶数
+ * @param j 贝塞尔曲线控制点
+ * @param u 比例 / 时间 , 取值范围 0.0 ~ 1.0
+ * @return
  */
-fun evaluate(
-    fraction: Float,
-    point0: FloatArray,
-    point1: FloatArray,
-    point2: FloatArray,
-    point3: FloatArray
-): FloatArray {
-    val currentPosition = FloatArray(2)
-    //贝塞尔公式计算X点
-    currentPosition[0] =
-        point0[0] * (1 - fraction) * (1 - fraction) * (1 - fraction) + point1[0] * 3 * fraction * (
-                1 - fraction) * (1 - fraction) + point2[0] * 3 * (1 - fraction) * fraction * fraction + point3[0] * fraction * fraction * fraction
-    //贝塞尔公式计算Y点
-    currentPosition[1] =
-        point0[1] * (1 - fraction) * (1 - fraction) * (1 - fraction) + point1[1] * 3 * fraction * (1 - fraction) * (1 - fraction) + point2[1] * 3 * (
-                1 - fraction) * fraction * fraction + point3[1] * fraction * fraction * fraction
-    return currentPosition
+private fun bezierY(controlPoints: ArrayList<Point>, i: Int, j: Int, u: Float): Float {
+    return if (i == 1) {
+        // 递归退出条件 : 贝塞尔曲线阶数 降为一阶
+        (1 - u) * controlPoints[j].y + u * controlPoints[j + 1].y
+    } else (1 - u) * bezierY(controlPoints, i - 1, j, u) + u * bezierY(
+        controlPoints,
+        i - 1,
+        j + 1,
+        u
+    )
 }
+
 
 /**
  * 获取当前时间占白天时间的百分比

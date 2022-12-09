@@ -40,7 +40,7 @@ fun WeekWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
-            if (dayBeanList == null) {
+            if (dayBeanList.isNullOrEmpty()) {
                 WeekDayWeatherItem(WeatherDailyBean.DailyBean())
             } else {
                 dayBeanList.forEach { dailyBean ->
