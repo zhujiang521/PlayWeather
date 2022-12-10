@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import model.weather.WeatherDailyBean
 import java.awt.Point
 import java.util.*
+import kotlin.math.pow
 
 
 @Composable
@@ -65,6 +66,7 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
 @Composable
 fun SunriseSunsetProgress(sunrise: String, sunset: String) {
     val result = getAccounted(sunrise, sunset)
+    println("result:$result")
     val image = useResource("image/weather_sun.png", ::loadImageBitmap)
     Column(
         modifier = Modifier
@@ -98,11 +100,19 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
             controlPoints.add(Point(0, size.height.toInt()))
             controlPoints.add(Point((size.width / 2).toInt(), (-size.height).toInt()))
             controlPoints.add(Point(size.width.toInt(), size.height.toInt()))
+            val x =
+                (1.0 - result).pow(2.0) * 0f + 2 * result * (1 - result) * (size.width / 2) + result
+                    .pow(2.0) * size.width
+
+            val y =
+                (1.0 - result).pow(2.0) * size.height + 2 * result * (1 - result) * (-size.height) + result
+                    .pow(2.0) * size.height
+
             drawImage(
                 image = image,
                 topLeft = Offset(
-                    bezierX(controlPoints, 2, 0, result) - 12,
-                    bezierY(controlPoints, 2, 0, result) - 12
+                    x.toFloat() - 24,
+                    y.toFloat() - 24
                 )
             )
 
@@ -144,45 +154,6 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
 
 }
 
-/**
- * 贝塞尔曲线递归算法, 本方法计算 X 轴坐标值
- * @param i 贝塞尔曲线阶数
- * @param j 贝塞尔曲线控制点
- * @param u 比例 / 时间 , 取值范围 0.0 ~ 1.0
- * @return
- */
-private fun bezierX(controlPoints: ArrayList<Point>, i: Int, j: Int, u: Float): Float {
-    return if (i == 1) {
-        // 递归退出条件 : 贝塞尔曲线阶数 降为一阶
-        // 一阶贝塞尔曲线点坐标 计算如下 :
-        (1 - u) * controlPoints[j].y + u * controlPoints[j + 1].x
-    } else (1 - u) * bezierX(controlPoints, i - 1, j, u) + u * bezierX(
-        controlPoints,
-        i - 1,
-        j + 1,
-        u
-    )
-}
-
-/**
- * 贝塞尔曲线递归算法, 本方法计算 Y 轴坐标值
- * @param i 贝塞尔曲线阶数
- * @param j 贝塞尔曲线控制点
- * @param u 比例 / 时间 , 取值范围 0.0 ~ 1.0
- * @return
- */
-private fun bezierY(controlPoints: ArrayList<Point>, i: Int, j: Int, u: Float): Float {
-    return if (i == 1) {
-        // 递归退出条件 : 贝塞尔曲线阶数 降为一阶
-        (1 - u) * controlPoints[j].y + u * controlPoints[j + 1].y
-    } else (1 - u) * bezierY(controlPoints, i - 1, j, u) + u * bezierY(
-        controlPoints,
-        i - 1,
-        j + 1,
-        u
-    )
-}
-
 
 /**
  * 获取当前时间占白天时间的百分比
@@ -192,17 +163,17 @@ private fun bezierY(controlPoints: ArrayList<Point>, i: Int, j: Int, u: Float): 
  *
  * @return 百分比
  */
-private fun getAccounted(sunrise: String, sunset: String): Float {
+private fun getAccounted(sunrise: String, sunset: String): Double {
     val calendar = Calendar.getInstance()
     val currentMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
     val sunriseMinutes = getMinutes(sunrise)
     val sunsetMinutes = getMinutes(sunset)
     val accounted =
-        (currentMinutes.toFloat() - sunriseMinutes.toFloat()) / (sunsetMinutes.toFloat() - sunriseMinutes.toFloat())
+        (currentMinutes.toDouble() - sunriseMinutes) / (sunsetMinutes - sunriseMinutes)
     val result = if (accounted > 1) {
-        1f
+        1.0
     } else if (accounted < 0) {
-        0f
+        0.0
     } else {
         accounted
     }
