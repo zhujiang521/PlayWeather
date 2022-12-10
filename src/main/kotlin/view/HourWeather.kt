@@ -59,15 +59,15 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
             fontSize = 14.sp,
             color = MaterialTheme.colors.onSecondary
         )
-        Spacer(modifier = Modifier.height(7.dp))
+        Spacer(modifier = Modifier.height(15.dp))
         Image(
             painter = buildPainter(getWeatherIcon(hourlyBean.icon)),
             "",
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(20.dp)
         )
         Text(
             text = "${hourlyBean.temp}°",
-            modifier = Modifier.padding(top = 7.dp),
+            modifier = Modifier.padding(top = 15.dp),
             fontSize = 14.sp,
             color = MaterialTheme.colors.onSecondary
         )

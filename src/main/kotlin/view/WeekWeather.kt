@@ -73,7 +73,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Image(
             painter = buildPainter(getWeatherIcon(dailyBean.iconDay)),
             "",
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(25.dp)
         )
 
         Spacer(modifier = Modifier.weight(1.2f))
