@@ -1,8 +1,10 @@
 package utils
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -11,13 +13,12 @@ import androidx.compose.ui.awt.ComposeDialog
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.WindowScope
-import kotlinx.coroutines.NonDisposableHandle.dispose
+import androidx.compose.ui.window.rememberDialogState
 import java.awt.Dimension
-import java.awt.Window
 
 @Composable
 fun ShowDialog(
@@ -30,15 +31,11 @@ fun ShowDialog(
 ) {
     if (!alertDialog.value) return
     val buttonHeight = 45.dp
-    Dialog(visible = alertDialog.value,
-        create = {
-            ComposeDialog().apply {
-                size = Dimension(300, 200)
-            }
-        },
-        dispose = {
-            alertDialog.value = false
-        }) {
+    Dialog(
+        onCloseRequest = { alertDialog.value = false }, visible = alertDialog.value,
+        state = rememberDialogState(size = DpSize(300.dp, 200.dp)),
+        title = "Weather", icon = buildPainter("image/ic_launcher.svg")
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(top = 20.dp)
