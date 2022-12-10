@@ -1,6 +1,7 @@
 package view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -9,9 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import utils.buildPainter
+import utils.openBrowse
 
 @Composable
-fun SourceData() {
+fun SourceData(fxLink: String?) {
     Row(
         modifier = Modifier.fillMaxSize().padding(top = 20.dp, bottom = 15.dp),
         horizontalArrangement = Arrangement.Center,
@@ -21,9 +23,8 @@ fun SourceData() {
 
         Spacer(modifier = Modifier.width(5.dp))
 
-        Text(
-            text = "数据来自和风天气",
-            fontSize = 12.sp,
-        )
+        Text(text = "数据来自和风天气", fontSize = 12.sp, modifier = Modifier.clickable {
+            fxLink.openBrowse()
+        })
     }
 }

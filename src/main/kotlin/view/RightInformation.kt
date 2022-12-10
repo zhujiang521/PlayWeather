@@ -37,7 +37,7 @@ fun RightInformation(
         LifeWeatherContent(weatherModel.weatherLifeList)
 
         // 数据来源
-        SourceData()
+        SourceData(weatherModel.fxLink)
 
     }
 }

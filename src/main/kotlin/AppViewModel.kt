@@ -74,7 +74,8 @@ class AppViewModel {
             dailyBean = if (weather7Day.daily.isNotEmpty()) weather7Day.daily[0] else WeatherDailyBean.DailyBean(),
             dailyBeanList = weather7Day.daily,
             airNowBean = airNow.now,
-            weatherLifeList = weatherLifeIndicesList.daily ?: arrayListOf()
+            weatherLifeList = weatherLifeIndicesList.daily ?: arrayListOf(),
+            fxLink = weatherNow.fxLink
         )
 
         if (_weatherModel.value == weatherModel) {

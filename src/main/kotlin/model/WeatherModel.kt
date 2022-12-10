@@ -20,10 +20,11 @@ data class WeatherModel(
     val dailyBean: WeatherDailyBean.DailyBean? = WeatherDailyBean.DailyBean(),
     val dailyBeanList: List<WeatherDailyBean.DailyBean> = arrayListOf(),
     val airNowBean: AirNowBean.NowBean? = AirNowBean.NowBean(),
-    val weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem> = arrayListOf()
+    val weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem> = arrayListOf(),
+    val fxLink: String? = null
 )
 
 fun WeatherModel.isEmpty(): Boolean {
     return nowBaseBean == null || hourlyBeanList.isEmpty() || dailyBean == null ||
-            dailyBeanList.isEmpty() || airNowBean == null || weatherLifeList.isEmpty()
+            dailyBeanList.isEmpty() || airNowBean == null || weatherLifeList.isEmpty() || fxLink == null
 }
