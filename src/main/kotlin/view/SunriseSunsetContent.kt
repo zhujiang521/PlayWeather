@@ -20,7 +20,6 @@ import androidx.compose.ui.res.useResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import model.weather.WeatherDailyBean
-import java.awt.Point
 import java.util.*
 import kotlin.math.pow
 
@@ -37,7 +36,7 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
         Column(modifier = Modifier.fillMaxWidth()) {
 
             Text(
-                text = "日出日落",
+                text = "太阳月亮",
                 fontSize = 13.sp,
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
@@ -50,7 +49,10 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
             SunriseSunsetProgress(
                 sunrise = dailyBean.sunrise ?: "07:22",
                 sunset = dailyBean.sunset ?: "18:22",
+                moonrise = dailyBean.moonrise ?: "18:22",
+                moonset = dailyBean.moonset ?: "07:22",
             )
+            dailyBean.moonPhase
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
@@ -64,20 +66,31 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  * @param sunset 日落时间
  */
 @Composable
-fun SunriseSunsetProgress(sunrise: String, sunset: String) {
-    val result = getAccounted(sunrise, sunset)
-    println("result:$result")
-    val image = useResource("image/weather_sun.png", ::loadImageBitmap)
+fun SunriseSunsetProgress(sunrise: String, sunset: String, moonrise: String, moonset: String) {
+    val sunResult = getAccounted(sunrise, sunset)
+    val moonResult = getAccounted(moonrise, moonset, false)
+
+    // 这块的动画打开也看不到，效果其实挺好，先不要了，有需要可以打开试试
+//    var showAnimate by remember { mutableStateOf(false) }
+//    val result by animateFloatAsState(
+//        if (showAnimate) results.toFloat() else 0f, animationSpec = tween(
+//            durationMillis = 800,
+//            delayMillis = 50,
+//            easing = LinearOutSlowInEasing
+//        )
+//    )
+    val sunImage = useResource("image/weather_sun.png", ::loadImageBitmap)
+    val moonImage = useResource("image/weather_night.png", ::loadImageBitmap)
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
     ) {
-
+//        showAnimate = true
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
+                .height(80.dp)
                 .padding(horizontal = 10.dp)
         ) {
 
@@ -96,23 +109,35 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
                 style = Stroke(width = 3f)
             )
 
-            val controlPoints: ArrayList<Point> = arrayListOf()
-            controlPoints.add(Point(0, size.height.toInt()))
-            controlPoints.add(Point((size.width / 2).toInt(), (-size.height).toInt()))
-            controlPoints.add(Point(size.width.toInt(), size.height.toInt()))
-            val x =
-                (1.0 - result).pow(2.0) * 0f + 2 * result * (1 - result) * (size.width / 2) + result
+            val sunX =
+                (1.0 - sunResult).pow(2.0) * 0f + 2 * sunResult * (1 - sunResult) * (size.width / 2) + sunResult
                     .pow(2.0) * size.width
 
-            val y =
-                (1.0 - result).pow(2.0) * size.height + 2 * result * (1 - result) * (-size.height) + result
+            val sunY =
+                (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult
+                    .pow(2.0) * size.height
+
+            val moonX =
+                (1.0 - moonResult).pow(2.0) * 0f + 2 * moonResult * (1 - moonResult) * (size.width / 2) + moonResult
+                    .pow(2.0) * size.width
+
+            val moonY =
+                (1.0 - moonResult).pow(2.0) * size.height + 2 * moonResult * (1 - moonResult) * (-size.height) + moonResult
                     .pow(2.0) * size.height
 
             drawImage(
-                image = image,
+                image = sunImage,
                 topLeft = Offset(
-                    x.toFloat() - 24,
-                    y.toFloat() - 24
+                    sunX.toFloat() - 24,
+                    sunY.toFloat() - 24
+                )
+            )
+
+            drawImage(
+                image = moonImage,
+                topLeft = Offset(
+                    moonX.toFloat() - 24,
+                    moonY.toFloat() - 24
                 )
             )
 
@@ -137,7 +162,9 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
             Text(
                 modifier = Modifier
                     .wrapContentWidth(Alignment.Start),
-                text = "日出：$sunrise",
+                text = "日出：$sunrise\n" +
+                        "月出：$moonrise",
+                maxLines = 2,
                 fontSize = 12.sp,
             )
 
@@ -146,7 +173,9 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
             Text(
                 modifier = Modifier
                     .wrapContentWidth(Alignment.End),
-                text = "日落：$sunset",
+                text = "日落：$sunset\n" +
+                        "月出：$moonset",
+                maxLines = 2,
                 fontSize = 12.sp,
             )
         }
@@ -154,41 +183,34 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String) {
 
 }
 
-
 /**
- * 获取当前时间占白天时间的百分比
+ * 获取当前时间占白天时间的百分比（新增月亮）
  *
- * @param sunrise 日出
- * @param sunset 日落
+ * @param rise 日出或月出
+ * @param set 日落或日落
  *
  * @return 百分比
  */
-private fun getAccounted(sunrise: String, sunset: String): Double {
+fun getAccounted(rise: String, set: String, isSun: Boolean = true): Double {
     val calendar = Calendar.getInstance()
-    val currentMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
-    val sunriseMinutes = getMinutes(sunrise)
-    val sunsetMinutes = getMinutes(sunset)
-    val accounted =
-        (currentMinutes.toDouble() - sunriseMinutes) / (sunsetMinutes - sunriseMinutes)
-    val result = if (accounted > 1) {
-        1.0
-    } else if (accounted < 0) {
-        0.0
-    } else {
-        accounted
+    val currentMills = calendar.timeInMillis
+    calendar.set(Calendar.HOUR_OF_DAY, getHour(rise))
+    calendar.set(Calendar.MINUTE, getMinute(rise))
+    val riseMills = calendar.timeInMillis
+    if (!isSun) {
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
     }
-    return result
+    calendar.set(Calendar.HOUR_OF_DAY, getHour(set))
+    calendar.set(Calendar.MINUTE, getMinute(set))
+    val setMills = calendar.timeInMillis
+    val result = (currentMills - riseMills) / (setMills - riseMills).toDouble()
+    return if (currentMills < riseMills) 0.0 else if (result > 1) 1.0 else result
 }
 
-/**
- * 时间转分钟数
- *
- * @param sunrise 时间，格式为"14:22"
- *
- * @return 总分钟数
- */
-fun getMinutes(sunrise: String): Int {
-    val hour = sunrise.substring(0, 2).toInt()
-    val minutes = sunrise.substring(3, 5).toInt()
-    return hour * 60 + minutes
+fun getHour(sunrise: String): Int {
+    return sunrise.substring(0, 2).toInt()
+}
+
+fun getMinute(sunrise: String): Int {
+    return sunrise.substring(3, 5).toInt()
 }
