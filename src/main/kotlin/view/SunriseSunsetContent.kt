@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
@@ -23,18 +24,13 @@ import model.weather.WeatherDailyBean
 import java.util.*
 import kotlin.math.pow
 
-
 @Composable
 fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
-    if (dailyBean == null) {
-        return
-    }
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-
             Text(
                 text = "太阳月亮",
                 fontSize = 13.sp,
@@ -45,14 +41,12 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
                 modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
                 thickness = 0.4.dp
             )
-
-            SunriseSunsetProgress(
-                sunrise = dailyBean.sunrise ?: "07:22",
-                sunset = dailyBean.sunset ?: "18:22",
-                moonrise = dailyBean.moonrise ?: "18:22",
-                moonset = dailyBean.moonset ?: "07:22",
+            RiseSetProgress(
+                sunrise = dailyBean?.sunrise ?: "07:22",
+                sunset = dailyBean?.sunset ?: "18:22",
+                moonrise = dailyBean?.moonrise ?: "18:22",
+                moonset = dailyBean?.moonset ?: "07:22",
             )
-            dailyBean.moonPhase
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
@@ -66,19 +60,10 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  * @param sunset 日落时间
  */
 @Composable
-fun SunriseSunsetProgress(sunrise: String, sunset: String, moonrise: String, moonset: String) {
+fun RiseSetProgress(sunrise: String, sunset: String, moonrise: String, moonset: String) {
     val sunResult = getAccounted(sunrise, sunset)
     val moonResult = getAccounted(moonrise, moonset, false)
-
-    // 这块的动画打开也看不到，效果其实挺好，先不要了，有需要可以打开试试
-//    var showAnimate by remember { mutableStateOf(false) }
-//    val result by animateFloatAsState(
-//        if (showAnimate) results.toFloat() else 0f, animationSpec = tween(
-//            durationMillis = 800,
-//            delayMillis = 50,
-//            easing = LinearOutSlowInEasing
-//        )
-//    )
+    // 这块的动画打开也看不到，效果其实挺好，先不要了，有需要可以打开试试 animateFloatAsState
     val sunImage = useResource("image/weather_sun.png", ::loadImageBitmap)
     val moonImage = useResource("image/weather_night.png", ::loadImageBitmap)
     Column(
@@ -86,7 +71,6 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String, moonrise: String, moo
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
     ) {
-//        showAnimate = true
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,12 +80,10 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String, moonrise: String, moo
 
             val path = Path()
             path.moveTo(0f, size.height)
-            // 三阶贝塞尔曲线
+            // 二阶贝塞尔曲线
             path.quadraticBezierTo(
-                size.width / 2,
-                -size.height,
-                size.width,
-                size.height
+                size.width / 2, -size.height,
+                size.width, size.height
             )
 
             drawPath(
@@ -109,35 +91,21 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String, moonrise: String, moo
                 style = Stroke(width = 3f)
             )
 
-            val sunX =
-                (1.0 - sunResult).pow(2.0) * 0f + 2 * sunResult * (1 - sunResult) * (size.width / 2) + sunResult
-                    .pow(2.0) * size.width
-
-            val sunY =
-                (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult
-                    .pow(2.0) * size.height
-
-            val moonX =
-                (1.0 - moonResult).pow(2.0) * 0f + 2 * moonResult * (1 - moonResult) * (size.width / 2) + moonResult
-                    .pow(2.0) * size.width
-
-            val moonY =
-                (1.0 - moonResult).pow(2.0) * size.height + 2 * moonResult * (1 - moonResult) * (-size.height) + moonResult
-                    .pow(2.0) * size.height
-
+            val (sunX, sunY) = bezierPointPair(sunResult)
             drawImage(
                 image = sunImage,
                 topLeft = Offset(
-                    sunX.toFloat() - 24,
-                    sunY.toFloat() - 24
+                    sunX.toFloat() - sunImage.width / 2,
+                    sunY.toFloat() - sunImage.height / 2
                 )
             )
 
+            val (moonX, moonY) = bezierPointPair(moonResult)
             drawImage(
                 image = moonImage,
                 topLeft = Offset(
-                    moonX.toFloat() - 24,
-                    moonY.toFloat() - 24
+                    moonX.toFloat() - moonImage.width / 2,
+                    moonY.toFloat() - moonImage.height / 2
                 )
             )
 
@@ -181,6 +149,24 @@ fun SunriseSunsetProgress(sunrise: String, sunset: String, moonrise: String, moo
         }
     }
 
+}
+
+/**
+ * 计算二阶贝塞尔曲线上的点
+ * P0（起始点） ， P1（控制点）， P2 （终点）
+ * P0（x1,y1）,P2(x2,y2), P1(cx,cy)
+ * x = Math.pow(1-t, 2) * x1 + 2 * t * (1-t) * cx + Math.pow(t, 2) * x2
+ * y = Math.pow(1-t, 2) * y1 + 2 * t * (1-t) * cy + Math.pow(t, 2) * y2
+ */
+private fun DrawScope.bezierPointPair(sunResult: Double): Pair<Double, Double> {
+    val x =
+        (1.0 - sunResult).pow(2.0) * 0f + 2 * sunResult * (1 - sunResult) * (size.width / 2) + sunResult
+            .pow(2.0) * size.width
+
+    val y =
+        (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult
+            .pow(2.0) * size.height
+    return Pair(x, y)
 }
 
 /**
