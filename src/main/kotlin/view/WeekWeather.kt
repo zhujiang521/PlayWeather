@@ -123,6 +123,8 @@ private fun TemperatureChart(
     currentMax: Int,
     currentTemperature: Int = -1
 ) {
+    val currentMinColor: Color = getTemperatureColor(currentMin)
+    val currentMaxColor: Color = getTemperatureColor(currentMax)
     // 计算周温差
     val num = max - min
     Canvas(
@@ -141,8 +143,8 @@ private fun TemperatureChart(
         // 绘制这一天的气温
         drawLine(
             brush = Brush.linearGradient(
-                0.0f to Color(red = 79, green = 191, blue = 233),
-                1.0f to Color(red = 85, green = 199, blue = 209),
+                0.0f to currentMinColor,
+                1.0f to currentMaxColor,
             ),
             start = Offset(size.width / num * (currentMin - min), 0f),
             end = Offset(size.width / num * (currentMax - min), 0f),
@@ -161,5 +163,36 @@ private fun TemperatureChart(
                 cap = StrokeCap.Round,
             )
         }
+    }
+}
+
+/**
+ * 获取不同气温的颜色值，需要动态判断
+ */
+private fun getTemperatureColor(temperature: Int): Color {
+    return if (temperature < -20) {
+        Color(red = 26, green = 92, blue = 249)
+    } else if (temperature < -15) {
+        Color(red = 16, green = 103, blue = 255)
+    } else if (temperature < -10) {
+        Color(red = 28, green = 122, blue = 254)
+    } else if (temperature < -5) {
+        Color(red = 52, green = 151, blue = 229)
+    } else if (temperature < 0) {
+        Color(red = 65, green = 174, blue = 250)
+    } else if (temperature < 5) {
+        Color(red = 86, green = 201, blue = 205)
+    } else if (temperature < 10) {
+        Color(red = 86, green = 203, blue = 299)
+    } else if (temperature < 15) {
+        Color(red = 151, green = 201, blue = 142)
+    } else if (temperature < 20) {
+        Color(red = 247, green = 196, blue = 34)
+    } else if (temperature < 25) {
+        Color(red = 209, green = 123, blue = 11)
+    } else if (temperature < 30) {
+        Color(red = 253, green = 138, blue = 11)
+    } else {
+        Color(red = 248, green = 60, blue = 30)
     }
 }
