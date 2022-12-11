@@ -106,14 +106,18 @@ class AppViewModel {
             }
         }
 
-        weather7Day.daily.forEach {
-            it.weekMin = min
-            it.weekMax = max
+        weather7Day.daily.forEachIndexed { index, dailyBean ->
+            dailyBean.weekMin = min
+            dailyBean.weekMax = max
 
-            it.fxDate = it.fxDate?.getDateWeekName() ?: "date"
+            if (index == 0) {
+                dailyBean.fxDate = "今天"
+            } else {
+                dailyBean.fxDate = dailyBean.fxDate?.getDateWeekName() ?: "今天"
+            }
 
-            if (it.fxDate == "今天") {
-                it.temp = weatherNow.now.temp?.toInt() ?: -100
+            if (dailyBean.fxDate == "今天") {
+                dailyBean.temp = weatherNow.now.temp?.toInt() ?: -100
             }
         }
     }

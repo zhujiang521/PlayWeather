@@ -22,7 +22,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "PlayWeather",
         state = rememberWindowState(width = 800.dp, height = 600.dp),
-        icon = buildPainter("image/ic_launcher.svg")
+        icon = buildPainter("image/launcher.png")
     ) {
         App()
     }

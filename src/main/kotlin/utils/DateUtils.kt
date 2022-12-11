@@ -4,10 +4,8 @@ package utils
 import java.text.SimpleDateFormat
 import java.util.*
 
-private val format = SimpleDateFormat("E", Locale.getDefault())
 
 private val yyyyMMdd = SimpleDateFormat("yyyy-MM-dd'T'HH:mm+08:00", Locale.getDefault())
-private val hhMM = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 private val calendar = Calendar.getInstance()
 
@@ -22,12 +20,15 @@ fun String.getDateWeekName(): String {
     val todayWeek = calendar.get(Calendar.DAY_OF_WEEK)
     calendar.clear()
     calendar.set(dateArray[0].toInt(), dateArray[1].toInt() - 1, dateArray[2].toInt())
-    val week = calendar.get(Calendar.DAY_OF_WEEK)
-    return if (todayWeek == week) {
+    val weeks = arrayOf("周日", "周一", "周二", "周三", "周四", "周五", "周六")
+    var weekIndex: Int = calendar.get(Calendar.DAY_OF_WEEK) - 1
+    if (weekIndex < 0) {
+        weekIndex = 0
+    }
+    return if (todayWeek == calendar.get(Calendar.DAY_OF_WEEK)) {
         "今天"
     } else {
-        val weekString = format.format(Date(calendar.timeInMillis))
-        weekString
+        weeks[weekIndex]
     }
 }
 

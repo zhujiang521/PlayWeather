@@ -1,10 +1,9 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.31"
-    id("org.jetbrains.compose") version "1.0.0"
+    kotlin("jvm") version "1.7.20"
+    id("org.jetbrains.compose") version "1.2.1"
 }
 
 group = "me.zhujiang"
@@ -20,7 +19,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences-core:1.1.0-dev01")
 }
 
 tasks.withType<KotlinCompile> {
@@ -34,7 +33,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "PlayWeather"
             packageVersion = "1.0.0"
-            modules("java.sql")
+            modules("java.instrument", "java.management", "java.naming", "java.sql", "jdk.unsupported")
 
             windows {
                 packageVersion = "1.0.0"

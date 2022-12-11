@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import okio.Path.Companion.toPath
 import utils.DataStoreUtils.clear
 import utils.DataStoreUtils.clearSync
 import utils.DataStoreUtils.getData
@@ -68,9 +69,7 @@ object DataStoreUtils {
      * 此文件路径可进行修改，但后缀名不可进行修改
      * System.getProperty("user.dir") 可以获取到当前路径
      */
-    private val dataStore: DataStore<Preferences> = PreferenceDataStoreFactory.create {
-        File("${System.getProperty("user.dir")}/PlayWeatherData.preferences_pb")
-    }
+    private val dataStore: DataStore<Preferences> = getDataStore()
 
     @Suppress("UNCHECKED_CAST")
     fun <U> getSyncData(key: String, default: U): U {
