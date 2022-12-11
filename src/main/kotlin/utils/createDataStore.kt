@@ -20,7 +20,7 @@ fun getDataStore(): DataStore<Preferences> =
             dataStore
         } else {
             PreferenceDataStoreFactory.create {
-                File("${System.getProperty("java.io.tmpdir")}/$dataStoreFileName")
+                File("${System.getProperty("user.home")}/$dataStoreFileName")
             }.also { dataStore = it }
         }
     }
