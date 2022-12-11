@@ -142,7 +142,7 @@ fun RiseSetProgress(sunrise: String, sunset: String, moonrise: String, moonset: 
                 modifier = Modifier
                     .wrapContentWidth(Alignment.End),
                 text = "日落：$sunset\n" +
-                        "月出：$moonset",
+                        "月落：$moonset",
                 maxLines = 2,
                 fontSize = 12.sp,
             )
