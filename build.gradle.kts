@@ -24,7 +24,7 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "16"
 }
 
 compose.desktop {
@@ -34,6 +34,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "PlayWeather"
             packageVersion = "1.0.0"
+            modules("java.sql")
 
             windows {
                 packageVersion = "1.0.0"
