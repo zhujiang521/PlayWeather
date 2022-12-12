@@ -7,9 +7,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import utils.buildPainter
 import utils.openBrowse
 
 @Composable
@@ -19,7 +19,7 @@ fun SourceData(fxLink: String?) {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(painter = buildPainter("image/ic_launcher.svg"), "", modifier = Modifier.size(15.dp))
+        Image(painter = painterResource("image/ic_launcher.svg"), "", modifier = Modifier.size(15.dp))
 
         Spacer(modifier = Modifier.width(5.dp))
 

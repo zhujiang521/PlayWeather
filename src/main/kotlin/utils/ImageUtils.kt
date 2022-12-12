@@ -12,6 +12,9 @@ const val lifePrefix = "image/life/"
 
 /**
  * 构建Painter，为了图片使用
+ * 之前自己写的，但其实直接使用 painterResource 即可
+ *
+ * @param resourcePath 图片路径
  */
 fun buildPainter(resourcePath: String): Painter {
     val painter: Painter = if (resourcePath.endsWith(".svg")) {

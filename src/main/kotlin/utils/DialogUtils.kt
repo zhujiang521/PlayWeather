@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeDialog
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpSize
@@ -34,7 +35,7 @@ fun ShowDialog(
     Dialog(
         onCloseRequest = { alertDialog.value = false }, visible = alertDialog.value,
         state = rememberDialogState(size = DpSize(300.dp, 200.dp)),
-        title = "Weather", icon = buildPainter("image/ic_launcher.svg")
+        title = "Weather", icon = painterResource("image/ic_launcher.svg")
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

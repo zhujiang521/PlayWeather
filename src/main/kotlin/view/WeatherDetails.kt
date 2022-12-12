@@ -15,9 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import utils.buildPainter
 import utils.getWeatherIcon
 import model.weather.WeatherNowBean
 import utils.getTimeNameForObs
@@ -127,7 +127,7 @@ private fun RotateWeatherIcon(icon: String) {
         Modifier.offset(x = offsetX)
     }
     Image(
-        painter = buildPainter(getWeatherIcon(icon)),
+        painter = painterResource(getWeatherIcon(icon)),
         "",
         modifier = modifier.size(170.dp).padding(10.dp)
     )

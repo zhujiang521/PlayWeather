@@ -22,11 +22,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import utils.buildPainter
 import utils.getWeatherIcon
 import kotlinx.coroutines.launch
 import model.city.GeoBean
@@ -138,7 +138,7 @@ fun CityItem(locationBean: GeoBean.LocationBean, onChooseCity: (GeoBean.Location
 
             Text("${locationBean.adm1}${locationBean.adm2}", fontSize = 15.sp, maxLines = 1)
 
-            Image(painter = buildPainter(getWeatherIcon("100")), "", modifier = Modifier.size(30.dp))
+            Image(painter = painterResource(getWeatherIcon("100")), "", modifier = Modifier.size(30.dp))
 
         }
 

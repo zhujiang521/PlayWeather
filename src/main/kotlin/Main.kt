@@ -2,11 +2,11 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import utils.buildPainter
 
 @Composable
 @Preview
@@ -22,7 +22,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "PlayWeather",
         state = rememberWindowState(width = 800.dp, height = 600.dp),
-        icon = buildPainter("image/launcher.png")
+        icon = painterResource("image/launcher.png")
     ) {
         App()
     }

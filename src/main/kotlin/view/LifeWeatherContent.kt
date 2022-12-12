@@ -10,10 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import model.indices.WeatherLifeIndicesBean
-import utils.buildPainter
 
 
 @Composable
@@ -72,7 +72,7 @@ fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLife
     ) {
 
         Image(
-            painter = buildPainter(item.imgRes),
+            painter = painterResource(item.imgRes),
             contentDescription = "",
             modifier = Modifier.size(50.dp)
         )

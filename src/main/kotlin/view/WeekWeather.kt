@@ -16,11 +16,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import model.weather.WeatherDailyBean
-import utils.buildPainter
 import utils.getWeatherIcon
 
 @Composable
@@ -71,7 +71,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = buildPainter(getWeatherIcon(dailyBean.iconDay)),
+            painter = painterResource(getWeatherIcon(dailyBean.iconDay)),
             "",
             modifier = Modifier.size(25.dp)
         )
