@@ -2,7 +2,7 @@
 
 ## 我的新书：《Jetpack Compose：Android全新UI编程》已出版
 
- `Compose` 绝对是 Android UI 的未来，声明式的 UI 已经有太多语言试水了，效果都非常好，大家如果喜欢本书的话，可以点击下面的地址进行购买。另外本书的资源文件大家可以去图灵的官网中进行下载。
+`Compose` 绝对是 Android UI 的未来，声明式的 UI 已经有太多语言试水了，效果都非常好，大家如果喜欢本书的话，可以点击下面的地址进行购买。另外本书的资源文件大家可以去图灵的官网中进行下载。
 
 [京东购买地址](https://item.jd.com/10039809078875.html)
 
@@ -12,30 +12,23 @@
 
 ## 项目简介
 
-之前写过PlayAndroid：玩安卓的Compose版本，但最近在手机上看天气的时候发现一堆广告，烦得要死，自己写一个吧，正好再练练Compose。
-项目中使用到了很多库，都在下方展示了出来，而且自己写的天气绝对没有广告，也不会乱下载东西，也不会胡乱跳别的应用，比如某多多、某宝等等
-使用效果大家可以看下面方的截图，只是想做一个干净的、没有广告、性能好点的天气，没有别的需求。
-如果想只下载apk的话可以去app/release中进行下载，如果想学习项目的编写可以下载代码进行学习。
+之前写过PlayAndroid：玩安卓的Compose版本，但最近在手机上看天气的时候发现一堆广告，烦得要死，自己写一个吧，正好再练练Compose。 之前写的是安卓版本的天气，这回搞一个桌面版的，让 `Mac`、`Windows`
+、`Linux` 都能使用！废话不多说，先来看看项目运行效果吧！
+
+## 项目动图
+![image](screenshot/QQ20221212-143238-HD.gif)
 
 ## 项目截图
 
-| ![请添加图片描述](https://img-blog.csdnimg.cn/e4415563f1044ae09092cf7f93f5101a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) | ![在这里插入图片描述](https://img-blog.csdnimg.cn/772c0625bd824ddabc242249beff2bf2.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![请添加图片描述](https://img-blog.csdnimg.cn/988c08ae24c8483ab606b374bfe2afa0.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) | ![在这里插入图片描述](https://img-blog.csdnimg.cn/199de0ecf1e34eb190a65e235db23d6a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![请添加图片描述](https://img-blog.csdnimg.cn/eba77b23969a4e6e87be1992925f9751.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) | ![请添加图片描述](https://img-blog.csdnimg.cn/31be9af66bf347cb80f5c76b65486df5.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBA5pyxIOaxnw==,size_20,color_FFFFFF,t_70,g_se,x_16) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![请添加图片描述](https://img-blog.csdnimg.cn/8afea40063504bbcb4014522dd998433.gif) | ![请添加图片描述](https://img-blog.csdnimg.cn/47d2f11b82f64ba3baf9537b239a8199.gif)
+| ![截图1](screenshot/screenshot1.png)                           | ![截图2](screenshot/screenshot2.png)                           |
+|--------------------------------------------------------------|--------------------------------------------------------------|
+| ![截图3](screenshot/screenshot3.png)                           | ![截图4](screenshot/screenshot4.png)                           |
+| ![截图5](screenshot/screenshot5.png)                           | ![截图6](screenshot/screenshot6.png)                           |
 
 ## 项目使用三方库
 
-- Lottie:动画库，之前在AndroidView中使用很多
-- Navigation:页面之间的跳转
-- Navigation-animation：配合Navigation进行使用，可添加动画
-- Accompanist-pager:Compose中的ViewPager
-- Room:Jetpack数据库
-- Splashscreen:启动动画
-- Hilt:依赖注入
+- Retrofit:网络请求库
+- DataStore:数据存储（Jetpack 中的库）
 
 ## 说明
 
