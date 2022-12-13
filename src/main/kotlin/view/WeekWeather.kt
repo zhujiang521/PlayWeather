@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -195,4 +196,10 @@ private fun getTemperatureColor(temperature: Int): Color {
     } else {
         Color(red = 248, green = 60, blue = 30)
     }
+}
+
+@Preview
+@Composable
+private fun WeekWeatherPreview() {
+    WeekWeather(null)
 }

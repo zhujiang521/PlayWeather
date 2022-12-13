@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -199,4 +200,10 @@ fun getHour(sunrise: String): Int {
 
 fun getMinute(sunrise: String): Int {
     return sunrise.substring(3, 5).toInt()
+}
+
+@Preview
+@Composable
+private fun SunriseSunsetContentPreview() {
+    SunriseSunsetContent(null)
 }

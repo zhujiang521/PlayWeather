@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,8 +21,7 @@ import model.weather.WeatherHourlyBean
 import utils.getTimeName
 
 @Composable
-fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
-    if (hourlyBeanList.isNullOrEmpty()) return
+fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
@@ -72,4 +72,20 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
             color = MaterialTheme.colors.onSecondary
         )
     }
+}
+
+@Preview
+@Composable
+private fun HourWeatherPreview() {
+    val list = arrayListOf<WeatherHourlyBean.HourlyBean>()
+    for (index in 1..24){
+        list.add(WeatherHourlyBean.HourlyBean())
+    }
+    HourWeather(list)
+}
+
+@Preview
+@Composable
+private fun HourWeatherItemPreview() {
+    HourWeatherItem(WeatherHourlyBean.HourlyBean())
 }

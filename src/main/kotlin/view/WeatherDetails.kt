@@ -1,6 +1,7 @@
 package view
 
 import androidx.compose.animation.core.*
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -131,4 +132,10 @@ private fun RotateWeatherIcon(icon: String) {
         "",
         modifier = modifier.size(170.dp).padding(10.dp)
     )
+}
+
+@Preview
+@Composable
+private fun WeatherDetailsPreview() {
+    WeatherDetails(Modifier, null, {}, {})
 }

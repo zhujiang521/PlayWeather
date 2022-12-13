@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,11 +15,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import model.indices.WeatherLifeIndicesBean
+import utils.lifePrefix
 
 
 @Composable
 fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem>?) {
-    if (weatherLifeList.isNullOrEmpty()) return
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
@@ -40,9 +41,9 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
-                WeatherLifeItem(modifier, weatherLifeList[0])
-                WeatherLifeItem(modifier, weatherLifeList[1])
-                WeatherLifeItem(modifier, weatherLifeList[2])
+                WeatherLifeItem(modifier, weatherLifeList?.get(0))
+                WeatherLifeItem(modifier, weatherLifeList?.get(1))
+                WeatherLifeItem(modifier, weatherLifeList?.get(2))
             }
 
             Row(
@@ -54,9 +55,9 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
-                WeatherLifeItem(modifier, weatherLifeList[3])
-                WeatherLifeItem(modifier, weatherLifeList[4])
-                WeatherLifeItem(modifier, weatherLifeList[5])
+                WeatherLifeItem(modifier, weatherLifeList?.get(3))
+                WeatherLifeItem(modifier, weatherLifeList?.get(4))
+                WeatherLifeItem(modifier, weatherLifeList?.get(5))
             }
             Spacer(modifier = Modifier.height(15.dp))
         }
@@ -64,7 +65,7 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
 }
 
 @Composable
-fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLifeIndicesItem) {
+fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLifeIndicesItem?) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
@@ -72,15 +73,15 @@ fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLife
     ) {
 
         Image(
-            painter = painterResource(item.imgRes),
+            painter = painterResource(item?.imgRes ?: "${lifePrefix}ic_life_sport.svg"),
             contentDescription = "",
             modifier = Modifier.size(50.dp)
         )
 
         Column(modifier = Modifier.padding(start = 10.dp)) {
-            Text(text = item.name ?: "运动指数", fontSize = 12.sp)
+            Text(text = item?.name ?: "运动指数", fontSize = 12.sp)
             Text(
-                text = item.category ?: "",
+                text = item?.category ?: "较适宜",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp,
                 color = MaterialTheme.colors.onSecondary
@@ -88,4 +89,10 @@ fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLife
         }
 
     }
+}
+
+@Preview
+@Composable
+private fun LifeWeatherContentPreview() {
+    LifeWeatherContent(null)
 }

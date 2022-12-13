@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -160,4 +161,10 @@ private fun WeatherContentItem(modifier: Modifier, data: DayItemData) {
             fontSize = 13.sp,
         )
     }
+}
+
+@Preview
+@Composable
+private fun DayWeatherContentPreview() {
+    DayWeatherContent(null)
 }

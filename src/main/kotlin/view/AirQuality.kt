@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,6 @@ import model.air.AirNowBean
 
 @Composable
 fun AirQuality(airNowBean: AirNowBean.NowBean?) {
-    if (airNowBean == null) return
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -38,20 +38,20 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
             )
             Divider(thickness = 0.4.dp)
             Text(
-                text = "${airNowBean.aqi ?: "10"} - ${
-                    airNowBean.category ?: "优"
+                text = "${airNowBean?.aqi ?: "10"} - ${
+                    airNowBean?.category ?: "优"
                 }",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 20.sp,
                 color = MaterialTheme.colors.onSecondary
             )
             Text(
-                text = "当前AQI（CN）为：${airNowBean.aqi ?: ""}",
+                text = "当前AQI（CN）为：${airNowBean?.aqi ?: "10"}",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(10.dp))
-            AirQualityProgress((airNowBean.aqi ?: "10").toInt())
+            AirQualityProgress((airNowBean?.aqi ?: "10").toInt())
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
@@ -104,4 +104,10 @@ private fun AirQualityProgress(aqi: Int) {
             cap = StrokeCap.Round,
         )
     }
+}
+
+@Preview
+@Composable
+private fun AirQualityPreview() {
+    AirQuality(null)
 }
