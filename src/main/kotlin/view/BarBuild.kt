@@ -61,18 +61,26 @@ fun ApplicationScope.BuildTray(isOpen: MutableState<Boolean>, showTray: MutableS
         return isOpen.value
     }
     val trayState = rememberTrayState()
-    val notification = rememberNotification("Notification", "Message from MyApp!", type = Notification.Type.Error)
+    val infoNotification = rememberNotification("天气预报", "明天的天气很好，建议出门遛弯", Notification.Type.Info)
+    val warnNotification = rememberNotification("天气预警", "寒冷橙色预警信号，大家要注意保暖!", type = Notification.Type.Warning)
 
     Tray(
         state = trayState,
         icon = painterResource("image/launcher.png"),
         menu = {
             Item(
-                "发送天气预警",
+                "天气预报",
                 onClick = {
-                    trayState.sendNotification(notification)
+                    trayState.sendNotification(infoNotification)
                 }
             )
+            Item(
+                "天气预警",
+                onClick = {
+                    trayState.sendNotification(warnNotification)
+                }
+            )
+            Separator()
             Item(
                 "退出",
                 onClick = {
