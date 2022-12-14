@@ -78,7 +78,7 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
 @Composable
 private fun HourWeatherPreview() {
     val list = arrayListOf<WeatherHourlyBean.HourlyBean>()
-    for (index in 1..24){
+    for (index in 1..24) {
         list.add(WeatherHourlyBean.HourlyBean())
     }
     HourWeather(list)

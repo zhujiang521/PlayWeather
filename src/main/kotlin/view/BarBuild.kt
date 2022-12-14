@@ -13,7 +13,7 @@ import androidx.compose.ui.window.*
 fun FrameWindowScope.MenuBarWeather(
     isOpen: MutableState<Boolean>,
     showTray: MutableState<Boolean>
-) :Boolean{
+): Boolean {
     var isSubmenuShowing by remember { mutableStateOf(true) }
     var action by remember { mutableStateOf("Last action: None") }
 
@@ -57,7 +57,7 @@ fun FrameWindowScope.MenuBarWeather(
 
 @Composable
 fun ApplicationScope.BuildTray(isOpen: MutableState<Boolean>, showTray: MutableState<Boolean>): Boolean {
-    if (!showTray.value){
+    if (!showTray.value) {
         return isOpen.value
     }
     val trayState = rememberTrayState()
