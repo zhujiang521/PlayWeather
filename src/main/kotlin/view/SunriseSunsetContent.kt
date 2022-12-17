@@ -43,10 +43,10 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
                 thickness = 0.4.dp
             )
             RiseSetProgress(
-                sunrise = dailyBean?.sunrise ?: "07:22",
-                sunset = dailyBean?.sunset ?: "18:22",
-                moonrise = dailyBean?.moonrise ?: "18:22",
-                moonset = dailyBean?.moonset ?: "07:22",
+                sunrise = dailyBean?.sunrise?.ifEmpty { "07:22" } ?: "07:22",
+                sunset = dailyBean?.sunset?.ifEmpty { "18:22" } ?: "18:22",
+                moonrise = dailyBean?.moonrise?.ifEmpty { "18:22" } ?: "18:22",
+                moonset = dailyBean?.moonset?.ifEmpty { "07:22" } ?: "07:22",
             )
         }
     }

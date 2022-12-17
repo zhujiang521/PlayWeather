@@ -41,9 +41,9 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
-                WeatherLifeItem(modifier, weatherLifeList?.get(0))
-                WeatherLifeItem(modifier, weatherLifeList?.get(1))
-                WeatherLifeItem(modifier, weatherLifeList?.get(2))
+                WeatherLifeItem(modifier, weatherLifeList.getWeatherLifeItem(0))
+                WeatherLifeItem(modifier, weatherLifeList.getWeatherLifeItem(1))
+                WeatherLifeItem(modifier, weatherLifeList.getWeatherLifeItem(2))
             }
 
             Row(
@@ -55,14 +55,17 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                 val modifier = Modifier
                     .weight(1f)
                     .padding(5.dp)
-                WeatherLifeItem(modifier, weatherLifeList?.get(3))
-                WeatherLifeItem(modifier, weatherLifeList?.get(4))
-                WeatherLifeItem(modifier, weatherLifeList?.get(5))
+                WeatherLifeItem(modifier, weatherLifeList.getWeatherLifeItem(3))
+                WeatherLifeItem(modifier, weatherLifeList.getWeatherLifeItem(4))
+                WeatherLifeItem(modifier, weatherLifeList.getWeatherLifeItem(5))
             }
             Spacer(modifier = Modifier.height(15.dp))
         }
     }
 }
+
+private fun List<WeatherLifeIndicesBean.WeatherLifeIndicesItem>?.getWeatherLifeItem(index: Int) =
+    if (this?.isEmpty() == true) null else this?.get(index)
 
 @Composable
 fun WeatherLifeItem(modifier: Modifier, item: WeatherLifeIndicesBean.WeatherLifeIndicesItem?) {
