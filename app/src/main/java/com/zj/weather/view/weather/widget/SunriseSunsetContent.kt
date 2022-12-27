@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,6 +24,7 @@ import androidx.core.content.ContextCompat
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.XLog
 import com.zj.weather.R
+import kotlin.math.pow
 
 
 @Composable
@@ -85,16 +87,23 @@ fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
         ) {
             val path = Path()
             path.moveTo(0f, size.height)
-            // 三阶贝塞尔曲线
-            path.cubicTo(
-                0f,
-                size.height,
-                size.width / 2,
-                -size.height,
-                size.width,
-                size.height
-            )
+            image?.apply {
+                val (sunX, sunY) = bezierPointPair(result.toDouble())
+                drawImage(
+                    image = image,
+                    topLeft = Offset(
+                        sunX.toFloat() - image.width / 2,
+                        sunY.toFloat() - image.height / 2
+                    )
+                )
+            }
 
+
+            // 二阶贝塞尔曲线
+            path.quadraticBezierTo(
+                size.width / 2, -size.height,
+                size.width, size.height
+            )
             drawPath(
                 path = path, color = Color(red = 255, green = 193, blue = 7, alpha = 255),
                 style = Stroke(width = 3f)
@@ -154,6 +163,24 @@ fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
         }
     }
 
+}
+
+/**
+ * 计算二阶贝塞尔曲线上的点
+ * P0（起始点） ， P1（控制点）， P2 （终点）
+ * P0（x1,y1）,P2(x2,y2), P1(cx,cy)
+ * x = Math.pow(1-t, 2) * x1 + 2 * t * (1-t) * cx + Math.pow(t, 2) * x2
+ * y = Math.pow(1-t, 2) * y1 + 2 * t * (1-t) * cy + Math.pow(t, 2) * y2
+ */
+private fun DrawScope.bezierPointPair(sunResult: Double): Pair<Double, Double> {
+    val x =
+        (1.0 - sunResult).pow(2.0) * 0f + 2 * sunResult * (1 - sunResult) * (size.width / 2) + sunResult
+            .pow(2.0) * size.width
+
+    val y =
+        (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult
+            .pow(2.0) * size.height
+    return Pair(x, y)
 }
 
 

@@ -132,9 +132,11 @@ fun WeatherViewPager(
             Box(
                 Modifier
                     .pullRefresh(pullRefreshState)
-                    .clickable {
-                        toSeason()
-                    }) {
+            )
+//                    .clickable {
+//                        toSeason()
+//                    })
+            {
                 WeatherPage(
                     weatherViewModel, cityInfoList[page],
                     onErrorClick = {
