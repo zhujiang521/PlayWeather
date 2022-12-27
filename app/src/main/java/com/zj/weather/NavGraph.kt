@@ -55,8 +55,7 @@ fun NavGraph(
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
                 toCityList = actions.toCityList,
-                toWeatherList = actions.toWeatherList,
-                toSeason = actions.toSeason
+                toWeatherList = actions.toWeatherList
             )
         }
         searchComposable(PlayDestinations.WEATHER_LIST_ROUTE) {
@@ -167,9 +166,9 @@ class PlayActions(navController: NavHostController) {
         navController.navigate(PlayDestinations.CITY_LIST_ROUTE)
     }
 
-    val toSeason: () -> Unit = {
-        navController.navigate(PlayDestinations.SEASON_PAGE_ROUTE)
-    }
+//    val toSeason: () -> Unit = {
+//        navController.navigate(PlayDestinations.SEASON_PAGE_ROUTE)
+//    }
 
     val upPress: () -> Unit = {
         navController.popBackStack()

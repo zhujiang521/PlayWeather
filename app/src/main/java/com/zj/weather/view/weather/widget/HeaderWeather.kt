@@ -1,5 +1,6 @@
 package com.zj.weather.view.weather.widget
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,22 +14,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherNowBean
 import com.zj.weather.R
-import com.zj.model.room.entity.CityInfo
 
 @Composable
 fun HeaderWeather(
-    fontSize: TextUnit,
-    topPadding: Dp,
     cityInfo: CityInfo,
     weatherNow: WeatherNowBean.NowBaseBean?,
-    isLand: Boolean = false
+    isLand: Boolean = false,
+    scrollState: ScrollState? = null,
 ) {
+    val fontSize = if (scrollState == null || isLand) {
+        50.sp
+    } else {
+        (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
+    }
+    val topPadding = if (scrollState == null || isLand) {
+        50.dp
+    } else {
+        (50f / (scrollState.value / 2) * 70).coerceAtLeast(0f).coerceAtMost(45f).dp
+    }
     val cityName = if (cityInfo.city.length > 5 || cityInfo.name.length > 5) {
         cityInfo.name
     } else {
@@ -53,7 +61,7 @@ fun HeaderWeather(
         Text(
             text = "${weatherNow?.text ?: stringResource(id = R.string.default_weather)}  ${weatherNow?.temp ?: "0"}℃",
             modifier = Modifier.padding(top = 5.dp, bottom = 10.dp),
-            fontSize = if (isLand) 45.sp else fontSize,
+            fontSize = fontSize,
             color = MaterialTheme.colors.primary
         )
     }
@@ -65,5 +73,5 @@ fun HeaderWeatherPreview() {
     val nowBean = WeatherNowBean.NowBaseBean()
     nowBean.text = "多云"
     nowBean.temp = "25"
-    HeaderWeather(45.sp, 0.dp, CityInfo(name = "测试"), nowBean)
+    HeaderWeather(CityInfo(name = "测试"), nowBean)
 }

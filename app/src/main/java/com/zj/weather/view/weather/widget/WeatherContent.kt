@@ -2,6 +2,7 @@ package com.zj.weather.view.weather.widget
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -9,24 +10,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.model.WeatherModel
 import com.zj.model.room.entity.CityInfo
-import com.zj.model.weather.WeatherDailyBean
 import com.zj.weather.R
 
 @Composable
 fun WeatherContent(
     modifier: Modifier = Modifier,
-    scrollState: ScrollState,
-    fontSize: TextUnit,
-    topPadding: Dp,
     cityInfo: CityInfo,
     weatherModel: WeatherModel?,
-    isLand: Boolean = false
+    isLand: Boolean = false,
+    scrollState: ScrollState = rememberScrollState(),
 ) {
 
     Column(
@@ -39,7 +35,7 @@ fun WeatherContent(
         if (!isLand) {
             // 天气头部
             HeaderWeather(
-                fontSize, topPadding, cityInfo, weatherModel?.nowBaseBean, false
+                cityInfo, weatherModel?.nowBaseBean, false, scrollState
             )
         }
         Column(

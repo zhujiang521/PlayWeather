@@ -1,9 +1,7 @@
 package com.zj.weather.view.weather
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -13,25 +11,21 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.zj.model.PlayLoading
+import com.zj.model.WeatherModel
 import com.zj.model.air.AirNowBean
+import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.model.weather.WeatherNowBean
-import com.zj.model.PlayLoading
 import com.zj.utils.lce.LcePage
-import com.zj.model.WeatherModel
-import com.zj.model.room.entity.CityInfo
+import com.zj.utils.view.ImageLoader
+import com.zj.utils.weather.IconUtils
+import com.zj.weather.R
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
 import com.zj.weather.view.weather.widget.HeaderWeather
 import com.zj.weather.view.weather.widget.WeatherAnimation
 import com.zj.weather.view.weather.widget.WeatherContent
-import com.zj.utils.view.ImageLoader
-import com.zj.utils.weather.IconUtils
-import com.zj.weather.R
 
 @Composable
 fun WeatherPage(
@@ -43,9 +37,6 @@ fun WeatherPage(
 ) {
     val context = LocalContext.current
     val weatherModel by weatherViewModel.weatherModel.observeAsState(PlayLoading)
-    val scrollState = rememberScrollState()
-    val fontSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(20f).coerceAtMost(45f).sp
-    val topPaddingSize = (50f / (scrollState.value / 2) * 70).coerceAtLeast(0f).coerceAtMost(45f).dp
     val config = LocalConfiguration.current
 
     LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->
@@ -73,10 +64,10 @@ fun WeatherPage(
             }
             if (isLand) {
                 // 横屏适配
-                HorizontalWeather(fontSize, cityInfo, weather, scrollState)
+                HorizontalWeather(cityInfo, weather)
             } else {
                 // 竖屏适配
-                VerticalWeather(fontSize, topPaddingSize, cityInfo, weather, scrollState)
+                VerticalWeather(cityInfo, weather)
             }
         }
     }
@@ -84,11 +75,8 @@ fun WeatherPage(
 
 @Composable
 private fun VerticalWeather(
-    fontSize: TextUnit,
-    topPadding: Dp,
     cityInfo: CityInfo,
     weather: WeatherModel,
-    scrollState: ScrollState
 ) {
     Column(
         modifier = Modifier
@@ -96,17 +84,15 @@ private fun VerticalWeather(
             .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
     ) {
         WeatherContent(
-            Modifier, scrollState, fontSize, topPadding, cityInfo, weather
+            Modifier, cityInfo, weather
         )
     }
 }
 
 @Composable
 private fun HorizontalWeather(
-    fontSize: TextUnit,
     cityInfo: CityInfo,
     weather: WeatherModel,
-    scrollState: ScrollState
 ) {
     Row(
         modifier = Modifier
@@ -124,14 +110,14 @@ private fun HorizontalWeather(
 
             // 天气头部
             HeaderWeather(
-                fontSize, 0.dp, cityInfo, weather.nowBaseBean, true
+                cityInfo, weather.nowBaseBean, true
             )
 
             // 天气动画
             WeatherAnimation(weather.nowBaseBean?.icon)
         }
         WeatherContent(
-            landModifier, scrollState, fontSize, 0.dp, cityInfo,
+            landModifier, cityInfo,
             weather, true
         )
     }
@@ -141,8 +127,7 @@ private fun HorizontalWeather(
 @Composable
 fun VerticalWeatherPreview() {
     VerticalWeather(
-        25.sp, 0.dp, CityInfo(name = "测试"), buildWeatherModel(),
-        rememberScrollState()
+        CityInfo(name = "测试"), buildWeatherModel(),
     )
 }
 
@@ -164,6 +149,6 @@ private fun buildWeatherModel(): WeatherModel {
 @Composable
 fun HorizontalWeatherPreview() {
     HorizontalWeather(
-        25.sp, CityInfo(name = "测试"), buildWeatherModel(), rememberScrollState()
+        CityInfo(name = "测试"), buildWeatherModel()
     )
 }

@@ -2,7 +2,6 @@ package com.zj.weather.view.weather
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -31,8 +30,7 @@ import kotlinx.coroutines.launch
 fun WeatherViewPager(
     weatherViewModel: WeatherViewModel,
     toCityList: () -> Unit,
-    toWeatherList: () -> Unit,
-    toSeason: () -> Unit
+    toWeatherList: () -> Unit
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
     val pagerState = rememberPagerState()
@@ -50,8 +48,7 @@ fun WeatherViewPager(
             pagerState,
             getCityIndex(cityInfoList),
             toCityList,
-            toWeatherList,
-            toSeason
+            toWeatherList
         )
     }
 }
@@ -113,7 +110,6 @@ fun WeatherViewPager(
     initialPage: Int,
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
-    toSeason: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize()) {
