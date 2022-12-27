@@ -71,10 +71,7 @@ fun getCityIndex(cityInfoList: List<CityInfo>?): Int {
     for (index in cityInfoList.indices) {
         if (cityInfoList[index].isIndex == 1) {
             city = cityInfoList[index]
-            XLog.w("city:${city}")
         }
     }
-    val index = cityInfoList.indexOf(city)
-    XLog.w("index:$index")
-    return index
+    return cityInfoList.indexOf(city)
 }

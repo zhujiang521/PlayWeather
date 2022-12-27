@@ -247,7 +247,6 @@ private fun getAccounted(sunrise: String, sunset: String): Float {
     val sunsetMinutes = getMinutes(sunset)
     val accounted =
         (currentMinutes.toFloat() - sunriseMinutes.toFloat()) / (sunsetMinutes.toFloat() - sunriseMinutes.toFloat())
-    XLog.w("currentMinutes:$currentMinutes   sunriseMinutes:$sunriseMinutes   sunsetMinutes:$sunsetMinutes   accounted:$accounted")
     val result = if (accounted > 1) {
         1f
     } else if (accounted < 0) {
@@ -255,7 +254,6 @@ private fun getAccounted(sunrise: String, sunset: String): Float {
     } else {
         accounted
     }
-    XLog.w("result:$result")
     return result
 }
 
@@ -269,7 +267,5 @@ private fun getAccounted(sunrise: String, sunset: String): Float {
 fun getMinutes(sunrise: String): Int {
     val hour = sunrise.substring(0, 2).toInt()
     val minutes = sunrise.substring(3, 5).toInt()
-    val total = hour * 60 + minutes
-    XLog.w("hour:$hour   minutes:$minutes   total:$total")
-    return total
+    return hour * 60 + minutes
 }

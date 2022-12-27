@@ -17,6 +17,8 @@
 package com.zj.weather
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -50,7 +52,9 @@ fun NavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(PlayDestinations.HOME_PAGE_ROUTE) {
+        composable(PlayDestinations.HOME_PAGE_ROUTE,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }) {
             val weatherViewModel = hiltViewModel<WeatherViewModel>()
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
@@ -77,7 +81,7 @@ fun NavGraph(
                 toWeatherDetails = actions.upPress
             )
         }
-        contentComposable(PlayDestinations.SEASON_PAGE_ROUTE) {
+        composable(PlayDestinations.SEASON_PAGE_ROUTE) {
             SeasonPage()
         }
     }
@@ -102,10 +106,16 @@ fun NavGraphBuilder.playComposable(
         arguments = arguments,
         deepLinks = deepLinks,
         enterTransition = {
-            slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(
+                    durationMillis = 200,
+                    easing = LinearOutSlowInEasing
+                )
+            )
         },
         exitTransition = {
-            slideOutOfContainer(AnimatedContentScope.SlideDirection.Right)
+            ExitTransition.None
         },
         content = content,
     )
@@ -123,31 +133,20 @@ fun NavGraphBuilder.searchComposable(
         arguments = arguments,
         deepLinks = deepLinks,
         enterTransition = {
-            slideIntoContainer(AnimatedContentScope.SlideDirection.Up)
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Up, animationSpec = tween(
+                    durationMillis = 200,
+                    easing = LinearOutSlowInEasing
+                )
+            )
         },
         exitTransition = {
-            slideOutOfContainer(AnimatedContentScope.SlideDirection.Down)
-        },
-        content = content,
-    )
-}
-
-@ExperimentalAnimationApi
-fun NavGraphBuilder.contentComposable(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
-    deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
-) {
-    composable(
-        route = route,
-        arguments = arguments,
-        deepLinks = deepLinks,
-        enterTransition = {
-            scaleIn()
-        },
-        exitTransition = {
-            scaleOut()
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Down, animationSpec = tween(
+                    durationMillis = 200,
+                    easing = LinearOutSlowInEasing
+                )
+            )
         },
         content = content,
     )
