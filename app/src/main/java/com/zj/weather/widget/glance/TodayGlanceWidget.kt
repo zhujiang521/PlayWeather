@@ -73,7 +73,7 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
         ) {
             Text(
                 modifier = GlanceModifier.padding(top = 5.dp),
-                text = data.city,
+                text = data.city ?: "北京",
                 style = TextStyle(fontSize = 13.sp, color = ColorProvider(Color.White))
             )
             Text(
@@ -94,11 +94,11 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
                 )
                 Column {
                     Text(
-                        text = data.text,
+                        text = data.text ?: "今天",
                         style = TextStyle(fontSize = 11.sp, color = ColorProvider(Color.White))
                     )
                     Text(
-                        text = data.windDir,
+                        text = data.windDir ?: "东北风",
                         style = TextStyle(fontSize = 11.sp, color = ColorProvider(Color.White))
                     )
                 }

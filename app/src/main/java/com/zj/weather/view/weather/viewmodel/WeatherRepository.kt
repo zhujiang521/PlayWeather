@@ -36,7 +36,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getWeatherNow(location: String): WeatherNowBean.NowBaseBean? {
         val weatherNow = network.getWeatherNow(location)
-        val code = weatherNow.code.toInt()
+        val code = weatherNow.code?.toInt()
         return if (code == SUCCESSFUL) {
             weatherNow.now
         } else {
@@ -55,7 +55,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getWeather24Hour(location: String): List<WeatherHourlyBean.HourlyBean> {
         val weather24Hour = network.getWeather24Hour(location)
-        val code = weather24Hour.code.toInt()
+        val code = weather24Hour.code?.toInt()
         return if (code == SUCCESSFUL) {
             weather24Hour.hourly.forEach { hourlyBean ->
                 hourlyBean.fxTime = getTimeName(context, hourlyBean.fxTime)
@@ -77,7 +77,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getWeather7Day(location: String): Pair<WeatherDailyBean.DailyBean?, List<WeatherDailyBean.DailyBean>?>? {
         val weather7Day = network.getWeather7Day(location)
-        val code = weather7Day.code.toInt()
+        val code = weather7Day.code?.toInt()
         return if (code == SUCCESSFUL) {
             val dailyBean = getTodayBean(weather7Day.daily)
             weather7Day.daily.forEach { daily ->
@@ -100,7 +100,7 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getAirNow(location: String): AirNowBean.NowBean? {
         val airNowBean = network.getAirNowBean(location)
-        val code = airNowBean.code.toInt()
+        val code = airNowBean.code?.toInt()
         return if (code == SUCCESSFUL) {
             airNowBean.now.primary = if (airNowBean.now.primary == "NA") "" else {
                 "${context.getString(R.string.air_quality_warn)}${airNowBean.now.primary}"
@@ -122,9 +122,9 @@ class WeatherRepository @Inject constructor(private val context: Application) {
      */
     suspend fun getWeatherLifeIndicesList(location: String): List<WeatherLifeIndicesBean.WeatherLifeIndicesItem> {
         val weatherLifeIndicesBean = network.getWeatherLifeIndicesBean(location)
-        val code = weatherLifeIndicesBean.code.toInt()
+        val code = weatherLifeIndicesBean.code?.toInt()
         return if (code == SUCCESSFUL) {
-            weatherLifeIndicesBean.daily
+            weatherLifeIndicesBean.daily ?: arrayListOf()
         } else {
             val text = getErrorText(code)
             showToast(context, text)

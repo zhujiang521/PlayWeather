@@ -69,7 +69,7 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
  * @param sunset 日落时间
  */
 @Composable
-fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
+fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
     val result = getAccounted(sunrise, sunset)
     val bitmap = getBitmapFromVectorDrawable(context, R.drawable.x_sunny)
     val image = bitmap?.asImageBitmap()
@@ -195,7 +195,8 @@ fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
  *
  * @return 百分比
  */
-private fun getAccounted(sunrise: String, sunset: String): Float {
+private fun getAccounted(sunrise: String?, sunset: String?): Float {
+    if (sunrise.isNullOrEmpty() || sunset.isNullOrEmpty()) return 0.5f
     val calendar = Calendar.getInstance()
     val currentMinutes = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
     val sunriseMinutes = getMinutes(sunrise)

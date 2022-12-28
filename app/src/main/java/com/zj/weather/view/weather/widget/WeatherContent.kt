@@ -59,7 +59,7 @@ fun WeatherContent(
             HourWeather(weatherModel?.hourlyBeanList)
 
             // 未来7天天气预报
-            DayWeather(weatherModel?.dailyBeanList)
+            WeekDayWeather(weatherModel?.dailyBeanList)
 
             // 当天具体天气数值
             DayWeatherContent(weatherModel)

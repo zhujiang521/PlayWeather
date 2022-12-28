@@ -19,6 +19,8 @@ import com.zj.model.PlayError
 import com.zj.model.PlayLoading
 import com.zj.model.PlayState
 import com.zj.model.PlaySuccess
+import com.zj.model.weather.WeatherDailyBean
+import com.zj.model.weather.WeatherNowBean
 import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -106,7 +108,7 @@ class WeatherViewModel @Inject constructor(
             val weather7Day = weatherRepository.getWeather7Day(location)
             val airNow = weatherRepository.getAirNow(location)
             val weatherLifeIndicesList = weatherRepository.getWeatherLifeIndicesList(location)
-
+            buildWeekWeather(weather7Day?.second, weatherNow)
             val weatherModel = WeatherModel(
                 nowBaseBean = weatherNow,
                 hourlyBeanList = weather24Hour,
@@ -120,6 +122,43 @@ class WeatherViewModel @Inject constructor(
                 onWeatherModelChanged(PlaySuccess(weatherModel))
             }
             XLog.w("For the weather:$location")
+        }
+    }
+
+    /**
+     * 为了构建7天天气的柱状图
+     */
+    private fun buildWeekWeather(
+        second: List<WeatherDailyBean.DailyBean>?,
+        weatherNow: WeatherNowBean.NowBaseBean?
+    ) {
+        var min = Int.MAX_VALUE
+        var max = Int.MIN_VALUE
+        second?.forEach {
+            val currentMin = it.tempMin?.toInt() ?: 0
+            if (min > currentMin) {
+                min = currentMin
+            }
+
+            val currentMax = it.tempMax?.toInt() ?: 0
+            if (max < currentMax) {
+                max = currentMax
+            }
+        }
+
+        second?.forEachIndexed { index, dailyBean ->
+            dailyBean.weekMin = min
+            dailyBean.weekMax = max
+
+            if (index == 0) {
+                dailyBean.fxDate = "今天"
+            } else {
+                dailyBean.fxDate = dailyBean.fxDate ?: "今天"
+            }
+
+            if (dailyBean.fxDate == "今天") {
+                dailyBean.temp = weatherNow?.temp?.toInt() ?: -100
+            }
         }
     }
 

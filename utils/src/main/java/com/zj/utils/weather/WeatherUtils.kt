@@ -13,9 +13,9 @@ import java.util.*
  * @param daily 7天的天气预报信息
  * @return 当天的天气预报
  */
-fun getTodayBean(daily: MutableList<WeatherDailyBean.DailyBean>): WeatherDailyBean.DailyBean? {
+fun getTodayBean(daily: List<WeatherDailyBean.DailyBean>): WeatherDailyBean.DailyBean? {
     daily.forEach { dailyBean ->
-        val date = dailyBean.fxDate
+        val date = dailyBean.fxDate ?: return@forEach
         val dateArray = date.split("-")
         val calendar = Calendar.getInstance()
         val todayWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -43,7 +43,7 @@ fun getTodayBean(daily: MutableList<WeatherDailyBean.DailyBean>): WeatherDailyBe
  */
 fun getUvIndexDesc(context: Context, uv: String?): String {
     XLog.d("getUvIndexDesc: $uv")
-    if (uv == null || uv.isNullOrEmpty()) {
+    if (uv == null || uv.isEmpty()) {
         return context.getString(R.string.uv_index1)
     }
     return when (uv.toInt()) {

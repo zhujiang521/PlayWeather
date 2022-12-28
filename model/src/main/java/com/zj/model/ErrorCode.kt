@@ -20,7 +20,7 @@ const val SUCCESSFUL = 200
  * @param code 错误码
  * @return 错误信息
  */
-fun getErrorText(code: Int): String = when (code) {
+fun getErrorText(code: Int?): String = when (code) {
     204 -> "请求成功，但你查询的地区暂时没有你需要的数据。"
     400 -> "请求错误，可能包含错误的请求参数或缺少必选的请求参数。"
     401 -> "认证失败，可能使用了错误的KEY、数字签名错误、KEY的类型错误"

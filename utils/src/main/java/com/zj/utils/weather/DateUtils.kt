@@ -20,7 +20,8 @@ private val calendar = Calendar.getInstance()
  * @param date 年月日 2013-12-30
  * @return 周几
  */
-fun getDateWeekName(context: Context, date: String): String {
+fun getDateWeekName(context: Context, date: String?): String {
+    if (date == null) return context.getString(R.string.time_today)
     val dateArray = date.split("-")
     val todayWeek = calendar.get(Calendar.DAY_OF_WEEK)
     calendar.clear()
@@ -40,7 +41,8 @@ fun getDateWeekName(context: Context, date: String): String {
  * @param time 年月日 2013-12-30T13:00+08:00
  * @return 13时
  */
-fun getTimeName(context: Context, time: String): String {
+fun getTimeName(context: Context, time: String?): String {
+    if (time == null) return context.getString(R.string.time_now)
     val calendar = Calendar.getInstance()
     val todayHour = calendar.get(Calendar.HOUR_OF_DAY)
     // HH为24小时 hh为12小时

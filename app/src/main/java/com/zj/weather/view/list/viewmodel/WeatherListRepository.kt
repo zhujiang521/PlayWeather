@@ -24,7 +24,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
      */
     suspend fun getGeoCityLookup(cityName: String = "北京"): PlayState<List<GeoBean.LocationBean>> {
         val cityLookup = network.getCityLookup(cityName)
-        val code = cityLookup.code.toInt()
+        val code = cityLookup.code?.toInt()
         return if (code == SUCCESSFUL) {
             val locations = cityLookup.location
             if (locations.isNullOrEmpty()) {
@@ -44,9 +44,11 @@ class WeatherListRepository @Inject constructor(private val context: Application
     /**
      * 构建当前是否存在此城市
      */
-    private suspend fun buildHasLocation(locations: MutableList<GeoBean.LocationBean>) {
+    private suspend fun buildHasLocation(locations: List<GeoBean.LocationBean>) {
         locations.forEach {
-            val hasLocation = cityInfoDao.getHasLocation(it.name)
+            val name = it.name
+            if (name.isNullOrEmpty()) return@forEach
+            val hasLocation = cityInfoDao.getHasLocation(name)
             it.hasLocation = hasLocation > 0
         }
     }
@@ -57,7 +59,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
      */
     suspend fun getGeoTopCity(): PlayState<List<GeoBean.LocationBean>> {
         val cityTop = network.getCityTop()
-        val code = cityTop.code.toInt()
+        val code = cityTop.code?.toInt()
         return if (code == SUCCESSFUL) {
             val locations = cityTop.topCityList
             if (locations.isNullOrEmpty()) {

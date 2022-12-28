@@ -56,7 +56,7 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = hourlyBean.fxTime,
+            text = hourlyBean.fxTime ?: "",
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary
         )

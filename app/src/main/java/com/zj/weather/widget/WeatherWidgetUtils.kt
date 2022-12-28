@@ -38,11 +38,11 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
                 val fxDate = getDateWeekName(context, weather.fxDate)
                 val weekWeather =
                     WeekWeather(
-                        weather.textDay,
-                        weather.fxDate,
-                        weather.iconDay,
-                        weather.tempMax,
-                        weather.tempMin,
+                        weather.textDay ?: "今天",
+                        weather.fxDate ?: "",
+                        weather.iconDay ?: "100",
+                        weather.tempMax ?: "23",
+                        weather.tempMin ?: "11",
                         fxDate
                     )
                 items.add(weekWeather)
@@ -66,7 +66,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
             val network = PlayWeatherNetwork(context)
             launch(Dispatchers.IO) {
                 val weatherNowBean = network.getWeatherNow(location?.location ?: "")
-                val code = weatherNowBean.code.toInt()
+                val code = weatherNowBean.code?.toInt()
                 if (code == SUCCESSFUL) {
                     val now = weatherNowBean.now
                     now.city = location?.name

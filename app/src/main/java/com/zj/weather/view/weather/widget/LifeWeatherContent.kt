@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.model.indices.WeatherLifeIndicesBean
@@ -82,7 +81,7 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
 }
 
 @Composable
-fun WeatherLifeItem(modifier: Modifier, imgRes: Int, titleId: Int, value: String) {
+fun WeatherLifeItem(modifier: Modifier, imgRes: Int, titleId: Int, value: String?) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
@@ -94,7 +93,7 @@ fun WeatherLifeItem(modifier: Modifier, imgRes: Int, titleId: Int, value: String
         Column(modifier = Modifier.padding(start = 10.dp)) {
             Text(text = stringResource(id = titleId), fontSize = 12.sp)
             Text(
-                text = value,
+                text = value ?: "不错",
                 modifier = Modifier.padding(top = 5.dp),
                 fontSize = 14.sp,
                 color = MaterialTheme.colors.primary
