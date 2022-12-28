@@ -109,24 +109,6 @@ fun SunriseSunsetProgress(context: Context, sunrise: String, sunset: String) {
                 style = Stroke(width = 3f)
             )
 
-
-            val evaluate = evaluate(
-                result,
-                floatArrayOf(0f, size.height),
-                floatArrayOf(size.width / 4, -size.height / 2),
-                floatArrayOf(size.width / 4 * 3, 0f),
-                floatArrayOf(size.width, size.height)
-            )
-            if (image != null) {
-                drawImage(
-                    image = image,
-                    topLeft = Offset(
-                        evaluate[0] - 45,
-                        evaluate[1] - 45
-                    )
-                )
-            }
-
             drawPoints(
                 points = arrayListOf(
                     Offset(0f, size.height),
@@ -181,33 +163,6 @@ private fun DrawScope.bezierPointPair(sunResult: Double): Pair<Double, Double> {
         (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult
             .pow(2.0) * size.height
     return Pair(x, y)
-}
-
-
-/**
- *
- * @param fraction 变量
- * @param point0 贝塞尔曲线起点
- * @param point3 贝塞尔曲线终点
- * @return 因为需要的点是从下到上....所以p0,p1,p2,p3的点是从下打上的
- */
-fun evaluate(
-    fraction: Float,
-    point0: FloatArray,
-    point1: FloatArray,
-    point2: FloatArray,
-    point3: FloatArray
-): FloatArray {
-    val currentPosition = FloatArray(2)
-    //贝塞尔公式计算X点
-    currentPosition[0] =
-        point0[0] * (1 - fraction) * (1 - fraction) * (1 - fraction) + point1[0] * 3 * fraction * (
-                1 - fraction) * (1 - fraction) + point2[0] * 3 * (1 - fraction) * fraction * fraction + point3[0] * fraction * fraction * fraction
-    //贝塞尔公式计算Y点
-    currentPosition[1] =
-        point0[1] * (1 - fraction) * (1 - fraction) * (1 - fraction) + point1[1] * 3 * fraction * (1 - fraction) * (1 - fraction) + point2[1] * 3 * (
-                1 - fraction) * fraction * fraction + point3[1] * fraction * fraction * fraction
-    return currentPosition
 }
 
 /**
