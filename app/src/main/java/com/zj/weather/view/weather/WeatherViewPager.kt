@@ -60,6 +60,9 @@ fun CurrentPageEffect(
     cityInfoList: List<CityInfo>,
     weatherViewModel: WeatherViewModel
 ) {
+    if (pagerState.isScrollInProgress) {
+        return
+    }
     LaunchedEffect(pagerState.currentPage) {
         val index =
             if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
@@ -118,7 +121,9 @@ fun WeatherViewPager(
                 pagerState.scrollToPage(initialPage)
             }
         }
-        HorizontalPager(count = cityInfoList.size, state = pagerState) { page ->
+        HorizontalPager(count = cityInfoList.size, state = pagerState, key = {
+            cityInfoList[it].locationId
+        }) { page ->
             val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
 
             val pullRefreshState = rememberPullRefreshState(
