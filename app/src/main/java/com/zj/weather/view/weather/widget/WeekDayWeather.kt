@@ -67,7 +67,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
             color = MaterialTheme.colors.primary
         )
 
-        Spacer(modifier = Modifier.weight(0.5f))
+        Spacer(modifier = Modifier.weight(0.7f))
 
         ImageLoader(
             data = IconUtils.getWeatherIcon(dailyBean.iconDay),
@@ -75,7 +75,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
                 .padding(start = 7.dp)
         )
 
-        Spacer(modifier = Modifier.weight(0.5f))
+        Spacer(modifier = Modifier.weight(0.7f))
 
         Text(
             text = "${dailyBean.tempMin ?: "0"}°",

@@ -22,7 +22,6 @@ import com.zj.utils.weather.getCityIndex
 import com.zj.weather.permission.FeatureThatRequiresLocationPermissions
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
-import kotlinx.coroutines.launch
 
 @ExperimentalPermissionsApi
 @ExperimentalPagerApi
@@ -114,13 +113,12 @@ fun WeatherViewPager(
     toCityList: () -> Unit,
     toWeatherList: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (initialPage >= 0 && initialPage < pagerState.pageCount) {
-            coroutineScope.launch {
-                pagerState.scrollToPage(initialPage)
-            }
+    if (initialPage >= 0 && initialPage < pagerState.pageCount) {
+        LaunchedEffect(pagerState.currentPage) {
+            pagerState.scrollToPage(initialPage)
         }
+    }
+    Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(count = cityInfoList.size, state = pagerState, key = {
             cityInfoList[it].locationId
         }) { page ->
@@ -131,13 +129,8 @@ fun WeatherViewPager(
                 { weatherViewModel.refresh(getLocation(cityInfoList[page])) })
 
             Box(
-                Modifier
-                    .pullRefresh(pullRefreshState)
-            )
-//                    .clickable {
-//                        toSeason()
-//                    })
-            {
+                Modifier.pullRefresh(pullRefreshState)
+            ) {
                 WeatherPage(
                     weatherViewModel, cityInfoList[page],
                     onErrorClick = {
@@ -163,9 +156,7 @@ fun WeatherViewPager(
     }
 }
 
-fun getLocation(
-    cityInfo: CityInfo?
-): String {
+fun getLocation(cityInfo: CityInfo?): String {
     if (cityInfo == null) return "CN101010100"
     return cityInfo.locationId.ifEmpty {
         cityInfo.location
