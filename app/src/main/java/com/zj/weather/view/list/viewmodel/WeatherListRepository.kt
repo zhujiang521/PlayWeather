@@ -1,14 +1,11 @@
 package com.zj.weather.view.list.viewmodel
 
 import android.app.Application
-import com.google.gson.Gson
 import com.zj.model.*
 import com.zj.model.city.GeoBean
-import com.zj.model.city.GeoCacheBean
 import com.zj.model.room.PlayWeatherDatabase
 import com.zj.model.room.entity.CityInfo
 import com.zj.network.PlayWeatherNetwork
-import com.zj.utils.DataStoreUtils
 import com.zj.utils.XLog
 import com.zj.utils.view.showToast
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -16,10 +13,6 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class WeatherListRepository @Inject constructor(private val context: Application) {
-
-    companion object {
-        const val CACHE_CITY_LIST = "CACHE_CITY_LIST"
-    }
 
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
     private val network = PlayWeatherNetwork(context.applicationContext)
@@ -62,30 +55,27 @@ class WeatherListRepository @Inject constructor(private val context: Application
 
     /**
      * 热门城市信息查询
+     * 每回返回数据一致，直接默认
      *
      */
-    suspend fun getGeoTopCity(): PlayState<List<GeoBean.LocationBean>> {
-        val cityTop = network.getCityTop()
-        val code = cityTop.code?.toInt()
-        return if (code == SUCCESSFUL) {
-            val locations = cityTop.topCityList
-            if (locations.isNullOrEmpty()) {
-                PlayNoContent("")
-            } else {
-                buildHasLocation(locations)
-                DataStoreUtils.saveStringData(
-                    CACHE_CITY_LIST,
-                    Gson().toJson(GeoCacheBean(list = locations))
-                )
-                PlaySuccess(locations)
-            }
-        } else {
-            val text = getErrorText(code)
-            showToast(context, text)
-            XLog.w("code:$code, text:$text")
-            PlayError(NullPointerException(text))
-        }
-    }
+//    suspend fun getGeoTopCity(): PlayState<List<GeoBean.LocationBean>> {
+//        val cityTop = network.getCityTop()
+//        val code = cityTop.code?.toInt()
+//        return if (code == SUCCESSFUL) {
+//            val locations = cityTop.topCityList
+//            if (locations.isNullOrEmpty()) {
+//                PlayNoContent("")
+//            } else {
+//                buildHasLocation(locations)
+//                PlaySuccess(locations)
+//            }
+//        } else {
+//            val text = getErrorText(code)
+//            showToast(context, text)
+//            XLog.w("code:$code, text:$text")
+//            PlayError(NullPointerException(text))
+//        }
+//    }
 
     /**
      * 插入城市信息
