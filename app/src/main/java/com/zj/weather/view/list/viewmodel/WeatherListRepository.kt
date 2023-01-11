@@ -1,11 +1,14 @@
 package com.zj.weather.view.list.viewmodel
 
 import android.app.Application
+import com.google.gson.Gson
 import com.zj.model.*
 import com.zj.model.city.GeoBean
+import com.zj.model.city.GeoCacheBean
 import com.zj.model.room.PlayWeatherDatabase
 import com.zj.model.room.entity.CityInfo
 import com.zj.network.PlayWeatherNetwork
+import com.zj.utils.DataStoreUtils
 import com.zj.utils.XLog
 import com.zj.utils.view.showToast
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -13,6 +16,10 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class WeatherListRepository @Inject constructor(private val context: Application) {
+
+    companion object {
+        const val CACHE_CITY_LIST = "CACHE_CITY_LIST"
+    }
 
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
     private val network = PlayWeatherNetwork(context.applicationContext)
@@ -66,6 +73,10 @@ class WeatherListRepository @Inject constructor(private val context: Application
                 PlayNoContent("")
             } else {
                 buildHasLocation(locations)
+                DataStoreUtils.saveStringData(
+                    CACHE_CITY_LIST,
+                    Gson().toJson(GeoCacheBean(list = locations))
+                )
                 PlaySuccess(locations)
             }
         } else {

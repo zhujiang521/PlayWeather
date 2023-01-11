@@ -61,7 +61,7 @@ object XLog {
     @JvmStatic
     fun v(tag: String, msg: String? = "") {
         if ((type and TYPE_V != 0) or Log.isLoggable(APP_TAG, Log.VERBOSE)) {
-            Log.v(tag, "$prefix $msg")
+            Log.v(APP_TAG, "$tag $prefix $msg")
         }
     }
 
@@ -75,7 +75,7 @@ object XLog {
     @JvmStatic
     fun d(tag: String, msg: String? = "") {
         if ((type and TYPE_D != 0) or Log.isLoggable(APP_TAG, Log.DEBUG)) {
-            Log.d(tag, "$prefix $msg")
+            Log.d(APP_TAG, "$tag $prefix $msg")
         }
     }
 
@@ -89,7 +89,7 @@ object XLog {
     @JvmStatic
     fun i(tag: String, msg: String? = "") {
         if ((type and TYPE_I != 0) or Log.isLoggable(APP_TAG, Log.INFO)) {
-            Log.i(tag, "$prefix $msg")
+            Log.i(APP_TAG, "$tag $prefix $msg")
         }
     }
 
@@ -103,7 +103,7 @@ object XLog {
     @JvmStatic
     fun w(tag: String, msg: String? = "") {
         if ((type and TYPE_W != 0) or Log.isLoggable(APP_TAG, Log.WARN)) {
-            Log.w(tag, "$prefix $msg")
+            Log.w(APP_TAG, "$tag $prefix $msg")
         }
     }
 
@@ -117,7 +117,7 @@ object XLog {
     @JvmStatic
     fun e(tag: String, msg: String? = "") {
         if ((type and TYPE_E != 0) or Log.isLoggable(APP_TAG, Log.ERROR)) {
-            Log.e(tag, "$prefix $msg")
+            Log.e(APP_TAG, "$tag $prefix $msg")
         }
     }
 

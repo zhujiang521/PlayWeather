@@ -5,13 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.zj.model.*
 import com.zj.model.city.GeoBean
 import com.zj.utils.XLog
 import com.zj.utils.checkNetConnect
-import com.zj.model.PlayError
-import com.zj.model.PlayLoading
-import com.zj.model.PlayState
+import com.zj.model.city.GeoCacheBean
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.DEFAULT_CACHE_CITY_LIST
+import com.zj.utils.DataStoreUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,6 +58,16 @@ class WeatherListViewModel @Inject constructor(
      * 热门城市信息查询
      */
     fun getGeoTopCity() {
+        val cache = DataStoreUtils.getSyncData(
+            WeatherListRepository.CACHE_CITY_LIST,
+            DEFAULT_CACHE_CITY_LIST
+        )
+        if (cache.isNotEmpty()) {
+            val cacheBean = Gson().fromJson(cache, GeoCacheBean::class.java)
+            onLocationBeanListChanged(PlaySuccess(cacheBean.list))
+            XLog.i("Have a cache, return")
+            return
+        }
         if (!getApplication<Application>().checkNetConnect()) {
             onLocationBeanListChanged(PlayError(IllegalStateException("无网络链接")))
             return

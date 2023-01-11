@@ -86,11 +86,6 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getWeather(location: String) {
-        if (!getApplication<Application>().checkNetConnect()) {
-            showToast(getApplication(), R.string.bad_network_view_tip)
-            onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
-            return
-        }
         if (weatherMap.containsKey(location)) {
             val weather = weatherMap[location]
             if (weather != null && weather.first + FIFTEEN_MINUTES > System.currentTimeMillis()) {
@@ -98,6 +93,11 @@ class WeatherViewModel @Inject constructor(
                 onWeatherModelChanged(PlaySuccess(weather.second))
                 return
             }
+        }
+        if (!getApplication<Application>().checkNetConnect()) {
+            showToast(getApplication(), R.string.bad_network_view_tip)
+            onWeatherModelChanged(PlayError(IllegalStateException("当前没有网络")))
+            return
         }
         weatherJob.checkCoroutines()
         weatherJob = viewModelScope.launch(Dispatchers.IO) {

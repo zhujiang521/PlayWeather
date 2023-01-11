@@ -2,6 +2,10 @@ package com.zj.model.city
 
 import com.zj.model.Refer
 
+data class GeoCacheBean(
+    val list: List<GeoBean.LocationBean> = arrayListOf(),
+)
+
 data class GeoBean(
     val code: String? = null,
     val refer: Refer? = null,

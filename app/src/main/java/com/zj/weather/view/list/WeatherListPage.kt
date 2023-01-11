@@ -1,8 +1,6 @@
 package com.zj.weather.view.list
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,6 +44,7 @@ fun WeatherListPage(
         })
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WeatherListPage(
     locationBeanState: PlayState<List<GeoBean.LocationBean>>,
@@ -59,6 +58,7 @@ fun WeatherListPage(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
+            .imeNestedScroll()
     ) {
         SearchBar(onBack) { city ->
             if (city.isNotEmpty()) {

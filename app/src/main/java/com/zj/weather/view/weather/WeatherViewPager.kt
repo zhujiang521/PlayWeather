@@ -68,7 +68,7 @@ fun CurrentPageEffect(
         val cityInfo = cityInfoList[index]
         val location = getLocation(cityInfo = cityInfo)
         weatherViewModel.getWeather(location)
-        XLog.w("Query initialPage")
+        XLog.i("Query initialPage")
     }
 }
 
