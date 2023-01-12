@@ -47,7 +47,7 @@ dependencies {
     implementation des.appcompat
 
     // Room
-    def room_version = "2.4.3"
+    def room_version = "2.5.0"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // 对 Room 的 Kotlin 扩展和协程支持
