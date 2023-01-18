@@ -115,7 +115,7 @@ fun WeatherViewPager(
 ) {
     if (initialPage >= 0 && initialPage < pagerState.pageCount) {
         LaunchedEffect(pagerState.currentPage) {
-            pagerState.scrollToPage(initialPage)
+            pagerState.animateScrollToPage(initialPage)
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {
