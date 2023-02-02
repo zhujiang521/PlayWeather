@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <!--高德地图需要，不添加报错-->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:name=".App"
         android:allowBackup="false"
@@ -20,6 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/MySplashTheme"
         tools:ignore="DataExtractionRules">
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="5625e7822d67bb7fce91da41e45c9222" />
+
         <receiver
             android:name="com.zj.weather.widget.today.TodayWeatherWidget"
             android:exported="true"

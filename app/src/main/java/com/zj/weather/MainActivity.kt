@@ -9,6 +9,7 @@ import com.zj.utils.view.GrayAppAdapter
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.theme.PlayWeatherTheme
 import com.zj.utils.XLog
+import com.zj.weather.view.map.MapView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity() {
         }
 
         setContent {
+//            MapView()
             PlayWeatherTheme {
                 GrayAppAdapter {
                     NavGraph()

@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -52,6 +53,12 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    defaultConfig {
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "arm64-v8a"
+        }
+    }
 }
 
 dependencies {
@@ -59,7 +66,7 @@ dependencies {
 
     implementation des.coreKtx
     implementation des.appcompat
-    
+
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
@@ -83,6 +90,9 @@ dependencies {
 
     // 使用Compose 编写小部件（Widget）
     implementation "androidx.glance:glance-appwidget:1.0.0-alpha05"
+
+    //3D地图so及jar
+    implementation 'com.amap.api:3dmap:latest.integration'
 
     testImplementation des.junit
     androidTestImplementation des.extJunit
