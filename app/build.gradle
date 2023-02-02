@@ -92,7 +92,7 @@ dependencies {
     implementation "androidx.glance:glance-appwidget:1.0.0-alpha05"
 
     //3D地图so及jar
-    implementation 'com.amap.api:3dmap:latest.integration'
+    implementation 'com.amap.api:3dmap:9.6.0'
 
     testImplementation des.junit
     androidTestImplementation des.extJunit
