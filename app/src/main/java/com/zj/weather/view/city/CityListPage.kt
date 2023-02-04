@@ -11,25 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.zj.weather.R
 import com.zj.utils.lce.NoContent
 import com.zj.model.room.entity.CityInfo
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.city.widget.CityListItem
-import com.zj.weather.view.city.widget.CityListTitleBar
+import com.zj.weather.view.city.widget.TitleBar
 
 @Composable
 fun CityListPage(
     cityListViewModel: CityListViewModel,
-    onBack: () -> Unit,
-    toWeatherDetails: () -> Unit
+    onBack: () -> Unit
 ) {
     val cityInfoList by cityListViewModel.cityInfoList.observeAsState(listOf())
     CityListPage(
         cityInfoList = cityInfoList, onBack = onBack, toWeatherDetails = {
             cityListViewModel.updateCityInfoIndex(it)
-            toWeatherDetails()
+            onBack()
         }
     ) {
         cityListViewModel.deleteCityInfo(it)
@@ -51,7 +49,7 @@ fun CityListPage(
             .navigationBarsPadding()
     ) {
         // 标题栏
-        CityListTitleBar(onBack)
+        TitleBar(R.string.city_title, onBack)
         if (cityInfoList.isNotEmpty()) {
             val listState = rememberLazyListState()
             LazyColumn(state = listState) {

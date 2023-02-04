@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5df549d3029d570348655fad44120672",
+    "identityHash": "be2d0fab063238a037798a6dbc208b3b",
     "entities": [
       {
         "tableName": "city_info",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `location` TEXT NOT NULL, `location_id` TEXT NOT NULL, `name` TEXT NOT NULL, `province` TEXT NOT NULL, `city` TEXT NOT NULL, `is_location` INTEGER NOT NULL, `is_index` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `location` TEXT NOT NULL, `location_id` TEXT NOT NULL, `name` TEXT NOT NULL, `province` TEXT NOT NULL, `city` TEXT NOT NULL, `lat` TEXT NOT NULL, `lon` TEXT NOT NULL, `is_location` INTEGER NOT NULL, `is_index` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -45,6 +45,18 @@
             "notNull": true
           },
           {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lon",
+            "columnName": "lon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "isLocation",
             "columnName": "is_location",
             "affinity": "INTEGER",
@@ -58,10 +70,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "uid"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -70,7 +82,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5df549d3029d570348655fad44120672')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'be2d0fab063238a037798a6dbc208b3b')"
     ]
   }
 }

@@ -1,6 +1,7 @@
 package com.zj.weather.view.weather
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +34,7 @@ fun WeatherPage(
     cityInfo: CityInfo,
     onErrorClick: () -> Unit,
     cityList: () -> Unit,
+    toCityMap: (Double, Double) -> Unit,
     cityListClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -40,7 +42,11 @@ fun WeatherPage(
     val config = LocalConfiguration.current
 
     LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .clickable {
+                toCityMap(cityInfo.lat.toDouble(), cityInfo.lon.toDouble())
+            }) {
             ImageLoader(
                 modifier = Modifier.fillMaxSize(),
                 data = IconUtils.getWeatherBack(context, weather.nowBaseBean?.icon)

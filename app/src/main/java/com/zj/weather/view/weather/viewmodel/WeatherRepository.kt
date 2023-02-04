@@ -182,6 +182,8 @@ class WeatherRepository @Inject constructor(private val context: Application) {
             location = "${abs(location.longitude)},${
                 abs(location.latitude)
             }",
+            lat = abs(location.latitude).toString(),
+            lon = abs(location.longitude).toString(),
             name = address.subLocality ?: "",
             isLocation = 1,
             province = address.adminArea,

@@ -29,10 +29,12 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.zj.weather.PlayDestinations.CITY_MAP_ROUTE_URL
 import com.zj.weather.view.city.CityListPage
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.list.WeatherListPage
 import com.zj.weather.view.list.viewmodel.WeatherListViewModel
+import com.zj.weather.view.map.MapView
 import com.zj.weather.view.season.SeasonPage
 import com.zj.weather.view.weather.WeatherViewPager
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
@@ -59,6 +61,7 @@ fun NavGraph(
             WeatherViewPager(
                 weatherViewModel = weatherViewModel,
                 toCityList = actions.toCityList,
+                toCityMap = actions.toCityMap,
                 toWeatherList = actions.toWeatherList
             )
         }
@@ -69,20 +72,31 @@ fun NavGraph(
             }
             WeatherListPage(
                 weatherListViewModel = weatherListViewModel,
-                onBack = actions.upPress,
-                toWeatherDetails = actions.upPress
+                onBack = actions.upPress
             )
         }
         playComposable(PlayDestinations.CITY_LIST_ROUTE) {
             val cityListViewModel = hiltViewModel<CityListViewModel>()
             CityListPage(
                 cityListViewModel = cityListViewModel,
-                onBack = actions.upPress,
-                toWeatherDetails = actions.upPress
+                onBack = actions.upPress
             )
         }
         composable(PlayDestinations.SEASON_PAGE_ROUTE) {
             SeasonPage()
+        }
+        composable(
+            "${PlayDestinations.CITY_MAP}/{$CITY_MAP_ROUTE_URL}",
+            arguments = listOf(navArgument(CITY_MAP_ROUTE_URL) {
+                type = NavType.StringType
+            }),
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            val parcelable = arguments.getString(CITY_MAP_ROUTE_URL) ?: "40.0-117.0"
+            val split = parcelable.split("-")
+            MapView(latitude = split[0].toDouble(), longitude = split[1].toDouble()) {
+                actions.upPress()
+            }
         }
     }
 }
@@ -92,6 +106,8 @@ object PlayDestinations {
     const val WEATHER_LIST_ROUTE = "weather_list_route"
     const val CITY_LIST_ROUTE = "city_list_route"
     const val SEASON_PAGE_ROUTE = "season_page_route"
+    const val CITY_MAP = "city_map"
+    const val CITY_MAP_ROUTE_URL = "city_map_route_url"
 }
 
 @ExperimentalAnimationApi
@@ -163,6 +179,11 @@ class PlayActions(navController: NavHostController) {
 
     val toCityList: () -> Unit = {
         navController.navigate(PlayDestinations.CITY_LIST_ROUTE)
+    }
+
+    val toCityMap: (Double, Double) -> Unit = { lat, lon ->
+        val result = "${lat}-${lon}"
+        navController.navigate("${PlayDestinations.CITY_MAP}/$result")
     }
 
 //    val toSeason: () -> Unit = {

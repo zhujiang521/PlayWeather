@@ -87,4 +87,6 @@
     <string name="widget_preview_city">Beijing</string>
     <string name="widget_preview_weather">Sunny</string>
 
+    <string name="map_title">City Map</string>
+
 </resources>

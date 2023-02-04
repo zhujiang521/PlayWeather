@@ -26,7 +26,6 @@ import com.zj.weather.view.list.widget.WeatherCityItem
 fun WeatherListPage(
     weatherListViewModel: WeatherListViewModel,
     onBack: () -> Unit,
-    toWeatherDetails: () -> Unit,
 ) {
     val locationBeanState by weatherListViewModel.locationBeanList.observeAsState(PlayLoading)
     WeatherListPage(
@@ -40,7 +39,7 @@ fun WeatherListPage(
         },
         toWeatherDetails = { cityInfo ->
             weatherListViewModel.insertCityInfo(cityInfo)
-            toWeatherDetails()
+            onBack()
         })
 }
 

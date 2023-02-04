@@ -103,6 +103,8 @@ fun WeatherCityItem(
                 province = locationBean.adm1 ?: "长治市",
                 city = locationBean.adm2 ?: "潞城区",
                 locationId = "CN${locationBean.id}",
+                lat = locationBean.lat ?: "",
+                lon = locationBean.lon ?: "",
                 isIndex = 1
             )
         )

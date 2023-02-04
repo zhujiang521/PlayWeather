@@ -88,4 +88,6 @@
     <string name="widget_preview_city">北京市</string>
     <string name="widget_preview_weather">晴</string>
 
+    <string name="map_title">城市地圖</string>
+
 </resources>

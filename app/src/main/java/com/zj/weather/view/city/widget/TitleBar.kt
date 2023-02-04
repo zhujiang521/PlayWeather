@@ -20,6 +20,11 @@ import com.zj.weather.R
 
 @Composable
 fun CityListTitleBar(onBack: () -> Unit) {
+    TitleBar(R.string.city_title, onBack)
+}
+
+@Composable
+fun TitleBar(stringRes: Int, onBack: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -34,7 +39,7 @@ fun CityListTitleBar(onBack: () -> Unit) {
             )
         }
         Text(
-            text = stringResource(id = R.string.city_title),
+            text = stringResource(stringRes),
             fontSize = 25.sp,
             modifier = Modifier.padding(10.dp)
         )

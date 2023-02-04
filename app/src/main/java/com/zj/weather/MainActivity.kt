@@ -5,11 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import com.google.gson.Gson
-import com.zj.utils.view.GrayAppAdapter
 import com.zj.model.room.entity.CityInfo
-import com.zj.weather.theme.PlayWeatherTheme
 import com.zj.utils.XLog
-import com.zj.weather.view.map.MapView
+import com.zj.utils.view.GrayAppAdapter
+import com.zj.weather.theme.PlayWeatherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,11 +24,9 @@ class MainActivity : BaseActivity() {
         }
 
         setContent {
-//            MapView()
             PlayWeatherTheme {
                 GrayAppAdapter {
                     NavGraph()
-                    // NewYearWidget()
                 }
             }
         }

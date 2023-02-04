@@ -29,6 +29,7 @@ import com.zj.weather.view.weather.widget.HeaderAction
 fun WeatherViewPager(
     weatherViewModel: WeatherViewModel,
     toCityList: () -> Unit,
+    toCityMap: (Double, Double) -> Unit,
     toWeatherList: () -> Unit
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
@@ -47,6 +48,7 @@ fun WeatherViewPager(
             pagerState,
             getCityIndex(cityInfoList),
             toCityList,
+            toCityMap,
             toWeatherList
         )
     }
@@ -111,6 +113,7 @@ fun WeatherViewPager(
     pagerState: PagerState,
     initialPage: Int,
     toCityList: () -> Unit,
+    toCityMap: (Double, Double) -> Unit,
     toWeatherList: () -> Unit,
 ) {
     if (initialPage >= 0 && initialPage < pagerState.pageCount) {
@@ -137,7 +140,7 @@ fun WeatherViewPager(
                         val location = getLocation(cityInfoList[page])
                         weatherViewModel.getWeather(location)
                     },
-                    cityList = toCityList, cityListClick = toWeatherList
+                    cityList = toCityList, toCityMap = toCityMap, cityListClick = toWeatherList
                 )
 
                 PullRefreshIndicator(
