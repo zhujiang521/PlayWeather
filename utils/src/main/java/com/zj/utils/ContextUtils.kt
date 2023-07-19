@@ -31,16 +31,19 @@ fun Context.checkNetConnect(): Boolean {
         networkCapabilities == null -> {
             false
         }
+
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
             // 当前使用移动网络
             XLog.d("You are using a mobile network")
             true
         }
+
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
             // 当前使用WIFI网络
             XLog.d("The WIFI network is in use")
             true
         }
+
         else -> {
             false
         }
@@ -54,7 +57,7 @@ fun Context.checkNetConnect(): Boolean {
 fun Context.getDefaultLocale(): Lang {
     XLog.d("getDefaultLocale: ${resources.configuration.locales[0].toLanguageTag()}")
     return when (resources.configuration.locales[0].toLanguageTag()) {
-        "zh", "zh-CN" -> Lang.ZH_HANS
+        "zh", "zh-CN", "zh-Hans-CN" -> Lang.ZH_HANS
         "zh_rHK", "zh_rTW", "zh_HK", "zh_TW", "HK", "TW", "zh-TW", "zh-HK" -> Lang.ZH_HANT
         "es", "en" -> Lang.EN
         else -> Lang.EN

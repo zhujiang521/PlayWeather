@@ -62,7 +62,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
         context: Context,
         location: CityInfo?,
     ) = coroutineScope {
-        suspendCancellableCoroutine<PlayState<WeatherNowBean.NowBaseBean>> { continuation ->
+        suspendCancellableCoroutine { continuation ->
             val network = PlayWeatherNetwork(context)
             launch(Dispatchers.IO) {
                 val weatherNowBean = network.getWeatherNow(location?.location ?: "")

@@ -8,24 +8,22 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.glance.GlanceId
-import com.zj.weather.BaseActivity
-import com.zj.weather.R
-import com.zj.weather.widget.utils.ConfigureWidget
-import com.zj.weather.widget.utils.saveCityInfoPref
-import com.zj.weather.widget.week.updateWeekAppWidget
+import androidx.glance.appwidget.updateAll
 import com.zj.model.room.entity.CityInfo
-import com.zj.weather.theme.PlayWeatherTheme
-import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.utils.XLog
 import com.zj.utils.checkNetConnect
 import com.zj.utils.view.showToast
+import com.zj.weather.BaseActivity
+import com.zj.weather.R
+import com.zj.weather.theme.PlayWeatherTheme
+import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.widget.glance.TODAY_GLANCE_PREFS_NAME
-import com.zj.weather.widget.glance.TodayGlanceReceiver
-import com.zj.weather.widget.glance.updateTodayWeather
+import com.zj.weather.widget.glance.TodayGlanceWidget
+import com.zj.weather.widget.utils.ConfigureWidget
+import com.zj.weather.widget.utils.saveCityInfoPref
+import com.zj.weather.widget.week.updateWeekAppWidget
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * The configuration screen for the [TodayWeatherWidget] AppWidget.
@@ -101,9 +99,11 @@ fun refreshLocationWeather(
         TODAY_PREFS_NAME -> {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
+
         TODAY_GLANCE_PREFS_NAME -> {
-            updateTodayWeather(context, appWidgetId)
+            runBlocking { TodayGlanceWidget().updateAll(context) }
         }
+
         else -> {
             updateWeekAppWidget(context, appWidgetManager, appWidgetId)
         }

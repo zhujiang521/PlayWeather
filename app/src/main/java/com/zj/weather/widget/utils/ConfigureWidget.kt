@@ -22,11 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.zj.banner.utils.HorizontalPagerIndicator
+import com.zj.model.room.PlayWeatherDatabase
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.lce.NoContent
 import com.zj.weather.R
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.widget.week.PREF_PREFIX_KEY
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ConfigureWidget(
@@ -150,7 +152,11 @@ internal fun saveCityInfoPref(
 internal fun loadCityInfoPref(context: Context, appWidgetId: Int, prefsName: String): CityInfo? {
     val prefs = context.getSharedPreferences(prefsName, 0)
     val cityString = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: ""
-    if (cityString.isEmpty()) return null
+    if (cityString.isEmpty()) {
+        val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
+        val cityInfo = runBlocking { cityInfoDao.getIndexCity() }
+        return cityInfo.getOrNull(0)
+    }
     return Gson().fromJson(cityString, CityInfo::class.java)
 }
 

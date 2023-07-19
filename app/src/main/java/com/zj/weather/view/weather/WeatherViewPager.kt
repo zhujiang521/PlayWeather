@@ -134,7 +134,12 @@ fun WeatherViewPager(
             modifier = Modifier,
             state = pagerState,
             key = {
-                cityInfoList[it].locationId
+                try {
+                    cityInfoList[it].locationId
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    System.currentTimeMillis()
+                }
             },
             pageContent = { page ->
                 val isRefreshing by weatherViewModel.isRefreshing.collectAsState()

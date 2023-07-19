@@ -13,6 +13,7 @@ import androidx.glance.LocalContext
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
@@ -34,16 +35,22 @@ import com.zj.utils.XLog
 import com.zj.utils.weather.IconUtils.getWeatherBack
 import com.zj.utils.weather.IconUtils.getWeatherIcon
 import com.zj.weather.MainActivity
+import com.zj.weather.widget.WeatherWidgetUtils
+import com.zj.weather.widget.utils.loadCityInfoPref
 
-class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>) :
-    GlanceAppWidget() {
+class TodayGlanceWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val appWidgetId = GlanceAppWidgetManager(context).getAppWidgetId(id)
+        val cityInfo = loadCityInfoPref(context, appWidgetId, TODAY_GLANCE_PREFS_NAME)
+        val state = WeatherWidgetUtils.getWeatherNow(context, cityInfo)
+
         provideContent {
             when (state) {
                 is PlaySuccess -> {
                     SuccessWeather(state.data)
                 }
+
                 else -> {
                     WarnWeather()
                     XLog.w("Loading")
@@ -124,5 +131,5 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
     override suspend fun onDelete(context: Context, glanceId: GlanceId) {
         super.onDelete(context, glanceId)
     }
-    
+
 }
