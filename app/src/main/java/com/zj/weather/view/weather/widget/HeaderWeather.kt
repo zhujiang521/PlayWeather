@@ -1,6 +1,7 @@
 package com.zj.weather.view.weather.widget
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ fun HeaderWeather(
     weatherNow: WeatherNowBean.NowBaseBean?,
     isLand: Boolean = false,
     scrollState: ScrollState? = null,
+    toCityMap: (Double, Double) -> Unit,
 ) {
     val fontSize = if (scrollState == null || isLand) {
         50.sp
@@ -49,7 +51,11 @@ fun HeaderWeather(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            modifier = Modifier.width(200.dp),
+            modifier = Modifier
+                .width(200.dp)
+                .clickable {
+                    toCityMap(cityInfo.lat.toDouble(), cityInfo.lon.toDouble())
+                },
             text = cityName,
             fontSize = 30.sp,
             color = MaterialTheme.colors.primary,
@@ -73,5 +79,6 @@ fun HeaderWeatherPreview() {
     val nowBean = WeatherNowBean.NowBaseBean()
     nowBean.text = "多云"
     nowBean.temp = "25"
-    HeaderWeather(CityInfo(name = "测试"), nowBean)
+    HeaderWeather(CityInfo(name = "测试"), nowBean) { _, _ ->
+    }
 }

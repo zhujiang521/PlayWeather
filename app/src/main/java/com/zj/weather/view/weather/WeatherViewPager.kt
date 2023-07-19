@@ -1,8 +1,14 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.zj.weather.view.weather
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -13,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.zj.banner.utils.HorizontalPagerIndicator
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.XLog
 import com.zj.utils.lce.NoContent
@@ -24,7 +30,6 @@ import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
 
 @ExperimentalPermissionsApi
-@ExperimentalPagerApi
 @Composable
 fun WeatherViewPager(
     weatherViewModel: WeatherViewModel,
@@ -33,7 +38,12 @@ fun WeatherViewPager(
     toWeatherList: () -> Unit
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.observeAsState()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        cityInfoList?.size ?: 0
+    }
     if (cityInfoList == null || cityInfoList.isNullOrEmpty()) {
         XLog.w("Empty, refresh")
         if (pagerState.currentPage == 0) {
@@ -54,7 +64,6 @@ fun WeatherViewPager(
     }
 }
 
-@ExperimentalPagerApi
 @Composable
 fun CurrentPageEffect(
     pagerState: PagerState,
@@ -105,7 +114,6 @@ private fun NoCityContent(
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalPermissionsApi
-@ExperimentalPagerApi
 @Composable
 fun WeatherViewPager(
     weatherViewModel: WeatherViewModel,
@@ -122,36 +130,42 @@ fun WeatherViewPager(
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {
-        HorizontalPager(count = cityInfoList.size, state = pagerState, key = {
-            cityInfoList[it].locationId
-        }) { page ->
-            val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
+        HorizontalPager(
+            modifier = Modifier,
+            state = pagerState,
+            key = {
+                cityInfoList[it].locationId
+            },
+            pageContent = { page ->
+                val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
 
-            val pullRefreshState = rememberPullRefreshState(
-                isRefreshing,
-                { weatherViewModel.refresh(getLocation(cityInfoList[page])) })
-
-            Box(
-                Modifier.pullRefresh(pullRefreshState)
-            ) {
-                WeatherPage(
-                    weatherViewModel, cityInfoList[page],
-                    onErrorClick = {
-                        val location = getLocation(cityInfoList[page])
-                        weatherViewModel.getWeather(location)
-                    },
-                    cityList = toCityList, toCityMap = toCityMap, cityListClick = toWeatherList
-                )
-
-                PullRefreshIndicator(
+                val pullRefreshState = rememberPullRefreshState(
                     isRefreshing,
-                    pullRefreshState,
-                    Modifier.align(Alignment.TopCenter)
-                )
+                    { weatherViewModel.refresh(getLocation(cityInfoList[page])) })
+
+                Box(
+                    Modifier.pullRefresh(pullRefreshState)
+                ) {
+                    WeatherPage(
+                        weatherViewModel, cityInfoList[page],
+                        onErrorClick = {
+                            val location = getLocation(cityInfoList[page])
+                            weatherViewModel.getWeather(location)
+                        },
+                        cityList = toCityList, toCityMap = toCityMap, cityListClick = toWeatherList
+                    )
+
+                    PullRefreshIndicator(
+                        isRefreshing,
+                        pullRefreshState,
+                        Modifier.align(Alignment.TopCenter)
+                    )
+                }
             }
-        }
+        )
         HorizontalPagerIndicator(
             pagerState = pagerState,
+            pageCount = cityInfoList.size,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(16.dp),

@@ -71,7 +71,7 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
 @Composable
 fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
     val result = getAccounted(sunrise, sunset)
-    val bitmap = getBitmapFromVectorDrawable(context, R.drawable.x_sunny)
+    val bitmap = getBitmapFromVectorDrawable(context, com.zj.utils.R.drawable.x_sunny)
     val image = bitmap?.asImageBitmap()
     Column(
         modifier = Modifier

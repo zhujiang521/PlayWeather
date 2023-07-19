@@ -24,10 +24,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zj.weather.PlayDestinations.CITY_MAP_ROUTE_URL
 import com.zj.weather.view.city.CityListPage
@@ -35,20 +34,18 @@ import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.list.WeatherListPage
 import com.zj.weather.view.list.viewmodel.WeatherListViewModel
 import com.zj.weather.view.map.MapView
-import com.zj.weather.view.season.SeasonPage
 import com.zj.weather.view.weather.WeatherViewPager
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 
 
 @OptIn(
-    ExperimentalAnimationApi::class, ExperimentalPagerApi::class,
-    ExperimentalPermissionsApi::class
+    ExperimentalPermissionsApi::class, ExperimentalAnimationApi::class
 )
 @Composable
 fun NavGraph(
     startDestination: String = PlayDestinations.HOME_PAGE_ROUTE,
 ) {
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
     val actions = remember(navController) { PlayActions(navController) }
     AnimatedNavHost(
         navController = navController,
@@ -82,9 +79,6 @@ fun NavGraph(
                 onBack = actions.upPress
             )
         }
-        composable(PlayDestinations.SEASON_PAGE_ROUTE) {
-            SeasonPage()
-        }
         composable(
             "${PlayDestinations.CITY_MAP}/{$CITY_MAP_ROUTE_URL}",
             arguments = listOf(navArgument(CITY_MAP_ROUTE_URL) {
@@ -105,7 +99,6 @@ object PlayDestinations {
     const val HOME_PAGE_ROUTE = "home_page_route"
     const val WEATHER_LIST_ROUTE = "weather_list_route"
     const val CITY_LIST_ROUTE = "city_list_route"
-    const val SEASON_PAGE_ROUTE = "season_page_route"
     const val CITY_MAP = "city_map"
     const val CITY_MAP_ROUTE_URL = "city_map_route_url"
 }
@@ -123,7 +116,7 @@ fun NavGraphBuilder.playComposable(
         deepLinks = deepLinks,
         enterTransition = {
             slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Left,
+                AnimatedContentTransitionScope.SlideDirection.Left,
                 animationSpec = tween(
                     durationMillis = 200,
                     easing = LinearOutSlowInEasing
@@ -150,7 +143,7 @@ fun NavGraphBuilder.searchComposable(
         deepLinks = deepLinks,
         enterTransition = {
             slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Up, animationSpec = tween(
+                AnimatedContentTransitionScope.SlideDirection.Up, animationSpec = tween(
                     durationMillis = 200,
                     easing = LinearOutSlowInEasing
                 )
@@ -158,7 +151,7 @@ fun NavGraphBuilder.searchComposable(
         },
         exitTransition = {
             slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Down, animationSpec = tween(
+                AnimatedContentTransitionScope.SlideDirection.Down, animationSpec = tween(
                     durationMillis = 200,
                     easing = LinearOutSlowInEasing
                 )
@@ -185,10 +178,6 @@ class PlayActions(navController: NavHostController) {
         val result = "${lat}-${lon}"
         navController.navigate("${PlayDestinations.CITY_MAP}/$result")
     }
-
-//    val toSeason: () -> Unit = {
-//        navController.navigate(PlayDestinations.SEASON_PAGE_ROUTE)
-//    }
 
     val upPress: () -> Unit = {
         navController.popBackStack()

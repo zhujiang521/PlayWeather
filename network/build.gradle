@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.zj.network'
 
     compileSdkVersion cfgs.compileSdkVersion
 

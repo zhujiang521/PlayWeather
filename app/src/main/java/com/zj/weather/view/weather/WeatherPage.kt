@@ -1,7 +1,6 @@
 package com.zj.weather.view.weather
 
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,11 +41,10 @@ fun WeatherPage(
     val config = LocalConfiguration.current
 
     LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .clickable {
-                toCityMap(cityInfo.lat.toDouble(), cityInfo.lon.toDouble())
-            }) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             ImageLoader(
                 modifier = Modifier.fillMaxSize(),
                 data = IconUtils.getWeatherBack(context, weather.nowBaseBean?.icon)
@@ -70,10 +68,10 @@ fun WeatherPage(
             }
             if (isLand) {
                 // 横屏适配
-                HorizontalWeather(cityInfo, weather)
+                HorizontalWeather(cityInfo, weather, toCityMap)
             } else {
                 // 竖屏适配
-                VerticalWeather(cityInfo, weather)
+                VerticalWeather(cityInfo, weather, toCityMap)
             }
         }
     }
@@ -83,6 +81,7 @@ fun WeatherPage(
 private fun VerticalWeather(
     cityInfo: CityInfo,
     weather: WeatherModel,
+    toCityMap: (Double, Double) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -90,7 +89,7 @@ private fun VerticalWeather(
             .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
     ) {
         WeatherContent(
-            Modifier, cityInfo, weather
+            Modifier, cityInfo, weather, toCityMap = toCityMap
         )
     }
 }
@@ -99,6 +98,7 @@ private fun VerticalWeather(
 private fun HorizontalWeather(
     cityInfo: CityInfo,
     weather: WeatherModel,
+    toCityMap: (Double, Double) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -116,7 +116,7 @@ private fun HorizontalWeather(
 
             // 天气头部
             HeaderWeather(
-                cityInfo, weather.nowBaseBean, true
+                cityInfo, weather.nowBaseBean, true, toCityMap = toCityMap
             )
 
             // 天气动画
@@ -124,7 +124,7 @@ private fun HorizontalWeather(
         }
         WeatherContent(
             landModifier, cityInfo,
-            weather, true
+            weather, true, toCityMap = toCityMap
         )
     }
 }
@@ -134,7 +134,7 @@ private fun HorizontalWeather(
 fun VerticalWeatherPreview() {
     VerticalWeather(
         CityInfo(name = "测试"), buildWeatherModel(),
-    )
+    ) { _, _ -> }
 }
 
 @Composable
@@ -155,6 +155,6 @@ private fun buildWeatherModel(): WeatherModel {
 @Composable
 fun HorizontalWeatherPreview() {
     HorizontalWeather(
-        CityInfo(name = "测试"), buildWeatherModel()
-    )
+        CityInfo(name = "测试"), buildWeatherModel(),
+    ) { _, _ -> }
 }

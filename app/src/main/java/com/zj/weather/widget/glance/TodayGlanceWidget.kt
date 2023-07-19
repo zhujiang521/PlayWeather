@@ -5,38 +5,53 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.glance.*
+import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
+import androidx.glance.Image
+import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.cornerRadius
-import androidx.glance.layout.*
+import androidx.glance.appwidget.provideContent
+import androidx.glance.background
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Column
+import androidx.glance.layout.ContentScale
+import androidx.glance.layout.Row
+import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.padding
+import androidx.glance.layout.size
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.zj.model.*
+import com.zj.model.PlayState
+import com.zj.model.PlaySuccess
 import com.zj.model.weather.WeatherNowBean
 import com.zj.utils.XLog
 import com.zj.utils.weather.IconUtils.getWeatherBack
 import com.zj.utils.weather.IconUtils.getWeatherIcon
 import com.zj.weather.MainActivity
-import com.zj.weather.R
 
 class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>) :
     GlanceAppWidget() {
 
-    @Composable
-    override fun Content() {
-        when (state) {
-            is PlaySuccess -> {
-                SuccessWeather(state.data)
-            }
-            else -> {
-                WarnWeather()
-                XLog.w("Loading")
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        provideContent {
+            when (state) {
+                is PlaySuccess -> {
+                    SuccessWeather(state.data)
+                }
+                else -> {
+                    WarnWeather()
+                    XLog.w("Loading")
+                }
             }
         }
     }
+
 
     @Composable
     private fun WarnWeather() {
@@ -45,7 +60,7 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
                 .fillMaxSize()
                 .padding(4.dp)
                 .cornerRadius(12.dp)
-                .background(ImageProvider(R.mipmap.back_100d))
+                .background(ImageProvider(com.zj.utils.R.mipmap.back_100d))
                 .clickable(actionStartActivity<MainActivity>()),
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,5 +124,5 @@ class TodayGlanceWidget(private val state: PlayState<WeatherNowBean.NowBaseBean>
     override suspend fun onDelete(context: Context, glanceId: GlanceId) {
         super.onDelete(context, glanceId)
     }
-
+    
 }

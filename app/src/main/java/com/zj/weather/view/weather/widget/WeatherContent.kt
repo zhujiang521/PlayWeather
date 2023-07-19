@@ -23,6 +23,7 @@ fun WeatherContent(
     weatherModel: WeatherModel?,
     isLand: Boolean = false,
     scrollState: ScrollState = rememberScrollState(),
+    toCityMap: (Double, Double) -> Unit,
 ) {
 
     Column(
@@ -35,7 +36,7 @@ fun WeatherContent(
         if (!isLand) {
             // 天气头部
             HeaderWeather(
-                cityInfo, weatherModel?.nowBaseBean, false, scrollState
+                cityInfo, weatherModel?.nowBaseBean, false, scrollState,toCityMap
             )
         }
         Column(

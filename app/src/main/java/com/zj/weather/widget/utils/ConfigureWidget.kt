@@ -1,7 +1,12 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.zj.weather.widget.utils
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -15,18 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
 import com.google.gson.Gson
-import com.zj.weather.R
-import com.zj.weather.widget.week.PREF_PREFIX_KEY
+import com.zj.banner.utils.HorizontalPagerIndicator
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.lce.NoContent
+import com.zj.weather.R
 import com.zj.weather.view.city.viewmodel.CityListViewModel
+import com.zj.weather.widget.week.PREF_PREFIX_KEY
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ConfigureWidget(
     viewModel: CityListViewModel,
@@ -35,7 +36,12 @@ fun ConfigureWidget(
 ) {
     val cityList by viewModel.cityInfoList.observeAsState(arrayListOf())
     val buttonHeight = 45.dp
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        cityList.size
+    }
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
@@ -50,26 +56,33 @@ fun ConfigureWidget(
         } else {
             Box(modifier = Modifier.weight(1f)) {
                 HorizontalPager(
+                    modifier = Modifier.fillMaxSize(),
                     state = pagerState,
-                    count = cityList.size,
-                    modifier = Modifier.fillMaxSize()
-                ) { page ->
-                    Card(
-                        shape = RoundedCornerShape(10.dp),
-                        backgroundColor = MaterialTheme.colors.onSecondary,
-                        modifier = Modifier.size(300.dp)
-                    ) {
-                        val cityInfo = cityList[page]
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                    key = { cityList[it].locationId },
+                    pageContent = { page ->
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(text = cityInfo.name, fontSize = 30.sp)
+                            Card(
+                                shape = RoundedCornerShape(10.dp),
+                                backgroundColor = MaterialTheme.colors.onSecondary,
+                                modifier = Modifier.size(300.dp)
+                            ) {
+                                val cityInfo = cityList[page]
+                                Column(
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    Text(text = cityInfo.name, fontSize = 30.sp)
+                                }
+                            }
                         }
                     }
-                }
+                )
                 HorizontalPagerIndicator(
                     pagerState = pagerState,
+                    pageCount = cityList.size,
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(16.dp),

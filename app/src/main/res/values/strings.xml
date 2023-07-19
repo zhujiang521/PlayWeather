@@ -88,5 +88,6 @@
     <string name="widget_preview_weather">Sunny</string>
 
     <string name="map_title">City Map</string>
+    <string name="bad_network_view_tip">网络连接失败</string>
 
 </resources>
