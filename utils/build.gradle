@@ -14,9 +14,9 @@ android {
 
         testInstrumentationRunner cfgs.testInstrumentationRunner
         consumerProguardFiles cfgs.consumerProguardFiles
+        resourceConfigurations += ['zh', 'zh-rCN', 'zh-rHK', 'zh-rTW']
 
         // 去除多语言
-        resConfigs "zh", "zh-rCN", "zh-rHK", "zh-rTW"
     }
 
     buildTypes {
@@ -51,11 +51,9 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
 
-    def accompanist_version = "0.31.5-beta"
+    def accompanist_version = "0.31.6-rc"
     // Compose 权限
     api "com.google.accompanist:accompanist-permissions:$accompanist_version"
-    // Navigation 动画
-    api "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
     // 占位符
     api "com.google.accompanist:accompanist-placeholder:$accompanist_version"
 

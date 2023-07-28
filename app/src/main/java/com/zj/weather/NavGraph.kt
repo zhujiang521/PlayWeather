@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.zj.weather
 
 import androidx.compose.animation.*
@@ -24,9 +26,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zj.weather.PlayDestinations.CITY_MAP_ROUTE_URL
 import com.zj.weather.view.city.CityListPage
@@ -39,7 +41,7 @@ import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 
 
 @OptIn(
-    ExperimentalPermissionsApi::class, ExperimentalAnimationApi::class
+    ExperimentalPermissionsApi::class
 )
 @Composable
 fun NavGraph(
@@ -47,7 +49,7 @@ fun NavGraph(
 ) {
     val navController = rememberNavController()
     val actions = remember(navController) { PlayActions(navController) }
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = startDestination
     ) {

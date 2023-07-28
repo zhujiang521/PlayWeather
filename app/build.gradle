@@ -22,9 +22,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        resourceConfigurations += ['zh', 'zh-rCN', 'zh-rHK', 'zh-rTW']
 
         // 去除多语言
-        resConfigs "zh", "zh-rCN", "zh-rHK", "zh-rTW"
     }
 
     buildTypes {
@@ -55,12 +55,6 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-//    defaultConfig {
-//        ndk {
-//            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-//            abiFilters "arm64-v8a"
-//        }
-//    }
 }
 
 dependencies {
@@ -80,7 +74,7 @@ dependencies {
     implementation project(path: ':network')
 
     // navigation
-    implementation 'androidx.navigation:navigation-compose:2.6.0'
+    implementation 'androidx.navigation:navigation-compose:2.7.0-rc01'
 
     // 启动动画
     implementation 'androidx.core:core-splashscreen:1.0.0'
@@ -91,7 +85,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // 使用Compose 编写小部件（Widget）
-    implementation "androidx.glance:glance-appwidget:1.0.0-beta01"
+    implementation "androidx.glance:glance-appwidget:1.0.0-rc01"
 
     // 地图
     implementation 'com.amap.api:map2d:6.0.0'

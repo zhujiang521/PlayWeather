@@ -15,9 +15,9 @@ android {
 
         testInstrumentationRunner cfgs.testInstrumentationRunner
         consumerProguardFiles cfgs.consumerProguardFiles
+        resourceConfigurations += ['zh', 'zh-rCN', 'zh-rHK', 'zh-rTW']
 
         // 去除多语言
-        resConfigs "zh", "zh-rCN", "zh-rHK", "zh-rTW"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -48,7 +48,7 @@ dependencies {
     implementation des.appcompat
 
     // Room
-    def room_version = "2.5.0"
+    def room_version = "2.5.1"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // 对 Room 的 Kotlin 扩展和协程支持
