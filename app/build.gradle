@@ -74,7 +74,7 @@ dependencies {
     implementation project(path: ':network')
 
     // navigation
-    implementation 'androidx.navigation:navigation-compose:2.7.0-rc01'
+    implementation 'androidx.navigation:navigation-compose:2.7.0'
 
     // 启动动画
     implementation 'androidx.core:core-splashscreen:1.0.0'
