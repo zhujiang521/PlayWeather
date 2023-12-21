@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zj.model.room.entity.CityInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ class CityListViewModel @Inject constructor(
     private val cityListRepository: CityListRepository
 ) : AndroidViewModel(application) {
 
-    val cityInfoList: LiveData<List<CityInfo>> = cityListRepository.refreshCityList()
+    val cityInfoList: Flow<List<CityInfo>> = cityListRepository.refreshCityList()
 
     /**
      * 删除相应的城市信息

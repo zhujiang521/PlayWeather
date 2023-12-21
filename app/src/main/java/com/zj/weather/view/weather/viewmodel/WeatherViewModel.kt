@@ -5,28 +5,31 @@ import android.content.Intent
 import android.location.Address
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zj.model.PlayError
+import com.zj.model.PlayLoading
+import com.zj.model.PlayState
+import com.zj.model.PlaySuccess
 import com.zj.model.WeatherModel
 import com.zj.model.room.entity.CityInfo
+import com.zj.model.weather.WeatherDailyBean
+import com.zj.model.weather.WeatherNowBean
 import com.zj.utils.XLog
 import com.zj.utils.checkCoroutines
 import com.zj.utils.checkNetConnect
 import com.zj.utils.view.showToast
 import com.zj.weather.R
-import com.zj.model.PlayError
-import com.zj.model.PlayLoading
-import com.zj.model.PlayState
-import com.zj.model.PlaySuccess
-import com.zj.model.weather.WeatherDailyBean
-import com.zj.model.weather.WeatherNowBean
 import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.collections.set
 import kotlin.system.measureTimeMillis
@@ -54,17 +57,17 @@ class WeatherViewModel @Inject constructor(
 
     private val weatherMap = hashMapOf<String, Pair<Long, WeatherModel>>()
 
-    val cityInfoList: LiveData<List<CityInfo>> = weatherRepository.refreshCityList()
+    val cityInfoList: Flow<List<CityInfo>> = weatherRepository.refreshCityList()
 
-    private val _weatherModel = MutableLiveData<PlayState<WeatherModel>>(PlayLoading)
-    val weatherModel: LiveData<PlayState<WeatherModel>> = _weatherModel
+    private val _weatherModel = MutableStateFlow<PlayState<WeatherModel>>(PlayLoading)
+    val weatherModel: Flow<PlayState<WeatherModel>> = _weatherModel.asStateFlow()
 
     private fun onWeatherModelChanged(playState: PlayState<WeatherModel>) {
         if (playState == _weatherModel.value) {
             XLog.d("onWeatherModelChanged no change")
             return
         }
-        _weatherModel.postValue(playState)
+        _weatherModel.value = playState
     }
 
     private val _isRefreshing = MutableStateFlow(false)

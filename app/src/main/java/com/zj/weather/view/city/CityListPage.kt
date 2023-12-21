@@ -1,19 +1,23 @@
 package com.zj.weather.view.city
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.zj.weather.R
-import com.zj.utils.lce.NoContent
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.lce.NoContent
+import com.zj.weather.R
 import com.zj.weather.view.city.viewmodel.CityListViewModel
 import com.zj.weather.view.city.widget.CityListItem
 import com.zj.weather.view.city.widget.TitleBar
@@ -23,7 +27,7 @@ fun CityListPage(
     cityListViewModel: CityListViewModel,
     onBack: () -> Unit
 ) {
-    val cityInfoList by cityListViewModel.cityInfoList.observeAsState(listOf())
+    val cityInfoList by cityListViewModel.cityInfoList.collectAsState(initial = arrayListOf())
     CityListPage(
         cityInfoList = cityInfoList, onBack = onBack, toWeatherDetails = {
             cityListViewModel.updateCityInfoIndex(it)

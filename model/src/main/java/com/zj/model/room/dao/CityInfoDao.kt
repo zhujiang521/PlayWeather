@@ -1,8 +1,13 @@
 package com.zj.model.room.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.zj.model.room.entity.CityInfo
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -17,7 +22,7 @@ import com.zj.model.room.entity.CityInfo
 interface CityInfoDao {
 
     @Query("SELECT * FROM city_info order by is_location desc,uid")
-    fun getCityInfoList(): LiveData<List<CityInfo>>
+    fun getCityInfoList(): Flow<List<CityInfo>>
 
     @Query("SELECT * FROM city_info where is_location = :isLocation")
     fun getIsLocationList(isLocation: Int = 1): List<CityInfo>
