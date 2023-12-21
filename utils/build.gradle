@@ -51,14 +51,14 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
 
-    def accompanist_version = "0.31.6-rc"
+    def accompanist_version = "0.32.0"
     // Compose 权限
     api "com.google.accompanist:accompanist-permissions:$accompanist_version"
     // 占位符
     api "com.google.accompanist:accompanist-placeholder:$accompanist_version"
 
     // lottie动画
-    api 'com.airbnb.android:lottie-compose:6.1.0'
+    api 'com.airbnb.android:lottie-compose:6.2.0'
 
     api project(path: ':model')
 

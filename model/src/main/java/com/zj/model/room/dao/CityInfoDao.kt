@@ -25,32 +25,32 @@ interface CityInfoDao {
     fun getCityInfoList(): Flow<List<CityInfo>>
 
     @Query("SELECT * FROM city_info where is_location = :isLocation")
-    fun getIsLocationList(isLocation: Int = 1): List<CityInfo>
+    suspend fun getIsLocationList(isLocation: Int = 1): List<CityInfo>
 
     @Query("SELECT COUNT(*) FROM city_info where name = :name")
-    fun getHasLocation(name: String): Int
+    suspend fun getHasLocation(name: String): Int
 
     @Query("SELECT * FROM city_info where is_index = 1")
-    fun getIndexCity(): List<CityInfo>
+    suspend fun getIndexCity(): List<CityInfo>
 
     @Query("SELECT COUNT(*) FROM city_info")
-    fun getCount(): Int
+    suspend fun getCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertList(cityInfoList: List<CityInfo>)
+    suspend fun insertList(cityInfoList: List<CityInfo>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(cityInfo: CityInfo)
 
     @Update
-    fun update(cityInfo: CityInfo): Int
+    suspend fun update(cityInfo: CityInfo): Int
 
     @Delete
-    fun delete(cityInfo: CityInfo): Int
+    suspend fun delete(cityInfo: CityInfo): Int
 
     @Delete
-    fun deleteList(cityInfoList: List<CityInfo>): Int
+    suspend fun deleteList(cityInfoList: List<CityInfo>): Int
 
     @Query("DELETE FROM city_info")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

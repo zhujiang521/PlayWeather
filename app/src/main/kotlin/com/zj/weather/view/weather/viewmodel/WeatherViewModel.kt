@@ -23,6 +23,7 @@ import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -104,13 +105,14 @@ class WeatherViewModel @Inject constructor(
         }
         weatherJob.checkCoroutines()
         weatherJob = viewModelScope.launch(Dispatchers.IO) {
-            val weatherNow = weatherRepository.getWeatherNow(location)
+            val weatherNow = async { weatherRepository.getWeatherNow(location) }.await()
             // 这块由于这两个接口有问题，和风天气的jar包问题，提交反馈人家说没问题。。qtmd。
             // 目前发现在S版本上有问题，R中没有发现
-            val weather24Hour = weatherRepository.getWeather24Hour(location)
-            val weather7Day = weatherRepository.getWeather7Day(location)
-            val airNow = weatherRepository.getAirNow(location)
-            val weatherLifeIndicesList = weatherRepository.getWeatherLifeIndicesList(location)
+            val weather24Hour = async { weatherRepository.getWeather24Hour(location) }.await()
+            val weather7Day = async { weatherRepository.getWeather7Day(location) }.await()
+            val airNow = async { weatherRepository.getAirNow(location) }.await()
+            val weatherLifeIndicesList =
+                async { weatherRepository.getWeatherLifeIndicesList(location) }.await()
             buildWeekWeather(weather7Day?.second, weatherNow)
             val weatherModel = WeatherModel(
                 nowBaseBean = weatherNow,
