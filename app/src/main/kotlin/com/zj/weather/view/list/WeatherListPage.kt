@@ -35,7 +35,7 @@ fun WeatherListPage(
     weatherListViewModel: WeatherListViewModel,
     onBack: () -> Unit,
 ) {
-    val locationBeanState by weatherListViewModel.locationBeanList.collectAsState(PlayLoading)
+    val locationBeanState by weatherListViewModel.locationBeanList.collectAsState()
     WeatherListPage(
         locationBeanState = locationBeanState,
         onBack = onBack,

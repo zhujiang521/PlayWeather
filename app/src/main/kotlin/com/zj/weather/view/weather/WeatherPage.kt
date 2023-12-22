@@ -21,7 +21,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.zj.model.PlayLoading
 import com.zj.model.WeatherModel
 import com.zj.model.air.AirNowBean
 import com.zj.model.room.entity.CityInfo
@@ -47,7 +46,7 @@ fun WeatherPage(
     cityListClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val weatherModel by weatherViewModel.weatherModel.collectAsState(initial = PlayLoading)
+    val weatherModel by weatherViewModel.weatherModel.collectAsState()
     val config = LocalConfiguration.current
 
     LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->

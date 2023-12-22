@@ -65,7 +65,7 @@ fun getUvIndexDesc(context: Context, uv: String?): String {
     }
 }
 
-fun getCityIndex(cityInfoList: List<CityInfo>?): Int {
+fun getCityIndex(cityInfoList: List<CityInfo>?,cityInfo: CityInfo): Int {
     if (cityInfoList == null) return 0
     var city: CityInfo? = null
     for (index in cityInfoList.indices) {
@@ -73,5 +73,5 @@ fun getCityIndex(cityInfoList: List<CityInfo>?): Int {
             city = cityInfoList[index]
         }
     }
-    return cityInfoList.indexOf(city)
+    return cityInfoList.indexOf(cityInfo)
 }

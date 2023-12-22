@@ -17,8 +17,10 @@ import com.zj.model.weather.WeatherNowBean
 import com.zj.utils.XLog
 import com.zj.utils.checkCoroutines
 import com.zj.utils.checkNetConnect
+import com.zj.utils.defaultCityState
 import com.zj.utils.view.showToast
 import com.zj.weather.R
+import com.zj.weather.view.weather.getLocation
 import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +63,7 @@ class WeatherViewModel @Inject constructor(
     val cityInfoList: Flow<List<CityInfo>> = weatherRepository.refreshCityList()
 
     private val _weatherModel = MutableStateFlow<PlayState<WeatherModel>>(PlayLoading)
-    val weatherModel: Flow<PlayState<WeatherModel>> = _weatherModel.asStateFlow()
+    val weatherModel: StateFlow<PlayState<WeatherModel>> = _weatherModel.asStateFlow()
 
     private fun onWeatherModelChanged(playState: PlayState<WeatherModel>) {
         if (playState == _weatherModel.value) {
@@ -76,20 +78,21 @@ class WeatherViewModel @Inject constructor(
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing.asStateFlow()
 
-    fun refresh(location: String) {
+    fun refresh(cityInfo: CityInfo) {
         // This doesn't handle multiple 'refreshing' tasks, don't use this
         viewModelScope.launch {
             // A fake 2 second 'refresh'
             _isRefreshing.emit(true)
             val time = measureTimeMillis {
-                getWeather(location)
+                getWeather(cityInfo)
             }
             delay(if (time > 1000L) time else 1000L)
             _isRefreshing.emit(false)
         }
     }
 
-    fun getWeather(location: String) {
+    fun getWeather(cityInfo: CityInfo) {
+        val location = getLocation(cityInfo)
         if (weatherMap.containsKey(location)) {
             val weather = weatherMap[location]
             if (weather != null && weather.first + FIFTEEN_MINUTES > System.currentTimeMillis()) {

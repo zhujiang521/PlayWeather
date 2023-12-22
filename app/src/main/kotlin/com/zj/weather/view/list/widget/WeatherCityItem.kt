@@ -20,6 +20,7 @@ import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.zj.model.city.GeoBean
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.defaultCityState
 import com.zj.utils.dialog.ShowDialog
 import com.zj.utils.dialog.ShowWarnDialog
 import com.zj.weather.R
@@ -94,19 +95,21 @@ fun WeatherCityItem(
         ), cancelString = stringResource(id = R.string.city_dialog_cancel),
         confirmString = stringResource(id = R.string.city_dialog_confirm)
     ) {
+        val cityInfo = CityInfo(
+            location = "${locationBean.lon},${
+                locationBean.lat
+            }",
+            name = locationBean.name ?: "山西省",
+            province = locationBean.adm1 ?: "长治市",
+            city = locationBean.adm2 ?: "潞城区",
+            locationId = "CN${locationBean.id}",
+            lat = locationBean.lat ?: "",
+            lon = locationBean.lon ?: "",
+            isIndex = 1
+        )
+        defaultCityState.value = cityInfo
         toWeatherDetails(
-            CityInfo(
-                location = "${locationBean.lon},${
-                    locationBean.lat
-                }",
-                name = locationBean.name ?: "山西省",
-                province = locationBean.adm1 ?: "长治市",
-                city = locationBean.adm2 ?: "潞城区",
-                locationId = "CN${locationBean.id}",
-                lat = locationBean.lat ?: "",
-                lon = locationBean.lon ?: "",
-                isIndex = 1
-            )
+            cityInfo
         )
     }
     ShowWarnDialog(

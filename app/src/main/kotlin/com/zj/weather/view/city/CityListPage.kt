@@ -16,6 +16,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.zj.model.room.entity.CityInfo
+import com.zj.utils.defaultCityState
 import com.zj.utils.lce.NoContent
 import com.zj.weather.R
 import com.zj.weather.view.city.viewmodel.CityListViewModel
@@ -31,6 +32,7 @@ fun CityListPage(
     CityListPage(
         cityInfoList = cityInfoList, onBack = onBack, toWeatherDetails = {
             cityListViewModel.updateCityInfoIndex(it)
+            defaultCityState.value = it
             onBack()
         }
     ) {
