@@ -94,7 +94,8 @@ private fun NoCityContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .statusBarsPadding(),
+                .statusBarsPadding()
+                .navigationBarsPadding(),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) {

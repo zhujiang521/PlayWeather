@@ -3,6 +3,7 @@ package com.zj.weather.view.weather
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -37,7 +38,7 @@ fun WeatherPage(
     cityListClick: () -> Unit
 ) {
     val context = LocalContext.current
-    val weatherModel by weatherViewModel.weatherModel.observeAsState(PlayLoading)
+    val weatherModel by weatherViewModel.weatherModel.collectAsState(initial = PlayLoading)
     val config = LocalConfiguration.current
 
     LcePage(playState = weatherModel, onErrorClick = onErrorClick) { weather ->
@@ -53,7 +54,8 @@ fun WeatherPage(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .statusBarsPadding(),
+                    .statusBarsPadding()
+                    .navigationBarsPadding(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
