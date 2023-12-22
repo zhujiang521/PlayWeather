@@ -2,7 +2,6 @@ package com.zj.weather.view.city.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.zj.model.room.entity.CityInfo
 import dagger.hilt.android.lifecycle.HiltViewModel

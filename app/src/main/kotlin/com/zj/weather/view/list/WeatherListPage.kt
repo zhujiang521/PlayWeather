@@ -1,17 +1,25 @@
 package com.zj.weather.view.list
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.zj.model.*
+import com.zj.model.PlayError
+import com.zj.model.PlayLoading
+import com.zj.model.PlayNoContent
+import com.zj.model.PlayState
+import com.zj.model.PlaySuccess
 import com.zj.model.city.GeoBean
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.lce.ErrorContent
@@ -27,7 +35,7 @@ fun WeatherListPage(
     weatherListViewModel: WeatherListViewModel,
     onBack: () -> Unit,
 ) {
-    val locationBeanState by weatherListViewModel.locationBeanList.observeAsState(PlayLoading)
+    val locationBeanState by weatherListViewModel.locationBeanList.collectAsState(PlayLoading)
     WeatherListPage(
         locationBeanState = locationBeanState,
         onBack = onBack,
