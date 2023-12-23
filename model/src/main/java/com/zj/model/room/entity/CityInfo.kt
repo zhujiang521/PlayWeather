@@ -23,5 +23,4 @@ data class CityInfo(
     @ColumnInfo(name = "lat") val lat: String = "",
     @ColumnInfo(name = "lon") val lon: String = "",
     @ColumnInfo(name = "is_location") val isLocation: Int = 0,
-    @ColumnInfo(name = "is_index") var isIndex: Int = 0,
 )

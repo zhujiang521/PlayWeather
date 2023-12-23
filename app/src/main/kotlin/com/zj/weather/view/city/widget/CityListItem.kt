@@ -2,9 +2,20 @@ package com.zj.weather.view.city.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -14,13 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
-import com.zj.weather.R
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.swipe.SwipeDeleteLayout
 import com.zj.utils.view.ImageLoader
+import com.zj.weather.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -74,17 +82,6 @@ fun CityListItem(
                 .clickable {
                     toWeatherDetails(cityInfo)
                 }
-                .placeholder(
-                    visible = cityInfo.name.isEmpty() &&
-                            cityInfo.province.isEmpty() &&
-                            cityInfo.city.isEmpty(),
-                    color = MaterialTheme.colors.primaryVariant,
-                    // optional, defaults to RectangleShape
-                    shape = RoundedCornerShape(4.dp),
-                    highlight = PlaceholderHighlight.shimmer(
-                        highlightColor = Color.White,
-                    ),
-                )
         ) {
 
             Column(
@@ -100,11 +97,7 @@ fun CityListItem(
                 ) {
                     Text(
                         text = cityInfo.name,
-                        color = if (cityInfo.isIndex > 0) Color(
-                            red = 53,
-                            green = 128,
-                            blue = 186
-                        ) else Color.Unspecified, fontSize = 18.sp
+                        color = Color.Unspecified, fontSize = 18.sp
                     )
                     if (cityInfo.isLocation == 1) {
                         ImageLoader(
@@ -116,11 +109,7 @@ fun CityListItem(
                 Text(
                     text = "${cityInfo.province} ${cityInfo.city}",
                     modifier = Modifier.padding(top = 3.dp),
-                    color = if (cityInfo.isIndex > 0) Color(
-                        red = 53,
-                        green = 128,
-                        blue = 186
-                    ) else Color.Unspecified
+                    color = Color.Unspecified
                 )
             }
         }

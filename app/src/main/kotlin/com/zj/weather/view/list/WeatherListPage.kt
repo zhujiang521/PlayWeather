@@ -1,5 +1,7 @@
 package com.zj.weather.view.list
 
+import android.app.Activity
+import android.app.Application
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,7 @@ import com.zj.model.city.GeoBean
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.lce.ErrorContent
 import com.zj.utils.lce.NoContent
+import com.zj.utils.view.hideIme
 import com.zj.utils.view.showToast
 import com.zj.weather.R
 import com.zj.weather.view.list.viewmodel.WeatherListViewModel
@@ -35,6 +38,7 @@ fun WeatherListPage(
     weatherListViewModel: WeatherListViewModel,
     onBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     val locationBeanState by weatherListViewModel.locationBeanList.collectAsState()
     WeatherListPage(
         locationBeanState = locationBeanState,
@@ -47,6 +51,7 @@ fun WeatherListPage(
         },
         toWeatherDetails = { cityInfo ->
             weatherListViewModel.insertCityInfo(cityInfo)
+            (context as Activity).hideIme()
             onBack()
         })
 }

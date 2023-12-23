@@ -154,24 +154,12 @@ class WeatherRepository @Inject constructor(private val context: Application) {
                 XLog.w("updateCityInfo: The need to modify:${cityInfo.uid}  ")
             } else {
                 XLog.w("updateCityInfo: Need to modify:${cityInfo.uid}")
-                updateCityIndex(cityInfo)
                 cityInfoDao.update(cityInfo)
             }
         } else {
-            updateCityIndex(cityInfo)
             cityInfoDao.insert(cityInfo)
             XLog.w("updateCityInfo: Need to add")
         }
-    }
-
-    private suspend fun updateCityIndex(cityInfo: CityInfo) {
-        val indexList = cityInfoDao.getIndexCity()
-        if (indexList.isNotEmpty()) {
-            val indexCity = indexList[0]
-            indexCity.isIndex = 0
-            cityInfoDao.update(indexCity)
-        }
-        cityInfo.isIndex = 1
     }
 
     private fun buildCityInfo(

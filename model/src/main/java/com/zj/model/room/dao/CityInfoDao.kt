@@ -30,9 +30,6 @@ interface CityInfoDao {
     @Query("SELECT COUNT(*) FROM city_info where name = :name")
     suspend fun getHasLocation(name: String): Int
 
-    @Query("SELECT * FROM city_info where is_index = 1")
-    suspend fun getIndexCity(): List<CityInfo>
-
     @Query("SELECT COUNT(*) FROM city_info")
     suspend fun getCount(): Int
 
@@ -40,7 +37,7 @@ interface CityInfoDao {
     suspend fun insertList(cityInfoList: List<CityInfo>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(cityInfo: CityInfo)
+    suspend fun insert(cityInfo: CityInfo)
 
     @Update
     suspend fun update(cityInfo: CityInfo): Int

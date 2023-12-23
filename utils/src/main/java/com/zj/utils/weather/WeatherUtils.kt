@@ -1,11 +1,10 @@
 package com.zj.utils.weather
 
 import android.content.Context
-import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.R
 import com.zj.utils.XLog
-import java.util.*
+import java.util.Calendar
 
 /**
  * 从7天中获取今天的天气，因为里面有紫外线和日出日落信息
@@ -43,35 +42,28 @@ fun getTodayBean(daily: List<WeatherDailyBean.DailyBean>): WeatherDailyBean.Dail
  */
 fun getUvIndexDesc(context: Context, uv: String?): String {
     XLog.d("getUvIndexDesc: $uv")
-    if (uv == null || uv.isEmpty()) {
+    if (uv.isNullOrEmpty()) {
         return context.getString(R.string.uv_index1)
     }
     return when (uv.toInt()) {
         0, 1, 2 -> {
             context.getString(R.string.uv_index1)
         }
+
         3, 4 -> {
             context.getString(R.string.uv_index2)
         }
+
         5, 6 -> {
             context.getString(R.string.uv_index3)
         }
+
         7, 8, 9 -> {
             context.getString(R.string.uv_index4)
         }
+
         else -> {
             context.getString(R.string.uv_index5)
         }
     }
-}
-
-fun getCityIndex(cityInfoList: List<CityInfo>?,cityInfo: CityInfo): Int {
-    if (cityInfoList == null) return 0
-    var city: CityInfo? = null
-    for (index in cityInfoList.indices) {
-        if (cityInfoList[index].isIndex == 1) {
-            city = cityInfoList[index]
-        }
-    }
-    return cityInfoList.indexOf(cityInfo)
 }

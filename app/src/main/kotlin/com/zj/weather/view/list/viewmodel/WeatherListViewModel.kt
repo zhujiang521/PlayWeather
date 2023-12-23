@@ -1,6 +1,10 @@
 package com.zj.weather.view.list.viewmodel
 
+import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -14,13 +18,14 @@ import com.zj.model.room.entity.CityInfo
 import com.zj.utils.DEFAULT_CACHE_CITY_LIST
 import com.zj.utils.XLog
 import com.zj.utils.checkNetConnect
+import com.zj.utils.view.hideIme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class WeatherListViewModel @Inject constructor(
@@ -32,12 +37,12 @@ class WeatherListViewModel @Inject constructor(
         MutableStateFlow<PlayState<List<GeoBean.LocationBean>>>(PlayLoading)
     val locationBeanList: StateFlow<PlayState<List<GeoBean.LocationBean>>> = _locationBeanList
 
-    private fun onLocationBeanListChanged(hourlyBean: PlayState<List<GeoBean.LocationBean>>) {
-        if (hourlyBean == _locationBeanList.value) {
+    private fun onLocationBeanListChanged(listPlayState: PlayState<List<GeoBean.LocationBean>>) {
+        if (listPlayState == _locationBeanList.value) {
             XLog.d("onLocationBeanListChanged no change")
             return
         }
-        _locationBeanList.value = hourlyBean
+        _locationBeanList.value = listPlayState
     }
 
 
@@ -51,7 +56,7 @@ class WeatherListViewModel @Inject constructor(
             onLocationBeanListChanged(PlayError(IllegalStateException("无网络链接")))
             return
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val geoCityLookup = weatherListRepository.getGeoCityLookup(cityName)
             onLocationBeanListChanged(geoCityLookup)
         }
@@ -62,8 +67,11 @@ class WeatherListViewModel @Inject constructor(
      */
     fun getGeoTopCity() {
         val cacheBean = Gson().fromJson(DEFAULT_CACHE_CITY_LIST, GeoCacheBean::class.java)
-        onLocationBeanListChanged(PlaySuccess(cacheBean.list))
-        XLog.i("Have a cache, return")
+        viewModelScope.launch(Dispatchers.IO) {
+            weatherListRepository.buildHasLocation(cacheBean.list)
+            onLocationBeanListChanged(PlaySuccess(cacheBean.list))
+            XLog.i("Have a cache, return")
+        }
 //        if (!getApplication<Application>().checkNetConnect()) {
 //            onLocationBeanListChanged(PlayError(IllegalStateException("无网络链接")))
 //            return

@@ -31,7 +31,6 @@ fun CityListPage(
     val cityInfoList by cityListViewModel.cityInfoList.collectAsState(initial = arrayListOf())
     CityListPage(
         cityInfoList = cityInfoList, onBack = onBack, toWeatherDetails = {
-            cityListViewModel.updateCityInfoIndex(it)
             defaultCityState.value = it
             onBack()
         }

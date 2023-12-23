@@ -15,12 +15,13 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.zj.banner.utils.HorizontalPagerIndicator
+import com.zj.utils.view.HorizontalPagerIndicator
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.XLog
 import com.zj.utils.defaultCityState
@@ -28,6 +29,7 @@ import com.zj.utils.lce.NoContent
 import com.zj.weather.permission.FeatureThatRequiresLocationPermissions
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
+import kotlinx.coroutines.delay
 
 @ExperimentalPermissionsApi
 @Composable
@@ -62,24 +64,27 @@ private fun Weather(
     ) {
         cityInfoList.size
     }
-    CurrentPageEffect(pagerState, cityInfoList, weatherViewModel)
     val value = defaultCityState.value
-    val indexOf = cityInfoList.indexOf(value)
-    Log.i("ZHUJIANG123", "Weather22222: $value  $indexOf   ${ pagerState.currentPage}")
-    if (indexOf > 0 && indexOf != pagerState.currentPage) {
+    var indexOf = -1
+    cityInfoList.forEachIndexed { index, cityInfo ->
+        if (value?.locationId == cityInfo.locationId && value.location ==cityInfo.location){
+            indexOf = index
+            return@forEachIndexed
+        }
+    }
+
+    Log.i("ZHUJIANG123", "Weather22222: $value ${cityInfoList.size} $indexOf   ${pagerState.currentPage}")
+    if (indexOf >= 0 && indexOf != pagerState.currentPage) {
         LaunchedEffect(Unit) {
-            pagerState.animateScrollToPage(indexOf)
+            pagerState.scrollToPage(indexOf)
+            defaultCityState.value = null
             Log.i("ZHUJIANG123", "Weather: $indexOf")
         }
     }
     WeatherViewPager(
-        weatherViewModel,
-        cityInfoList,
-        pagerState,
-        toCityList,
-        toCityMap,
-        toWeatherList
+        weatherViewModel, cityInfoList, pagerState, toCityList, toCityMap, toWeatherList
     )
+    CurrentPageEffect(pagerState, cityInfoList, weatherViewModel)
 }
 
 @Composable
@@ -89,15 +94,12 @@ fun CurrentPageEffect(
     if (pagerState.isScrollInProgress) {
         return
     }
+    val index = if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
     LaunchedEffect(pagerState.currentPage) {
-        val index =
-            if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
+        delay(300L)
+
         val cityInfo = cityInfoList[index]
         weatherViewModel.getWeather(cityInfo)
-        val info = defaultCityState.value
-        if (info.location.isEmpty() && info.locationId.isEmpty()) {
-            defaultCityState.value = cityInfo
-        }
         XLog.i("Query initialPage")
     }
 }
@@ -157,8 +159,7 @@ fun WeatherViewPager(
         }, pageContent = { page ->
             val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
 
-            val pullRefreshState = rememberPullRefreshState(
-                isRefreshing,
+            val pullRefreshState = rememberPullRefreshState(isRefreshing,
                 { weatherViewModel.refresh(cityInfoList[page]) })
 
             Box(

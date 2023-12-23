@@ -10,6 +10,6 @@ const val DEFAULT_CACHE_CITY_LIST = "{\"list\":[{\"adm1\":\"浙江省\",\"adm2\"
 /**
  * 默认要显示的城市状态
  */
-val defaultCityState: MutableState<CityInfo> by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-    mutableStateOf(CityInfo(name = "北京"))
+val defaultCityState: MutableState<CityInfo?> by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+    mutableStateOf(null)
 }

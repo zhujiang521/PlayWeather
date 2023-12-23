@@ -27,13 +27,4 @@ class CityListViewModel @Inject constructor(
         }
     }
 
-    /**
-     * 修改应该显示的城市
-     */
-    fun updateCityInfoIndex(cityInfo: CityInfo) {
-        viewModelScope.launch(Dispatchers.IO) {
-            cityListRepository.updateCityIsIndex(cityInfo)
-        }
-    }
-
 }

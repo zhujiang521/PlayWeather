@@ -44,7 +44,7 @@ class WeatherListRepository @Inject constructor(private val context: Application
     /**
      * 构建当前是否存在此城市
      */
-    private suspend fun buildHasLocation(locations: List<GeoBean.LocationBean>) {
+    suspend fun buildHasLocation(locations: List<GeoBean.LocationBean>) {
         locations.forEach {
             val name = it.name
             if (name.isNullOrEmpty()) return@forEach
@@ -81,12 +81,6 @@ class WeatherListRepository @Inject constructor(private val context: Application
      * 插入城市信息
      */
     suspend fun insertCityInfo(cityInfo: CityInfo) {
-        val indexList = cityInfoDao.getIndexCity()
-        if (indexList.isNotEmpty()) {
-            val indexCity = indexList[0]
-            indexCity.isIndex = 0
-            cityInfoDao.update(indexCity)
-        }
         cityInfoDao.insert(cityInfo)
     }
 

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ViewModelScoped
-class CityListRepository @Inject constructor(private val context: Application) {
+class CityListRepository @Inject constructor(context: Application) {
 
     private val cityInfoDao = PlayWeatherDatabase.getDatabase(context = context).cityInfoDao()
 
@@ -16,17 +16,6 @@ class CityListRepository @Inject constructor(private val context: Application) {
 
     suspend fun deleteCityInfo(cityInfo: CityInfo) {
         cityInfoDao.delete(cityInfo)
-    }
-
-    suspend fun updateCityIsIndex(cityInfo: CityInfo) {
-        val indexList = cityInfoDao.getIndexCity()
-        if (indexList.isNotEmpty()) {
-            val indexCity = indexList[0]
-            indexCity.isIndex = 0
-            cityInfoDao.update(indexCity)
-        }
-        cityInfo.isIndex = 1
-        cityInfoDao.update(cityInfo)
     }
 
 }

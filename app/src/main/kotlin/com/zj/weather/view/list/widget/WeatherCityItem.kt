@@ -1,10 +1,12 @@
 package com.zj.weather.view.list.widget
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -15,9 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
 import com.zj.model.city.GeoBean
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.defaultCityState
@@ -37,17 +36,6 @@ fun WeatherCityItem(
         shape = RoundedCornerShape(5.dp), modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp)
-            .placeholder(
-                visible = locationBean.adm1.isNullOrEmpty() &&
-                        locationBean.adm2.isNullOrEmpty() &&
-                        locationBean.name.isNullOrEmpty(),
-                color = MaterialTheme.colors.primaryVariant,
-                // optional, defaults to RectangleShape
-                shape = RoundedCornerShape(4.dp),
-                highlight = PlaceholderHighlight.shimmer(
-                    highlightColor = Color.White,
-                ),
-            )
             .clickable {
                 if (!hasLocation) {
                     alertDialog.value = true
@@ -56,7 +44,6 @@ fun WeatherCityItem(
                 }
             }
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -105,7 +92,6 @@ fun WeatherCityItem(
             locationId = "CN${locationBean.id}",
             lat = locationBean.lat ?: "",
             lon = locationBean.lon ?: "",
-            isIndex = 1
         )
         defaultCityState.value = cityInfo
         toWeatherDetails(
