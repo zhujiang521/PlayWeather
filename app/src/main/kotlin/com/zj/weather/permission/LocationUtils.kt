@@ -40,11 +40,13 @@ fun getLocation(
         providers.contains(LocationManager.NETWORK_PROVIDER) -> {
             //如果是Network
             locationProvider = LocationManager.NETWORK_PROVIDER
+            getCurrentLocation(locationManager, locationProvider, context, weatherViewModel)
             XLog.d("locationManager Network")
         }
         providers.contains(LocationManager.GPS_PROVIDER) -> {
             //如果是GPS
             locationProvider = LocationManager.GPS_PROVIDER
+            getCurrentLocation(locationManager, locationProvider, context, weatherViewModel)
             XLog.d("locationManager GPS")
         }
         else -> {
@@ -53,7 +55,15 @@ fun getLocation(
             return
         }
     }
+}
 
+@SuppressLint("MissingPermission")
+private fun getCurrentLocation(
+    locationManager: LocationManager?,
+    locationProvider: String,
+    context: Context,
+    weatherViewModel: WeatherViewModel
+) {
     //3.获取当前位置，R以上的版本需要使用getCurrentLocation
     //  之前的版本可以可用requestSingleUpdate
     if (isROrLater) {

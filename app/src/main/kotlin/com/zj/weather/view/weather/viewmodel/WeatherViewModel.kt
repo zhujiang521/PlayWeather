@@ -17,7 +17,6 @@ import com.zj.model.weather.WeatherNowBean
 import com.zj.utils.XLog
 import com.zj.utils.checkCoroutines
 import com.zj.utils.checkNetConnect
-import com.zj.utils.defaultCityState
 import com.zj.utils.view.showToast
 import com.zj.weather.R
 import com.zj.weather.view.weather.getLocation
@@ -70,7 +69,9 @@ class WeatherViewModel @Inject constructor(
             XLog.d("onWeatherModelChanged no change")
             return
         }
-        _weatherModel.value = playState
+        viewModelScope.launch {
+            _weatherModel.emit(playState)
+        }
     }
 
     private val _isRefreshing = MutableStateFlow(false)

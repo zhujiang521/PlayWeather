@@ -4,7 +4,6 @@ package com.zj.weather.view.weather
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -15,17 +14,16 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.zj.utils.view.HorizontalPagerIndicator
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.XLog
 import com.zj.utils.defaultCityState
 import com.zj.utils.lce.NoContent
+import com.zj.utils.view.HorizontalPagerIndicator
 import com.zj.weather.permission.FeatureThatRequiresLocationPermissions
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
@@ -40,13 +38,20 @@ fun WeatherViewPager(
     toWeatherList: () -> Unit
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.collectAsState(initial = arrayListOf())
-    Log.i("ZHUJIANG123", "Weather11111: ${cityInfoList.size}")
     if (cityInfoList.isEmpty()) {
-        XLog.w("Empty, refresh")
         FeatureThatRequiresLocationPermissions(weatherViewModel)
         NoCityContent(toWeatherList, toCityList)
     } else {
-        Weather(cityInfoList, weatherViewModel, toCityList, toCityMap, toWeatherList)
+        val pagerState = rememberPagerState(
+            initialPage = 0, initialPageOffsetFraction = 0f
+        ) {
+            cityInfoList.size
+        }
+        WeatherViewPager(
+            weatherViewModel, cityInfoList, pagerState, toCityList, toCityMap, toWeatherList
+        )
+        CurrentPageEffect(pagerState, cityInfoList, weatherViewModel)
+        Weather(cityInfoList, pagerState)
     }
 }
 
@@ -54,37 +59,22 @@ fun WeatherViewPager(
 @Composable
 private fun Weather(
     cityInfoList: List<CityInfo>,
-    weatherViewModel: WeatherViewModel,
-    toCityList: () -> Unit,
-    toCityMap: (Double, Double) -> Unit,
-    toWeatherList: () -> Unit
+    pagerState: PagerState
 ) {
-    val pagerState = rememberPagerState(
-        initialPage = 0, initialPageOffsetFraction = 0f
-    ) {
-        cityInfoList.size
-    }
-    val value = defaultCityState.value
+    val value = defaultCityState.value ?: return
     var indexOf = -1
     cityInfoList.forEachIndexed { index, cityInfo ->
-        if (value?.locationId == cityInfo.locationId && value.location ==cityInfo.location){
+        if (value.locationId == cityInfo.locationId && value.location == cityInfo.location) {
             indexOf = index
             return@forEachIndexed
         }
     }
-
-    Log.i("ZHUJIANG123", "Weather22222: $value ${cityInfoList.size} $indexOf   ${pagerState.currentPage}")
     if (indexOf >= 0 && indexOf != pagerState.currentPage) {
         LaunchedEffect(Unit) {
             pagerState.scrollToPage(indexOf)
             defaultCityState.value = null
-            Log.i("ZHUJIANG123", "Weather: $indexOf")
         }
     }
-    WeatherViewPager(
-        weatherViewModel, cityInfoList, pagerState, toCityList, toCityMap, toWeatherList
-    )
-    CurrentPageEffect(pagerState, cityInfoList, weatherViewModel)
 }
 
 @Composable
@@ -97,7 +87,6 @@ fun CurrentPageEffect(
     val index = if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
     LaunchedEffect(pagerState.currentPage) {
         delay(300L)
-
         val cityInfo = cityInfoList[index]
         weatherViewModel.getWeather(cityInfo)
         XLog.i("Query initialPage")
