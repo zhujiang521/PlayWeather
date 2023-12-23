@@ -18,8 +18,8 @@ import com.zj.utils.XLog
 import com.zj.utils.checkCoroutines
 import com.zj.utils.checkNetConnect
 import com.zj.utils.view.showToast
+import com.zj.utils.weather.getLocationForCityInfo
 import com.zj.weather.R
-import com.zj.weather.view.weather.getLocation
 import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -93,7 +93,7 @@ class WeatherViewModel @Inject constructor(
     }
 
     fun getWeather(cityInfo: CityInfo) {
-        val location = getLocation(cityInfo)
+        val location = getLocationForCityInfo(cityInfo)
         if (weatherMap.containsKey(location)) {
             val weather = weatherMap[location]
             if (weather != null && weather.first + FIFTEEN_MINUTES > System.currentTimeMillis()) {

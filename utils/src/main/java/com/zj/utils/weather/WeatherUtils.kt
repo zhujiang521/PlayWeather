@@ -1,10 +1,24 @@
 package com.zj.utils.weather
 
 import android.content.Context
+import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.R
 import com.zj.utils.XLog
 import java.util.Calendar
+
+
+/**
+ * 获取需要查询的location sting
+ *
+ * @param cityInfo 城市信息
+ */
+fun getLocationForCityInfo(cityInfo: CityInfo?): String {
+    if (cityInfo == null) return "CN101010100"
+    return cityInfo.locationId.ifEmpty {
+        cityInfo.location
+    }
+}
 
 /**
  * 从7天中获取今天的天气，因为里面有紫外线和日出日落信息

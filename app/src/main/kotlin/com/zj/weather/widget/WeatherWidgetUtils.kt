@@ -4,12 +4,11 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import com.zj.model.*
 import com.zj.model.room.entity.CityInfo
-import com.zj.model.weather.WeatherNowBean
 import com.zj.network.PlayWeatherNetwork
 import com.zj.utils.XLog
 import com.zj.utils.weather.getDateWeekName
+import com.zj.utils.weather.getLocationForCityInfo
 import com.zj.weather.R
-import com.zj.weather.view.weather.getLocation
 import com.zj.weather.widget.today.TodayWeatherRemoteViewsFactory
 import com.zj.weather.widget.week.WeatherRemoteViewsFactory
 import com.zj.weather.widget.week.WeekWeather
@@ -90,7 +89,7 @@ object WeatherWidgetUtils : CoroutineScope by MainScope() {
         appWidgetId: Int
     ) {
         XLog.w("notifyWeatherWidget: Refresh the weather")
-        getWeather7Day(context = context, location = getLocation(cityInfo = cityInfo)) { items ->
+        getWeather7Day(context = context, location = getLocationForCityInfo(cityInfo = cityInfo)) { items ->
             WeatherRemoteViewsFactory.setWidgetItemList(items)
             val mgr = AppWidgetManager.getInstance(context)
             mgr.notifyAppWidgetViewDataChanged(

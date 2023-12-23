@@ -69,11 +69,11 @@ private fun Weather(
             return@forEachIndexed
         }
     }
-    if (indexOf >= 0 && indexOf != pagerState.currentPage) {
-        LaunchedEffect(Unit) {
-            pagerState.scrollToPage(indexOf)
-            defaultCityState.value = null
-        }
+    if (indexOf < 0 || indexOf == pagerState.currentPage) return
+    LaunchedEffect(Unit) {
+        pagerState.scrollToPage(indexOf)
+        XLog.d("scrollToPage:$indexOf")
+        defaultCityState.value = null
     }
 }
 
@@ -133,10 +133,7 @@ fun WeatherViewPager(
     toWeatherList: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding()
-            .statusBarsPadding()
+        modifier = Modifier.fillMaxSize()
     ) {
         HorizontalPager(modifier = Modifier, state = pagerState, key = {
             try {
@@ -170,14 +167,7 @@ fun WeatherViewPager(
             pageCount = cityInfoList.size,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp),
+                .padding(bottom = 25.dp),
         )
-    }
-}
-
-fun getLocation(cityInfo: CityInfo?): String {
-    if (cityInfo == null) return "CN101010100"
-    return cityInfo.locationId.ifEmpty {
-        cityInfo.location
     }
 }

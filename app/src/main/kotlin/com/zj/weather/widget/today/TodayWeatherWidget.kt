@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.util.SizeF
 import android.widget.RemoteViews
 import com.zj.weather.MainActivity
@@ -15,10 +14,10 @@ import com.zj.weather.widget.WeatherWidgetUtils
 import com.zj.weather.widget.utils.deleteCityInfoPref
 import com.zj.weather.widget.utils.loadCityInfoPref
 import com.zj.model.room.entity.CityInfo
-import com.zj.weather.view.weather.getLocation
 import com.zj.utils.XLog
 import com.zj.utils.isSOrLater
 import com.zj.utils.weather.IconUtils
+import com.zj.utils.weather.getLocationForCityInfo
 
 const val CLICK_TODAY_ACTION = "com.zj.weather.widget.today.CLICK_TODAY_ACTION"
 const val LOCATION_REFRESH = "com.zj.weather.LOCATION_REFRESH"
@@ -110,7 +109,7 @@ private fun buildRemoteViews(
 ) {
     WeatherWidgetUtils.getWeather7Day(
         context = context,
-        location = getLocation(cityInfo = cityInfo)
+        location = getLocationForCityInfo(cityInfo = cityInfo)
     ) { items ->
         val nowBaseBean = items[0]
         views.setTextViewText(R.id.today_tv_location, "${cityInfo?.city} ${cityInfo?.name}")
@@ -136,7 +135,7 @@ private fun buildRemoteViews(
         val intent = Intent(context, TodayWeatherWidgetService::class.java).apply {
             // Add the app widget ID to the intent extras.
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-            putExtra(LOCATION_INFO, getLocation(cityInfo = cityInfo))
+            putExtra(LOCATION_INFO, getLocationForCityInfo(cityInfo = cityInfo))
             data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
         }
         // 设置 RemoteViews 对象以使用 RemoteViews 适配器

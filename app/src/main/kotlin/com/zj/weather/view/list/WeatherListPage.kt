@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.zj.model.PlayError
@@ -39,6 +40,7 @@ fun WeatherListPage(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     val locationBeanState by weatherListViewModel.locationBeanList.collectAsState()
     WeatherListPage(
         locationBeanState = locationBeanState,
@@ -52,6 +54,7 @@ fun WeatherListPage(
         toWeatherDetails = { cityInfo ->
             weatherListViewModel.insertCityInfo(cityInfo)
             (context as Activity).hideIme()
+            focusManager.clearFocus()
             onBack()
         })
 }
