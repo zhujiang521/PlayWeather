@@ -1,6 +1,7 @@
 package com.zj.weather.view.weather.widget
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -57,6 +58,15 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
     Spacer(modifier = Modifier.height(10.dp))
 }
 
+val colorStops = arrayOf(
+    0.0f to Color(red = 139, green = 195, blue = 74),
+    0.1f to Color(red = 255, green = 239, blue = 59),
+    0.2f to Color(red = 255, green = 152, blue = 0),
+    0.3f to Color(red = 244, green = 67, blue = 54),
+    0.4f to Color(red = 156, green = 39, blue = 176),
+    1.0f to Color(red = 143, green = 0, blue = 0),
+)
+
 /**
  * 空气质量图
  * 0-50	一级	优	绿色
@@ -78,29 +88,20 @@ fun AirQualityProgress(aqi: Int) {
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .height(10.dp)
+            .background(
+                brush = Brush.linearGradient(
+                    colorStops = colorStops
+                ), shape = RoundedCornerShape(10.dp)
+            )
     ) {
-        drawLine(
-            brush = Brush.linearGradient(
-                0.0f to Color(red = 139, green = 195, blue = 74),
-                0.1f to Color(red = 255, green = 239, blue = 59),
-                0.2f to Color(red = 255, green = 152, blue = 0),
-                0.3f to Color(red = 244, green = 67, blue = 54),
-                0.4f to Color(red = 156, green = 39, blue = 176),
-                1.0f to Color(red = 143, green = 0, blue = 0),
-            ),
-            start = Offset.Zero,
-            end = Offset(size.width, 0f),
-            strokeWidth = 20f,
-            cap = StrokeCap.Round,
-        )
         drawPoints(
             points = arrayListOf(
-                Offset(size.width / 500 * aqiValue, 0f)
+                Offset(size.width / 500 * aqiValue, 10.dp.value)
             ),
             pointMode = PointMode.Points,
             color = Color.White,
-            strokeWidth = 20f,
+            strokeWidth = 20.dp.value,
             cap = StrokeCap.Round,
         )
     }

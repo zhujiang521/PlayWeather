@@ -143,10 +143,11 @@ private fun TemperatureChart(
         )
         // 绘制这一天的气温
         drawLine(
-            brush = Brush.linearGradient(
-                0.0f to currentMinColor,
-                1.0f to currentMaxColor,
-            ),
+//            brush = Brush.linearGradient(
+//                0.0f to currentMinColor,
+//                1.0f to currentMaxColor,
+//            ),
+            color = currentMaxColor,
             start = Offset(size.width / num * (currentMin - min), 0f),
             end = Offset(size.width / num * (currentMax - min), 0f),
             strokeWidth = 10f,
