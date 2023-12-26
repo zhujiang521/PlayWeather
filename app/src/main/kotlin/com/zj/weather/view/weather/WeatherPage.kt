@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,7 +27,6 @@ import com.zj.model.air.AirNowBean
 import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.model.weather.WeatherNowBean
-import com.zj.utils.XLog
 import com.zj.utils.lce.LcePage
 import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
@@ -39,7 +36,7 @@ import com.zj.weather.view.weather.widget.HeaderAction
 import com.zj.weather.view.weather.widget.HeaderWeather
 import com.zj.weather.view.weather.widget.WeatherAnimation
 import com.zj.weather.view.weather.widget.WeatherContent
-import kotlinx.coroutines.delay
+import com.zui.animate.WeatherBackground
 
 @Composable
 fun WeatherPage(
@@ -60,6 +57,7 @@ fun WeatherPage(
                 modifier = Modifier.fillMaxSize(),
                 data = IconUtils.getWeatherBack(context, weather.nowBaseBean?.icon)
             )
+            WeatherBackground(modifier = Modifier.fillMaxSize(), weather.nowBaseBean?.icon)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

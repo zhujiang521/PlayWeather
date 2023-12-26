@@ -69,6 +69,7 @@ dependencies {
 
     implementation("${rootProject.extra["coreKtx"] as String?}")
     implementation("${rootProject.extra["appcompat"] as String?}")
+    implementation(project(":animate"))
 
     val composeVersion = rootProject.extra["composeVersion"] as String?
     implementation("androidx.compose.ui:ui:$composeVersion")
