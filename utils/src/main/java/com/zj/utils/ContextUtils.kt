@@ -4,17 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.zj.model.Lang
-import kotlinx.coroutines.Job
-
-
-/**
- * 检查协程是否存在并运行
- */
-fun Job?.checkCoroutines() {
-    if (this?.isActive == true) return
-    this?.cancel()
-    XLog.d("Already in the query, first cancel the previous coroutine")
-}
 
 /**
  * 网络状态
@@ -34,13 +23,11 @@ fun Context.checkNetConnect(): Boolean {
 
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
             // 当前使用移动网络
-            XLog.d("You are using a mobile network")
             true
         }
 
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
             // 当前使用WIFI网络
-            XLog.d("The WIFI network is in use")
             true
         }
 

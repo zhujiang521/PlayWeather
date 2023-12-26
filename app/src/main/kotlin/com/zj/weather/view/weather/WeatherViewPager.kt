@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 
 package com.zj.weather.view.weather
 
@@ -27,7 +27,6 @@ import com.zj.utils.view.HorizontalPagerIndicator
 import com.zj.weather.permission.FeatureThatRequiresLocationPermissions
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
-import kotlinx.coroutines.delay
 
 @ExperimentalPermissionsApi
 @Composable
@@ -39,8 +38,8 @@ fun WeatherViewPager(
 ) {
     val cityInfoList by weatherViewModel.cityInfoList.collectAsState(initial = arrayListOf())
     if (cityInfoList.isEmpty()) {
-        FeatureThatRequiresLocationPermissions(weatherViewModel)
         NoCityContent(toWeatherList, toCityList)
+        FeatureThatRequiresLocationPermissions(weatherViewModel)
     } else {
         val pagerState = rememberPagerState(
             initialPage = 0, initialPageOffsetFraction = 0f
@@ -50,7 +49,6 @@ fun WeatherViewPager(
         WeatherViewPager(
             weatherViewModel, cityInfoList, pagerState, toCityList, toCityMap, toWeatherList
         )
-        CurrentPageEffect(pagerState, cityInfoList, weatherViewModel)
         Weather(cityInfoList, pagerState)
     }
 }
@@ -74,22 +72,6 @@ private fun Weather(
         pagerState.scrollToPage(indexOf)
         XLog.d("scrollToPage:$indexOf")
         defaultCityState.value = null
-    }
-}
-
-@Composable
-fun CurrentPageEffect(
-    pagerState: PagerState, cityInfoList: List<CityInfo>, weatherViewModel: WeatherViewModel
-) {
-    if (pagerState.isScrollInProgress) {
-        return
-    }
-    val index = if (pagerState.currentPage > cityInfoList.size - 1) 0 else pagerState.currentPage
-    LaunchedEffect(pagerState.currentPage) {
-        delay(300L)
-        val cityInfo = cityInfoList[index]
-        weatherViewModel.getWeather(cityInfo)
-        XLog.i("Query initialPage")
     }
 }
 
@@ -135,7 +117,7 @@ fun WeatherViewPager(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        HorizontalPager(modifier = Modifier, state = pagerState, key = {
+        HorizontalPager(modifier = Modifier, state = pagerState, beyondBoundsPageCount = 1, key = {
             try {
                 cityInfoList[it].locationId
             } catch (e: Exception) {
@@ -148,12 +130,10 @@ fun WeatherViewPager(
             val pullRefreshState = rememberPullRefreshState(isRefreshing,
                 { weatherViewModel.refresh(cityInfoList[page]) })
 
-            Box(
-                Modifier.pullRefresh(pullRefreshState)
-            ) {
+            Box(Modifier.pullRefresh(pullRefreshState)) {
                 WeatherPage(
                     weatherViewModel, cityInfoList[page], onErrorClick = {
-                        weatherViewModel.getWeather(cityInfoList[page])
+                        weatherViewModel.weatherModel(cityInfoList[page])
                     }, cityList = toCityList, toCityMap = toCityMap, cityListClick = toWeatherList
                 )
 

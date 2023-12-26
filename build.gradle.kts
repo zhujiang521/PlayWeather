@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 ext {
-    extra["versionCode"] = 45
-    extra["versionName"] = "4.5.3"
+    extra["versionCode"] = 46
+    extra["versionName"] = "4.5.4"
 
     extra["sdkVersion"] = 34
     extra["minSdkVersion"] = 24
