@@ -24,6 +24,9 @@ object WeatherAnimateType {
     // 暴雨
     const val RAINSTORM = 24
 
+    // 雷雨
+    const val THUNDER_RAIN = 25
+
     // 小雪
     const val LIGHT_SNOW = 31
 
@@ -69,6 +72,11 @@ fun WeatherBackground(
             Rain(modifier, Rains.RAINSTORM)
         }
 
+        WeatherAnimateType.THUNDER_RAIN -> {
+            Rain(modifier, Rains.MODERATE_RAIN)
+            Thunder(modifier)
+        }
+
         WeatherAnimateType.LIGHT_SNOW -> {
             Snow(modifier, Snows.LIGHT_SNOW)
         }
@@ -101,10 +109,11 @@ private fun getWeatherAnimateType(weather: String?): Int? {
         "101", "102", "103", "151", "152", "153", "104", "154", "200", "201", "202", "203", "204", "205", "206", "207", "208",
         "209", "210", "211", "212", "213" -> WeatherAnimateType.CLOUDY
 
-        "300", "301", "302", "303", "304", "305", "308", "309" -> WeatherAnimateType.LIGHT_RAIN
+        "300", "301", "305", "308", "309" -> WeatherAnimateType.LIGHT_RAIN
         "306", "350", "351", "399" -> WeatherAnimateType.MODERATE_RAIN
         "307" -> WeatherAnimateType.HEAVY_RAIN
         "310", "311", "312" -> WeatherAnimateType.RAINSTORM
+        "302", "303", "304" -> WeatherAnimateType.THUNDER_RAIN
 
         "400", "407", "408", "456", "457", "499", "404", "405", "406", "313" -> WeatherAnimateType.LIGHT_SNOW
         "401", "409" -> WeatherAnimateType.MODERATE_SNOW
