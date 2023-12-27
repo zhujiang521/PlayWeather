@@ -69,8 +69,7 @@ fun WeatherViewPager(
 @ExperimentalPermissionsApi
 @Composable
 private fun Weather(
-    cityInfoList: List<CityInfo>,
-    pagerState: PagerState
+    cityInfoList: List<CityInfo>, pagerState: PagerState
 ) {
     val value = defaultCityState.value ?: return
     var indexOf = -1
@@ -97,10 +96,7 @@ private fun NoCityContent(
     val isLand = config.orientation == Configuration.ORIENTATION_LANDSCAPE
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsPadding()
-                .navigationBarsPadding(),
+            modifier = Modifier.fillMaxWidth().statusBarsPadding().navigationBarsPadding(),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -140,14 +136,13 @@ fun WeatherViewPager(
         }, pageContent = { page ->
             val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
             val cityInfo = cityInfoList[page]
-            val pullRefreshState = rememberPullRefreshState(isRefreshing,
-                {
-                    if (cityInfo.isLocation > 0 || !cityInfoList.hasLocationCityInfo()) {
-                        // 刷新当前位置
-                        weatherViewModel.refreshLocation()
-                    }
-                    weatherViewModel.refresh(cityInfo)
-                })
+            val pullRefreshState = rememberPullRefreshState(isRefreshing, {
+                if (cityInfo.isLocation > 0 || !cityInfoList.hasLocationCityInfo()) {
+                    // 刷新当前位置
+                    weatherViewModel.refreshLocation()
+                }
+                weatherViewModel.refresh(cityInfo)
+            })
 
             Box(Modifier.pullRefresh(pullRefreshState)) {
                 WeatherPage(
@@ -161,12 +156,12 @@ fun WeatherViewPager(
                 )
             }
         })
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            pageCount = cityInfoList.size,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 25.dp),
-        )
+        if (cityInfoList.size > 1) {
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                pageCount = cityInfoList.size,
+                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 25.dp),
+            )
+        }
     }
 }
