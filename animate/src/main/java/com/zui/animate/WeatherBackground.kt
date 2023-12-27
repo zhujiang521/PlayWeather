@@ -96,7 +96,7 @@ fun WeatherBackground(
  */
 private fun getWeatherAnimateType(weather: String?): Int? {
     return when (weather) {
-        "100" -> WeatherAnimateType.SUN
+        "100", "150" -> WeatherAnimateType.SUN
 
         "101", "102", "103", "151", "152", "153", "104", "154", "200", "201", "202", "203", "204", "205", "206", "207", "208",
         "209", "210", "211", "212", "213" -> WeatherAnimateType.CLOUDY

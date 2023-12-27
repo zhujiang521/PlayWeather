@@ -1,5 +1,6 @@
 package com.zj.weather.permission
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Address
@@ -15,12 +16,22 @@ import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import java.util.*
 
 
-@SuppressLint("MissingPermission")
 fun getLocation(
     context: Context,
     weatherViewModel: WeatherViewModel
 ) {
-
+    if (!context.isPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
+        XLog.d("READ_PHONE_STATE is no")
+        return
+    }
+    if (!context.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        XLog.d("ACCESS_FINE_LOCATION is no")
+        return
+    }
+    if (!context.isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+        XLog.d("ACCESS_COARSE_LOCATION is no")
+        return
+    }
     //1.获取位置管理器
     val locationManager: LocationManager? =
         context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
@@ -43,12 +54,14 @@ fun getLocation(
             getCurrentLocation(locationManager, locationProvider, context, weatherViewModel)
             XLog.d("locationManager Network")
         }
+
         providers.contains(LocationManager.GPS_PROVIDER) -> {
             //如果是GPS
             locationProvider = LocationManager.GPS_PROVIDER
             getCurrentLocation(locationManager, locationProvider, context, weatherViewModel)
             XLog.d("locationManager GPS")
         }
+
         else -> {
             XLog.i("getLocation: No location provider is available")
             showLongToast(context, "没有可用的位置提供器，请打开位置使用")

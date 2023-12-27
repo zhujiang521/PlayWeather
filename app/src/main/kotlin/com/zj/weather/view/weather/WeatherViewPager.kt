@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.zj.weather.view.weather
 
@@ -28,6 +28,16 @@ import com.zj.weather.permission.FeatureThatRequiresLocationPermissions
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
 import com.zj.weather.view.weather.widget.HeaderAction
 
+private fun List<CityInfo>.hasLocationCityInfo(): Boolean {
+    var result = false
+    forEach {
+        if (it.isLocation > 0) {
+            result = true
+        }
+    }
+    return result
+}
+
 @ExperimentalPermissionsApi
 @Composable
 fun WeatherViewPager(
@@ -41,6 +51,9 @@ fun WeatherViewPager(
         NoCityContent(toWeatherList, toCityList)
         FeatureThatRequiresLocationPermissions(weatherViewModel)
     } else {
+        if (!cityInfoList.hasLocationCityInfo()) {
+            FeatureThatRequiresLocationPermissions(weatherViewModel)
+        }
         val pagerState = rememberPagerState(
             initialPage = 0, initialPageOffsetFraction = 0f
         ) {
@@ -126,14 +139,20 @@ fun WeatherViewPager(
             }
         }, pageContent = { page ->
             val isRefreshing by weatherViewModel.isRefreshing.collectAsState()
-
+            val cityInfo = cityInfoList[page]
             val pullRefreshState = rememberPullRefreshState(isRefreshing,
-                { weatherViewModel.refresh(cityInfoList[page]) })
+                {
+                    if (cityInfo.isLocation > 0 || !cityInfoList.hasLocationCityInfo()) {
+                        // 刷新当前位置
+                        weatherViewModel.refreshLocation()
+                    }
+                    weatherViewModel.refresh(cityInfo)
+                })
 
             Box(Modifier.pullRefresh(pullRefreshState)) {
                 WeatherPage(
-                    weatherViewModel, cityInfoList[page], onErrorClick = {
-                        weatherViewModel.weatherModel(cityInfoList[page])
+                    weatherViewModel, cityInfo, onErrorClick = {
+                        weatherViewModel.weatherModel(cityInfo)
                     }, cityList = toCityList, toCityMap = toCityMap, cityListClick = toWeatherList
                 )
 

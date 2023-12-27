@@ -3,6 +3,7 @@ package com.zj.weather.permission
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.runtime.Composable
@@ -11,8 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.zj.utils.XLog
 import com.zj.utils.dialog.ShowDialog
 import com.zj.weather.R
 import com.zj.weather.view.weather.viewmodel.WeatherViewModel
@@ -80,4 +83,14 @@ fun Context.startSettingAppPermission() {
         intent.data = Uri.parse("package:$packageName")
         startActivity(intent)
     }
+}
+
+fun Context?.isPermissionGranted(permission: String): Boolean {
+    if (this == null) {
+        XLog.w("context is null.")
+        return false
+    }
+    return ActivityCompat.checkSelfPermission(
+        this, permission
+    ) == PackageManager.PERMISSION_GRANTED
 }

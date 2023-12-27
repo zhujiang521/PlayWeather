@@ -19,6 +19,7 @@ import com.zj.utils.checkNetConnect
 import com.zj.utils.view.showToast
 import com.zj.utils.weather.getLocationForCityInfo
 import com.zj.weather.R
+import com.zj.weather.permission.getLocation
 import com.zj.weather.widget.today.LOCATION_REFRESH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -171,6 +172,10 @@ class WeatherViewModel @Inject constructor(
             weatherRepository.updateCityInfo(location, result)
             getApplication<Application>().sendBroadcast(Intent(LOCATION_REFRESH))
         }
+    }
+
+    fun refreshLocation() {
+        getLocation(getApplication(), this)
     }
 
 }
