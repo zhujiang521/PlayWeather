@@ -51,17 +51,17 @@ fun MapView(latitude: Double = 40.0, longitude: Double = 117.0, onBack: () -> Un
             modifier = Modifier.fillMaxSize(),
             update = {
                 val map = it.map
-                map.moveCamera(
+                map?.moveCamera(
                     CameraUpdateFactory.newCameraPosition(
                         CameraPosition(
                             LatLng(latitude, longitude),
-                            13f,
+                            15f,
                             0f,
                             0f,
                         )
                     )
                 )
-                map.uiSettings.apply {
+                map?.uiSettings?.apply {
                     // 设置旋转手势是否可用。
 //                    isRotateGesturesEnabled = false
                     // 设置所有手势不可用
@@ -75,7 +75,7 @@ fun MapView(latitude: Double = 40.0, longitude: Double = 117.0, onBack: () -> Un
                 }
                 val markerOptions = MarkerOptions()
                     .position(LatLng(latitude, longitude))
-                    .draggable(true)
+                    ?.draggable(true)
                 val marker: Marker = map.addMarker(markerOptions)
                 marker.showInfoWindow()
             }
