@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
@@ -24,6 +23,7 @@ import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
 import com.zj.weather.R
+import com.zui.animate.placeholder.placeholder
 
 @Composable
 fun WeekDayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
@@ -42,7 +42,8 @@ fun WeekDayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
-            dayBeanList?.forEach { dailyBean ->
+            val dailyBeanList = dayBeanList ?: buildDayItemList()
+            dailyBeanList.forEach { dailyBean ->
                 Divider(modifier = Modifier.padding(horizontal = 10.dp), thickness = 0.4.dp)
                 WeekDayWeatherItem(dailyBean)
             }
@@ -50,8 +51,16 @@ fun WeekDayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
     }
 }
 
+private fun buildDayItemList(): List<WeatherDailyBean.DailyBean?> {
+    val dailyBeanArrayList: ArrayList<WeatherDailyBean.DailyBean?> = arrayListOf()
+    for (index in 0..6) {
+        dailyBeanArrayList.add(null)
+    }
+    return dailyBeanArrayList
+}
+
 @Composable
-private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
+private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,10 +68,11 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = dailyBean.fxDate ?: "今天",
+            text = dailyBean?.fxDate ?: "今天",
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 3.dp),
+                .padding(start = 3.dp)
+                .placeholder(dailyBean),
             fontSize = 15.sp,
             color = MaterialTheme.colors.primary
         )
@@ -70,35 +80,38 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean) {
         Spacer(modifier = Modifier.weight(0.7f))
 
         ImageLoader(
-            data = IconUtils.getWeatherIcon(dailyBean.iconDay),
+            data = IconUtils.getWeatherIcon(dailyBean?.iconDay),
             modifier = Modifier
                 .padding(start = 7.dp)
+                .placeholder(dailyBean)
         )
 
         Spacer(modifier = Modifier.weight(0.7f))
 
         Text(
-            text = "${dailyBean.tempMin ?: "0"}°",
+            text = "${dailyBean?.tempMin ?: "0"}°",
             modifier = Modifier
                 .width(50.dp)
-                .padding(end = 15.dp),
+                .padding(end = 15.dp)
+                .placeholder(dailyBean),
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary
         )
         TemperatureChart(
             Modifier.weight(2f),
-            dailyBean.weekMin,
-            dailyBean.weekMax,
-            dailyBean.tempMin?.toInt() ?: -20,
-            dailyBean.tempMax?.toInt() ?: 40,
-            dailyBean.temp
+            dailyBean?.weekMin ?: -20,
+            dailyBean?.weekMax ?: 40,
+            dailyBean?.tempMin?.toInt() ?: -20,
+            dailyBean?.tempMax?.toInt() ?: 40,
+            dailyBean?.temp ?: 20
         )
         Text(
-            text = "${dailyBean.tempMax ?: "0"}°",
+            text = "${dailyBean?.tempMax ?: "0"}°",
             modifier = Modifier
                 .width(50.dp)
-                .padding(start = 10.dp, end = 5.dp),
+                .padding(start = 10.dp, end = 5.dp)
+                .placeholder(dailyBean),
             fontSize = 15.sp,
             textAlign = TextAlign.End,
             color = MaterialTheme.colors.primary
@@ -185,7 +198,7 @@ private fun getTemperatureColor(temperature: Int): Color {
     } else if (temperature < 5) {
         Color(red = 86, green = 201, blue = 205)
     } else if (temperature < 10) {
-        Color(red = 86, green = 203, blue = 299)
+        Color(red = 86, green = 203, blue = 255)
     } else if (temperature < 15) {
         Color(red = 151, green = 201, blue = 142)
     } else if (temperature < 20) {

@@ -43,14 +43,19 @@ fun getDateWeekName(context: Context, date: String?): String {
  */
 fun getTimeName(context: Context, time: String?): String {
     if (time == null) return context.getString(R.string.time_now)
-    val calendar = Calendar.getInstance()
-    val todayHour = calendar.get(Calendar.HOUR_OF_DAY)
-    // HH为24小时 hh为12小时
-    calendar.time = yyyyMMdd.parse(time) ?: Date()
-    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-    return if (todayHour + 1 == hour) {
+    return try {
+        val calendar = Calendar.getInstance()
+        val todayHour = calendar.get(Calendar.HOUR_OF_DAY)
+        // HH为24小时 hh为12小时
+        calendar.time = yyyyMMdd.parse(time) ?: Date()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        if (todayHour + 1 == hour) {
+            context.getString(R.string.time_now)
+        } else {
+            "$hour${context.getString(R.string.time_hour)}"
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
         context.getString(R.string.time_now)
-    } else {
-        "$hour${context.getString(R.string.time_hour)}"
     }
 }

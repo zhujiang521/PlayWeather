@@ -24,27 +24,22 @@ import androidx.core.content.ContextCompat
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.XLog
 import com.zj.weather.R
+import com.zui.animate.placeholder.placeholder
 import kotlin.math.pow
 
 
 @Composable
 fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
-    if (dailyBean == null) {
-        XLog.w("dailyBean is null")
-        return
-    }
     val context = LocalContext.current
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp)
+        modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(10.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
 
             Text(
                 text = stringResource(id = R.string.sun_title),
                 fontSize = 14.sp,
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
+                modifier = Modifier.padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
             Divider(
                 modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
@@ -53,8 +48,8 @@ fun SunriseSunsetContent(dailyBean: WeatherDailyBean.DailyBean?) {
 
             SunriseSunsetProgress(
                 context,
-                sunrise = dailyBean.sunrise,
-                sunset = dailyBean.sunset,
+                sunrise = dailyBean?.sunrise,
+                sunset = dailyBean?.sunset,
             )
         }
     }
@@ -90,10 +85,8 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
             image?.apply {
                 val (sunX, sunY) = bezierPointPair(result.toDouble())
                 drawImage(
-                    image = image,
-                    topLeft = Offset(
-                        sunX.toFloat() - image.width / 2,
-                        sunY.toFloat() - image.height / 2
+                    image = image, topLeft = Offset(
+                        sunX.toFloat() - image.width / 2, sunY.toFloat() - image.height / 2
                     )
                 )
             }
@@ -101,18 +94,17 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
 
             // 二阶贝塞尔曲线
             path.quadraticBezierTo(
-                size.width / 2, -size.height,
-                size.width, size.height
+                size.width / 2, -size.height, size.width, size.height
             )
             drawPath(
-                path = path, color = Color(red = 255, green = 193, blue = 7, alpha = 255),
+                path = path,
+                color = Color(red = 255, green = 193, blue = 7, alpha = 255),
                 style = Stroke(width = 3f)
             )
 
             drawPoints(
                 points = arrayListOf(
-                    Offset(0f, size.height),
-                    Offset(size.width, size.height)
+                    Offset(0f, size.height), Offset(size.width, size.height)
                 ),
                 pointMode = PointMode.Points,
                 color = Color(red = 255, green = 193, blue = 7, alpha = 255),
@@ -129,7 +121,8 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
         ) {
             Text(
                 modifier = Modifier
-                    .wrapContentWidth(Alignment.Start),
+                    .wrapContentWidth(Alignment.Start)
+                    .placeholder(sunrise),
                 text = "${stringResource(id = R.string.sun_sunrise)}$sunrise",
                 fontSize = 12.sp,
             )
@@ -138,7 +131,8 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
 
             Text(
                 modifier = Modifier
-                    .wrapContentWidth(Alignment.End),
+                    .wrapContentWidth(Alignment.End)
+                    .placeholder(sunset),
                 text = "${stringResource(id = R.string.sun_sunset)}$sunset",
                 fontSize = 12.sp,
             )
@@ -156,12 +150,14 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
  */
 private fun DrawScope.bezierPointPair(sunResult: Double): Pair<Double, Double> {
     val x =
-        (1.0 - sunResult).pow(2.0) * 0f + 2 * sunResult * (1 - sunResult) * (size.width / 2) + sunResult
-            .pow(2.0) * size.width
+        (1.0 - sunResult).pow(2.0) * 0f + 2 * sunResult * (1 - sunResult) * (size.width / 2) + sunResult.pow(
+            2.0
+        ) * size.width
 
     val y =
-        (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult
-            .pow(2.0) * size.height
+        (1.0 - sunResult).pow(2.0) * size.height + 2 * sunResult * (1 - sunResult) * (-size.height) + sunResult.pow(
+            2.0
+        ) * size.height
     return Pair(x, y)
 }
 
@@ -178,8 +174,7 @@ fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
     }
     val drawable = ContextCompat.getDrawable(context, drawableId) ?: return null
     val bitmap = Bitmap.createBitmap(
-        drawable.intrinsicWidth,
-        drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
+        drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
     )
     val canvas = android.graphics.Canvas(bitmap)
     drawable.setBounds(0, 0, canvas.width, canvas.height)

@@ -15,15 +15,16 @@ import androidx.compose.ui.unit.sp
 import com.zj.model.indices.WeatherLifeIndicesBean
 import com.zj.utils.view.ImageLoader
 import com.zj.weather.R
+import com.zui.animate.placeholder.placeholder
 
 
 @Composable
 fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem>?) {
-    if (weatherLifeList.isNullOrEmpty()) return
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp)
     ) {
+        val weatherLifeIndicesItems = weatherLifeList ?: buildLifeItemList()
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(id = R.string.life_day_title),
@@ -41,16 +42,22 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                     .weight(1f)
                     .padding(5.dp)
                 WeatherLifeItem(
-                    modifier, R.drawable.ic_sport, R.string.life_sport, weatherLifeList[0].category
+                    modifier,
+                    R.drawable.ic_sport,
+                    R.string.life_sport,
+                    weatherLifeIndicesItems[0]?.category
                 )
                 WeatherLifeItem(
-                    modifier, R.drawable.ic_car, R.string.life_car, weatherLifeList[1].category
+                    modifier,
+                    R.drawable.ic_car,
+                    R.string.life_car,
+                    weatherLifeIndicesItems[1]?.category
                 )
                 WeatherLifeItem(
                     modifier,
                     R.drawable.ic_clothes,
                     R.string.life_clothes,
-                    weatherLifeList[2].category
+                    weatherLifeIndicesItems[1]?.category
                 )
             }
 
@@ -63,21 +70,36 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                     .weight(1f)
                     .padding(5.dp)
                 WeatherLifeItem(
-                    modifier, R.drawable.ic_uv, R.string.life_uv, weatherLifeList[3].category
+                    modifier,
+                    R.drawable.ic_uv,
+                    R.string.life_uv,
+                    weatherLifeIndicesItems[3]?.category
                 )
                 WeatherLifeItem(
                     modifier,
                     R.drawable.ic_travel,
                     R.string.life_travel,
-                    weatherLifeList[4].category
+                    weatherLifeIndicesItems[4]?.category
                 )
                 WeatherLifeItem(
-                    modifier, R.drawable.ic_cold, R.string.life_cold, weatherLifeList[5].category
+                    modifier,
+                    R.drawable.ic_cold,
+                    R.string.life_cold,
+                    weatherLifeIndicesItems[5]?.category
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
         }
     }
+}
+
+private fun buildLifeItemList(): List<WeatherLifeIndicesBean.WeatherLifeIndicesItem?> {
+    val weatherLifeIndicesItems: ArrayList<WeatherLifeIndicesBean.WeatherLifeIndicesItem?> =
+        arrayListOf()
+    for (index in 0..5) {
+        weatherLifeIndicesItems.add(null)
+    }
+    return weatherLifeIndicesItems
 }
 
 @Composable
@@ -91,10 +113,15 @@ fun WeatherLifeItem(modifier: Modifier, imgRes: Int, titleId: Int, value: String
         ImageLoader(data = imgRes, modifier = Modifier.size(30.dp))
 
         Column(modifier = Modifier.padding(start = 10.dp)) {
-            Text(text = stringResource(id = titleId), fontSize = 12.sp)
+            Text(
+                text = stringResource(id = titleId),
+                fontSize = 12.sp,
+            )
             Text(
                 text = value ?: "不错",
-                modifier = Modifier.padding(top = 5.dp),
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .placeholder(value),
                 fontSize = 14.sp,
                 color = MaterialTheme.colors.primary
             )

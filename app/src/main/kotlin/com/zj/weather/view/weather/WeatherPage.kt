@@ -36,7 +36,7 @@ import com.zj.weather.view.weather.widget.HeaderAction
 import com.zj.weather.view.weather.widget.HeaderWeather
 import com.zj.weather.view.weather.widget.WeatherAnimation
 import com.zj.weather.view.weather.widget.WeatherContent
-import com.zui.animate.WeatherBackground
+import com.zui.animate.weather.WeatherBackground
 
 @Composable
 fun WeatherPage(
@@ -55,9 +55,9 @@ fun WeatherPage(
         Box(modifier = Modifier.fillMaxSize()) {
             ImageLoader(
                 modifier = Modifier.fillMaxSize(),
-                data = IconUtils.getWeatherBack(context, weather.nowBaseBean?.icon)
+                data = IconUtils.getWeatherBack(context, weather?.nowBaseBean?.icon)
             )
-            WeatherBackground(modifier = Modifier.fillMaxSize(), weather.nowBaseBean?.icon)
+            WeatherBackground(modifier = Modifier.fillMaxSize(), weather?.nowBaseBean?.icon)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,7 +89,7 @@ fun WeatherPage(
 @Composable
 private fun VerticalWeather(
     cityInfo: CityInfo,
-    weather: WeatherModel,
+    weather: WeatherModel?,
     toCityMap: (Double, Double) -> Unit,
 ) {
     Column(
@@ -106,7 +106,7 @@ private fun VerticalWeather(
 @Composable
 private fun HorizontalWeather(
     cityInfo: CityInfo,
-    weather: WeatherModel,
+    weather: WeatherModel?,
     toCityMap: (Double, Double) -> Unit,
 ) {
     Row(
@@ -124,11 +124,11 @@ private fun HorizontalWeather(
         ) {
             // 天气头部
             HeaderWeather(
-                cityInfo, weather.nowBaseBean, true, toCityMap = toCityMap
+                cityInfo, weather?.nowBaseBean, true, toCityMap = toCityMap
             )
 
             // 天气动画
-            WeatherAnimation(weather.nowBaseBean?.icon)
+            WeatherAnimation(weather?.nowBaseBean?.icon)
         }
         WeatherContent(
             landModifier, cityInfo,

@@ -1,7 +1,11 @@
 package com.zj.utils.lce
 
 import androidx.compose.runtime.Composable
-import com.zj.model.*
+import com.zj.model.PlayError
+import com.zj.model.PlayLoading
+import com.zj.model.PlayNoContent
+import com.zj.model.PlayState
+import com.zj.model.PlaySuccess
 
 /**
  * 通过State进行控制的Loading、Content、Error页面
@@ -14,18 +18,23 @@ import com.zj.model.*
 fun <T> LcePage(
     playState: PlayState<T>,
     onErrorClick: () -> Unit,
-    content: @Composable (T) -> Unit
-) = when (playState) {
-    PlayLoading -> {
-        LoadingContent()
-    }
-    is PlayError -> {
-        ErrorContent(onErrorClick = onErrorClick)
-    }
-    is PlayNoContent -> {
-        NoContent(tip = playState.reason)
-    }
-    is PlaySuccess<T> -> {
-        content(playState.data)
+    content: @Composable (T?) -> Unit
+) {
+    when (playState) {
+        PlayLoading -> {
+            content(null)
+        }
+
+        is PlayError -> {
+            ErrorContent(onErrorClick = onErrorClick)
+        }
+
+        is PlayNoContent -> {
+            NoContent(tip = playState.reason)
+        }
+
+        is PlaySuccess<T> -> {
+            content(playState.data)
+        }
     }
 }

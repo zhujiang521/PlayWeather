@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.model.air.AirNowBean
 import com.zj.weather.R
+import com.zui.animate.placeholder.placeholder
 
 
 @Composable
 fun AirQuality(airNowBean: AirNowBean.NowBean?) {
-    if (airNowBean == null) return
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -35,24 +35,31 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Text(text = stringResource(id = R.string.air_quality_title), fontSize = 14.sp)
             Text(
-                text = "${airNowBean.aqi ?: "10"} - ${
-                    airNowBean.category ?: stringResource(id = R.string.air_quality_level)
+                text = stringResource(id = R.string.air_quality_title),
+                fontSize = 14.sp,
+            )
+            Text(
+                text = "${airNowBean?.aqi ?: "10"} - ${
+                    airNowBean?.category ?: stringResource(id = R.string.air_quality_level)
                 }",
-                modifier = Modifier.padding(top = 5.dp),
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .placeholder(airNowBean),
                 fontSize = 20.sp,
                 color = MaterialTheme.colors.primary
             )
             Text(
                 text = "${
                     stringResource(id = R.string.air_quality_Current_aqi)
-                }${airNowBean.aqi ?: "10"}${airNowBean.primary ?: ""}",
-                modifier = Modifier.padding(top = 5.dp),
+                }${airNowBean?.aqi ?: "10"}${airNowBean?.primary ?: ""}",
+                modifier = Modifier
+                    .padding(top = 5.dp)
+                    .placeholder(airNowBean),
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(10.dp))
-            AirQualityProgress((airNowBean.aqi ?: "10").toInt())
+            AirQualityProgress((airNowBean?.aqi ?: "10").toInt())
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
