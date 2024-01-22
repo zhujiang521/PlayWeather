@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +28,7 @@ import com.zj.model.PlaySuccess
 import com.zj.model.city.GeoBean
 import com.zj.model.room.entity.CityInfo
 import com.zj.utils.lce.ErrorContent
+import com.zj.utils.lce.LcePage
 import com.zj.utils.lce.NoContent
 import com.zj.utils.view.hideIme
 import com.zj.utils.view.showToast
@@ -69,9 +72,12 @@ fun WeatherListPage(
     toWeatherDetails: (CityInfo) -> Unit,
 ) {
     val context = LocalContext.current
+    val listState = rememberLazyListState()
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
             .padding(horizontal = dimensionResource(id = R.dimen.page_margin))
             .imeNestedScroll()
     ) {
@@ -83,31 +89,20 @@ fun WeatherListPage(
                 showToast(context = context, R.string.city_list_search_hint)
             }
         }
-        when (locationBeanState) {
-            is PlayError -> {
-                ErrorContent(onErrorClick = onErrorClick)
-            }
-            is PlayNoContent -> {
-                NoContent(tip = locationBeanState.reason)
-            }
-            PlayLoading, is PlaySuccess -> {
-                val listState = rememberLazyListState()
-                LazyColumn(state = listState) {
-                    if (locationBeanState is PlaySuccess) {
-                        items(locationBeanState.data) { locationBean ->
-                            WeatherCityItem(locationBean, toWeatherDetails)
-                        }
-                    } else {
-                        items(10) {
-                            WeatherCityItem(GeoBean.LocationBean(), toWeatherDetails)
-                        }
+        LcePage(playState = locationBeanState, onErrorClick = onErrorClick) {
+            LazyColumn(state = listState) {
+                if (locationBeanState is PlaySuccess) {
+                    items(locationBeanState.data) { locationBean ->
+                        WeatherCityItem(locationBean, toWeatherDetails)
                     }
-
+                } else {
+                    items(10) {
+                        WeatherCityItem(null, null)
+                    }
                 }
 
             }
         }
-
     }
 }
 

@@ -23,17 +23,18 @@ import com.zj.utils.defaultCityState
 import com.zj.utils.dialog.ShowDialog
 import com.zj.utils.dialog.ShowWarnDialog
 import com.zj.weather.R
+import com.zui.animate.placeholder.placeholder
 
 @Composable
 fun WeatherCityItem(
-    locationBean: GeoBean.LocationBean,
-    toWeatherDetails: (CityInfo) -> Unit,
+    locationBean: GeoBean.LocationBean?,
+    toWeatherDetails: ((CityInfo) -> Unit)?,
 ) {
     val warnDialog = remember { mutableStateOf(false) }
     val alertDialog = remember { mutableStateOf(false) }
-    val hasLocation = locationBean.hasLocation
-    Card(
-        shape = RoundedCornerShape(5.dp), modifier = Modifier
+    val hasLocation = locationBean?.hasLocation ?: false
+    Card(shape = RoundedCornerShape(5.dp),
+        modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 5.dp)
             .clickable {
@@ -42,8 +43,7 @@ fun WeatherCityItem(
                 } else {
                     warnDialog.value = true
                 }
-            }
-    ) {
+            }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,19 +54,24 @@ fun WeatherCityItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = locationBean.name ?: "",
-                    color = if (!hasLocation) Color.Unspecified else Color.Gray, fontSize = 18.sp
+                    modifier = Modifier.placeholder(locationBean),
+                    text = locationBean?.name ?: "",
+                    color = if (!hasLocation) Color.Unspecified else Color.Gray,
+                    fontSize = 18.sp
                 )
 
                 Text(
-                    text = "${locationBean.adm1} ${locationBean.adm2}",
-                    modifier = Modifier.padding(top = 3.dp),
+                    text = "${locationBean?.adm1} ${locationBean?.adm2}",
+                    modifier = Modifier
+                        .padding(top = 3.dp)
+                        .placeholder(locationBean),
                     color = if (!hasLocation) Color.Unspecified else Color.Gray
                 )
             }
 
             Text(
-                text = "${stringResource(id = R.string.city_rank)}${locationBean.rank}",
+                modifier = Modifier.placeholder(locationBean),
+                text = "${stringResource(id = R.string.city_rank)}${locationBean?.rank}",
                 color = if (!hasLocation) Color.Unspecified else Color.Gray
             )
         }
@@ -77,26 +82,28 @@ fun WeatherCityItem(
         alertDialog = alertDialog,
         title = stringResource(id = R.string.city_dialog_title),
         content = stringResource(
-            id = R.string.city_dialog_content,
-            "${locationBean.adm2} ${locationBean.name}"
-        ), cancelString = stringResource(id = R.string.city_dialog_cancel),
+            id = R.string.city_dialog_content, "${locationBean?.adm2} ${locationBean?.name}"
+        ),
+        cancelString = stringResource(id = R.string.city_dialog_cancel),
         confirmString = stringResource(id = R.string.city_dialog_confirm)
     ) {
         val cityInfo = CityInfo(
-            location = "${locationBean.lon},${
-                locationBean.lat
+            location = "${locationBean?.lon},${
+                locationBean?.lat
             }",
-            name = locationBean.name ?: "山西省",
-            province = locationBean.adm1 ?: "长治市",
-            city = locationBean.adm2 ?: "潞城区",
-            locationId = "CN${locationBean.id}",
-            lat = locationBean.lat ?: "",
-            lon = locationBean.lon ?: "",
+            name = locationBean?.name ?: "山西省",
+            province = locationBean?.adm1 ?: "长治市",
+            city = locationBean?.adm2 ?: "潞城区",
+            locationId = "CN${locationBean?.id}",
+            lat = locationBean?.lat ?: "",
+            lon = locationBean?.lon ?: "",
         )
         defaultCityState.value = cityInfo
-        toWeatherDetails(
-            cityInfo
-        )
+        toWeatherDetails?.let {
+            it(
+                cityInfo
+            )
+        }
     }
     ShowWarnDialog(
         alertDialog = warnDialog,

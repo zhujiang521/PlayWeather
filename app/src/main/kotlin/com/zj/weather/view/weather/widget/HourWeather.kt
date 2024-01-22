@@ -1,6 +1,10 @@
 package com.zj.weather.view.weather.widget
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +42,11 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
                     .fillMaxWidth()
                     .padding(5.dp)
             ) {
-                val beanList = hourlyBeanList ?: buildHourItemList()
+                val beanList = if (hourlyBeanList.isNullOrEmpty()) {
+                    buildHourItemList()
+                } else {
+                    hourlyBeanList
+                }
                 items(beanList) { hourlyBean ->
                     HourWeatherItem(hourlyBean)
                 }
@@ -51,7 +59,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
 private fun buildHourItemList(): List<WeatherHourlyBean.HourlyBean?> {
     val hourlyBeanList: ArrayList<WeatherHourlyBean.HourlyBean?> = arrayListOf()
     for (index in 0..23) {
-        hourlyBeanList.add(null)
+        hourlyBeanList.add(WeatherHourlyBean.HourlyBean())
     }
     return hourlyBeanList
 }
@@ -66,19 +74,19 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean?) {
             text = hourlyBean?.fxTime ?: "",
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary,
-            modifier = Modifier.placeholder(hourlyBean)
+            modifier = Modifier.placeholder(hourlyBean?.fxTime)
         )
         ImageLoader(
             data = IconUtils.getWeatherIcon(hourlyBean?.icon),
             modifier = Modifier
                 .padding(top = 7.dp)
-                .placeholder(hourlyBean)
+                .placeholder(hourlyBean?.icon)
         )
         Text(
             text = "${hourlyBean?.temp}℃",
             modifier = Modifier
                 .padding(top = 7.dp)
-                .placeholder(hourlyBean),
+                .placeholder(hourlyBean?.temp),
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary
         )
