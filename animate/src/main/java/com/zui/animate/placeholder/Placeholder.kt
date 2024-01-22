@@ -32,7 +32,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -77,7 +77,7 @@ object PlaceholderDefaults {
     /**
      * The default [InfiniteRepeatableSpec] to use for [shimmer].
      */
-    public val shimmerAnimationSpec: InfiniteRepeatableSpec<Float> by lazy {
+    val shimmerAnimationSpec: InfiniteRepeatableSpec<Float> by lazy {
         infiniteRepeatable(
             animation = tween(durationMillis = 1700, delayMillis = 200),
             repeatMode = RepeatMode.Restart
@@ -133,7 +133,7 @@ fun Modifier.placeholder(
     val lastOutline = remember { Ref<Outline>() }
 
     // The current highlight animation progress
-    var highlightProgress: Float by remember { mutableStateOf(0f) }
+    var highlightProgress: Float by remember { mutableFloatStateOf(0f) }
 
     // This is our crossfade transition
     val transitionState = remember { MutableTransitionState(visible) }.apply {

@@ -41,11 +41,11 @@ We recommend forking the implementation and customising it to your needs.
 For more information please visit https://google.github.io/accompanist/placeholder
 """
 )
-public interface PlaceholderHighlight {
+interface PlaceholderHighlight {
     /**
      * The optional [AnimationSpec] to use when running the animation for this highlight.
      */
-    public val animationSpec: InfiniteRepeatableSpec<Float>?
+    val animationSpec: InfiniteRepeatableSpec<Float>?
 
     /**
      * Return a [Brush] to draw for the given [progress] and [size].
@@ -53,7 +53,7 @@ public interface PlaceholderHighlight {
      * @param progress the current animated progress in the range of 0f..1f.
      * @param size The size of the current layout to draw in.
      */
-    public fun brush(
+    fun brush(
         @FloatRange(from = 0.0, to = 1.0) progress: Float,
         size: Size
     ): Brush
@@ -64,27 +64,19 @@ public interface PlaceholderHighlight {
      * @param progress the current animated progress in the range of 0f..1f.
      */
     @FloatRange(from = 0.0, to = 1.0)
-    public fun alpha(progress: Float): Float
+    fun alpha(progress: Float): Float
 
-    public companion object
+    companion object
 }
 
 /**
  * Creates a [Fade] brush with the given initial and target colors.
  *
- * @sample com.google.accompanist.sample.placeholder.DocSample_Foundation_PlaceholderFade
  *
  * @param highlightColor the color of the highlight which is faded in/out.
  * @param animationSpec the [AnimationSpec] to configure the animation.
  */
-@Deprecated(
-    """
-accompanist/placeholder is deprecated and the API is no longer maintained. 
-We recommend forking the implementation and customising it to your needs. 
-For more information please visit https://google.github.io/accompanist/placeholder
-"""
-)
-public fun PlaceholderHighlight.Companion.fade(
+fun PlaceholderHighlight.Companion.fade(
     highlightColor: Color,
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.fadeAnimationSpec,
 ): PlaceholderHighlight = Fade(
@@ -99,21 +91,13 @@ public fun PlaceholderHighlight.Companion.fade(
  * During that time it is also faded in, from 0f..progressForMaxAlpha, and then faded out from
  * progressForMaxAlpha..1f.
  *
- * @sample com.google.accompanist.sample.placeholder.DocSample_Foundation_PlaceholderShimmer
  *
  * @param highlightColor the color of the highlight 'shimmer'.
  * @param animationSpec the [AnimationSpec] to configure the animation.
  * @param progressForMaxAlpha The progress where the shimmer should be at it's peak opacity.
  * Defaults to 0.6f.
  */
-@Deprecated(
-    """
-accompanist/placeholder is deprecated and the API is no longer maintained. 
-We recommend forking the implementation and customising it to your needs. 
-For more information please visit https://google.github.io/accompanist/placeholder
-"""
-)
-public fun PlaceholderHighlight.Companion.shimmer(
+fun PlaceholderHighlight.Companion.shimmer(
     highlightColor: Color,
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.shimmerAnimationSpec,
     @FloatRange(from = 0.0, to = 1.0) progressForMaxAlpha: Float = 0.6f,
