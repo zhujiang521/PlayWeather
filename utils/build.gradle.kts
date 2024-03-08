@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
 
-    val accompanistVersion = "0.32.0"
+    val accompanistVersion = "0.34.0"
     // Compose 权限
     api("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
