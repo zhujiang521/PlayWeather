@@ -63,6 +63,14 @@ android {
         kotlinCompilerExtensionVersion = rootProject.extra["kotlinCompiler"] as String?
     }
 
+    packagingOptions {
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE-notice.md")
+        // 或者，如果您想保留一个，可以使用 pickFirst 或 merge
+        // pickFirst 'META-INF/LICENSE.md'
+        // merge 'META-INF/LICENSE.md'
+    }
+
 }
 
 dependencies {
@@ -70,6 +78,7 @@ dependencies {
     implementation("${rootProject.extra["coreKtx"] as String?}")
     implementation("${rootProject.extra["appcompat"] as String?}")
     implementation(project(":animate"))
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 
     val composeVersion = rootProject.extra["composeVersion"] as String?
     implementation("androidx.compose.ui:ui:$composeVersion")
@@ -104,4 +113,8 @@ dependencies {
     testImplementation("${rootProject.extra["junit"] as String?}")
     androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
     androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
+    // Test rules and transitive dependencies:
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    // Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 }

@@ -33,11 +33,11 @@ fun SwipeDeleteLayout(
     content: @Composable () -> Unit,
 ) {
     var deleteWidth by remember {
-        mutableStateOf(1)
+        mutableIntStateOf(1)
     }
 
     var contentHeight by remember {
-        mutableStateOf(1)
+        mutableIntStateOf(1)
     }
 
     Box(
