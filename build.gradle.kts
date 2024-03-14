@@ -17,7 +17,7 @@ ext {
 
     extra["coreKtx"] = "androidx.core:core-ktx:1.12.0"
     extra["appcompat"] = "androidx.appcompat:appcompat:1.6.1"
-    extra["kotlinVersion"] = "org.jetbrains.kotlin:kotlin-stdlib:1.9.23"
+    extra["kotlinVersion"] = "org.jetbrains.kotlin:kotlin-stdlib:1.9.22"
     extra["junit"] = "junit:junit:4.13.2"
     extra["extJunit"] = "androidx.test.ext:junit:1.1.5"
     extra["espressoCore"] = "androidx.test.espresso:espresso-core:3.5.1"
@@ -26,8 +26,8 @@ ext {
 plugins {
     id("com.android.application") version "8.3.0" apply false
     id("com.android.library") version "8.3.0" apply false
-    kotlin("android") version "1.9.23" apply false
-    id("com.google.devtools.ksp") version "1.9.23-1.0.19" apply false
+    kotlin("android") version "1.9.22" apply false
+    id("com.google.devtools.ksp") version "1.9.22-1.0.17" apply false
     id("com.google.dagger.hilt.android") version "2.51" apply false
 }
 

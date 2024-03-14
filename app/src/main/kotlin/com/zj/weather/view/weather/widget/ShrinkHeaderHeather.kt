@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.List
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
@@ -29,7 +30,7 @@ fun HeaderAction(modifier: Modifier = Modifier, cityListClick: () -> Unit, cityL
                 .wrapContentWidth(Alignment.Start), onClick = cityList
         ) {
             Icon(
-                imageVector = Icons.Rounded.List,
+                imageVector = Icons.AutoMirrored.Rounded.List,
                 contentDescription = "list"
             )
         }

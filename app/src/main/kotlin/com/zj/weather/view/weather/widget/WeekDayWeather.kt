@@ -141,7 +141,7 @@ private fun TemperatureChart(
     currentMax: Int,
     currentTemperature: Int = -1
 ) {
-    val currentMinColor: Color = getTemperatureColor(currentMin)
+//    val currentMinColor: Color = getTemperatureColor(currentMin)
     val currentMaxColor: Color = getTemperatureColor(currentMax)
     // 计算周温差
     val num = max - min

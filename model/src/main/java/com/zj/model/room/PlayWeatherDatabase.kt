@@ -18,7 +18,8 @@ import com.zj.model.room.entity.CityInfo
  */
 @Database(
     entities = [CityInfo::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class PlayWeatherDatabase : RoomDatabase() {
 
