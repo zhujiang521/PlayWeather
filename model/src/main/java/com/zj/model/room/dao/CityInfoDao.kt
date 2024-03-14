@@ -30,6 +30,9 @@ interface CityInfoDao {
     @Query("SELECT COUNT(*) FROM city_info where name = :name")
     suspend fun getHasLocation(name: String): Int
 
+    @Query("SELECT * FROM city_info where name = :name")
+    fun getCityInfoForName(name: String): CityInfo
+
     @Query("SELECT COUNT(*) FROM city_info")
     suspend fun getCount(): Int
 

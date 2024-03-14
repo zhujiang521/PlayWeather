@@ -2,10 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="AndroidStudioProjects.PlayWeather.app">
+        <State />
+      </entry>
+      <entry key="UiTest">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>
-      <entry key="calculate_20_percent_tip()">
+      <entry key="testAnimationWithClock()">
+        <State />
+      </entry>
+      <entry key="testMain()">
         <State />
       </entry>
     </value>

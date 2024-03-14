@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,10 +22,14 @@ class CityListViewModel @Inject constructor(
     /**
      * 删除相应的城市信息
      */
-    fun deleteCityInfo(cityInfo: CityInfo) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun deleteCityInfo(cityInfo: CityInfo?): Boolean {
+        if (cityInfo == null) {
+            return false
+        }
+        val result = runBlocking {
             cityListRepository.deleteCityInfo(cityInfo)
         }
+        return result
     }
 
 }

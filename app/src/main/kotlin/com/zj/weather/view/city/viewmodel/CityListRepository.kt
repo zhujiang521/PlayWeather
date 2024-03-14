@@ -16,8 +16,9 @@ class CityListRepository @Inject constructor(context: Application) {
     fun refreshCityList(): Flow<List<CityInfo>> = cityInfoDao.getCityInfoList()
 
     @VisibleForTesting
-    suspend fun deleteCityInfo(cityInfo: CityInfo) {
-        cityInfoDao.delete(cityInfo)
+    suspend fun deleteCityInfo(cityInfo: CityInfo): Boolean {
+        val delete = cityInfoDao.delete(cityInfo)
+        return delete > 0
     }
 
 }

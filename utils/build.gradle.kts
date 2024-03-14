@@ -67,7 +67,7 @@ dependencies {
     api("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // lottie动画
-    api("com.airbnb.android:lottie-compose:6.3.0")
+    api("com.airbnb.android:lottie-compose:6.4.0")
 
     api(project(":model"))
 

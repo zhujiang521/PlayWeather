@@ -56,6 +56,8 @@ dependencies {
 
     implementation("${rootProject.extra["coreKtx"] as String?}")
     implementation("${rootProject.extra["appcompat"] as String?}")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
+    implementation("androidx.test:core-ktx:1.5.0")
 
     // Room
     val roomVersion = "2.6.1"
@@ -65,6 +67,7 @@ dependencies {
     api("androidx.room:room-ktx:$roomVersion")
 
     testImplementation("${rootProject.extra["junit"] as String?}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0") // 用于测试的协程库
     androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
     androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
 }

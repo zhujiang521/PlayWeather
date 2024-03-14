@@ -78,7 +78,8 @@ dependencies {
     implementation("${rootProject.extra["coreKtx"] as String?}")
     implementation("${rootProject.extra["appcompat"] as String?}")
     implementation(project(":animate"))
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("androidx.test:monitor:1.6.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 
     val composeVersion = rootProject.extra["composeVersion"] as String?
     implementation("androidx.compose.ui:ui:$composeVersion")
@@ -87,7 +88,7 @@ dependencies {
     implementation("androidx.compose.material:material:$composeVersion")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
 
     implementation(project(":network"))
 
