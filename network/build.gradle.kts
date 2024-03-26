@@ -50,7 +50,7 @@ dependencies {
     implementation("${rootProject.extra["appcompat"] as String?}")
     api(project(":utils"))
     // 网络请求
-    val retrofitVersion = "2.9.0"
+    val retrofitVersion = "2.10.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     api("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     testImplementation("${rootProject.extra["junit"] as String?}")
