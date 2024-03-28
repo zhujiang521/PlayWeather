@@ -45,19 +45,19 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                     modifier,
                     R.drawable.ic_sport,
                     R.string.life_sport,
-                    getCategory(weatherLifeIndicesItems, 0)
+                    weatherLifeIndicesItems[0]?.category
                 )
                 WeatherLifeItem(
                     modifier,
                     R.drawable.ic_car,
                     R.string.life_car,
-                    getCategory(weatherLifeIndicesItems, 1)
+                    weatherLifeIndicesItems[1]?.category
                 )
                 WeatherLifeItem(
                     modifier,
                     R.drawable.ic_clothes,
                     R.string.life_clothes,
-                    getCategory(weatherLifeIndicesItems, 2)
+                    weatherLifeIndicesItems[1]?.category
                 )
             }
 
@@ -73,32 +73,25 @@ fun LifeWeatherContent(weatherLifeList: List<WeatherLifeIndicesBean.WeatherLifeI
                     modifier,
                     R.drawable.ic_uv,
                     R.string.life_uv,
-                    getCategory(weatherLifeIndicesItems, 3)
+                    weatherLifeIndicesItems[3]?.category
                 )
                 WeatherLifeItem(
                     modifier,
                     R.drawable.ic_travel,
                     R.string.life_travel,
-                    getCategory(weatherLifeIndicesItems, 4)
+                    weatherLifeIndicesItems[4]?.category
                 )
                 WeatherLifeItem(
                     modifier,
                     R.drawable.ic_cold,
                     R.string.life_cold,
-                    getCategory(weatherLifeIndicesItems, 5)
+                    weatherLifeIndicesItems[5]?.category
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
         }
     }
 }
-
-private fun getCategory(
-    weatherLifeIndicesItems: List<WeatherLifeIndicesBean.WeatherLifeIndicesItem?>,
-    index: Int
-) = if (weatherLifeIndicesItems.size > index) {
-    weatherLifeIndicesItems[index]?.category
-} else null
 
 private fun buildLifeItemList(): List<WeatherLifeIndicesBean.WeatherLifeIndicesItem?> {
     val weatherLifeIndicesItems: ArrayList<WeatherLifeIndicesBean.WeatherLifeIndicesItem?> =

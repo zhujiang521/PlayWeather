@@ -105,8 +105,11 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
-    // 使用Compose 编写小部件（Widget）
-    implementation("androidx.glance:glance-appwidget:1.0.0")
+    val glanceVersion = "1.1.0-alpha01"
+    // For Glance support
+    implementation("androidx.glance:glance:$glanceVersion")
+    // For AppWidgets support
+    implementation("androidx.glance:glance-appwidget:$glanceVersion")
 
     // 地图
     implementation("com.amap.api:map2d:6.0.0")

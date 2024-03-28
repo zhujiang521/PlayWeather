@@ -7,7 +7,7 @@ ext {
     extra["minSdkVersion"] = 24
 
     extra["kotlinCompiler"] = "1.5.11"
-    extra["composeVersion"] = "1.6.3"
+    extra["composeVersion"] = "1.6.4"
     extra["hiltVersion"] = "2.51"
 
     extra["testInstrumentationRunner"] = "androidx.test.runner.AndroidJUnitRunner"

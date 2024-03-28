@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,11 +43,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
                     .fillMaxWidth()
                     .padding(5.dp)
             ) {
-                val beanList = if (hourlyBeanList.isNullOrEmpty()) {
-                    buildHourItemList()
-                } else {
-                    hourlyBeanList
-                }
+                val beanList = hourlyBeanList ?: buildHourItemList()
                 items(beanList) { hourlyBean ->
                     HourWeatherItem(hourlyBean)
                 }
@@ -60,7 +56,7 @@ fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
 private fun buildHourItemList(): List<WeatherHourlyBean.HourlyBean?> {
     val hourlyBeanList: ArrayList<WeatherHourlyBean.HourlyBean?> = arrayListOf()
     for (index in 0..23) {
-        hourlyBeanList.add(WeatherHourlyBean.HourlyBean())
+        hourlyBeanList.add(null)
     }
     return hourlyBeanList
 }
@@ -75,19 +71,19 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean?) {
             text = hourlyBean?.fxTime ?: "现在",
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary,
-            modifier = Modifier.placeholder(hourlyBean?.fxTime)
+            modifier = Modifier.placeholder(hourlyBean)
         )
         ImageLoader(
             data = IconUtils.getWeatherIcon(hourlyBean?.icon),
             modifier = Modifier
                 .padding(top = 7.dp)
-                .placeholder(hourlyBean?.icon)
+                .placeholder(hourlyBean)
         )
         Text(
             text = "${hourlyBean?.temp}℃",
             modifier = Modifier
                 .padding(top = 7.dp)
-                .placeholder(hourlyBean?.temp),
+                .placeholder(hourlyBean),
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary
         )

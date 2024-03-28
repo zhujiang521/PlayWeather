@@ -42,11 +42,7 @@ fun WeekDayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
                 modifier = Modifier
                     .padding(top = 10.dp, bottom = 7.dp, start = 10.dp, end = 10.dp)
             )
-            val dailyBeanList = if (dayBeanList.isNullOrEmpty()) {
-                buildDayItemList()
-            } else {
-                dayBeanList
-            }
+            val dailyBeanList = dayBeanList ?: buildDayItemList()
             dailyBeanList.forEach { dailyBean ->
                 Divider(modifier = Modifier.padding(horizontal = 10.dp), thickness = 0.4.dp)
                 WeekDayWeatherItem(dailyBean)
@@ -58,7 +54,7 @@ fun WeekDayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
 private fun buildDayItemList(): List<WeatherDailyBean.DailyBean?> {
     val dailyBeanArrayList: ArrayList<WeatherDailyBean.DailyBean?> = arrayListOf()
     for (index in 0..6) {
-        dailyBeanArrayList.add(WeatherDailyBean.DailyBean())
+        dailyBeanArrayList.add(null)
     }
     return dailyBeanArrayList
 }
@@ -76,7 +72,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 3.dp)
-                .placeholder(dailyBean?.fxDate),
+                .placeholder(dailyBean),
             fontSize = 15.sp,
             color = MaterialTheme.colors.primary
         )
@@ -87,7 +83,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             data = IconUtils.getWeatherIcon(dailyBean?.iconDay),
             modifier = Modifier
                 .padding(start = 7.dp)
-                .placeholder(dailyBean?.iconDay)
+                .placeholder(dailyBean)
         )
 
         Spacer(modifier = Modifier.weight(0.7f))
@@ -97,7 +93,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             modifier = Modifier
                 .width(50.dp)
                 .padding(end = 15.dp)
-                .placeholder(dailyBean?.tempMin),
+                .placeholder(dailyBean),
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary
@@ -115,7 +111,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             modifier = Modifier
                 .width(50.dp)
                 .padding(start = 10.dp, end = 5.dp)
-                .placeholder(dailyBean?.tempMax),
+                .placeholder(dailyBean),
             fontSize = 15.sp,
             textAlign = TextAlign.End,
             color = MaterialTheme.colors.primary

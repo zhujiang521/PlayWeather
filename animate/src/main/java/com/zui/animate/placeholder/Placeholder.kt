@@ -112,9 +112,9 @@ fun <T> Modifier.placeholder(
 
 fun Modifier.placeholder(
     visible: Boolean,
-    color: Color = Color.LightGray,
-    shape: Shape = RoundedCornerShape(4.dp),
-    highlight: PlaceholderHighlight? = PlaceholderHighlight.shimmer(Color.Gray),
+    color: Color,
+    shape: Shape = RectangleShape,
+    highlight: PlaceholderHighlight? = null,
     placeholderFadeTransitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = { spring() },
     contentFadeTransitionSpec: @Composable Transition.Segment<Boolean>.() -> FiniteAnimationSpec<Float> = { spring() },
 ): Modifier = composed(
