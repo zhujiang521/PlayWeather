@@ -24,7 +24,6 @@ import androidx.core.content.ContextCompat
 import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.XLog
 import com.zj.weather.R
-import com.zui.animate.placeholder.placeholder
 import kotlin.math.pow
 
 
@@ -121,8 +120,7 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
         ) {
             Text(
                 modifier = Modifier
-                    .wrapContentWidth(Alignment.Start)
-                    .placeholder(sunrise),
+                    .wrapContentWidth(Alignment.Start),
                 text = "${stringResource(id = R.string.sun_sunrise)}$sunrise",
                 fontSize = 12.sp,
             )
@@ -131,8 +129,7 @@ fun SunriseSunsetProgress(context: Context, sunrise: String?, sunset: String?) {
 
             Text(
                 modifier = Modifier
-                    .wrapContentWidth(Alignment.End)
-                    .placeholder(sunset),
+                    .wrapContentWidth(Alignment.End),
                 text = "${stringResource(id = R.string.sun_sunset)}$sunset",
                 fontSize = 12.sp,
             )

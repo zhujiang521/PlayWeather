@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.zj.model.room.entity.CityInfo
 import com.zj.model.weather.WeatherNowBean
 import com.zj.weather.R
-import com.zui.animate.placeholder.placeholder
 
 @Composable
 fun HeaderWeather(
@@ -68,8 +67,7 @@ fun HeaderWeather(
         Text(
             text = "${weatherNow?.text ?: stringResource(id = R.string.default_weather)}  ${weatherNow?.temp ?: "0"}℃",
             modifier = Modifier
-                .padding(top = 5.dp, bottom = 10.dp)
-                .placeholder(weatherNow),
+                .padding(top = 5.dp, bottom = 10.dp),
             fontSize = fontSize,
             color = MaterialTheme.colors.primary
         )

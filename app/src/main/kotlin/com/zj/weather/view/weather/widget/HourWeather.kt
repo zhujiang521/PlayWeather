@@ -24,7 +24,6 @@ import com.zj.model.weather.WeatherHourlyBean
 import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
 import com.zj.weather.R
-import com.zui.animate.placeholder.placeholder
 
 @Composable
 fun HourWeather(hourlyBeanList: List<WeatherHourlyBean.HourlyBean>?) {
@@ -71,19 +70,16 @@ private fun HourWeatherItem(hourlyBean: WeatherHourlyBean.HourlyBean?) {
             text = hourlyBean?.fxTime ?: "现在",
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary,
-            modifier = Modifier.placeholder(hourlyBean)
         )
         ImageLoader(
             data = IconUtils.getWeatherIcon(hourlyBean?.icon),
             modifier = Modifier
                 .padding(top = 7.dp)
-                .placeholder(hourlyBean)
         )
         Text(
             text = "${hourlyBean?.temp}℃",
             modifier = Modifier
-                .padding(top = 7.dp)
-                .placeholder(hourlyBean),
+                .padding(top = 7.dp),
             fontSize = 14.sp,
             color = MaterialTheme.colors.primary
         )

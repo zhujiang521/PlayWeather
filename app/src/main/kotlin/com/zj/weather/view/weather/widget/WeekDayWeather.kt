@@ -23,7 +23,6 @@ import com.zj.model.weather.WeatherDailyBean
 import com.zj.utils.view.ImageLoader
 import com.zj.utils.weather.IconUtils
 import com.zj.weather.R
-import com.zui.animate.placeholder.placeholder
 
 @Composable
 fun WeekDayWeather(dayBeanList: List<WeatherDailyBean.DailyBean>?) {
@@ -71,8 +70,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             text = dailyBean?.fxDate ?: "今天",
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 3.dp)
-                .placeholder(dailyBean),
+                .padding(start = 3.dp),
             fontSize = 15.sp,
             color = MaterialTheme.colors.primary
         )
@@ -83,7 +81,6 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             data = IconUtils.getWeatherIcon(dailyBean?.iconDay),
             modifier = Modifier
                 .padding(start = 7.dp)
-                .placeholder(dailyBean)
         )
 
         Spacer(modifier = Modifier.weight(0.7f))
@@ -92,8 +89,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             text = "${dailyBean?.tempMin ?: "0"}°",
             modifier = Modifier
                 .width(50.dp)
-                .padding(end = 15.dp)
-                .placeholder(dailyBean),
+                .padding(end = 15.dp),
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary
@@ -110,8 +106,7 @@ private fun WeekDayWeatherItem(dailyBean: WeatherDailyBean.DailyBean?) {
             text = "${dailyBean?.tempMax ?: "0"}°",
             modifier = Modifier
                 .width(50.dp)
-                .padding(start = 10.dp, end = 5.dp)
-                .placeholder(dailyBean),
+                .padding(start = 10.dp, end = 5.dp),
             fontSize = 15.sp,
             textAlign = TextAlign.End,
             color = MaterialTheme.colors.primary

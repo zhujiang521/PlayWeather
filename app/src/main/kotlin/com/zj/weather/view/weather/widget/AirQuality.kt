@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zj.model.air.AirNowBean
 import com.zj.weather.R
-import com.zui.animate.placeholder.placeholder
 
 
 @Composable
@@ -44,8 +43,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
                     airNowBean?.category ?: stringResource(id = R.string.air_quality_level)
                 }",
                 modifier = Modifier
-                    .padding(top = 5.dp)
-                    .placeholder(airNowBean),
+                    .padding(top = 5.dp),
                 fontSize = 20.sp,
                 color = MaterialTheme.colors.primary
             )
@@ -54,8 +52,7 @@ fun AirQuality(airNowBean: AirNowBean.NowBean?) {
                     stringResource(id = R.string.air_quality_Current_aqi)
                 }${airNowBean?.aqi ?: "10"}${airNowBean?.primary ?: ""}",
                 modifier = Modifier
-                    .padding(top = 5.dp)
-                    .placeholder(airNowBean),
+                    .padding(top = 5.dp),
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(10.dp))

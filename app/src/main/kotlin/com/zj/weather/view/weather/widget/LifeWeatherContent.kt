@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.sp
 import com.zj.model.indices.WeatherLifeIndicesBean
 import com.zj.utils.view.ImageLoader
 import com.zj.weather.R
-import com.zui.animate.placeholder.placeholder
 
 
 @Composable
@@ -120,8 +119,7 @@ fun WeatherLifeItem(modifier: Modifier, imgRes: Int, titleId: Int, value: String
             Text(
                 text = value ?: "不错",
                 modifier = Modifier
-                    .padding(top = 5.dp)
-                    .placeholder(value),
+                    .padding(top = 5.dp),
                 fontSize = 14.sp,
                 color = MaterialTheme.colors.primary
             )
