@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.zj.weather.view.weather
 
 import android.annotation.SuppressLint

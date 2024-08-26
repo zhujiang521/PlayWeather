@@ -16,7 +16,7 @@ import com.zj.weather.view.city.viewmodel.CityListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * The configuration screen for the [WeatherWidget] AppWidget.
+ * The configuration screen for the AppWidget.
  */
 @AndroidEntryPoint
 class TodayGlanceWidgetConfigureActivity : BaseActivity() {
