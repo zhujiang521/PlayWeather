@@ -67,7 +67,7 @@ dependencies {
     api("androidx.room:room-ktx:$roomVersion")
 
     testImplementation("${rootProject.extra["junit"] as String?}")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0") // 用于测试的协程库
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1") // 用于测试的协程库
     androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
     androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
 }

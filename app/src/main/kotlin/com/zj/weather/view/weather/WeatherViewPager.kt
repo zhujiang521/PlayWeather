@@ -126,7 +126,7 @@ fun WeatherViewPager(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        HorizontalPager(modifier = Modifier, state = pagerState, beyondBoundsPageCount = 1, key = {
+        HorizontalPager(modifier = Modifier, state = pagerState, beyondViewportPageCount = 1, key = {
             try {
                 cityInfoList[it].locationId
             } catch (e: Exception) {

@@ -4,6 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -59,9 +60,6 @@ android {
         viewBinding = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["kotlinCompiler"] as String?
-    }
 
     packagingOptions {
         exclude("META-INF/LICENSE.md")
@@ -78,8 +76,8 @@ dependencies {
     implementation("${rootProject.extra["coreKtx"] as String?}")
     implementation("${rootProject.extra["appcompat"] as String?}")
     implementation(project(":animate"))
-    implementation("androidx.test:monitor:1.6.1")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    implementation("androidx.test:monitor:1.7.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
 
     val composeVersion = rootProject.extra["composeVersion"] as String?
     implementation("androidx.compose.ui:ui:$composeVersion")
@@ -87,8 +85,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+    implementation("androidx.activity:activity-compose:1.9.1")
 
     implementation(project(":network"))
 
@@ -105,7 +103,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
-    val glanceVersion = "1.1.0-alpha01"
+    val glanceVersion = "1.1.0"
     // For Glance support
     implementation("androidx.glance:glance:$glanceVersion")
     // For AppWidgets support

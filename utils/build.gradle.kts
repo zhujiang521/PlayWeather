@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -45,9 +46,6 @@ android {
         viewBinding = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["kotlinCompiler"] as String?
-    }
     namespace = "com.zj.utils"
 }
 
@@ -67,7 +65,7 @@ dependencies {
     api("com.google.accompanist:accompanist-permissions:$accompanistVersion")
 
     // lottie动画
-    api("com.airbnb.android:lottie-compose:6.4.0")
+    api("com.airbnb.android:lottie-compose:6.5.0")
 
     api(project(":model"))
 
