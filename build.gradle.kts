@@ -14,7 +14,7 @@ ext {
 
     extra["javaVersion"] = JavaVersion.VERSION_17
 
-    extra["coreKtx"] = "androidx.core:core-ktx:1.12.0"
+    extra["coreKtx"] = "androidx.core:core-ktx:1.13.1"
     extra["appcompat"] = "androidx.appcompat:appcompat:1.6.1"
     extra["kotlinVersion"] = "org.jetbrains.kotlin:kotlin-stdlib:2.0.10"
     extra["junit"] = "junit:junit:4.13.2"
