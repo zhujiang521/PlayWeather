@@ -1,21 +1,18 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.zui.animate"
-    val sdkVersion = rootProject.extra["sdkVersion"] as Int?
-    val minSdkVersion = rootProject.extra["minSdkVersion"] as Int?
-    compileSdk = sdkVersion
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = minSdkVersion
-        targetSdk = sdkVersion
+        minSdk = libs.versions.minSdk.get().toInt()
 
-        testInstrumentationRunner = rootProject.extra["testInstrumentationRunner"] as String?
-        rootProject.extra["consumerProguardFiles"]?.let { consumerProguardFiles(it) }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
         resourceConfigurations += listOf("en", "zh", "zh-rCN", "zh-rHK", "zh-rTW")
     }
 
@@ -29,18 +26,13 @@ android {
             )
         }
     }
-    val javaVersion = rootProject.extra["javaVersion"] as JavaVersion
-    val javaVersionName = javaVersion.toString()
-
     kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(javaVersionName))
-        }
+        jvmToolchain(17)
     }
 
     compileOptions {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
@@ -50,16 +42,14 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
-    implementation("${rootProject.extra["coreKtx"] as String?}")
-    implementation("${rootProject.extra["appcompat"] as String?}")
+    // Compose
+    implementation(libs.bundles.compose)
 
-    val composeVersion = rootProject.extra["composeVersion"] as String?
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    testImplementation("${rootProject.extra["junit"] as String?}")
-    androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
-    androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
+    // 测试
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

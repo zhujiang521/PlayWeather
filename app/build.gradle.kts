@@ -1,27 +1,23 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("com.google.devtools.ksp")
-    id("dagger.hilt.android.plugin")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.zj.weather"
-
-    val sdkVersion = rootProject.extra["sdkVersion"] as Int?
-    val minSdkVersion = rootProject.extra["minSdkVersion"] as Int?
-    compileSdk = sdkVersion
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = minSdkVersion
-        targetSdk = sdkVersion
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
 
-        versionCode = rootProject.extra["versionCode"] as Int?
-        versionName = rootProject.extra["versionName"] as String?
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
-        testInstrumentationRunner = rootProject.extra["testInstrumentationRunner"] as String?
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -41,18 +37,13 @@ android {
             )
         }
     }
-    val javaVersion = rootProject.extra["javaVersion"] as JavaVersion
-    val javaVersionName = javaVersion.toString()
-
     kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(javaVersionName))
-        }
+        jvmToolchain(17)
     }
 
     compileOptions {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -61,63 +52,53 @@ android {
     }
 
 
-    packagingOptions {
-        exclude("META-INF/LICENSE.md")
-        exclude("META-INF/LICENSE-notice.md")
-        // 或者，如果您想保留一个，可以使用 pickFirst 或 merge
-        // pickFirst 'META-INF/LICENSE.md'
-        // merge 'META-INF/LICENSE.md'
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md"
+            )
+        }
     }
-
 }
 
 dependencies {
+    // 核心库
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.test.monitor)
 
-    implementation("${rootProject.extra["coreKtx"] as String?}")
-    implementation("${rootProject.extra["appcompat"] as String?}")
+    // 项目模块
     implementation(project(":animate"))
-    implementation("androidx.test:monitor:1.7.1")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
-
-    val composeVersion = rootProject.extra["composeVersion"] as String?
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.compose.material:material-icons-core:$composeVersion")
-
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("androidx.activity:activity-compose:1.9.3")
-
     implementation(project(":network"))
 
+    // Compose
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.compose.material.icons.core)
 
-    // navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-
-    // 启动动画
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
     // Hilt
-    val hiltVersion = rootProject.extra["hiltVersion"] as String?
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
 
-    val glanceVersion = "1.1.0"
-    // For Glance support
-    implementation("androidx.glance:glance:$glanceVersion")
-    // For AppWidgets support
-    implementation("androidx.glance:glance-appwidget:$glanceVersion")
+    // Glance
+    implementation(libs.androidx.glance)
+    implementation(libs.androidx.glance.appwidget)
 
     // 地图
-    implementation("com.amap.api:map2d:6.0.0")
+    implementation(libs.amap.map2d)
 
-    testImplementation("${rootProject.extra["junit"] as String?}")
-    androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
-    androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
-    // Test rules and transitive dependencies:
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    // Needed for createAndroidComposeRule, but not createComposeRule:
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+    // 测试
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.jupiter)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

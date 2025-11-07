@@ -1,20 +1,17 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-
-    val sdkVersion = rootProject.extra["sdkVersion"] as Int?
-    val minSdkVersion = rootProject.extra["minSdkVersion"] as Int?
-    compileSdk = sdkVersion
+    namespace = "com.zj.network"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = minSdkVersion
-        targetSdk = sdkVersion
+        minSdk = libs.versions.minSdk.get().toInt()
 
-        testInstrumentationRunner = rootProject.extra["testInstrumentationRunner"] as String?
-        rootProject.extra["consumerProguardFiles"]?.let { consumerProguardFiles(it) }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
         resourceConfigurations += listOf("en", "zh", "zh-rCN", "zh-rHK", "zh-rTW")
     }
 
@@ -28,32 +25,29 @@ android {
             )
         }
     }
-    val javaVersion = rootProject.extra["javaVersion"] as JavaVersion
-    val javaVersionName = javaVersion.toString()
-
     kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(javaVersionName))
-        }
+        jvmToolchain(17)
     }
 
     compileOptions {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    namespace = "com.zj.network"
 }
 
 dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
-    implementation("${rootProject.extra["coreKtx"] as String?}")
-    implementation("${rootProject.extra["appcompat"] as String?}")
+    // 项目模块
     api(project(":utils"))
+
     // 网络请求
-    val retrofitVersion = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    api("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-    testImplementation("${rootProject.extra["junit"] as String?}")
-    androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
-    androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
+    implementation(libs.retrofit)
+    api(libs.retrofit.converter.gson)
+
+    // 测试
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

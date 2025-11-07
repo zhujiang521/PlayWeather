@@ -1,20 +1,18 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    val sdkVersion = rootProject.extra["sdkVersion"] as Int?
-    val minSdkVersion = rootProject.extra["minSdkVersion"] as Int?
-    compileSdk = sdkVersion
+    namespace = "com.zj.model"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = minSdkVersion
-        targetSdk = sdkVersion
+        minSdk = libs.versions.minSdk.get().toInt()
 
-        testInstrumentationRunner = rootProject.extra["testInstrumentationRunner"] as String?
-        rootProject.extra["consumerProguardFiles"]?.let { consumerProguardFiles(it) }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
         resourceConfigurations += listOf("en", "zh", "zh-rCN", "zh-rHK", "zh-rTW")
         javaCompileOptions {
             annotationProcessorOptions {
@@ -36,38 +34,30 @@ android {
             )
         }
     }
-    val javaVersion = rootProject.extra["javaVersion"] as JavaVersion
-    val javaVersionName = javaVersion.toString()
-
     kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(javaVersionName))
-        }
+        jvmToolchain(17)
     }
 
     compileOptions {
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    namespace = "com.zj.model"
 }
 
 dependencies {
-
-    implementation("${rootProject.extra["coreKtx"] as String?}")
-    implementation("${rootProject.extra["appcompat"] as String?}")
-    implementation("androidx.test.ext:junit-ktx:1.1.5")
-    implementation("androidx.test:core-ktx:1.5.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.test.ext.junit.ktx)
+    implementation(libs.androidx.test.core.ktx)
 
     // Room
-    val roomVersion = "2.6.1"
-    api("androidx.room:room-runtime:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-    // 对 Room 的 Kotlin 扩展和协程支持
-    api("androidx.room:room-ktx:$roomVersion")
+    api(libs.androidx.room.runtime)
+    api(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
-    testImplementation("${rootProject.extra["junit"] as String?}")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1") // 用于测试的协程库
-    androidTestImplementation("${rootProject.extra["extJunit"] as String?}")
-    androidTestImplementation("${rootProject.extra["espressoCore"] as String?}")
+    // 测试
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
