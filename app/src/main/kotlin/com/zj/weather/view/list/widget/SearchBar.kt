@@ -24,10 +24,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,6 +39,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -76,7 +73,7 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    painter = painterResource(id = R.drawable.baseline_arrow_back),
                     contentDescription = "back"
                 )
             }
@@ -119,7 +116,8 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            imageVector = Icons.Rounded.Close, contentDescription = "",
+                            painter = painterResource(R.drawable.baseline_close),
+                            contentDescription = "",
                             modifier = Modifier
                                 .clickable {
                                     value = ""
@@ -166,7 +164,7 @@ fun SearchBar(onBack: () -> Unit, searchCity: (String) -> Unit) {
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Search,
+                    painter = painterResource(R.drawable.baseline_search),
                     contentDescription = "查询"
                 )
             }

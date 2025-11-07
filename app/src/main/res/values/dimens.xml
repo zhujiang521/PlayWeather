@@ -2,5 +2,6 @@
 <resources>
 
     <dimen name="page_margin">15dp</dimen>
+    <dimen name="icon_size">20dp</dimen>
 
 </resources>

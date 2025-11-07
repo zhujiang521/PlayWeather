@@ -77,7 +77,6 @@ dependencies {
 
     // Compose
     implementation(libs.bundles.compose)
-    implementation(libs.androidx.compose.material.icons.core)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)

@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.List
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.zj.weather.R
 
 @Composable
 fun HeaderAction(modifier: Modifier = Modifier, cityListClick: () -> Unit, cityList: () -> Unit) {
@@ -21,7 +19,7 @@ fun HeaderAction(modifier: Modifier = Modifier, cityListClick: () -> Unit, cityL
             onClick = cityListClick
         ) {
             Icon(
-                imageVector = Icons.Rounded.Add,
+                painter = painterResource(id = R.drawable.baseline_add),
                 contentDescription = "add"
             )
         }
@@ -30,7 +28,7 @@ fun HeaderAction(modifier: Modifier = Modifier, cityListClick: () -> Unit, cityL
                 .wrapContentWidth(Alignment.Start), onClick = cityList
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Rounded.List,
+                painter = painterResource(id = R.drawable.baseline_format_list_bulleted),
                 contentDescription = "list"
             )
         }
